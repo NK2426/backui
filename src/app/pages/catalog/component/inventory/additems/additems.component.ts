@@ -98,7 +98,7 @@ export class AdditemsComponent implements OnInit {
     { name: '7', value: '7 Days' }
   ];
   terms = [
-    { name: '1', value: 'Mugdha Policy' },
+    { name: '1', value: 'fashionwrap Policy' },
     { name: '2', value: 'Brand/manufacturer Policy' }
   ];
   //allvariants= new Map<number, Productimage[]>();

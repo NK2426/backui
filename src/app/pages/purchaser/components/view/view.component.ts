@@ -118,7 +118,7 @@ export class ViewComponent implements OnInit, OnChanges {
   url: any;
   localhostui: "http://localhost:4200/"
   localhostvendor: "http://localhost:4300/"
-  vprc: "https://mugdha.vprc.in/admin/"
+  vprc: "https://fashionwrap.vprc.in/admin/"
 
   ngOnInit(): void {
     this.baseurl = environment.PDF_BASE_URL;

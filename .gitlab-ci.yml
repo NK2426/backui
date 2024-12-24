@@ -11,7 +11,7 @@ dev_deploy:
     - ssh-add <(echo "$SSH_PRIVATE_KEY_DEV")
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - ssh ubuntu@10.4.13.198 "cd /var/www/html/mugdhaui && git checkout dev && git stash && git pull origin dev"
+    - ssh ubuntu@10.4.13.198 "cd /var/www/html/fashionwrapui && git checkout dev && git stash && git pull origin dev"
   only:
     - dev
   tags:
@@ -29,7 +29,7 @@ uat_deploy:
     - ssh-add <(echo "$SSH_PRIVATE_KEY_PROD")
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - ssh ubuntu@10.4.8.190 "cd /var/www/mugdha-ui-uat/mugdhaui && git checkout uat && git pull origin uat"
+    - ssh ubuntu@10.4.8.190 "cd /var/www/fashionwrap-ui-uat/fashionwrapui && git checkout uat && git pull origin uat"
   only:
     - uat
   tags:
@@ -47,7 +47,7 @@ prod_deploy:
     - ssh-add <(echo "$SSH_PRIVATE_KEY_PROD")
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - ssh ubuntu@10.4.8.190 "cd /var/www/mugdha-master-ui/mugdhaui && git checkout master && git pull origin master"
+    - ssh ubuntu@10.4.8.190 "cd /var/www/fashionwrap-master-ui/fashionwrapui && git checkout master && git pull origin master"
   only:
     - master
   tags:
