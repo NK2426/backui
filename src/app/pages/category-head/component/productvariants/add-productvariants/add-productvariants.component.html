@@ -1,0 +1,283 @@
+<div class="submit-form">
+  <form (ngSubmit)="saveProductvariants()" [formGroup]="formData" novalidate>
+    <div class="row">
+      <div class="col-12">
+        <div class="mb-3" *ngIf="edit">
+          <label class="form-label"> Category :</label>
+          <strong>{{ data.category?.name }}</strong>
+        </div>
+        <div class="mb-3" *ngIf="edit">
+          <label class="form-label"> SubCategory :</label>
+          <strong>{{ data.subcategory?.name }}</strong>
+        </div>
+        <div class="mb-3" *ngIf="edit">
+          <label class="form-label"> Showtype :</label>
+          <strong>{{ data?.type + '' === '0' ? 'String' : 'Number' }}</strong>
+        </div>
+
+        <div class="mb-3" *ngIf="edit">
+          <label class="form-label"> Status :</label>
+          <strong>{{ data?.status + '' === '0' ? 'Inactive' : 'Active' }}</strong>
+        </div>
+        <div class="mb-3" *ngIf="edit">
+          <label class="form-label"> Description :</label>
+          <strong>{{ data?.description }}</strong>
+        </div>
+
+        <!-- Category -->
+        <div class="mb-3" *ngIf="!edit">
+          <label class="form-label required"> Select Category</label>
+          <ng-select
+            name="class"
+            placeholder="Select Category"
+            [items]="class"
+            bindLabel="name"
+            formControlName="category_id"
+            bindValue="cid"
+            [(ngModel)]="selectedClass"
+            (change)="changeCategory($event)"
+            [ngClass]="{
+              'is-invalid':
+                (submit && form['category_id']?.errors) ||
+                (form['category_id']?.invalid && (form['category_id']?.dirty || form['category_id']?.touched))
+            }"
+          >
+          </ng-select>
+          <div
+            *ngIf="
+              (submit && form['category_id']?.errors) ||
+              (form['category_id']?.invalid && (form['category_id']?.dirty || form['category_id']?.touched))
+            "
+            class="invalid-feedback"
+          >
+            <span *ngIf="form['category_id'].errors?.['required']">Select Category</span>
+          </div>
+        </div>
+
+        <!-- Sub Category -->
+        <div class="mb-3" *ngIf="!edit">
+          <label class="form-label required"> Select SubCategory</label>
+          <ng-select
+            name="subclass"
+            placeholder="Select SubCategory"
+            [items]="subclass"
+            bindLabel="name"
+            formControlName="subcategory_id"
+            bindValue="id"
+            [(ngModel)]="selectedSubclass"
+            (change)="changeSubcategory($event)"
+            [ngClass]="{
+              'is-invalid':
+                (submit && form['subcategory_id']?.errors) ||
+                (form['subcategory_id']?.invalid && (form['subcategory_id']?.dirty || form['subcategory_id']?.touched))
+            }"
+          >
+            >
+          </ng-select>
+          <div
+            *ngIf="
+              (submit && form['subcategory_id']?.errors) ||
+              (form['subcategory_id']?.invalid && (form['subcategory_id']?.dirty || form['subcategory_id']?.touched))
+            "
+            class="invalid-feedback"
+          >
+            <span *ngIf="form['subcategory_id'].errors?.['required']">Select Subcategory</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label required">Product Variant name</label>
+        <input
+          class="form-control"
+          placeholder="Enter product variant"
+          type="text"
+          name="name"
+          autocomplete="off"
+          formControlName="name"
+          [ngClass]="{
+            'is-invalid': (submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))
+          }"
+        />
+
+        <div
+          *ngIf="(submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))"
+          class="invalid-feedback"
+        >
+          <span *ngIf="form['name'].errors?.['required']">Enter productvariant name.</span>
+          <span *ngIf="form['name'].errors?.['minlength']">Minimum Length 4 Characters.</span>
+        </div>
+      </div>
+
+      <div class="mb-3" *ngIf="!edit">
+        <label class="form-label required"> Type</label>
+        <select
+          class="form-select"
+          type="text"
+          name="type"
+          formControlName="type"
+          [ngClass]="{
+            'is-invalid': (submit && form['type']?.errors) || (form['type']?.invalid && (form['type']?.dirty || form['type']?.touched))
+          }"
+        >
+          <option *ngFor="let type of types" [value]="type.id">{{ type.name }}</option>
+        </select>
+        <div
+          *ngIf="(submit && form['type']?.errors) || (form['type']?.invalid && (form['type']?.dirty || form['type']?.touched))"
+          class="invalid-feedback"
+        >
+          <span *ngIf="form['type'].errors?.['required']">Select Type</span>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label required">Display name</label>
+        <input
+          class="form-control"
+          placeholder="Enter display name"
+          type="text"
+          name="name"
+          autocomplete="off"
+          formControlName="displayname"
+          [ngClass]="{
+            'is-invalid':
+              (submit && form['displayname']?.errors) ||
+              (form['displayname']?.invalid && (form['displayname']?.dirty || form['displayname']?.touched))
+          }"
+        />
+
+        <div
+          *ngIf="
+            (submit && form['displayname']?.errors) ||
+            (form['displayname']?.invalid && (form['displayname']?.dirty || form['displayname']?.touched))
+          "
+          class="invalid-feedback"
+        >
+          <span *ngIf="form['displayname'].errors?.['required']">Enter display name.</span>
+          <span *ngIf="form['displayname'].errors?.['minlength']">Minimum Length 4 Characters.</span>
+        </div>
+      </div>
+      <div class="mb-3"  *ngIf="!edit">
+        <label class="form-label required">Show Type</label>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="showtype"
+            formControlName="showtype"
+            value="Text"
+            [checked]="data.showtype == 'Text'"
+          />
+          <label class="form-check-label mb-1">Text</label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="showtype"
+            formControlName="showtype"
+            value="Image"
+            [checked]="data.showtype == '' || data.showtype == 'Image'"
+          />
+          <label class="form-check-label">Image</label>
+        </div>
+      </div>
+      <!-- <div class="mb-3">
+        <label class="form-label">Reference Image</label>
+        <input
+          type="file"
+          class="file-input form-control"
+          (change)="onSelectedFile($event)"
+          autocomplete="off"
+          #fileupload
+          name="refimg"
+          formControlName="refimg"
+          accept="image/x-png,image/gif,image/jpeg"
+        />
+        <a *ngIf="fileName != ''" target="_blank" href="{{ fileName }}">{{ fileName }} </a>
+      </div> -->
+      <!-- <div class="mb-3">
+        <label class="form-label">Reference Label</label>
+        <input
+          class="form-control"
+          placeholder="Enter Reference Label"
+          type="text"
+          name="reflabel"
+          autocomplete="off"
+          formControlName="reflabel"
+        />
+      </div> -->
+      <div class="mb-3" *ngIf="!edit">
+        <label class="form-label"> Description </label>
+        <textarea
+          class="form-control"
+          placeholder="Enter Description"
+          type="text"
+          name="description"
+          autocomplete="off"
+          formControlName="description"
+          [ngClass]="{
+            'is-invalid':
+              (submit && form['description']?.errors) ||
+              (form['description']?.invalid && (form['description']?.dirty || form['description']?.touched))
+          }"
+        ></textarea>
+      </div>
+
+      <div class="d-md-flex align-items-center mt-5">
+        <div class="col-md-3">
+          <button type="submit" class="btn btn-sm btn-primary my-2">Submit</button>
+        </div>
+        <div class="ml-auto">
+          <div class="dl">
+            <button type="button" class="btn btn-sm btn-secondary my-2" (click)="cancelAction()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <form (ngSubmit)="saveVariantValues()" novalidate [formGroup]="addValueForm" *ngIf="data.addValue">
+    <div formArrayName="formlist">
+      <div class="mb-1">
+        <label class="font-size-16 form-label">{{ data.name }}</label>
+      </div>
+      <h5 class="font-size-16 mb-3">Values</h5>
+      <div *ngFor="let data1 of formvalueData().controls; let i = index">
+        <div [formGroupName]="i" class="row">
+          <div class="mb-3 col-lg-8">
+            <input
+              type="text"
+              formControlName="value"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid': addValueForm['value']?.invalid && (addValueForm['value']?.dirty || addValueForm['value']?.touched)
+              }"
+            />
+          </div>
+          <div class="col-lg-2 align-self-center">
+            <i class="mdi mdi-delete text-danger removeicon" (click)="removeField(i)"></i>
+          </div>
+        </div>
+      </div>
+      <button (click)="addField()" class="btn btn-info mt-3 mt-lg-0"><i class="mdi mdi-plus font-12"></i> Add Value</button>
+    </div>
+
+    <div class="d-md-flex align-items-center mt-5">
+      <div class="col-md-3">
+        <button type="submit" class="btn btn-sm btn-primary my-2">Submit</button>
+      </div>
+      <div class="ml-auto">
+        <div class="dl">
+          <button type="button" class="btn btn-sm btn-secondary my-2" (click)="cancelAction()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<ng-template #rt let-r="result" let-t="term">
+  <!-- <img [src]="'https://upload.wikimedia.org/wikipedia/commons/thumb/' + r['flag']" class="me-1"
+        style="width: 16px"> -->
+  <span *ngIf="!searchFailed">{{ r.department?.name }} / {{ r.category?.name }} / {{ r.subcategory?.name }} / </span>
+  <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+</ng-template>

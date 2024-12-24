@@ -1,0 +1,106 @@
+<div class="card mb-5 mb-xl-10 py-5">
+    <div class="card-header card-title pb-5">
+      <!--begin::Search-->
+      <div class="col-sm-2">
+        <div class="d-flex align-items-center position-relative mt-5 px-1">
+          <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+            <span class="path1"></span>
+            <span class="path2"></span>
+          </i>
+          <input type="text" placeholder="Search.." (keyup)="searchTable($event)"
+            class="form-control form-control-solid ps-12 mt-1" #input />
+        </div>
+      </div>
+  
+      <!-- Add New Product -->
+      <div class="col-sm-2" style="padding-top: 0.5%">
+        <div class="text-sm-end">
+          <button type="button" class="btn btn-primary btn-rounded mt-3" [routerLink]="['/catalog/add-blog']">
+            <i class="mdi mdi-plus mr-1"></i> Add New Blog
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <div class="card-body pt-1 pb-0">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table align-middle table-hover">
+            <thead>
+                <tr>
+                  <th class="p-5 w-30px">#</th>
+                  <th class="text-start p-5 min-w-100px">Title</th>
+                  <th class="text-start p-5 min-w-70px">Image</th>
+                  <th class="text-start p-5 min-w-100px">CreatedAt</th>
+                  <th class="text-start p-5 min-w-70px">Slug</th>
+                  <th class="text-start p-5 min-w-70px">Status</th>
+                  <th class="text-center p-5 min-w-150px">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let warehouse of warehouses; let i = index">
+                <td class="text-center fw-bold p-5">{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}
+                </td>
+                <td class="p-5">
+                  <strong><a href="javascript: void(0)" class="text-dark"></a>
+                    {{warehouse.title}}
+                  </strong>
+                </td>
+              
+                <td class="p-5" >
+                  
+                    <img src="{{warehouse.image}}" alt="image" height="100px" width="100px">
+                  
+                </td>
+                <td class="p-5">{{warehouse.createdAt| date : 'dd/MM/yyyy'}}</td>
+                <td class="p-5">{{ warehouse.slug}}</td>
+                <td><div class="badge badge-light-success">{{ warehouse.status + '' === '1' ? 'Active' : '' }}</div>
+                    <div class="badge badge-light-danger">{{ warehouse.status + '' === '0' ? 'Inactive' : '' }}</div></td>
+                <td class="p-5 text-center">
+                  <ul class="list-inline font-size-20 contact-links mb-0 text-center">
+                    <li class="list-inline-item px-1">
+                      <a (click)="viewEdit('view',warehouse.id)" ngbTooltip="View Blog">
+                        <app-keenicon name="eye" class="fs-1 text-primary cursor-pointer"></app-keenicon></a>
+                    </li>
+                    <li class="list-inline-item px-1">
+                      <a (click)="viewEdit('edit',warehouse.id)" ngbTooltip="Edit Blog">
+                        <app-keenicon name="pencil" class="fs-1 text-primary cursor-pointer"></app-keenicon></a>
+                    </li>
+                    <!-- <li class="list-inline-item px-1">
+                      <a (click)="deleteWarehouse(warehouse)" ngbTooltip="Delete Warehouse">
+                        <app-keenicon name="trash" class="fs-1 text-danger cursor-pointer"></app-keenicon></a>
+                    </li> -->
+                  </ul>
+                </td>
+              </tr>
+              <tr *ngIf="warehouses?.length === 0">
+                <td colspan="7" class="text-center fw-bold">No Records Found</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Pagination  -->
+        <div class="row justify-content-md-between align-items-md-center mt-2">
+          <div class="col-sm-12 col-md-4">
+            <div class="dataTables_length" id="tickets-table_length">
+              <label class="d-inline-flex align-items-center">Show
+                <select class="form-select form-select-sm ms-2 me-2 cursor-pointer"
+                  (change)="handlePageSizeChange($event)">
+                  <option *ngFor="let size of pageSizes" [ngValue]="size">
+                    {{ size }}
+                  </option>
+                </select>
+                Entries</label>
+            </div>
+          </div>
+          <!-- Pagination -->
+          <div class="col-sm-12 col-md-8">
+            <div class="text-md-right float-md-end pagination-rounded">
+              <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false"
+                [boundaryLinks]="true" (pageChange)="handlePageChange($event)" [collectionSize]="count"></ngb-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

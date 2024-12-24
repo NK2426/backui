@@ -1,0 +1,51 @@
+<div class="pb-2">
+    <label class="col-md-4"><strong>Package Name : </strong></label> {{ selectedPackage?.name }}
+</div>
+<div class="pb-2">
+    <label class="col-md-4"><strong>Type : </strong></label> {{ selectedPackage?.packagetype?.name }}
+</div>
+<div class="pb-2">
+    <label class="col-md-4"><strong>Length (cm): </strong></label> {{ selectedPackage?.length }}
+</div>
+<div class="pb-2">
+    <label class="col-md-4"><strong>Width (cm): </strong></label> {{ selectedPackage?.width }}
+</div>
+<div class="pb-2">
+    <label class="col-md-4"><strong>Height (cm): </strong></label> {{ selectedPackage?.height }}
+</div>
+<!-- <div class="pb-2">
+    <label class="col-md-4"><strong>Group : </strong></label> {{ selectedPackage?.group?.name }}
+</div>
+<div class="pb-2">
+    <label class="col-md-4"><strong>Department : </strong></label> {{ selectedPackage?.department?.name }}
+</div>
+<div class="pb-2">
+    <label class="col-md-4"><strong>Class : </strong></label> {{ selectedPackage?.category?.name }}
+</div>
+<div class="pb-2">
+    <label class="col-md-4"><strong>Sub Class: </strong></label> {{ selectedPackage?.subcategory?.name }}
+</div> -->
+<div class="pb-2">
+    <label class="col-md-4"><strong>Description: </strong></label> {{ selectedPackage?.description }}
+</div>
+<div class="pb-2">
+    <label class="col-md-4"><strong>CreatedAt : </strong></label>
+    {{ selectedPackage?.createdAt | date:'medium'}}
+</div>
+<div class="pb-2">
+    <label class="col-md-4"><strong>UpdateAt : </strong></label>
+    {{ selectedPackage?.updatedAt | date:'medium' }}
+</div>
+
+<div *ngIf="!assignedparams.includes(selectedPackage.id)" class="d-md-flex align-items-center pt-3">
+    <div class="col-md-3">
+        <button class="btn btn-sm btn-primary my-2" (click)="editAction(selectedPackage)"><i
+                class="mdi mdi-pencil font-12"></i> Edit</button>
+    </div>
+    <div class="ml-auto">
+        <div class="dl">
+            <button class="btn btn-sm btn-danger my-2" (click)="deleteShelf(selectedPackage)"><i
+                    class="mdi mdi-delete font-12"></i> Delete</button>
+        </div>
+    </div>
+</div>

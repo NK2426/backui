@@ -1,0 +1,68 @@
+<div class="page-title d-flex flex-wrap me-3 flex-column justify-content-center">
+  <h1 class="page-heading d-flex text-dark fw-bold fs-3 my-0 flex-column justify-content-center pb-5">View Blog</h1>
+</div>
+<div class="card mb-5 mb-xl-10">
+  <div class="card-body pt-1 pb-0">
+    <div class="card-body py-3">
+      <div class="row mt-3">
+        <div class="col-sm-12">
+          <h4 class="card-title mb-4">Blog Details</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label col-sm-3 fw-bold">Blog title : </label>
+            {{ data.title }}
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="col-sm-6">
+            <div class="mb-3">
+              <label class="form-label col-sm-3 fw-bold">Image : </label>
+              <img src="{{ data.image }}" alt="" width="100" height="100" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label col-sm-3 fw-bold">Blog Slug : </label>
+            {{ data.slug }}
+          </div>
+        </div>
+        <!-- <div class="col-sm-">
+          <div class="col-sm-6">
+            <div class="mb-3">
+              <label class="form-label col-sm-3 fw-bold">Status : </label>
+              {{data.status}}
+            </div>
+          </div>
+        </div> -->
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <div class="table-responsive">
+              <table class="table table-sm align-middle table-row-dashed fs-6">
+                <tr class="text-start">
+                  <td class="pe-0">
+                    <label class="form-label col-sm-3 fw-bold p-0">Content : </label>
+                    <p class="mb-0 p-0" [innerHTML]="  data?.content "></p>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="text-end">
+          <button class="btn btn-sm mt-3 fw-bold btn-primary mx-2" (click)="back()">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

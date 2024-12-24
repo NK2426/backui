@@ -1,0 +1,268 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="page-title-box d-flex align-items-center justify-content-between">
+        <h4 class="mb-0 font-size-18">Ticket Detail</h4>
+        <!-- <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+            <li class="breadcrumb-item active">Ticket Detail</li>
+          </ol>
+        </div> -->
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <form (ngSubmit)="f.form.valid && cancelOrRefundOrderTickets()" name="form" #f="ngForm">
+            <div class="table-responsive" *ngIf="ticketDetail">
+              <table class="table table-bordered mb-0">
+                <tbody>
+                  <tr>
+                    <td>
+                      Ticket Number : <b>{{ ticketDetail.ticketID }}</b>
+                    </td>
+                    <td>
+                      Ticket Status : <b>{{ ticketDetail.status }}</b>
+                    </td>
+                    <td>
+                      Ticket Type : <b>{{ ticketDetail.type }}</b>
+                    </td>
+
+                  </tr>
+                  <tr>
+                    <td>
+                      Title : <b>{{ ticketDetail.title }} </b>
+                    </td>
+                    <td>
+                      Description : <b>{{ ticketDetail.description }}</b>
+                    </td>
+                    <td>
+                      Created At :
+                      <b>{{ ticketDetail.createdAt | date : "medium" }}</b>
+                    </td>
+
+                  </tr>
+                  <tr>
+                    <td>
+                      Customer Name : <b>{{ ticketDetail?.user?.name }} </b>
+                    </td>
+                    <td>
+                      Mobile : <b>{{ ticketDetail?.user?.mobile }}</b>
+                    </td>
+                    <td>
+
+                      <button *ngIf="ticketDetail.status !== 'Closed'" type="button" class="btn btn-success"
+                        (click)="callsync()">
+                        Pulse Call Sync
+                      </button>
+                    </td>
+
+                  </tr>
+
+                  <tr>
+
+                    <td colspan="2" *ngIf="ticketDetail.status !== 'Closed'">
+                      Comments :
+                      <input type="text" name="comment" class="form-control" placeholder="Enter Comment..."
+                        [(ngModel)]="comment" [minlength]="10" [maxlength]="1000" required #cmt="ngModel"
+                        [ngClass]="{ 'is-invalid': f.submitted && cmt.errors }" />
+                      <div *ngIf="f.submitted && cmt.errors" class="invalid-feedback">
+                        <div *ngIf="cmt.errors['required']">Comment is required</div>
+                      </div>
+                    </td>
+
+
+                    <td *ngIf="ticketDetail.status !== 'Closed'">
+                      <button type="submit" class="btn btn-warning">
+                        Close Ticket
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ticket Order Table-->
+  <div class="row" *ngIf="ticketOrder?.orderitems">
+    <h4 class="mb-0 font-size-16">Order Detail</h4>
+
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead class="table-light">
+                <tr class="bg-light">
+                  <th scope="col" style="width: 5%">#</th>
+                  <th scope="col" style="width: 20%">Item Name</th>
+                  <th scope="col">Item Image</th>
+                  <th scope="col">SKUID</th>
+                  <th scope="col">Item Description</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="
+                    let orderItem of ticketOrder?.orderitems;
+                    let i = index
+                  ">
+                  <tr [ngStyle]="{
+                      color:
+                        orderItem.uuid === currentOrderItemUUID
+                          ? 'red'
+                          : '#495057'
+                    }">
+                    <td>
+                      {{ page == 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}
+                    </td>
+                    <td>{{ orderItem.item.name || "--" }}</td>
+                    <td>
+                      <img style="width: 100px; height: 100px" alt="Product" src="{{ orderItem.item.path }}"
+                        (click)="openImage(content, orderItem.item.path)" />
+                    </td>
+                    <td>{{ orderItem.itemslist.skuid || "--" }}</td>
+                    <td>{{ orderItem.itemslist.description }}</td>
+                    <td>{{ orderItem.status }}</td>
+                    <td>{{ orderItem.subtotal }}</td>
+                  </tr>
+                  <tr *ngIf="ticketOrder.orderitems?.length === 0">
+                    <td colspan="12" class="text-center fw-bold">No Records Found</td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Track Detail START-->
+  <div class="row">
+    <div class="col-lg-4">
+      <div *ngIf="invoices?.length">
+        <ng-select name="qdp" placeholder="Select Invoice" [items]="invoices" bindLabel="invoiceno"
+          bindValue="awbnumber" [(ngModel)]="selectedInvoice" (change)="changeInvoice($event)">
+        </ng-select>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive" *ngIf="trackdetails">
+        <table class="table table-bordered mb-0">
+          <tbody>
+            <tr>
+              <td>AWB Number : <b>{{trackdetails?.awb_number}}</b></td>
+              <td>Consignee : <b>{{trackdetails?.consignee}}</b></td>
+              <td>Customer : <b>{{trackdetails.customer}}</b></td>
+              <td>City : <b>{{trackdetails.city}}</b></td>
+
+            </tr>
+            <tr>
+              <td>Current Location Code : <b>{{trackdetails?.current_location_code}} </b></td>
+              <td>Location name : <b>{{trackdetails?.current_location_name}}</b></td>
+              <td>Latitude : <b>{{trackdetails?.lat}}</b></td>
+              <td>Longitude : <b>{{trackdetails?.long}}</b></td>
+            </tr>
+            <tr>
+              <td>Origin : <b>{{trackdetails?.origin}} </b></td>
+              <td>Destination : <b>{{trackdetails?.destination}} </b></td>
+              <td>Expected Date : <b>{{trackdetails?.expected_date | date: 'medium'}}</b></td>
+              <td>Pickup Date : <b>{{trackdetails?.pickupdate}}</b></td>
+            </tr>
+            <tr>
+              <td>State : <b>{{trackdetails?.state}} </b></td>
+              <td>Pincode : <b>{{trackdetails?.pincode}} </b></td>
+              <td>Delivery Date : <b>{{trackdetails?.delivery_date | date: 'medium'}}</b></td>
+              <td>Delivery Signature : <img src={{trackdetails?.delivery_pod_signature}} alt="Signature">
+              </td>
+            </tr>
+            <tr>
+              <td>Tracking Status : <b>{{trackdetails?.tracking_status}} </b></td>
+              <td>Status : <b>{{trackdetails?.status}} </b></td>
+              <td>RTS Shipment : <b>{{trackdetails?.rts_shipment}}</b></td>
+              <td>Last Updated At : <b>{{trackdetails?.last_update_datetime | date: 'medium'}}</b></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- Track Detail END-->
+
+  <!-- Invoice Table-->
+  <div class="row" *ngIf="ticketInvoice?.invoiceorderitems">
+    <h4 class="mb-0 font-size-16 col-sm-2">Invoice Detail</h4>
+    <h4 *ngIf="ticketInvoice && ticketInvoice?.awbnumber" class="col-sm-4"> AWB Number : {{ticketInvoice?.awbnumber}}
+    </h4>
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead class="table-light">
+                <tr class="bg-light">
+                  <th scope="col" style="width: 5%">S.No</th>
+                  <th scope="col" style="width: 15%">Product Name</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">SKUID</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="
+                    let invoiceOrderItem of ticketInvoice?.invoiceorderitems;
+                    let i = index
+                  ">
+                  <tr [ngStyle]="{
+                      color:
+                        invoiceOrderItem.orderitem_uuid === currentOrderItemUUID
+                          ? 'red'
+                          : '#495057'
+                    }">
+                    <td>
+                      {{ page == 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}
+                    </td>
+
+                    <td width="30%">{{ invoiceOrderItem.item.name }}</td>
+                    <td>{{ invoiceOrderItem.quantity }}</td>
+                    <td>{{ invoiceOrderItem.skuid }}</td>
+                  </tr>
+                  <tr *ngIf="ticketInvoice?.invoiceorderitems?.length === 0">
+                    <td colspan="12" class="text-center fw-bold">No Records Found</td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Download Image</h5>
+    <button (click)="downloadUrl(currentImagePath)" type="button" class="btn btn-success btn-rounded mb-2 me-2">
+      <i class="fa fa-download" aria-hidden="true"></i>
+    </button>
+    <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="submit-form">
+      <div class="mb-3 row">
+
+        <img alt="Product" src="{{ currentImagePath }}" />
+      </div>
+
+    </div>
+  </div>
+</ng-template>

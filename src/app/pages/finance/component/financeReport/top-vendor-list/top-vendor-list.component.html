@@ -1,0 +1,55 @@
+<div class="card m-5">
+  <div class="card-body">
+    <!-- Apexchart -->
+    <div id="chart">
+      <apx-chart
+        [series]="chartOptions?.series"
+        [chart]="chartOptions?.chart"
+        [dataLabels]="chartOptions?.dataLabels"
+        [plotOptions]="chartOptions?.plotOptions"
+        [yaxis]="chartOptions?.yaxis"
+        [legend]="chartOptions?.legend"
+        [fill]="chartOptions?.fill"
+        [stroke]="chartOptions?.stroke"
+        [tooltip]="chartOptions?.tooltip"
+        [xaxis]="chartOptions?.xaxis"
+      ></apx-chart>
+    </div>
+  </div>
+</div>
+
+<!-- List Vendor -->
+<div class="my-5">
+  <div class="card m-5">
+    <div class="card-body">
+      <div class="col-sm-12 col-md-12 row">
+        <div class="table-responsive">
+          <table class="align-middle table-nowrap table-hover w-100">
+            <thead style="border-bottom: 1px solid #e6e6e6; border-top: 1px solid #e6e6e6">
+              <tr style="font-size: 16px">
+                <th class="text-center p-4">#</th>
+                <th class="text-start p-4">Name</th>
+                <th class="text-start p-4">State Name</th>
+                <th class="text-start p-4">Email</th>
+                <th class="text-start p-4">Mobile</th>
+                <th class="text-start p-4">Total Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of topVendorList; let i = index">
+                <td class="p-4 text-center">{{ i + 1 }}</td>
+                <td class="p-4 text-start">{{ item.vendorName || '--' }}</td>
+                <td class="p-4 text-start">{{ item.state_name || '--' }}</td>
+                <td class="p-4 text-start">{{ item.email || '--' }}</td>
+                <td class="p-4 text-start">{{ item.mobile || '--' }}</td>
+                <td class="p-4 text-start fw-bold" style="color: #007eff">
+                  <span>&#8377;{{ item.totalAmount || '--' }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

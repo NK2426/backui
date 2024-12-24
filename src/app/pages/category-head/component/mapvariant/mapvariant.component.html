@@ -1,0 +1,59 @@
+<div class="submit-form" *ngIf="viewValue">
+    <form (ngSubmit)="saveProductVendor()" [formGroup]="formVarValueData" novalidate>
+        <div class="row">
+            <div class="col-8">
+                <div class="mb-1">
+                    <label class="form-label"> Select Variant *</label>
+                    <ng-select name="value" placeholder="Select Variant" [items]="variants" bindLabel="name"
+                        bindValue="id" formControlName="value" [(ngModel)]="selectedVar"
+                        [ngClass]="{'is-invalid': (submit && form['value']?.errors) || (form['value']?.invalid && (form['value']?.dirty || form['value']?.touched))}">
+                    </ng-select>
+
+                    <div *ngIf="(submit && form['value']?.errors) || (form['value']?.invalid && (form['value']?.dirty || form['value']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['value'].errors">Select Variant</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="mb-3">
+                    <label class="form-label"> Order </label>
+                    <input class="form-control" placeholder="" type="text" name="order" autocomplete="off"
+                        formControlName="order"
+                        [ngClass]="{'is-invalid': (submit && form['order']?.errors) || (form['order']?.invalid && (form['order']?.dirty || form['order']?.touched))}" />
+
+                    <div *ngIf="(submit && form['order']?.errors) || (form['ordering']?.invalid && (form['order']?.dirty || form['order']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['order'].errors?.['required']">Order</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <label class="form-label">&nbsp;</label>
+                <div>
+                    <button type="submit" class="btn btn-sm btn-success">{{ !form['id']?.value?'Save':'Update'
+                        }}</button>
+
+                    <span *ngIf="form['id']?.value" class="btn btn-danger ms-2" (click)="clear()">Clear
+                    </span>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+    <div class="row mb-2 mt-2">
+        <div class="col-md-12 mt-2 mb-4"><strong class="form-label"> Mapped Variants </strong></div>
+        <div class="row mb-2" *ngFor="let item of productmaps; let i = index;">
+            <div class="col-md-6">{{item?.productvariant?.name}}</div>
+            <div class="col-lg-4 align-self-center">
+                <i class="bx bxs-edit-alt text-info font-size-18" (click)="editValue(i)"></i>
+                <i class="mdi mdi-delete text-danger removeicon font-size-18 ms-4" (click)="removeValue(i)"></i>
+            </div>
+        </div>
+        <div class="col-md-12 mt-5">
+            <button class="btn btn-sm btn-info" (click)="editVariantValue()"><i
+                    class="mdi mdi-arrow-left-thick font-12"></i> Back </button>
+        </div>
+    </div>
+</div>

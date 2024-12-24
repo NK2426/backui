@@ -1,0 +1,257 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="page-title-box d-flex align-items-center justify-content-between">
+        <h4 class="mb-0 font-size-18">Product Mapping</h4>
+        <!-- <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+                                <li class="breadcrumb-item"><a [routerLink]="['/category-head/products']">Products</a></li>
+                                <li class="breadcrumb-item active"> </li>
+                            </ol>
+                        </div> -->
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body p-4">
+        <form (ngSubmit)="submit()">
+          <div class="row mt-4">
+            <div class="col-sm-12">
+              <h4 class="card-title mb-4">Select Parameters</h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3" *ngFor="let item of parameters; let i = index">
+              <div class="mb-3">
+                <label class="form-label">{{ item.name }}</label>
+                <ng-select
+                  name="selparameter{{ item?.id }}"
+                  class="fs-6"
+                  placeholder="Select Parameter"
+                  [items]="item.productparametervalues || []"
+                  bindLabel="value"
+                  bindValue="id"
+                  [(ngModel)]="selparameter[item?.id || 0]"
+                >
+                </ng-select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label required">Country of Origin</label>
+                <ng-select
+                  name="country"
+                  appendTo="body"
+                  placeholder="Select Country"
+                  [items]="countries"
+                  bindLabel="name"
+                  bindValue="id"
+                  [(ngModel)]="selproduct.country"
+                >
+                </ng-select>
+              </div>
+            </div>
+
+            <!-- <div class="col-sm-2">
+              <div class="mb-3">
+                <label class="form-label required">Quantity</label>
+                <input type="text" class="form-control" formControlName="qty" />
+              </div>
+            </div> -->
+          </div>
+          <br />
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <h4 class="card-title mb-4">
+                  Size Chart &nbsp;&nbsp;&nbsp;
+                  <div class="form-check" style="float: right">
+                    <input
+                      class="form-check-input cursor-pointer"
+                      type="checkbox"
+                      id="type"
+                      [checked]="!nosizechart ? '' : 'isChecked'"
+                      (change)="sizechart($event)"
+                    />
+                    <label class="form-check-label" for="type"> No Size Chart </label>
+                  </div>
+                </h4>
+                <h5 class="text-primary">(Upload Only .jpg,.jpeg,.png file formats)</h5>
+                <input
+                  type="file"
+                  class="file-input form-control"
+                  (change)="onSelectedFile($event)"
+                  autocomplete="off"
+                  #fileupload
+                  name="sizechart"
+                />
+                <a *ngIf="fileName !== ''" target="_blank" href="{{ fileName }}"
+                  ><i class="mdi mdi-file" style="font-size: 16px"></i> Size Chart</a
+                >
+                <div *ngIf="fileName === ''" class="invalid-feedback">
+                  <span>Upload File.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-4 pt-4">
+            <div class="col-sm-12">
+              <h4 class="card-title mb-2">Add Product Images</h4>
+              <h5 class="text-primary">(Upload Only .jpg,.jpeg,.png file formats)</h5>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xl-4 col-sm-6" *ngFor="let item of selectedimages">
+              <div class="card">
+                <div class="card-body">
+                  <div class="product-img position-relative">
+                    <a href="javascript:void(0)"> <img alt="" class="img-fluid mx-auto d-block" src="{{ item?.path }}" /></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <div class="row mt-4">
+              <span class="btn btn-sm btn-primary col-4" (click)="openGallery(mediacontent)"><i class="fas fa-images"></i> Add Photos</span>
+            </div>
+          </div>
+
+          <div class="mt-2">
+            <div class="text-sm-end">
+              <a [routerLink]="['/category-head/products']" class="btn btn-sm btn-secondary me-4">Cancel</a>
+              <!-- <input value="Save & Preview" type="button" (click)="reqdraft()" class="btn btn-sm btn-info" /> -->
+              &nbsp;
+              <input type="submit" value="Publish" class="btn btn-sm btn-primary" />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Pop UP Open start -->
+<!-- Pop UP Open start -->
+<ng-template #mediacontent let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title">Media Library</h5>
+    <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form enctype="multipart/form-data">
+      <div class="row">
+        <div *ngFor="let progressInfo of progressInfos" class="mb-2">
+          <span [ngStyle]="{ color: progressInfo.color }">{{ progressInfo.fileName }} | {{ progressInfo.msg }}</span>
+          <div class="progress">
+            <div
+              class="progress-bar progress-bar-info progress-bar-striped"
+              role="progressbar"
+              attr.aria-valuenow="{{ progressInfo.value }}"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              [ngStyle]="{ width: progressInfo.value + '%' }"
+            >
+              {{ progressInfo.value }}%
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div style="margin-left: 30%; margin-bottom: 20px">
+            <input
+              type="file"
+              multiple=""
+              class="btn btn-success"
+              (change)="selectFiles($event)"
+              style="position: absolute; height: 70px; width: 160px; opacity: 0"
+            />
+            <span style="width: 160px; display: block; height: 70px; z-index: -1" class="col-3 btn btn-light w-sm">
+              <i class="mdi mdi-upload d-block font-size-16"></i>
+              New File Upload</span
+            >
+          </div>
+          <!-- <div style="margin-left: 25%; margin-bottom: 20px;"> 
+                          <p style="color:blue">Upload the image of minimum width 800px</p>
+                      </div> -->
+          <div class="row">
+            <div class="col-xl-3 col-sm-4 mt-4" *ngFor="let image of images; let i = index" (click)="selectimage(i)">
+              <div class="product-img position-relative p-4" [ngClass]="{ activeimg: image?.select }">
+                <img class="img-fluid mx-auto d-block" src="{{ image?.path }}" alt="Mugdha" style="max-height: 200px" />
+              </div>
+            </div>
+
+            <!-- <div class="col-12 text-center mt-5">
+                              <button class="btn btn-success" type="button" aria-hidden="true"
+                                  (click)="formsubmit()"><i class="fas fa-image"></i> Save </button>
+                          </div> -->
+          </div>
+
+          <!-- Pagination  -->
+          <div class="row justify-content-md-between align-items-md-center mt-2">
+            <div class="col-sm-12 col-md-4">
+              <div class="dataTables_length" id="tickets-table_length">
+                <label class="d-inline-flex align-items-center"
+                  >Show
+                  <select class="form-select form-select-sm ms-2 me-2" (change)="handlePageSizeChange($event)">
+                    <option *ngFor="let size of pageSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select>
+                  Entries</label
+                >
+              </div>
+            </div>
+            <!-- Pagination -->
+            <!-- <div class="col-sm-12 col-md-8">
+                              <div class="text-md-right float-md-end pagination-rounded">
+                                  <ngb-pagination class="pagination pagination-rounded justify-content-center mt-4"
+                                      size="lg" [(page)]="page" [pageSize]="pageSize"
+                                      (pageChange)="handlePageChange($event)" [collectionSize]="count" [maxSize]="10"
+                                      [rotate]="true">
+                                      <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i>
+                                      </ng-template>
+                                      <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+                                  </ngb-pagination>
+                              </div>
+                          </div> -->
+            <div class="col-sm-12 col-md-4">
+              <div class="text-md-right float-md-end pagination-rounded">
+                <ngb-pagination
+                  [(page)]="page"
+                  [pageSize]="pageSize"
+                  [maxSize]="5"
+                  [rotate]="true"
+                  [ellipses]="false"
+                  [boundaryLinks]="true"
+                  (pageChange)="handlePageChange($event)"
+                  [collectionSize]="count"
+                ></ngb-pagination>
+              </div>
+            </div>
+          </div>
+          <!-- Pagination  -->
+
+          <div class="d-md-flex align-items-center mt-5">
+            <div class="col-md-4"></div>
+            <div class="ml-auto">
+              <div class="dl">
+                <span (click)="popupclose()" class="btn btn-sm btn-primary">Close</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+<!-- Pop UP Open end -->
+<!-- Pop UP Open end -->

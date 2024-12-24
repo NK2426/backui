@@ -1,0 +1,86 @@
+.fa {
+    font-size: 1.75rem !important;
+}
+
+.table-striped>tbody>tr:nth-child(2n+1)>td,
+.table-striped>tbody>tr:nth-child(2n+1)>th {
+    background-color: #f5dede;
+}
+
+@keyframes spinner {
+    0% {
+      transform: translate3d(-50%, -50%, 0) rotate(0deg);
+    }
+    100% {
+      transform: translate3d(-50%, -50%, 0) rotate(360deg);
+    }
+  }
+  .spin::before {
+    animation: 1.5s linear infinite spinner;
+    animation-play-state: inherit;
+    border: solid 5px #a91be9;
+    border-bottom-color: #a91be9;
+    border-radius: 50%;
+    content: "";
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    transform: translate3d(-50%, -50%, 0);
+    will-change: transform;
+  }
+  .wrapper {
+    font-family: "Helvetica";
+    font-size: 14px;
+  }
+  .StepProgress {
+    position: relative;
+    padding-left: 45px;
+    list-style: none;
+  }
+  .StepProgress::before {
+    display: inline-block;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 15px;
+    width: 10px;
+    height: 100%;
+  }
+  .StepProgress-item {
+    position: relative;
+  }
+  .StepProgress-item:not(:last-child) {
+    padding-bottom: 20px;
+  }
+  .StepProgress-item::before {
+    display: inline-block;
+    content: "";
+    position: absolute;
+    left: -30px;
+    height: 100%;
+    width: 10px;
+    border-left: 2px solid #a91be9;
+  }
+  .StepProgress-item:last-child::before {
+    border-left: 0px solid #a91be9;
+  }
+  .StepProgress-item::after {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: -44px;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #a91be9;
+    border-radius: 50%;
+    background-color: #a91be9;
+    color: #a91be9;
+  }
+  
+  .StepProgress strong {
+    display: block;
+  }
+  

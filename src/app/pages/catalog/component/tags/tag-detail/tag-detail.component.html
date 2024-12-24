@@ -1,0 +1,178 @@
+<div class="container-fluid">
+  <!-- <div class="row">
+    <div class="col-lg-12">
+      <div class="page-title-box d-flex align-items-center justify-content-between">
+        <h4 class="mb-0 font-size-18"></h4>
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item"><a [routerLink]="['/catalog']">Home</a></li>
+            <li class="breadcrumb-item"><a [routerLink]="['/catalog/tags']">Tags</a></li>
+            <li class="breadcrumb-item active">Tag Detail</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="card">
+    <div class="card-body p-5">
+      <div class="text-end" *ngIf="!show">
+        <a (click)="removeTag()" class="p-5"><i class="fa fa-sharp fa-solid fa-trash-alt text-danger"
+            ngbTooltip="Delete"></i></a>
+
+        <a (click)="editTag()" class="p-5"><i class="fa fa-edit text-primary" ngbTooltip="Edit"></i>
+        </a>
+        <button class="btn btn-sm btn-primary" [routerLink]="['/catalog/tags']"
+          routerLinkActive="router-link-active">Back</button>
+      </div>
+
+      <form (ngSubmit)="saveTag()" [formGroup]="formData">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="mb-3 row">
+              <label class="control-label col-sm-6">Name : </label>
+              <span class="col-sm-6" *ngIf="!show && currentTag">{{ currentTag.name }}</span>
+              <div *ngIf="show" class="col-sm-6">
+                <input *ngIf="show" class="form-control" type="text" name="name" autocomplete="off"
+                  formControlName="name" [ngClass]="{
+                    'is-invalid':
+                      (submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))
+                  }" />
+                <div
+                  *ngIf="(submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))"
+                  class="invalid-feedback">
+                  <span *ngIf="form['name'].errors?.['required']">Enter valid name</span>
+                  <span *ngIf="form['name'].errors?.['minlength']">Minimum Length 3 Characters.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="mb-3 row">
+              <label class="control-label col-sm-6">Group ID: </label>
+              <span class="col-sm-6" *ngIf="!show && currentTag">{{ currentTag.group_id }}</span>
+              <div *ngIf="show" class="col-sm-6">
+                <input *ngIf="show" class="form-control" type="text" name="group_id" autocomplete="off"
+                  formControlName="group_id"
+                  [ngClass]="{ 'is-invalid': form['group_id']?.invalid && (form['group_id']?.dirty || form['group_id']?.touched) }" />
+                <div
+                  *ngIf="submit || (form['group_id']?.invalid && (form['group_id']?.dirty || form['group_id']?.touched))"
+                  class="invalid-feedback"></div>
+              </div>
+            </div>
+          </div>
+         
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="mb-3 row">
+              <label class="control-label col-sm-6">Image : </label>
+              <span class="col-sm-6" *ngIf="!show && currentTag"><img src="{{ currentImage }}" alt="Icon" height="60"
+                  width="50" /></span>
+              <div *ngIf="show" class="col-sm-6">
+                <input type="file" class="file-input form-control" (change)="onSelectedFile($event)" autocomplete="off"
+                  #fileupload name="path" formControlName="path" [ngClass]="{
+                    'is-invalid':
+                      (submit && form['path'].errors) ||
+                      (form['path'].invalid && (form['path'].dirty || form['path'].touched) && currentImage == '')
+                  }" />
+                <p *ngIf="currentImage != ''">Image size should be less than 500kb and ratio 1:1</p>
+                <a *ngIf="currentImage != ''" target="_blank" href="{{ currentImage }}"><img src="{{ currentImage }}"
+                    alt="Icon" height="60" width="50" />
+                </a>
+                <div *ngIf="
+                    currentImage == '' &&
+                    ((submit && form['path']?.errors) || (form['path']?.invalid && (form['path']?.dirty || form['path']?.touched)))
+                  " class="invalid-feedback">
+                  <span *ngIf="form['path'].errors?.['required']">Upload Image.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="mb-3 row">
+              <label class="control-label col-sm-6">Status : </label>
+              <span class="col-sm-6" *ngIf="!show && currentTag">{{ currentTag.status == 1 ? 'Active' : 'Inactive'
+                }}</span>
+              <div *ngIf="show" class="col-sm-6">
+                <select class="form-control" type="text" name="status" formControlName="status" [ngClass]="{
+                    'is-invalid':
+                      (submit && form['status']?.errors) || (form['status']?.invalid && (form['status']?.dirty || form['status']?.touched))
+                  }">
+                  <option *ngFor="let stat of statuses" [value]="stat.id">{{ stat.name }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+         
+
+          
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+          <div class="mb-3 row">
+            <label class="control-label col-sm-6">Slug : </label>
+            <span class="col-sm-6" *ngIf="!show && currentTag">{{ currentTag.slug }}</span>
+            <div *ngIf="show" class="col-sm-6">
+              <input *ngIf="show" class="form-control" type="text" name="slug" autocomplete="off"
+                formControlName="slug" [ngClass]="{
+                  'is-invalid':
+                    (submit && form['slug']?.errors) || (form['slug']?.invalid && (form['slug']?.dirty || form['slug']?.touched))
+                }" />
+              <div
+                *ngIf="(submit && form['slug']?.errors) || (form['slug']?.invalid && (form['slug']?.dirty || form['slug']?.touched))"
+                class="invalid-feedback">
+                <span *ngIf="form['slug'].errors?.['required']">Enter valid slug</span>
+                <span *ngIf="form['slug'].errors?.['minlength']">Minimum Length 3 Characters.</span>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+        <div *ngIf="show" class="my-3">
+          <div class="text-sm-end">
+            <a (click)="cancel()" class="btn btn-sm btn-secondary me-4">Cancel</a>
+            <button type="submit" class="btn btn-sm btn-primary">Save</button>
+          </div>
+        </div>
+      </form>
+
+
+      <div class="table-responsive">
+        <table class="table align-middle table-nowrap table-hover">
+          <thead>
+            <tr>
+              <th class="py-5 px-3 w-50px">#</th>
+              <th class="text-start p-5 min-w-100px">Product ID</th>
+              <th class="text-start p-5 min-w-100px">Product Name</th>
+              <!-- <th class="text-start p-5 min-w-100px">Department</th> -->
+              <th class="text-start p-5 min-w-100px">Category</th>
+              <th class="text-start p-5 min-w-100px">Subcategory</th>
+              <th class="text-start p-5 min-w-100px">Group</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let tag of tagItems; let i = index">
+              <td class="p-5">{{ page == 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}</td>
+              <td class="p-5">
+                <strong>
+                  <a href="javascript: void(0);" class="text-dark"></a>
+                  {{ tag.product.productId }}
+                </strong>
+              </td>
+              <td class="p-5">{{ tag.product.name || '--' }}</td>
+              <!-- <td class="p-5">{{ tag.product.department?.name }}</td> -->
+              <td class="p-5">{{ tag.product.category?.name }}</td>
+              <td class="p-5">{{ tag.product.subcategory?.name }}</td>
+              <td class="p-5">{{ tag.product.group?.name }}</td>
+            </tr>
+            <tr *ngIf="tagItems?.length === 0">
+              <td colspan="12" class="text-center fw-bold">No Records Found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

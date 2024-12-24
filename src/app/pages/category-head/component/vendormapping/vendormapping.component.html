@@ -1,0 +1,45 @@
+<div class="submit-form" *ngIf="viewValue">
+    <form (ngSubmit)="saveProductVendor()" [formGroup]="formVendorValueData" novalidate>
+        <div class="row">
+            <div class="col-8">
+                <div class="mb-1">
+                    <label class="form-label required"> Select Vendor</label>
+                    <ng-select name="value" placeholder="Select Vendor" [items]="vendors" bindLabel="name"
+                        bindValue="uid" formControlName="value"
+                        [ngClass]="{'is-invalid': (submit && form['value']?.errors) || (form['value']?.invalid && (form['value']?.dirty || form['value']?.touched))}">
+                    </ng-select>
+
+                    <div *ngIf="(submit && form['value']?.errors) || (form['value']?.invalid && (form['value']?.dirty || form['value']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['value'].errors">Select vendor</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">&nbsp;</label>
+                <div>
+                    <button type="submit" class="btn btn-sm btn-primary">{{ !form['id']?.value?'Save':'Update'
+                        }}</button>
+
+                    <span *ngIf="form['id']?.value" class="btn btn-danger ms-2" (click)="clear()">Clear
+                    </span>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+    <div class="row mb-2 mt-2">
+        <div class="col-md-12 mt-2 mb-4"><strong class="form-label"> Mapped Vendors </strong></div>
+        <div class="row mb-2" *ngFor="let item of vendormaps; let i = index;">
+            <div class="col-md-6">{{item?.user?.name}}</div>
+            <!-- <div class="col-lg-4 align-self-center">
+                <i class="mdi mdi-delete text-danger removeicon font-size-18 ms-4" (click)="removeValue(i)"></i>
+            </div> -->
+        </div>
+        <!-- <div class="col-md-12 mt-5">
+            <button class="btn btn-sm btn-secondary" (click)="editVariantValue()"><i
+                    class="mdi mdi-arrow-left-thick font-12"></i> Back </button>
+        </div> -->
+    </div>
+</div>

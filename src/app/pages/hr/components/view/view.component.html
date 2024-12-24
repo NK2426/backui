@@ -1,0 +1,136 @@
+<div class="card mb-5 mb-xl-10">
+    <div class="card-body pt-1 pb-0">
+        <div class="card-body py-3">
+            <div class="row mt-3">
+                <div class="col-sm-12">
+                    <h4 class="card-title mb-4">Basic Details</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label col-sm-3">Employee Code : </label>
+                        {{viewuser.uuid}}
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label col-sm-3"> Status : </label>
+                        {{viewuser.status === '0' ? 'Inactive' : 'Active'}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label col-sm-3">Firstname : </label>
+                        {{viewuser.firstname}}
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label col-sm-3">Lastname : </label>
+                        {{viewuser.lastname}}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label col-sm-3">Mobile : </label>
+                        {{viewuser.mobile}}
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label col-sm-3">Email : </label>
+                        {{viewuser.email}}
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-sm-12">
+                    <h4 class="card-title mb-4">Login Details</h4>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label col-sm-3">Username : </label>
+                        {{viewuser.username}}
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label col-sm-3">Role : </label>
+                        {{viewuser.role}}
+                    </div>
+                </div>
+                <div *ngIf="viewuser?.warehouse" class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label col-sm-3">Warehouse : </label>
+                        {{viewuser.warehouse?.name}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-sm-12">
+                    <h4 class="card-title mb-4">Other Details </h4>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label col-sm-3">Date of Join : </label>
+                        {{viewuser.dateofjoin | date : 'dd/MM/yyyy'}}
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label col-sm-3">Date of birth : </label>
+                        {{viewuser.dateofbirth | date:'dd/MM/yyyy'}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label col-sm-3"> Basic Salary : </label>
+                        {{viewuser.salary}}
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label col-sm-3">Address : </label>
+                        {{viewuser.address}}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label col-sm-3"> CreateAt : </label>
+                        {{viewuser.createdAt | date:'medium'}}
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label col-sm-3">UpdateAt : </label>
+                        {{viewuser.updatedAt | date:'medium'}}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="text-end">
+                    <button class="btn btn-sm mt-3 fw-bold btn-primary mx-2" [routerLink]="['/hr/employees']"
+                        routerLinkActive="router-link-active">Back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

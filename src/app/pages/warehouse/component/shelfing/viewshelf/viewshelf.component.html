@@ -1,0 +1,75 @@
+<!-- <div>
+    <label class="col-md-4"><strong>Row : </strong></label> {{ selectedShelf?.rowvalue }}
+</div>
+<div>
+    <label class="col-md-4"><strong>Column : </strong></label> {{ selectedShelf?.columnvalue }}
+</div> -->
+<div>
+    <label class="col-md-4"><strong>Shelf ID : </strong></label> {{ selectedShelf?.shelfID }}
+</div>
+<div>
+    <label class="col-md-4"><strong>Department : </strong></label> {{ selectedShelf?.group?.department?.name }}
+</div>
+<div>
+    <label class="col-md-4"><strong>Group : </strong></label> {{ selectedShelf?.group?.name }}
+</div>
+<div>
+    <label class="col-md-4"><strong>Variant : </strong></label> {{ selectedShelf?.productvariantvalue?.value }}
+</div>
+
+<!-- <div>
+    <label class="col-md-4"><strong>Class : </strong></label> {{ selectedShelf?.category?.name }}
+</div>
+<div>
+    <label class="col-md-4"><strong>Sub Class: </strong></label> {{ selectedShelf?.subcategory?.name }}
+</div>
+<div>
+    <label class="col-md-4"><strong>Product: </strong></label> {{ selectedShelf?.product?.name }}
+</div> -->
+<div>
+    <label class="col-md-4"><strong>Maxcount of shelf: </strong></label> {{ selectedShelf?.maxcount }}
+</div>
+<div>
+    <label class="col-md-4"><strong>Item Count: </strong></label> {{ selectedShelf?.itemcount }}
+</div>
+<!-- <div>
+    <label class="col-md-4"><strong>CreatedAt : </strong></label>
+    {{ selectedShelf?.createdAt }}
+</div>
+<div>
+    <label class="col-md-4"><strong>UpdateAt : </strong></label>
+    {{ selectedShelf?.updatedAt }}
+</div> -->
+<br />
+<table id="print">
+    <tr>
+        <td colspan="2">
+            <h6 class="text-center py-2">{{selectedShelf?.shelfID}}</h6>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <qrcode [qrdata]="selectedShelf?.shelfID+''" [width]="200" [errorCorrectionLevel]="'M'"
+                [elementType]="'img'" [margin]="3">
+            </qrcode>
+        </td>
+    </tr>
+</table>
+
+<div *ngIf="!assignedparams.includes(selectedShelf.id)" class="d-md-flex align-items-center">
+    <div class="col-md-3">
+        <button class="btn btn-sm btn-primary my-2" (click)="editAction(selectedShelf)"><i
+                class="mdi mdi-pencil font-12"></i> Edit</button>
+    </div>
+    <div class="col-md-5">
+        <div class="dl">
+            <!-- <button class="btn btn-sm btn-danger" (click)="deleteShelf(selectedShelf)"><i class="mdi mdi-delete font-12"></i> Delete</button> -->
+            <a *ngIf="showprint" (click)="printPage()" class="btn btn-sm btn-info my-2"><i class="fa fa-print"></i>
+                Download
+                Qrcode</a>
+            <span *ngIf="!showprint" class="btn btn-sm btn-secondary my-2"><i class="bx bx-loader bx-spin"></i> PDF is
+                Generating
+                Please Wait... </span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,286 @@
+<!-- Warehouse -->
+<div class="m-5">
+  <div class="card">
+    <div class="card-body">
+      <div class="row mb-2">
+        <!-- Total Order -->
+        <div class="col-sm-5" style="align-content: center">
+          <div class="mx-3">
+            <label class="form-label col-sm-4" style="font-weight: bold; color: #8d0a54; font-size: 20px">Total Order Count</label>
+            <label class="form-label" *ngFor="let item of todaySalesDatas" style="font-weight: bold; color: #8d0a54; font-size: 20px">{{
+              item?.todaysOrderCount || '0'
+            }}</label>
+          </div>
+        </div>
+        <!-- Empty -->
+        <div class="col-sm-5"></div>
+        <!-- Warehouse Name -->
+        <div class="col-sm-2">
+          <div class="mb-3">
+            <label class="control-label">Warehouse</label>
+            <ng-select
+              name="class"
+              placeholder="Select Warehouse"
+              [items]="warehouseData"
+              bindLabel="name"
+              bindValue="id"
+              [(ngModel)]="selectedWarehouse"
+              (change)="getWarehouseID($event)"
+            ></ng-select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Row 4Card -->
+<div>
+  <div *ngFor="let item of todaySalesDatas" class="row">
+    <div class="col-md-6 col-sm-6 col-lg-3 cardOne">
+      <div class="card card m-5" style="border-left: 5px solid darkgreen">
+        <div class="card-body p-0 d-flex flex-column">
+          <div class="card-px pt-5 pb-5 flex-grow-1" style="margin-bottom: -5px">
+            <div class="row g-0 mt-5 mb-10">
+              <div class="d-flex align-items-center me-2">
+                <div class="symbol symbol-60px me-5" style="background-color: darkgreen; border-radius: 50%; padding: 8px">
+                  <img src="./assets/media/chart.png" alt="no image" style="width: 40px; height: 40px; margin: 5px" />
+                </div>
+                <div>
+                  <div class="text-dark fw-bolder" style="font-size: 18px">
+                    <span *ngIf="item?.todayOrderAmount" class="pe-1">₹</span>{{ item?.todayOrderAmount || '0' }}
+                  </div>
+                  <div class="fs-4 fw-bolder" style="color: #878181">Today Sales</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-sm-6 col-lg-3 cardOne">
+      <div class="card card m-5" style="border-left: 5px solid #c70039">
+        <div class="card-body p-0 d-flex flex-column">
+          <div class="card-px pt-5 pb-5 flex-grow-1" style="margin-bottom: -5px">
+            <div class="row g-0 mt-5 mb-10">
+              <div class="d-flex align-items-center me-2">
+                <div class="symbol symbol-60px me-5" style="background-color: #c70039; border-radius: 50%; padding: 8px">
+                  <img src="./assets/media/Group.png" alt="no image" style="width: 40px; height: 40px; margin: 5px" />
+                </div>
+                <div>
+                  <div class="text-dark fw-bolder" style="font-size: 18px">
+                    <span *ngIf="item?.todayOrderAmount" class="pe-1">₹</span>{{ item?.todayExpenseAmount || '0' }}
+                  </div>
+                  <div class="fs-4 fw-bolder" style="color: #878181">Today Expense</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-sm-6 col-lg-3 cardOne">
+      <div class="card card m-5" style="border-left: 5px solid #73f173">
+        <div class="card-body p-0 d-flex flex-column">
+          <div class="card-px pt-5 pb-5 flex-grow-1" style="margin-bottom: -5px">
+            <div class="row g-0 mt-5 mb-10">
+              <div class="d-flex align-items-center me-2">
+                <div class="symbol symbol-60px me-5" style="background-color: #73f173; border-radius: 50%; padding: 8px">
+                  <img src="./assets/media/trend-up.png" alt="no image" style="width: 40px; height: 40px; margin: 5px" />
+                </div>
+                <div>
+                  <div class="text-dark fw-bolder" style="font-size: 18px">
+                    <span *ngIf="item?.todayOrderAmount" class="pe-1">₹</span>{{ item?.todayIncomeAmount || '0' }}
+                  </div>
+                  <div class="fs-4 fw-bolder" style="color: #878181">Today Income</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-sm-6 col-lg-3 cardOne">
+      <div class="card card m-5" style="border-left: 5px solid #ffc300">
+        <div class="card-body p-0 d-flex flex-column">
+          <div class="card-px pt-5 pb-5 flex-grow-1" style="margin-bottom: -5px">
+            <div class="row g-0 mt-5 mb-10">
+              <div class="d-flex align-items-center me-2">
+                <div class="symbol symbol-60px me-5" style="background-color: #ffc300; border-radius: 50%; padding: 8px">
+                  <img src="./assets/media/wallet.png" alt="no image" style="width: 40px; height: 40px; margin: 5px" />
+                </div>
+                <div>
+                  <div class="text-dark fw-bolder" style="font-size: 18px">
+                    <span *ngIf="item?.todayOrderAmount" class="pe-1">₹</span>{{ item?.todayRevenueAmount || '0' }}
+                  </div>
+                  <div class="fs-4 fw-bolder" style="color: #878181">Today Revenue</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Revenue Chart -->
+<div class="m-5" *ngIf="revenueList?.length">
+  <div class="card">
+    <div class="card-body">
+      <h3 class="p-5">Revenue Chart</h3>
+      <div id="chart">
+        <apx-chart
+          [series]="chartOptions.series"
+          [chart]="chartOptions.chart"
+          [dataLabels]="chartOptions.dataLabels"
+          [colors]="chartOptions.colors"
+          [plotOptions]="chartOptions.plotOptions"
+          [yaxis]="chartOptions.yaxis"
+          [legend]="chartOptions.legend"
+          [fill]="chartOptions.fill"
+          [stroke]="chartOptions.stroke"
+          [tooltip]="chartOptions.tooltip"
+          [xaxis]="chartOptions.xaxis"
+        ></apx-chart>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Revenue Chart2 -->
+<!-- <div class="m-5">
+  <div class="card">
+    <div class="card-body">
+      <h3 class="p-5">Revenue chart</h3>
+      <div id="chart">
+        <apx-chart
+          [series]="chartOptions3.series"
+          [chart]="chartOptions3.chart"
+          [xaxis]="chartOptions3.xaxis"
+          [stroke]="chartOptions3.stroke"
+          [dataLabels]="chartOptions3.dataLabels"
+          [yaxis]="chartOptions3.yaxis"
+          [labels]="chartOptions3.labels"
+          [legend]="chartOptions3.legend"
+          [title]="chartOptions3.title"
+          [subtitle]="chartOptions3.subtitle"
+        ></apx-chart>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- Line Chart -->
+<div class="m-5" *ngIf="dailySalesReport?.length">
+  <div class="card">
+    <div class="card-body">
+      <h3 class="p-5">Sales Chart</h3>
+      <div id="chart">
+        <apx-chart
+          [series]="chartOptions2.series"
+          [chart]="chartOptions2.chart"
+          [xaxis]="chartOptions2.xaxis"
+          [dataLabels]="chartOptions2.dataLabels"
+          [grid]="chartOptions2.grid"
+          [stroke]="chartOptions2.stroke"
+          [title]="chartOptions2.title"
+          [tooltip]="chartOptions2.tooltip"
+        ></apx-chart>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Top Product and Vendor -->
+<div class="row">
+  <div class="col-sm-6 p-5" *ngIf="topProductList?.length">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="p-5">Top Product Sales List</h3>
+        <div id="chart">
+          <apx-chart
+            [series]="chartOptions3.series"
+            [chart]="chartOptions3.chart"
+            [labels]="chartOptions3.labels"
+            [responsive]="chartOptions3.responsive"
+          ></apx-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 p-5" *ngIf="topVendorList?.length">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="p-5">Top 5 Vendor</h3>
+        <div id="chart">
+          <apx-chart
+            [series]="chartOptions4.series"
+            [chart]="chartOptions4.chart"
+            [labels]="chartOptions4.labels"
+            [fill]="chartOptions4.fill"
+            [colors]="chartOptions4.colors"
+            [stroke]="chartOptions4.stroke"
+            [responsive]="chartOptions4.responsive"
+          ></apx-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="col-sm-6 p-5">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="p-5">Top 5 Vendor</h3>
+        <div class="table-responsive" style="height: 360px">
+          <table class="align-middle table-nowrap table-hover w-100">
+            <thead>
+              <tr style="font-size: 16px">
+                <th class="text-center p-4">#</th>
+                <th class="text-start p-4">Name</th>
+                <th class="text-start p-4">State</th>
+                <th class="text-start p-4">Total Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of topVendorList | slice : 0 : 5; let index = index">
+                <td class="text-center p-5">{{ index + 1 }}</td>
+                <td class="text-start p-4">{{ item.vendorName || '--' }}</td>
+                <td class="text-start p-4">{{ item.state_name || '--' }}</td>
+                <td class="text-start p-4 fw-bold" style="color: #007eff">&#8377;{{ item.totalAmount || '--' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div> -->
+</div>
+
+<!-- Piechart TopProduct -->
+<div class="row">
+  <div class="col-sm-12 p-5">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="p-5">GST Transaction chart</h3>
+        <div id="chart">
+          <apx-chart
+            *ngIf="chartOptions1 && chartOptions1.series && chartOptions1.series.length > 0"
+            [series]="chartOptions1.series"
+            [chart]="chartOptions1.chart"
+            [dataLabels]="chartOptions1.dataLabels"
+            [plotOptions]="chartOptions1.plotOptions"
+            [yaxis]="chartOptions1.yaxis"
+            [legend]="chartOptions1.legend"
+            [fill]="chartOptions1.fill"
+            [stroke]="chartOptions1.stroke"
+            [tooltip]="chartOptions1.tooltip"
+            [xaxis]="chartOptions1.xaxis"
+          ></apx-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

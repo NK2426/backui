@@ -1,0 +1,159 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="page-title-box d-flex align-items-center justify-content-between">
+        <h4 class="mb-0 font-size-18"></h4>
+        <!-- <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item"><a [routerLink]="['/catalog']">Home</a></li>
+            <li class="breadcrumb-item"><a [routerLink]="['/catalog/notifications']">Notifications</a></li>
+            <li class="breadcrumb-item active">Notification Detail</li>
+          </ol>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <form (ngSubmit)="saveNotification()" [formGroup]="formData">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="mb-3 row">
+              <label class="control-label col-sm-4">Title : </label>
+              <span class="col-sm-2" *ngIf="!show && currentNotification">{{ currentNotification.title }}</span>
+              <div *ngIf="show" class="col-sm-6">
+                <input *ngIf="show" class="form-control" type="text" name="title" autocomplete="off"
+                  formControlName="title" [ngClass]="{
+                    'is-invalid':
+                      (submit && form['title']?.errors) || (form['title']?.invalid && (form['title']?.dirty || form['title']?.touched))
+                  }" />
+                <div
+                  *ngIf="(submit && form['title']?.errors) || (form['title']?.invalid && (form['title']?.dirty || form['title']?.touched))"
+                  class="invalid-feedback">
+                  <span *ngIf="form['title'].errors?.['required']">Enter valid title</span>
+                  <span *ngIf="form['title'].errors?.['minlength']">Minimum Length 3 Characters.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="mb-3 row">
+              <label class="control-label col-sm-4">Description (Optional) : </label>
+              <span class="col-sm-2" *ngIf="!show && currentNotification">{{ currentNotification.description || '--'
+                }}</span>
+              <div *ngIf="show" class="col-sm-4">
+                <input *ngIf="show" class="form-control" type="text" name="description" autocomplete="off"
+                  formControlName="description"
+                  [ngClass]="{ 'is-invalid': form['description']?.invalid && (form['description']?.dirty || form['description']?.touched) }" />
+                <div
+                  *ngIf="submit || (form['description']?.invalid && (form['description']?.dirty || form['description']?.touched))"
+                  class="invalid-feedback"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="mb-3 row">
+              <label class="control-label col-sm-4" [classList]="">Type (Optional) :</label>
+              <span class="col-sm-2" *ngIf="!show && currentNotification">{{ currentNotification.type || '--'
+                }}</span>
+              <div *ngIf="show" class="col-sm-4 mb-3">
+                <div class="form-check pb-2">
+                  <label class="form-check-label"><input class="form-check-input cursor-pointer"
+                      (change)="changeType('Group')" type="radio" name="type" id="type1" formControlName="type"
+                      value="Group" />Group</label>
+                </div>
+                
+                <div class="form-check pb-2">
+                  <label class="form-check-label"><input class="form-check-input cursor-pointer"
+                      (change)="changeType('Tag')" type="radio" name="type" id="type3" formControlName="type"
+                      value="Tag" />
+                    Tag</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="mb-3 row">
+              <label class="control-label col-sm-4">Link  :</label>
+              <span class="col-sm-6" *ngIf="!show && currentNotification"><a
+                  [routerLink]="['/catalog/'+ type + selectedLink?.uuid]">{{ selectedLink?.name
+                  }}</a></span>
+              <div *ngIf="show" class="col-sm-6">
+                <ng-select name="link" placeholder="Select Items" [items]="linkitems" bindLabel="name" bindValue="uuid"
+                  [(ngModel)]="selectedLink" formControlName="link" [ngClass]="{
+                  'is-invalid':
+                    (submit && form['link']?.errors) || (form['link']?.invalid && (form['link']?.dirty || form['link']?.touched))
+                }" (change)="changeLink()">
+                </ng-select>
+
+                <div
+                  *ngIf="(submit && form['link']?.errors) || (form['link']?.invalid && (form['link']?.dirty || form['link']?.touched))"
+                  class="invalid-feedback">
+                  <span *ngIf="form['link'].errors">Enter valid Link</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Date Time picker-->
+          <div class="col-sm-6">
+            <div class="mb-3 row">
+              <label class="control-label col-sm-4">Scheduled At :</label>
+              <span class="col-sm-4" *ngIf="!show && currentNotification">{{ currentNotification.scheduleAt?.slice(0,-1)
+                |
+                date:'medium'
+                }}</span>
+              <div *ngIf="show" class="form-group col-sm-6">
+
+                <label for="scheduleAt">Start Date Time</label>
+                <app-date-time-picker formControlName="scheduleAt" name="scheduleAt"
+                  [minDate]="minDate"></app-date-time-picker>
+                <div class="text-danger" *ngIf="isRequired(formData , 'scheduleAt')">Date Time is required.</div>
+                <div class="text-danger" *ngIf="isValid(formData , 'scheduleAt')">Date Time must be valid.</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="mb-3 row">
+              <label class="control-label col-sm-2">Image (Optional) </label>
+              <span class="col-sm-6" *ngIf="!show && currentNotification"><img src="{{ currentImage }}" alt="Icon"
+                  height="60" width="50" /></span>
+              <div *ngIf="show" class="col-sm-6">
+                <input type="file" class="file-input form-control" (change)="onSelectedFile($event)" autocomplete="off"
+                  #fileupload name="path" formControlName="path" [ngClass]="{
+                    'is-invalid':
+                      (submit && form['path'].errors) ||
+                      (form['path'].invalid && (form['path'].dirty || form['path'].touched) && currentImage == '')
+                  }" />
+                <p *ngIf="currentImage != ''">Image size should be less than 500kb and ratio 1:1</p>
+                <a *ngIf="currentImage != ''" target="_blank" href="{{ currentImage }}"><img src="{{ currentImage }}"
+                    alt="Icon" height="60" width="50" />
+                </a>
+                <div *ngIf="
+                    currentImage == '' &&
+                    ((submit && form['path']?.errors) || (form['path']?.invalid && (form['path']?.dirty || form['path']?.touched)))
+                  " class="invalid-feedback">
+                  <span *ngIf="form['path'].errors?.['required']">Upload Image.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+ 
+
+        <div *ngIf="show" class="mt-2 row">
+          <div class="col-2"></div>
+          <div class="text-sm-start col-sm-6">
+            <a [routerLink]="['/catalog/notifications']" class="btn btn-secondary btn-sm m-2">Cancel</a>
+            <button type="submit" class="btn btn-primary btn-sm m-2">SEND</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

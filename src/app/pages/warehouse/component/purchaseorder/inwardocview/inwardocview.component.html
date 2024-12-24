@@ -1,0 +1,461 @@
+<div class="card mb-5 mb-xl-10">
+  <div class="card-body pt-1 pb-0">
+    <div class="card-body py-3">
+      <!-- Image -->
+      <div class="table-responsive">
+        <table class="table table-sm table-row-dashed fs-6 table-striped">
+          <tr style="border-bottom: 1px solid #a91be9;">
+            <td>
+              <div class="mb-3">
+                <img src="./assets/media/logos/default.svg" alt="logo" height="60" />
+              </div>
+            </td>
+            <td>
+              <h4 class="float-end font-size-16 mt-5 text-primary"># {{ data?.grnid }}</h4>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Bill, Ship, Vendor Address -->
+      <div class="table-responsive">
+        <div class="row p-0 m-0" *ngIf="data?.grnid">
+          <table class="table table-sm table-row-dashed fs-6 table-striped">
+            <thead class="border border-2 border-primary">
+              <tr class="border border-1 border-primary gs-0">
+                <th class="text-center border border-end-1 border-white fs-2">Bill Address
+                </th>
+                <th class="text-center border border-end-1 border-white fs-2">Ship Address
+                </th>
+                <th class="text-center border border-end-1 border-white fs-2">Supplier Address
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border border-1 border-primary">
+                <td class="p-3 m-0 text-uppercase">
+                  <p [innerHTML]="data?.billing?.billingaddress"></p>
+                </td>
+                <td class="p-3 m-0">
+                  <p class="text-uppercase m-0">{{ data?.warehouse?.name }}</p>
+                  <p class="text-uppercase m-0">{{ data?.warehouse?.address }}</p>
+                  <p class="text-uppercase m-0">{{ data?.warehouse?.address1 }} </p>
+                  <p class="text-uppercase m-0">{{ data?.warehouse?.address2 }} </p>
+                  <p class="text-uppercase m-0">{{ data?.warehouse?.pincode }}</p>
+                  <p class="m-0"><strong class="text-primary">Phone : </strong>{{ data?.warehouse?.mobile }}</p>
+                  <p class="m-0"><strong class="text-primary">GST : </strong>{{ data?.warehouse?.gstin }}</p>
+                </td>
+                <td class="p-3 m-0">
+                  <p class="text-uppercase m-0">{{ data?.vendor?.name }}</p>
+
+                  <p class="text-uppercase m-0">{{ billaddress.address }},</p>
+                  <!-- <span>{{data?.user?.addresses.address}}<br></span> -->
+                  <p class="text-uppercase m-0">{{ billaddress?.address2 }}</p>
+                  <p class="text-uppercase m-0">{{ billaddress?.city }}</p>
+                  <p class="text-uppercase m-0">{{ billaddress?.state }}</p>
+                  <p class="text-uppercase m-0">{{ billaddress?.zipcode }}</p>
+                  <p class="m-0"><strong class="text-primary">Phone : </strong>{{ data?.user?.mobile }}</p>
+                  <p class="m-0"><strong class="text-primary">Email : </strong>{{ data?.user?.email }}</p>
+                  <p *ngIf="data?.user?.vendordetail?.gstin !=''" class="text-uppercase m-0"><strong
+                      class="text-primary">GST :
+                    </strong>{{ data?.user?.vendordetail?.gstin
+                    }}</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <br />
+
+      <!-- Product Item Summary -->
+      <div class="row py-2 mt-3 mb-2">
+        <div class="col-sm-9">
+          <h3 class="font-size-15 fw-bold text-primary">Product Item summary</h3>
+        </div>
+     
+        <div *ngIf="data.status !== 'Create'" class="col-sm-3">
+          <label class="form-label"> Select PSID's download format</label>
+          <ng-select name="brand" placeholder="Select Format" [items]="formats" bindLabel="name" bindValue="id"
+            [(ngModel)]="selectedFormat" (change)="changeFormat($event)">
+          </ng-select>
+        </div>
+      </div>
+
+      <!-- Product List -->
+      <div class="table-responsive">
+        <table class="border table table-striped fs-6 gy-5">
+          <thead>
+            <tr style="border: 2px solid #a91be9 !important;">
+              <th class="text-center border border-white border-end-1" style="width: 50px;" rowspan="2">#</th>
+              <th class="text-center border border-white border-end-1" rowspan="2">Product ID</th>
+              <th class="text-center border border-white border-end-1" rowspan="2">Supplier D.ID</th>
+              <th class="text-center border border-white border-end-1" rowspan="2">Image</th>
+              <th class="text-center border border-white border-end-1" rowspan="2">Group</th>
+              <!-- <th class="text-start p-5 min-w-100px" *ngFor="let item of variants">
+                      {{item?.name}}
+                    </th> -->
+              <!-- <th class="text-center border border-white border-end-1" rowspan="2">Variants</th> -->
+              <th class="text-center border border-white border-end-1" rowspan="2">MRP</th>
+              <th class="text-center border border-white border-end-1" rowspan="2">Price</th>
+              <th class="text-center border border-white border-end-1" rowspan="2">PO Qty</th>
+              <th class="text-center border border-white border-end-1" rowspan="2">Received Qty</th>
+              <th class="text-center border border-white border-end-1" rowspan="2">Invoice Qty</th>
+              <th class="text-center border border-white border-end-1" rowspan="2">Subtotal</th>
+              <th class="text-center border border-white border-end-1" rowspan="2">Discount</th>
+              <th class="text-center border border-white border-end-1" rowspan="2">Total</th>
+              <th class="text-center border border-white border-end-1 border-bottom-2 border-end-1" colspan="2"
+                *ngIf="taxtotal.ifigst === 0">CGST
+              </th>
+              <th class="text-center border border-white border-end-1 border-bottom-2 border-end-1" colspan="2"
+                *ngIf="taxtotal.ifigst === 0">SGST
+              </th>
+              <th class="text-center border border-white border-end-1 border-bottom-2 border-end-1" colspan="2"
+                *ngIf="taxtotal.ifigst === 1">IGST
+              </th>
+              
+              <th class="text-center border border-white border-end-1" rowspan="2">Grand<br />Total(&#8377;)</th>
+              <th class="text-center border border-white border-end-1" rowspan="2" *ngIf="data.status == 'Create'">Edit</th>
+              <th *ngIf="data.status !== 'Create'" class="text-center border border-white border-end-1" rowspan="2">PSID </th>
+              
+            </tr>
+            <tr style="border: 2px solid #a91be9 !important;">
+              <th class="text-center border border-white border-end-1" *ngIf="taxtotal.ifigst === 0">INR (&#8377;)</th>
+              <th class="text-center border border-white border-end-1" *ngIf="taxtotal.ifigst === 0">%</th>
+              <th class="text-center border border-white border-end-1" *ngIf="taxtotal.ifigst === 0">INR (&#8377;)</th>
+              <th class="text-center border border-white border-end-1" *ngIf="taxtotal.ifigst === 0">%</th>
+              <th class="text-center border border-white border-end-1" *ngIf="taxtotal.ifigst === 1">INR (&#8377;)</th>
+              <th class="text-center border border-white border-end-1" *ngIf="taxtotal.ifigst === 1">%</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of data?.grnitems; let i = index" class="border border-1 border-primary">
+              <td class="text-center fw-bold">{{ i + 1 }}</td>
+              <td class="text-center">
+                <span class="fw-bold" style="text-transform: uppercase;">{{ item.product?.uuid }}</span>
+                <p>{{ item.product?.name }}</p>
+                <p><span class="text-primary fw-bold">HSN Code :
+                  </span>{{item?.vendorvariantmapping?.hsncode}}</p>
+              </td>
+              <td class="text-center">{{ item.vendorvariantmapping?.vendorproId }}
+              </td>
+              <td class="text-center">
+                <img fetchpriority="low" loading="lazy" style="width: 80px; height: 80px; cursor: pointer;"
+                  alt="Product" src="{{ item?.productselectimage?.path }}" (click)="showFullImage($event, image)" />
+                <p class="text-center m-0 pt-3"><span class="fw-bold text-primary">Variant : </span>{{
+                  item.vendorvariantmapping?.description }}</p>
+              </td>
+              <td class="text-center">{{ item.product?.category?.name }} - {{ item.product?.subcategory?.name }} - {{
+                item.product?.group?.name }}</td>
+                <td class="text-center fw-bold">&#8377;{{ item.mrp }}
+                  <div *ngIf="priceupdate[i] && priceupdate[i]['show']">
+                    <input type="text" [(ngModel)]="priceupdate[i]['mrp']" style="width: 70px" #price="ngModel"
+                       required /><!--appPriceMRPValidator="{{ priceupdate[i]['price'] }}"-->
+                    <div class="text-danger" *ngIf="price.dirty && price.invalid">
+                      <p *ngIf="price.errors?.['required']">MRP is required field!</p>
+                      <p *ngIf="price.errors?.['priceInvalid']">Please enter mrp greater than price</p>
+                    </div>
+                  </div>
+                </td>
+              <td class="text-center fw-bold">&#8377;{{ item.price }}
+                <div *ngIf="priceupdate[i] && priceupdate[i]['show']">
+                  <input type="text" [(ngModel)]="priceupdate[i]['price']" style="width: 70px" #price="ngModel"
+                     required /> <!--appMRPPriceValidator="{{ priceupdate[i]['mrp'] }}"-->
+                  <div class="text-danger" *ngIf="price.dirty && price.invalid">
+                    <p *ngIf="price.errors?.['required']">Price is required field!</p>
+                    <p *ngIf="price.errors?.['priceInvalid']">Please enter price less than mrp</p>
+                  </div>
+                </div>
+              </td>
+              <td class="text-center">{{ item.quantity }}</td>
+              <td class="text-center">{{ item.purchaseorderitem.receivedqty }}</td>
+              <td class="text-center">{{ item.receivedqty }}
+                <div *ngIf="priceupdate[i] && priceupdate[i]['show']">
+                  <input type="text" [(ngModel)]="priceupdate[i]['receivedqty']" style="width: 70px"
+                    #price="ngModel" required />
+                  <div class="text-danger" *ngIf="price.dirty && price.invalid">
+                    <p *ngIf="price.errors?.['required']">Received qty is required field!</p>
+                    <!-- <p *ngIf="price.errors?.['priceInvalid']">Please enter price less than mrp</p> -->
+                  </div>
+                </div>
+              </td>
+              <td class="text-center">&#8377;{{ item.subtotal }}</td>
+              <td class="text-center">&#8377;{{ toFloat(item.discounttotal) }}
+                <div *ngIf="priceupdate[i] && priceupdate[i]['show']" style="width: 150px;">
+                  <label class="d-block p-1">Type</label>
+                  <select (change)="checkvalue(i)" type="text" name="discounttype" #price="ngModel"
+                    [(ngModel)]="priceupdate[i]['discounttype']" required>
+                    <option *ngFor="let discount of discountypes" [value]="discount.id">
+                      {{discount.name }}
+                    </option>
+                  </select>
+                </div>
+                <div *ngIf="priceupdate[i] && priceupdate[i]['show']" style="width: 150px;">
+                  <label class="d-block p-1">Discount</label>
+                  <input placeholder="Discount" type="text" #price="ngModel" style="width: 70px;"
+                    max="{{grnitems[i].subtotal}}" [(ngModel)]="priceupdate[i]['discount']" (change)="checkvalue(i)"
+                    required /> &nbsp;
+                  <select type="text" name="discountoption" #price="ngModel" style="width: 50px;"
+                    [(ngModel)]="priceupdate[i]['discountoption']" (change)="checkvalue(i)">
+                    <option *ngFor="let discountoptval of discountoptions" [value]="discountoptval.id">
+                      {{discountoptval.name }}
+                    </option>
+                  </select>
+                </div>
+              </td>
+              <td class="text-center fw-bold">&#8377;{{ toFloat(item.total) }}</td>
+              <td class="text-center" *ngIf="taxtotal.ifigst === 0">&#8377;{{ toFloat(item.ctaxval) }}</td>
+              <td class="text-center" *ngIf="taxtotal.ifigst === 0">{{ item.ctax }}%</td>
+
+              <td class="text-center" *ngIf="taxtotal.ifigst === 0">&#8377;{{ toFloat(item.staxval) }}</td>
+              <td class="text-center" *ngIf="taxtotal.ifigst === 0">{{ item.stax }}%</td>
+
+              <td class="text-center" *ngIf="taxtotal.ifigst === 1">&#8377;{{ toFloat(item.itaxval) }}</td>
+              <td class="text-center" *ngIf="taxtotal.ifigst === 1">{{ item.itax }}%</td>
+
+              <td class="text-center fw-bold">&#8377;{{ toFloat(item.grandtotal) }}</td>
+              <td class="text-center" *ngIf="data.status == 'Create'">
+                <div *ngIf="priceupdate[i] && !priceupdate[i]['show']">
+                  <a ngbTooltip="Edit" style="color:#50a5f1"
+                    (click)="priceupdate[i]['show'] = true; disabled=true"><app-keenicon name="pencil" class="fs-2 text-primary"> </app-keenicon></a>
+                </div>
+                <a *ngIf="priceupdate[i] && priceupdate[i]['show']" id="price" style="color:#a91be9;"
+                  ngbTooltip="Save" (click)="saveGrnitem(i)"><i class="fa fa-save" style="color:#a91be9; font-size: 2rem !important;"></i></a>
+              </td>
+              <td class="text-center" *ngIf="data.status !== 'Create'">
+                <div>
+                  <a *ngIf="showpdf[i]"
+                  [ngClass]="{'btn-primary': item.genpdf != 2 , 'btn-secondary' : item.genpdf == 2 }"
+                  class="btn text-right" (click)="viewSeller(content,item,i)"
+                  style="font-size: 12px;">{{psidlabel}}</a>
+                <span *ngIf="!showpdf[i]" class="btn btn-primary"><i class="bx bx-loader bx-spin"></i> PSID
+                  <br /> Generating</span>
+                  
+              </div>
+            </td>
+            
+            
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr style="border: 1px solid #a91be9;">
+            <td class="text-center text-primary font-size-20" [colSpan]="7"><strong>Total</strong></td>
+            <td class="text-center font-size-20 text-primary">
+              <strong>{{ qtytotal }}</strong>
+            </td>
+            <td class="text-center font-size-20 text-primary">
+              <strong>{{ recinvqtytotal }}</strong>
+            </td>
+            <td class="text-center font-size-20 text-primary">
+              <strong>{{ recqtytotal }}</strong>
+            </td>
+            <td class="text-center font-size-20 text-primary">
+              <strong>&#8377;{{ subtotal }}</strong>
+            </td>
+            <td class="text-center font-size-20 text-primary">
+              <strong>&#8377;{{ toFloat(discounttotal) }}</strong>
+            </td>
+            <td class="text-center font-size-20 text-primary">
+              <strong>&#8377;{{ toFloat(total) }} </strong>
+            </td>
+            <!-- <td [colSpan]="taxtotal.ifigst === 1 ? 0 : 2"></td> -->
+            <td class="text-center font-size-20 text-primary" *ngIf="taxtotal.ifigst === 0">
+              <strong>&#8377;{{ toFloat(taxtotal.ctaxtotal) }}</strong>
+            </td>
+            <td *ngIf="taxtotal.ifigst === 0"></td>
+            <td class="text-center font-size-20 text-primary" *ngIf="taxtotal.ifigst === 0">
+              <strong>&#8377;{{ toFloat(taxtotal.staxtotal) }}</strong>
+            </td>
+            <td *ngIf="taxtotal.ifigst === 0"></td>
+            <td class="text-center font-size-20 text-primary" *ngIf="taxtotal.ifigst === 1">
+              <strong>&#8377;{{ toFloat(taxtotal.itaxtotal) }}</strong>
+            </td>
+            <td *ngIf="taxtotal.ifigst === 1"></td>
+            <td class="text-center font-size-20 text-primary">
+              <strong>&#8377;{{ toFloat(grandtotal) }} </strong>
+            </td>
+            <td class="text-center font-size-20 text-primary" ></td>
+          </tr>
+          <tr>
+            <td class="text-end font-size-20 text-primary" [colSpan]="taxtotal.ifigst == 1 ? 13 : 16"><strong>Transport Cost</strong></td>
+            <td></td>
+            <td class="text-end font-size-20 text-primary" style="text-align:right;"><strong>{{toFloat(data?.transportcost)}} </strong></td>
+          </tr>
+          <tr>
+            <td class="text-end font-size-20 text-primary" [colSpan]="taxtotal.ifigst == 1 ? 13 : 16"><strong>Overall Discount</strong></td>
+            <td></td>
+            <td class="text-end font-size-20 text-primary" style="text-align:right;"><strong>{{toFloat(data?.overalldiscount)}} </strong></td>
+          </tr>
+          <tr>
+            <td class="text-end font-size-20 text-primary" [colSpan]="taxtotal.ifigst == 1 ? 13 : 16"><strong>Overall Total</strong></td>
+            <td></td>
+            <td class="text-end font-size-20 text-primary" style="text-align:right;"><strong>{{toInt(grandtotal || 0) +
+                toInt(data?.transportcost || 0) - toInt(data?.overalldiscount || 0)}} </strong></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="row">
+      <div class="col-xl-4" *ngIf="productmapparams.length > 0">
+        <div class="py-2 mt-3" *ngIf="productmapparams.length > 0">
+          <h3 class="font-size-15 fw-bold">Product Prameters</h3>
+        </div>
+        <table class="table align-left gs-0 gy-5">
+          <tbody>
+            <tr *ngFor="let param of productmapparams; let i = index">
+              <th class="center">{{ param?.productparameter?.name }}</th>
+              <td>{{ param?.productparametervalue?.value }}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr style="border: 1px solid #a91be9;">
+              <td class="text-center text-primary font-size-20" [colSpan]="6"><strong>Total</strong></td>
+              <td class="text-center font-size-20 text-primary">
+                <strong>{{ qtytotal }}</strong>
+              </td>
+              
+              <td class="text-center font-size-20 text-primary">
+                <strong>&#8377;{{ subtotal }}</strong>
+              </td>
+              <td class="text-center font-size-20 text-primary">
+                <strong>&#8377;{{ discounttotal }}</strong>
+              </td>
+              <td class="text-center font-size-20 text-primary">
+                <strong>&#8377;{{ total }} </strong>
+              </td>
+              <!-- <td [colSpan]="taxtotal.ifigst === 1 ? 0 : 2"></td> -->
+              <td class="text-center font-size-20 text-primary" *ngIf="taxtotal.ifigst === 0">
+                <strong>&#8377;{{ toFloat(taxtotal.ctaxtotal) }}</strong>
+              </td>
+              <td *ngIf="taxtotal.ifigst === 0"></td>
+              <td class="text-center font-size-20 text-primary" *ngIf="taxtotal.ifigst === 0">
+                <strong>&#8377;{{ toFloat(taxtotal.staxtotal) }}</strong>
+              </td>
+              <td *ngIf="taxtotal.ifigst === 0"></td>
+              <td class="text-center font-size-20 text-primary" *ngIf="taxtotal.ifigst === 1">
+                <strong>&#8377;{{ toFloat(taxtotal.itaxtotal) }}</strong>
+              </td>
+              <td *ngIf="taxtotal.ifigst === 1"></td>
+              <td class="text-center font-size-20 text-primary">
+                <strong>&#8377;{{ toFloat(data?.grandtotal) }} </strong>
+              </td>
+              <td class="text-center font-size-20 text-primary" ></td>
+            </tr>
+           
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-6">
+          <div class="float-start">
+            <a *ngIf="showprint && this.data.grnid" (click)="download()" class="btn btn-sm btn-primary" disabled><i
+                class="fa fa-print"></i> Download PDF</a>
+            <span *ngIf="!showprint" class="btn btn-secondary"><i class="bx bx-loader bx-spin"></i> Please Wait PDF is
+              Generating ...
+            </span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="row">
+            <div class="col-10">
+              <div *ngIf="data.status == 'Create'" class="float-end pb-8">
+                <div class="col-md-12">
+                  <a (click)="approveInwardoc()" [hidden]="disabled" class="btn btn-sm btn-primary">Approve Inward Document</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="text-end pb-8">
+                <button class="btn btn-sm fw-bold btn-primary mx-2" [routerLink]="['/warehouse/orders/grninward']"
+                  routerLinkActive="router-link-active">
+                  Back
+                </button>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      
+    </div>
+    
+  </div>
+  <!-- container-fluid -->
+
+
+ <!-- Show Product Image -->
+ <ng-template #image let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Product Image</h5>
+    <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body p-5 m-2">
+    <img [src]="src" alt="Not Show Image" class="rounded-1 w-100">
+  </div>
+</ng-template>
+
+
+  <!-- Pop UP Open start -->
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">Update Selling MRP & Price</h5>
+      <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <form (submit)="saveSellingpriceMRP()" name="form" [formGroup]="addSellerForm" novalidate>
+        <div class="row">
+          <div class="col-12">
+            <div class="row mb-2">
+              <label class="form-label col-4 mt-2"> Selling MRP *</label>
+              <div class="col-6">
+                <input class="form-control" placeholder="Selling MRP" type="text" name="sellingmrp" autocomplete="off"
+                  formControlName="sellingmrp" [ngClass]="{
+                    'is-invalid':
+                      (gsubmit && sellform['sellingmrp']?.errors) ||
+                      (sellform['sellingmrp']?.invalid && (sellform['sellingmrp']?.dirty || sellform['sellingmrp']?.touched))
+                  }" />
+                <div *ngIf="
+                    (gsubmit && sellform['sellingmrp']?.errors) ||
+                    (sellform['sellingmrp']?.invalid && (sellform['sellingmrp']?.dirty || sellform['sellingmrp']?.touched))
+                  " class="invalid-feedback">
+                  <span *ngIf="sellform['sellingmrp'].errors?.['required']">Enter Selling MRP</span>
+                  <span *ngIf="sellform['sellingmrp'].errors?.['min']">Enter minimum value is {{ sellform['sellingmrp'].errors?.['min']?.min}}</span>
+                  <span *ngIf="sellform['sellingmrp'].errors?.['invalid']">Enter valid Selling MRP</span>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <label class="form-label col-4 mt-2"> Selling Price *</label>
+              <div class="col-6">
+                <input class="form-control" placeholder="Selling Price" type="text" name="sellingprice" autocomplete="off"
+                  formControlName="sellingprice" [ngClass]="{
+                    'is-invalid':
+                      (gsubmit && sellform['sellingprice']?.errors) ||
+                      (sellform['sellingprice']?.invalid && (sellform['sellingprice']?.dirty || sellform['sellingprice']?.touched))
+                  }" />
+                <div *ngIf="
+                    (gsubmit && sellform['sellingprice']?.errors) ||
+                    (sellform['sellingprice']?.invalid && (sellform['sellingprice']?.dirty || sellform['sellingprice']?.touched))
+                  " class="invalid-feedback">
+                  <span *ngIf="sellform['sellingprice'].errors?.['required']">Enter Selling Price</span>
+                  <span *ngIf="sellform['sellingprice'].errors?.['min']">Enter minimum value is {{ sellform['sellingprice'].errors?.['min']?.min}}</span>
+                  <span *ngIf="sellform['sellingprice'].errors?.['invalid']">Enter valid Selling Price</span>
+                </div>
+              </div>
+            </div>
+            <div class="d-md-flex align-items-center mt-5">
+              <div class="col-md-4"></div>
+              <div class="ml-auto">
+                <div class="dl">
+                  <button type="submit" class="btn btn-success">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+  <!-- Pop UP Open end -->

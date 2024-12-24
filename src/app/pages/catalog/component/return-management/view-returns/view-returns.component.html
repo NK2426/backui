@@ -1,0 +1,100 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-flex align-items-center justify-content-between">
+            <h4 class="mb-2 font-size-18">Returned Order</h4>
+        </div>
+    </div>
+</div>
+<div class="card mb-5 mb-xl-10">
+   
+    <div class="row">
+        <div class="col-lg-12">
+           
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <!-- <div class="col-sm-4">
+                            <div class="search-box me-2 mb-2 d-inline-block">
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="search"
+                                        (keyup)="getAllReturnDetail()">
+                                    <i class="bx bx-search-alt search-icon"></i>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="col-sm-4">
+                            <!--begin::Search-->
+                            <div class="d-flex align-items-center position-relative my-1 px-1">
+                                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                </i>
+                                <input type="text" (keyup)="searchTable($event)" placeholder="Search..."
+                                    class="form-control form-control-solid w-200px ps-12" #input>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle  table-nowrap table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="p-5 w-50px">#</th>
+                                    <th scope="col">Order ID</th>
+                                    <th scope="col">Customer</th>
+                                    <th scope="col">Mobile</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let returnObj of allReturns; let i = index">
+                                    <td class="p-5 w-50px">{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}</td>
+                                    <td> {{returnObj.orderID }} </td>
+                                    <td> {{returnObj.user?.name }} </td>
+                                    <td> {{returnObj.user?.mobile }} </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary"
+                                            [routerLink]="['/catalog/returns/'+returnObj.uuid]">View
+                                            Return</button>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="allReturns?.length === 0">
+                                    <td colspan="10" class="text-center fw-bold">No Records Found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination  -->
+                    <div class="row justify-content-md-between align-items-md-center mt-2">
+                        <div class="col-sm-12 col-md-8">
+                            <div class="dataTables_length" id="tickets-table_length"><label
+                                    class="d-inline-flex align-items-center">Show
+                                    <select class="form-select form-select-sm ms-2 me-2"
+                                        (change)="handlePageSizeChange($event)">
+                                        <option *ngFor="let size of pageSizes" [ngValue]="size">
+                                            {{ size }}
+                                        </option>
+                                    </select> Entries</label></div>
+                        </div>
+                        <!-- Pagination -->
+                        <div class="col-sm-12 col-md-4">
+                            <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true"
+                                [ellipses]="false" [boundaryLinks]="true" (pageChange)="handlePageChange($event)"
+                                [collectionSize]="count"></ngb-pagination>
+                            <!-- <div class="text-md-right float-md-end pagination-rounded">
+                                <ngb-pagination class="pagination pagination-rounded justify-content-center mt-4"
+                                    size="lg" [(page)]="page" [pageSize]="pageSize"
+                                    (pageChange)="handlePageChange($event)" [collectionSize]="count" [maxSize]="10"
+                                    [rotate]="true">
+                                    <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i>
+                                    </ng-template>
+                                    <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+                                </ngb-pagination> -->
+                            <!-- </div> -->
+                        </div>
+                    </div>
+                    <!-- Pagination  -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

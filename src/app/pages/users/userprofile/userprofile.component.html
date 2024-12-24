@@ -1,0 +1,114 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-8 font-size-18">View Profile</h4>
+                
+            </div>
+
+
+
+            <div class="card">
+                <div class="card-body">
+                    <!-- <form (ngSubmit)="saveUser()" [formGroup]="formData" novalidate> -->
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="control-label col-sm-3 fw-bold">Name : </label>
+                                    {{userData?.name}}
+                                </div>
+                                <div class="mb-3">
+                                    <label class="control-label col-sm-3 fw-bold">Email : </label>
+                                    {{userData?.email}}
+                                </div>
+                                <div class="mb-3">
+                                    <label class="control-label col-sm-3 fw-bold">Username : </label>
+                                    {{userData?.username}}
+                                </div>
+                                <div class="mb-3">
+                                    <label class="control-label col-sm-3 fw-bold">Mobile : </label>
+                                    {{userData?.mobile}}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="control-label col-sm-3 fw-bold">Role : </label>
+                                    <span class="badge badge-light-primary">{{rolename}}</span>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="control-label col-sm-3 fw-bold">Store : </label>
+                                    {{userData?.warehouse?.name}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                               
+                            </div>
+                            <div class="col-sm-6">
+                                
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- <div class="d-flex flex-wrap gap-2 mt-2 col-sm-6">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="button" class="btn btn-secondary"  [routerLink]="['/app']" routerLinkActive="router-link-active">Cancel</button>
+                            </div> -->
+                            <div class="text-sm-end col-sm-12">
+                                <a class="btn btn-primary btn-sm" (click)="changepwd(content)">Change Password</a>
+                            </div>
+                        </div>
+                    <!-- </form> -->
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Pop UP Open start -->
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title mt-0" id="modal-basic-title">Change Password</h5>
+      <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <form (ngSubmit)="savePwd()" [formGroup]="pwdformData" novalidate>
+            <div class="row">
+                <div class="mb-3">
+                    <label class="control-label">Old Password</label>
+                    <input class="form-control" placeholder="Enter Old Password" type="password" name="password" autocomplete="off"
+                        formControlName="oldpassword" [ngClass]="{'is-invalid': pwdsubmit && pwdform['oldpassword'].errors}" />
+                    <div *ngIf="pwdsubmit && pwdform['oldpassword'].errors" class="invalid-feedback">
+                        <span *ngIf="pwdform['oldpassword'].errors['required']">Old Password is required.</span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="control-label">New Password</label>
+                    <input class="form-control" placeholder="Enter New Password" type="password" name="password" autocomplete="off"
+                        formControlName="password" [ngClass]="{'is-invalid': pwdsubmit && pwdform['password'].errors}" />
+                    <div *ngIf="pwdsubmit && pwdform['password'].errors" class="invalid-feedback">
+                        <span *ngIf="pwdform['password'].errors['required']">New Password is required.</span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="control-label">Confirm Password</label>
+                    <input class="form-control" placeholder="Enter Confirm Password" type="password" name="confirmpassword" autocomplete="off"
+                        formControlName="confirmpassword" [ngClass]="{'is-invalid': pwdsubmit && pwdform['confirmpassword'].errors}" />
+                    <div *ngIf="pwdsubmit && pwdform['confirmpassword'].errors" class="invalid-feedback">
+                        <span *ngIf="pwdform['confirmpassword'].errors['required']">Confirm Password is required.</span>
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap gap-2 mt-2">
+                    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                    <button type="button" class="btn btn-secondary btn-sm"  (click)="cancel()">Cancel</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</ng-template>
+    <!-- Pop UP Open end -->

@@ -1,0 +1,119 @@
+<div class="card mb-5 mb-xl-10 p-3">
+  <div class="row">
+    <div class="col-lg-12">
+      <!-- <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">{{title}}</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+                        <li class="breadcrumb-item active"> {{title}} </li>
+                    </ol>
+                </div>
+            </div> -->
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-5">
+            <div class="col-md-3 col-sm-6">
+              <div class="d-flex align-items-center position-relative my-1 px-1">
+                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+                <input
+                  type="text"
+                  (keyup)="searchTable($event)"
+                  placeholder="Search.."
+                  class="form-control form-control-solid ps-12"
+                  #input
+                />
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table align-middle table-nowrap table-hover">
+              <thead>
+                <tr>
+                  <th class="p-4 w-50px">#</th>
+                  <th class="text-start p-4 min-w-80px">PO ID</th>
+                  <th class="text-start p-4 min-w-150px">PO Date</th>
+                  <th class="text-center p-4 min-w-80px">PO ID</th>
+                  <th class="text-start p-4 min-w-80px">PO Value</th>
+                  <th class="text-start p-4 min-w-90px">Invoice No</th>
+                  <th class="text-start p-4 min-w-80px">Invoice Value</th>
+                  <th class="text-start p-4 min-w-150px">Invoice Date</th>
+                  <th class="text-start p-4 min-w-80px">Receipt ID</th>
+                  <th class="text-start p-4 min-w-100px">Receipt Value</th>
+                  <th class="text-start p-4 min-w-150px">Receipt Date</th>
+                  <th class="text-start p-4 min-w-80px">Supplier Name</th>
+                  <th class="text-start p-4 min-w-100px">Payment Approval</th>
+                  <th class="text-start p-4 min-w-100px">Transcation ID</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let detail of allDetails; let i = index">
+                  <td class="p-4">{{ page == 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}</td>
+                  <td class="p-4">
+                    <strong>{{ detail.purchaseorder?.uuid }}</strong>
+                  </td>
+                  <td class="p-4">{{ detail.purchaseorder?.createdAt | date : 'medium' }}</td>
+                  <td class="p-4 text-center">{{ detail.purchaseorder_id }}</td>
+                  <td class="p-4">
+                    {{ numberFormat(detail.purchaseorder?.grandtotal) || '--' }}
+                  </td>
+                  <td class="p-4">{{ detail.invoiceno || '--' }}</td>
+
+                  <td class="p-4">{{ numberFormat(detail.buyingprice) || '--' }}</td>
+                  <!--invoice value-->
+                  <td class="p-4">{{ detail.receiveddate | date : 'medium' }}</td>
+                  <!--invoice date-->
+                  <td class="p-4">{{ detail.grnid }}</td>
+                  <td class="p-4">{{ detail.grnvalue || '--' }}</td>
+                  <td class="p-4">{{ detail.createdAt | date : 'medium' || '--' }}</td>
+                  <td class="p-4">
+                    <p class="badge badge-light-info">{{ detail.purchaseorder?.user?.name }}</p>
+                  </td>
+                  <td class="p-4">{{ detail.purchaseorder?.status || '--' }}</td>
+                  <td class="p-4">{{ '--' }}</td>
+                </tr>
+                <tr *ngIf="allDetails?.length === 0">
+                  <td colspan="12" class="text-center fw-bold">No records found</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Pagination  -->
+          <div class="row justify-content-md-between align-items-md-center mt-5">
+            <div class="col-sm-12 col-md-8">
+              <div class="dataTables_length" id="tickets-table_length">
+                <label class="d-inline-flex align-items-center"
+                  >Show
+                  <select class="form-select form-select-sm ms-2 me-2" (change)="handlePageSizeChange($event)">
+                    <option *ngFor="let size of pageSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select>
+                  Entries</label
+                >
+              </div>
+            </div>
+            <!-- Pagination -->
+            <div class="col-sm-12 col-md-4">
+              <div class="text-md-right float-md-end pagination-rounded">
+                <ngb-pagination
+                  [(page)]="page"
+                  [pageSize]="pageSize"
+                  [maxSize]="5"
+                  [rotate]="true"
+                  [ellipses]="false"
+                  [boundaryLinks]="true"
+                  (pageChange)="handlePageChange($event)"
+                  [collectionSize]="count"
+                ></ngb-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

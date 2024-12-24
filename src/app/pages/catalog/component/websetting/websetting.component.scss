@@ -1,0 +1,92 @@
+.chip {
+  display: inline-block;
+  padding: 0 5px;
+  height: 36px;
+  font-size: 12px;
+  line-height: 39px;
+  border-radius: 25px;
+  background-color: #a91be9;
+  margin-left: 10px;
+  margin-bottom: 3px;
+}
+
+.chip .tagName {
+  float: left;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+}
+
+.closebtn {
+  padding-left: 10px;
+  height: 36px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.closebtn:hover {
+  color: white;
+}
+
+//Newly Added //
+.activeimgsel {
+  position: relative;
+  border: 3px solid #a91be9;
+}
+
+.activeimgsel::before {
+  content: '\2713';
+  font-family: 'font-awesome' !important;
+  font-size: 16px;
+  background-color: #a91be9;
+  color: #fff;
+  top: -15px;
+  right: -10px;
+  position: absolute;
+  border-radius: 10px;
+  padding: 0px 5px;
+}
+
+
+
+.editimg:after {
+  content: "✎";
+  font-family: boxicons !important;
+  font-size: 16px;
+  background-color: #a91be9;
+  color: #fff;
+  top: -15px;
+  right: 35px;
+  position: absolute;
+  border-radius: 50%;
+  padding: 1px 4px
+}
+
+.activeimg:before {
+  content: "✖";
+  font-family: boxicons !important;
+  font-size: 16px;
+  background-color: #a91be9;
+  color: #fff;
+  top: -15px;
+  right: -21px;
+  position: absolute;
+  border-radius: 50%;
+  padding: 1px 4px;
+}
+
+.text-success {
+  color: blue;
+}
+
+.dropzone {
+  min-height: auto;
+  padding: 1.5rem 1.75rem;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #a91be9;
+  border-radius: 5px
+}

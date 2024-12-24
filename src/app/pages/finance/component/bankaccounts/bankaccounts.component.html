@@ -1,0 +1,111 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <div class="search-box me-2 mb-2 d-inline-block">
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="search"
+                                        (keyup)="list()">
+                                    <i class="bx bx-search-alt search-icon" style="left: 22px;"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="text-sm-end">
+                                <button [routerLink]="['/finance/bankaccounts/add']" type="button"
+                                    class="btn btn-primary btn-rounded mb-2 me-2"><i class="mdi mdi-plus mr-1"></i>
+                                    Add New Bankaccount </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle  table-nowrap table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="width: 70px;" class="text-center">#</th>
+                                    <th scope="col">Account Name</th>
+                                    <th scope="col">Account Number</th>
+                                    <th scope="col">Bank Name</th>
+                                    <th scope="col">IFSC</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Created Date</th>
+                                    <th scope="col" align="center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let bankaccount of bankaccounts; let i = index">
+                                    <td class="text-center">{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}</td>
+                                    <td>
+                                        <h5 class="font-size-14 mb-1"><a href="javascript: void(0);"
+                                                class="text-dark"></a>
+                                            {{bankaccount.accountname}}
+                                        </h5>
+                                    </td>
+                                    <td>{{bankaccount?.accountnumber}}</td>
+                                    <td>{{bankaccount?.bankname}}</td>
+                                    <td>{{bankaccount?.ifsc}}</td>
+                                    <td>{{bankaccount?.type}}</td>
+                                    <td>{{bankaccount?.status+'' === '0' ? 'Inactive' : 'Active'}}</td>
+                                    <td>{{bankaccount.createdAt}}</td>
+                                    <td>
+                                        <ul class="list-inline font-size-20 contact-links mb-0">
+                                            <li class="list-inline-item px-1">
+                                                <a [routerLink]="['/finance/bankaccounts/view/'+bankaccount.uuid]"
+                                                    [state]="{uuid: bankaccount.uuid}" ngbTooltip="View Bank Account">
+                                                    <app-keenicon class="fs-2 text-primary"
+                                                        name="eye"></app-keenicon></a>
+                                            </li>
+                                            <li class="list-inline-item px-1">
+                                                <a [routerLink]="['/finance/bankaccounts/edit/'+bankaccount.uuid]"
+                                                    [state]="{uuid: bankaccount.uuid}" ngbTooltip="Edit Bank Account">
+                                                    <app-keenicon class="fs-2 text-primary"
+                                                        name="pencil"></app-keenicon></a>
+                                            </li>
+                                            <li class="list-inline-item px-1">
+                                                <a (click)="deleteBankaccount(bankaccount)"
+                                                    ngbTooltip="Delete Bank Account">
+                                                    <app-keenicon class="fs-2 text-primary"
+                                                        name="trash"></app-keenicon></a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="bankaccounts?.length === 0">
+                                    <td colspan="8" align="center">No records found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination  -->
+                    <div class="row justify-content-md-between align-items-md-center mt-2">
+                        <div class="col-sm-12 col-md-8">
+                            <div class="dataTables_length" id="tickets-table_length">
+                                <label class="d-inline-flex align-items-center">Show
+                                    <select class="form-select form-select-sm ms-2 me-2 cursor-pointer"
+                                        (change)="handlePageSizeChange($event)">
+                                        <option *ngFor="let size of pageSizes" [ngValue]="size">
+                                            {{ size }}
+                                        </option>
+                                    </select>
+                                    Entries</label>
+                            </div>
+                        </div>
+                        <!-- Pagination -->
+                        <div class="col-sm-12 col-md-4">
+                            <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true"
+                                [ellipses]="false" [boundaryLinks]="true" (pageChange)="handlePageChange($event)"
+                                [collectionSize]="count"></ngb-pagination>
+                        </div>
+                    </div>
+                    <!-- Pagination  -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

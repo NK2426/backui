@@ -1,0 +1,34 @@
+<div class="input-group mr-2">
+    <input [ngClass]="ngControl?.valid ? 'ng-valid' : 'ng-invalid'" class="form-control" (blur)="inputBlur($event)"
+        [ngModel]="dateString | date:inputDatetimeFormat" (change)="onInputChange($event)" [disabled]='disabled' />
+
+    <div class="input-group-append mt-1 px-3">
+        <button class="btn btn-primary btn-sm" [ngbPopover]="calendarContent" [disabled]='disabled' type="button">Calendar
+            <!-- <fa-icon [icon]="['far', 'calendar']"></fa-icon> -->
+        </button>
+    </div>
+</div>
+
+<ng-template #calendarContent>
+    <div>
+        <div *ngIf="!showTimePickerToggle">
+            <ngb-datepicker #dp name="datepicker" [ngModel]="datetime" [minDate]="minDate"
+                (ngModelChange)="onDateChange($event)"></ngb-datepicker>
+            <button class="btn btn-block btn-outline-secondary" style="width: 96%" [disabled]="!datetime?.day"
+                type="button" (click)="toggleDateTimeState($event)">
+                <!--  <fa-icon [icon]="['far', 'clock']"></fa-icon> -->
+            </button>
+        </div>
+        <div *ngIf="showTimePickerToggle">
+            <button class="btn btn-block btn-outline-secondary" style="width: 96%" [ngbPopover]="calendarContent"
+                type="button" (click)="toggleDateTimeState($event)">
+                <!-- <fa-icon [icon]="['far', 'calendar']"></fa-icon> -->
+            </button>
+            <div class="mt-auto">
+                <ngb-timepicker #tp name="timepicker" [ngModel]="datetime" (ngModelChange)="onTimeChange($event)"
+                    [seconds]="seconds" [hourStep]="hourStep" [minuteStep]="minuteStep"
+                    [secondStep]="secondStep"></ngb-timepicker>
+            </div>
+        </div>
+    </div>
+</ng-template>

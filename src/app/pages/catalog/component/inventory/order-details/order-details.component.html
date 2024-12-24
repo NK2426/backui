@@ -1,0 +1,82 @@
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-2 font-size-18">Order Details</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <!-- start row -->
+    <div class="row">
+        <!-- Packing Scanner  -->
+        <div class="col-md-12">
+            <div class="card mini-stats-wid">
+                <div class="card-body">
+                    <div class="media">
+                        <div class="media-body">
+                            <span class="text-muted fw-bold">Order ID: </span>
+                            <span class="text-muted fw-bold"><a [routerLink]="['/app/packingorders']">
+                                    {{orderDatum?.orderID}}</a> </span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <!-- Order Item Table Start -->
+                        <div class="table-responsive col-md-12">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="chkkbox" *ngIf="!hasInvoiceStatus()">
+                                            <input type="checkbox" [(ngModel)]="selectAll" (change)="selectAllRows($event)">
+                                        </th>
+                                        <th scope="col" >ID</th>
+                                        <th scope="col">Item Name</th>
+                                        <th scope="col">Item Image</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let orderItem of orderDatum?.orderitems; let i = index">
+                                        <td class="chkkbox" *ngIf="orderItem.status !== 'Invoice'"><input  type="checkbox" [(ngModel)]="orderItem.isSelected" (change)="updateSelectAll($event,orderItem.uuid)"></td>
+                                        <td>{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}</td>
+                                        <td width="30%"> {{orderItem.item.name || '--'}} </td>
+                                        <td> <img fetchpriority="low" [src]="orderItem.item.path" width="100"
+                                                height="100" alt="Item Image" /> </td>
+                                        <td> {{orderItem.qty}} </td>
+                                        <td>{{orderItem.status}}
+                                            <!-- <i  class="fa fa-check" aria-hidden="true"></i> -->
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Order Item Table End -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Packing order details table -->
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-10"></div>
+        <div class="col-lg-2">
+
+            <div class="text-center pt-8" *ngIf="isReadyForInvoicing">
+                <a style="margin-left:10px;" (click)="generateInvoice()" class="btn btn-primary">
+                    Move
+                    To Invoice
+                </a>
+            </div>
+
+        </div>
+    </div>
+    <!-- end row -->
+
+</div> <!-- container-fluid -->

@@ -1,0 +1,138 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <!-- <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">Tax</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+                        <li class="breadcrumb-item active"> Tax </li>
+                    </ol>
+                </div>
+            </div> -->
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-5">
+            <!-- Search -->
+            <div class="col-sm-2 py-2">
+              <div class="d-flex align-items-center position-relative my-1 px-1">
+                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+                <input
+                  type="text"
+                  (keyup)="searchTable($event)"
+                  placeholder="Search.."
+                  class="form-control form-control-solid ps-12 w-200px"
+                  #input
+                />
+              </div>
+            </div>
+
+            <!-- Add new Tax -->
+            <div class="col-sm-10 py-2">
+              <div class="text-sm-end">
+                <button (click)="addtax(content)" type="button" class="btn btn-primary btn-rounded mb-2 me-2">
+                  <i class="mdi mdi-plus mr-1"></i> Add New Tax
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table align-middle table-nowrap table-hover">
+              <thead>
+                <tr>
+                  <th class="p-5 min-w-100px">#</th>
+                  <th class="text-start p-5 min-w-100px">Tax</th>
+                  <th class="text-start p-5 min-w-100px">Percentage</th>
+                  <th class="text-start p-5 min-w-100px">Status</th>
+                  <th class="text-center p-5 min-w-100px">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let tax of tax; let i = index">
+                  <td class="p-5">{{ page === 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}</td>
+                  <td class="p-5">
+                    <strong>
+                      {{ tax.name }}
+                    </strong>
+                  </td>
+                  <td class="p-5">{{ tax.percentage }}%</td>
+                  <td class="p-5">
+                    <div class="badge badge-light-success">{{ tax.status + '' === '1' ? 'Active' : '' }}</div>
+                    <div class="badge badge-light-danger">
+                      {{ tax.status + '' === '0' ? 'Inactive' : '' }}
+                    </div>
+                  </td>
+                  <td class="text-center p-5">
+                    <ul class="list-inline font-size-20 contact-links mb-0">
+                      <li class="list-inline-item px-2">
+                        <a (click)="setActiveTax(content, tax, i)" href="javascript:void(0)" ngbTooltip="View Tax"
+                          ><app-keenicon name="eye" class="fs-1 text-info cursor-pointer"></app-keenicon
+                        ></a>
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr *ngIf="tax?.length === 0">
+                  <td colspan="6" class="text-center">No Records Found</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Pagination  -->
+          <div class="row justify-content-md-between align-items-md-center mt-2">
+            <div class="col-sm-12 col-md-4">
+              <div class="dataTables_length" id="tickets-table_length">
+                <label class="d-inline-flex align-items-center"
+                  >Show
+                  <select class="form-select form-select-sm ms-2 me-2 cursor-pointer" (change)="handlePageSizeChange($event)">
+                    <option *ngFor="let size of pageSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select>
+                  Entries</label
+                >
+              </div>
+            </div>
+            <!-- Pagination -->
+            <div class="col-sm-12 col-md-8">
+              <div class="text-md-right float-md-end pagination-rounded">
+                <ngb-pagination
+                  [(page)]="page"
+                  [pageSize]="pageSize"
+                  [maxSize]="5"
+                  [rotate]="true"
+                  [ellipses]="false"
+                  [boundaryLinks]="true"
+                  (pageChange)="handlePageChange($event)"
+                  [collectionSize]="count"
+                ></ngb-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Pop UP Open start -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" *ngIf="!currentTax!.id" id="modal-basic-title">Add Tax</h5>
+    <h5 class="modal-title" *ngIf="currentTax!.id && addAction == true" id="modal-basic-title" (click)="addtax(content)">Edit Tax</h5>
+    <h5 class="modal-title" *ngIf="currentTax!.id && addAction == false" id="modal-basic-title" (click)="addtax(content)">View Tax</h5>
+    <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="viewAction">
+      <app-viewtax (refreshList)="refreshList($event)" (edittax)="edittax($event)" [selectedTax]="currentTax"></app-viewtax>
+    </div>
+    <div *ngIf="addAction">
+      <app-addtax (refreshList)="refreshList($event)" [data]="currentTax"></app-addtax>
+    </div>
+  </div>
+</ng-template>
+<!-- Pop UP Open end -->

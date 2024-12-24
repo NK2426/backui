@@ -1,0 +1,155 @@
+<div class="submit-form" *ngIf="viewValue">
+  <form (ngSubmit)="saveProductvariantValues()" [formGroup]="formVaraiantValueData" novalidate>
+    <div class="row">
+      <div class="col-12">
+        <h4 class="mb-0 font-size-16">{{ selectedProductvariant.name }}</h4>
+
+        <div class="mt-3 mb-3">
+          <label class="control-label">Enter Variant Values Comma Separator *</label>
+
+          <textarea class="form-control" placeholder="Enter Variant Value" name="value" autocomplete="off"
+            formControlName="value" [ngClass]="{
+              'is-invalid':
+                (submit && form['value']?.errors) || (form['value']?.invalid && (form['value']?.dirty || form['value']?.touched))
+            }"></textarea>
+
+          <!-- <input class="form-control" placeholder="Enter value" type="text" name="value" autocomplete="off"
+                        formControlName="value"
+                        [ngClass]="{'is-invalid': (submit && form['value']?.errors) || (form['value']?.invalid && (form['value']?.dirty || form['value']?.touched))}" /> -->
+
+          <div
+            *ngIf="(submit && form['value']?.errors) || (form['value']?.invalid && (form['value']?.dirty || form['value']?.touched))"
+            class="invalid-feedback">
+            <span *ngIf="form['value'].errors?.['required']">Enter productvariant value.</span>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-4" *ngIf="selectedProductvariant.showtype=='Image'">
+        <div class="mb-3">
+          <label class="control-label">Image Icon *</label>
+          <input type="file" class="file-input form-control" (change)="onSelectedFile($event)" autocomplete="off"
+            #fileupload name="imgicon" formControlName="imgicon" accept="image/x-png,image/gif,image/jpeg"
+            [ngClass]="{'is-invalid': (submit && form['imgicon']?.errors) || (form['imgicon']?.invalid && (form['imgicon']?.dirty || form['imgicon']?.touched))}" />
+          <a *ngIf="fileName!=''" target="_blank" href="{{fileName }}">{{fileName}} </a>
+
+          <div
+            *ngIf="fileName=='' && submit && form['imgicon']?.errors || (form['imgicon']?.invalid && (form['imgicon']?.dirty || form['imgicon']?.touched))"
+            class="invalid-feedback">
+            <span *ngIf="form['imgicon'].errors?.['required']">Select Image icon</span>
+          </div>
+        </div>
+      </div> -->
+      <!-- <div class="col-2">
+        <div class="mb-3">
+          <label class="control-label"> Order </label>
+          <input class="form-control" placeholder="" type="text" name="ordering" autocomplete="off"
+            formControlName="ordering"
+            [ngClass]="{'is-invalid': (submit && form['ordering']?.errors) || (form['ordering']?.invalid && (form['ordering']?.dirty || form['ordering']?.touched))}" />
+
+          <div
+            *ngIf="(submit && form['ordering']?.errors) || (form['ordering']?.invalid && (form['ordering']?.dirty || form['ordering']?.touched))"
+            class="invalid-feedback">
+            <span *ngIf="form['ordering'].errors?.['required']">Order</span>
+          </div>
+        </div>
+      </div> -->
+      <div class="col-md-12">
+        <!-- <label class="control-label">&nbsp;</label> -->
+        <button type="submit" class="btn btn-primary btn-sm col-md-4">{{ !form['id']?.value ? 'Save' : 'Update'
+          }}</button>
+        &nbsp;
+        <span *ngIf="form['id']?.value" class="btn btn-danger btn-sm col-md-4" (click)="clear()">Clear </span>
+      </div>
+    </div>
+  </form>
+
+  <div class="row mb-2 mt-2">
+    <div class="col-md-4 mt-2 mb-4"><strong class="control-label"> Values </strong></div>
+    <!-- <div *ngIf="selectedProductvariant.showtype == 'Image'" class="col-md-4 mt-2 mb-4">
+      <strong class="control-label"> Image Icon </strong>
+    </div> -->
+    <div class="col-md-4"></div>
+    <div class="row mb-2" *ngFor="let item of variantsvalues; let i = index">
+      <div class="col-md-4">{{ item?.value }}</div>
+      <!-- <div *ngIf="selectedProductvariant.showtype == 'Image'" class="col-md-4">
+        <img src="{{ item?.imgicon }}" alt="Icon" height="50" width="30" />
+      </div> -->
+      <div class="col-lg-4 align-self-center">
+        <i class="bx bxs-edit-alt text-info font-size-18" (click)="editValue(i)"></i>
+        <i class="mdi mdi-delete text-danger removeicon font-size-18 ms-4" (click)="removeValue(i)"></i>
+      </div>
+    </div>
+    <!-- <div class="col-md-12 mt-5">
+      <button class="btn btn-sm btn-info ms-4" (click)="editVariantValue()"><i
+          class="mdi mdi-arrow-left-thick font-12"></i> Back </button>
+    </div> -->
+  </div>
+</div>
+
+<div *ngIf="!viewValue">
+  <div class="pb-2">
+    <label class="col-md-4"><strong>Name : </strong></label> {{ selectedProductvariant?.name }}
+  </div>
+  <div class="pb-2">
+    <label class="col-md-4"><strong>Display Name : </strong></label> {{ selectedProductvariant?.displayname }}
+  </div>
+
+  <div class="pb-2">
+    <label class="col-md-4"><strong>Category : </strong></label> {{ selectedProductvariant?.category?.name }}
+  </div>
+  <div class="pb-2">
+    <label class="col-md-4"><strong>Sub Category: </strong></label> {{ selectedProductvariant?.subcategory?.name }}
+  </div>
+  <div class="pb-2">
+    <label class="col-md-4"><strong>Show Type : </strong></label> {{ selectedProductvariant?.showtype }}
+  </div>
+  <div class="pb-2">
+    <label class="col-md-4"><strong>Type : </strong></label> {{ selectedProductvariant.type == 0 ? 'String' : 'Number'
+    }}
+  </div>
+  <!-- <div>
+        <label class="col-md-4"><strong>eferenRce Image : </strong></label>
+        
+        <img *ngIf="selectedProductvariant.refimg" alt="Reference Image" height="100" width="60" src="{{selectedProductvariant.refimg}}" />
+    </div>
+    <div>
+        <label class="col-md-4"><strong>Reference Label : </strong></label> {{ selectedProductvariant?.reflabel }}
+    </div> -->
+  <div class="row mb-2 pb-2">
+    <label class="col-md-4"><strong> Values : </strong></label>
+    <div class="col-md-8" *ngFor="let item of selectedProductvariant.productvariantvalues; let i = index"
+      [ngClass]="{ 'offset-md-4': i > 0 }">
+      {{ item?.value }} <br />
+    </div>
+  </div>
+  <div class="pb-2">
+    <label class="col-md-4"><strong>Status : </strong></label> {{ selectedProductvariant?.status + '' === '0' ?
+    'Inactive' : 'Active' }}
+  </div>
+  <div class="pb-2">
+    <label class="col-md-4"><strong>CreateAt : </strong></label>
+    {{ selectedProductvariant?.createdAt | date : 'medium' }}
+  </div>
+  <div class="pb-2">
+    <label class="col-md-4"><strong>UpdateAt : </strong></label>
+    {{ selectedProductvariant?.updatedAt | date : 'medium' }}
+  </div>
+  <div class="pb-2">
+    <label class="col-md-4"><strong>Description : </strong></label> {{ selectedProductvariant?.description }}
+  </div>
+  <div *ngIf="!assignedparams.includes(selectedProductvariant.uuid)" class="d-md-flex align-items-center py-4">
+    <div class="col-md-8 mb-3">
+      <button class="btn btn-sm btn-primary" (click)="editAction(selectedProductvariant)">
+        <app-keenicon name="pencil" class="fs-5 text-white"></app-keenicon>&nbsp;Edit
+      </button>
+
+      <button class="btn btn-sm btn-primary ms-4" (click)="editVariantValue()"><app-keenicon name="abstract-10"
+          class="fs-5 text-white"></app-keenicon>&nbsp; Add Values</button>
+    </div>
+    <div *ngIf="deleteaction" class="ml-auto mb-3">
+      <button class="btn btn-sm btn-danger" (click)="deleteParameter(selectedProductvariant)">
+        <app-keenicon name="trash" class="fs-5 text-white"></app-keenicon>&nbsp;Delete
+      </button>
+    </div>
+  </div>
+</div>

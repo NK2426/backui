@@ -1,0 +1,55 @@
+<div class="mb-2">
+  <label class="col-md-4"><strong>Name : </strong></label> {{ selctvendor?.name }}
+</div>
+<div class="mb-2">
+  <label class="col-md-4"><strong>Email : </strong></label>
+  {{ selctvendor?.email }}
+</div>
+<div class="mb-2">
+  <label class="col-md-4"><strong>Mobile : </strong></label>
+  {{ selctvendor?.mobile }}
+</div>
+
+<div class="mb-2">
+  <label class="col-md-4"><strong>Address : </strong></label>
+  {{ selctvendor?.address }}
+</div>
+<div class="mb-2">
+  <!-- <label class="col-md-4"><strong>State : </strong></label>
+  {{ stateValue[1] }} -->
+</div>
+<div *ngIf="!assignedparams.includes(selctvendor.uuid)" class="d-md-flex align-items-center mt-5">
+  <div class="col-md-3 mb-3">
+    <button class="btn btn-sm btn-primary fw-bold" (click)="editAction(selctvendor)">Edit</button>
+  </div>
+  <div class="col-md-3 mb-3">
+    <div class="dl">
+      <!-- <button class="btn btn-sm btn-danger fw-bold" (click)="deleteParameter(selctvendor)">
+        <i class="mdi mdi-delete font-12"></i> Delete
+      </button> -->
+    </div>
+  </div>
+</div>
+
+<div class="row mb-2 pb-2">
+  <!-- <label class="col-md-4"><strong> Vendors : </strong></label> -->
+  <div class="mb-2">
+    <!-- <pre>{{ vendor | json }}</pre> -->
+    <div class="col-sm-3 table-responsive">
+      <table class="table align-middle table-nowrap table-hover">
+        <thead>
+          <tr>
+            <th class="p-3 w-150px">Suppliers</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ven of vendor; index as i">
+            <!-- <td>{{vendor.uuid !=='':i?i=0}}</td> -->
+            <!-- <td>{{ ven[i].uuid }}</td> -->
+            <td>{{ ven.uuid }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

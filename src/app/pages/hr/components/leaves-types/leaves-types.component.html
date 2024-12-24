@@ -1,0 +1,110 @@
+<div class="card mb-5 mb-xl-10">
+    <div class="card-header align-items-center py-0 gap-2 gap-md-5">
+        <div class="card-header card-title">
+            <!--begin::Search-->
+            <div class="d-flex align-items-center position-relative my-1 px-1">
+                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                </i>
+                <input type="text" (keyup)="searchTable($event)" placeholder="Search.."
+                    class="form-control form-control-solid w-200px ps-12" #input>
+            </div>
+        </div>
+        <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
+            <div class="mw-180px" style="padding-right:15px;">
+                <a (click)="addRoles(content)" routerLinkActive="router-link-active"
+                    class="btn btn-primary text-white">Add
+                    New LeaveType</a>
+                <!--end::Select2-->
+            </div>
+        </div>
+    </div>
+    <div class="card-body pt-1 pb-0">
+        <div class="card-body py-3">
+            <div class="table-responsive">
+                <table class="table align-left gs-0 gy-5">
+                    <thead>
+                        <tr>
+                            <th class="p-5 w-50px">#</th>
+                            <th class="text-start p-5 min-w-100px">Name</th>
+                            <th class="text-start p-5 min-w-100px">Created Date</th>
+                            <th class="text-start p-5 min-w-100px">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container>
+                            <tr *ngFor="let department of roles; let i = index">
+                                <td class="p-5">{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}</td>
+                                <td class="p-5">
+                                    <strong class="font-size-14 mb-1"><a href="javascript: void(0);"
+                                            class="text-dark"></a>
+                                        {{department.name}}
+                                    </strong>
+                                </td>
+                                <td class="p-5">{{department.createdAt | date : 'dd/MM/yyyy'}}</td>
+                                <td class="p-5">
+                                    <ul class="list-inline font-size-20 contact-links mb-0">
+                                        <li class="list-inline-item px-1 cursor-pointer">
+                                            <a (click)="setActiveRoles(content, department, i)" ngbTooltip="View User">
+                                                <app-keenicon name="eye" class="fs-1 text-info"></app-keenicon>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr *ngIf="roles?.length === 0">
+                                <td colspan="4" class="text-center fw-bold">No records found</td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination  -->
+            <div class="row justify-content-md-between align-items-md-center mt-2">
+                <div class="col-sm-12 col-md-8">
+                    <div class="dataTables_length" id="tickets-table_length"><label
+                            class="d-inline-flex align-items-center">Show
+                            <select class="form-select form-select-sm ms-2 me-2 cursor-pointer"
+                                (change)="handlePageSizeChange($event)">
+                                <option *ngFor="let size of pageSizes" [ngValue]="size">
+                                    {{ size }}
+                                </option>
+                            </select> Entries</label></div>
+                </div>
+                <!-- Pagination -->
+                <div class="col-sm-12 col-md-4">
+                    <div class="text-md-right float-md-end pagination-rounded">
+                        <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true"
+                            [ellipses]="false" [boundaryLinks]="true" (pageChange)="handlePageChange($event)"
+                            [collectionSize]="count">
+                        </ngb-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pop UP Open start -->
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" *ngIf="!currentRoles!.uuid" id="modal-basic-title">Add LeaveType</h5>
+        <h5 class="modal-title" *ngIf="currentRoles!.uuid && addAction==true" id="modal-basic-title"
+            (click)="addRoles(content)">Edit LeaveType</h5>
+        <h5 class="modal-title" *ngIf="currentRoles!.uuid && addAction==false" id="modal-basic-title"
+            (click)="addRoles(content)">View LeaveType</h5>
+        <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div *ngIf="viewAction">
+            <app-view-leavetype (refreshList)='refreshList($event)' (editRoles)='editRoles($event)'
+                [selectedDepartment]="currentRoles"></app-view-leavetype>
+        </div>
+        <div *ngIf="addAction">
+            <app-add-leavetype (refreshList)='refreshList($event)' [data]="currentRoles"></app-add-leavetype>
+        </div>
+    </div>
+</ng-template>
+<!-- Pop UP Open end -->

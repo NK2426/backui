@@ -1,0 +1,80 @@
+<div class="submit-form">
+    <form (ngSubmit)="saveProductvariants()" [formGroup]="formData" novalidate>
+        <div class="row">
+            <div class="col-12">
+                <!-- Brand -->
+                <div class="mb-3">
+                    <label class="form-label required">Brand name</label>
+                    <input class="form-control" placeholder="Enter Brand Name" type="text" name="name"
+                        autocomplete="off" formControlName="name"
+                        [ngClass]="{'is-invalid': (submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))}" />
+
+                    <div *ngIf="(submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['name'].errors?.['required']">Enter brand name.</span>
+                        <span *ngIf="form['name'].errors?.['minlength']">Minimum Length 3
+                            Characters.</span>
+                    </div>
+                </div>
+
+                <!-- Department -->
+                <!-- <div class="mb-3">
+                    <label class="form-label required"> Select Department</label>
+                    <ng-select name="department_id" placeholder="Select Department" [items]="departments"
+                        bindLabel="name" bindValue="did" formControlName="department_id" name="department_id"
+                        [ngClass]="{ 'is-invalid': (submit && formData.get('department_id').invalid) || (submit && formData.get('department_id').touched) }">
+                    </ng-select>
+                    <div *ngIf="(submit && formData.get('department_id').invalid) || (submit && formData.get('department_id').touched)"
+                        class="invalid-feedback">
+                        <div *ngIf="!!formData.get('department_id').hasError('required')">Choose Department
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- Vendor -->
+                <div class="mb-3">
+                    <label class="form-label required"> Select Supplier</label>
+                    <ng-select name="brand" placeholder="Select Supplier" [items]="vendors" bindLabel="name"
+                        bindValue="uid" formControlName="vendor_id" name="vendor_id"
+                        [ngClass]="{ 'is-invalid': (submit && formData.get('vendor_id').invalid) || (submit && formData.get('vendor_id').touched) }">
+                    </ng-select>
+                    <div *ngIf="(submit && formData.get('vendor_id').invalid) || (submit && formData.get('vendor_id').touched)"
+                        class="invalid-feedback">
+                        <div *ngIf="!!formData.get('vendor_id').hasError('required')">Choose Vendor
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                    <label class="form-label"> Description </label>
+                    <textarea class="form-control" placeholder="Enter Description" type="text" name="description"
+                        autocomplete="off" formControlName="description"
+                        [ngClass]="{'is-invalid': (submit && form['description']?.errors) || (form['description']?.invalid && (form['description']?.dirty || form['description']?.touched))}"></textarea>
+                </div>
+
+                <!-- Status -->
+                <div class="mb-3" *ngIf="data.uuid">
+                    <label class="form-label required"> Status</label>
+                    <select class="form-control" type="text" name="status" formControlName="status"
+                        [ngClass]="{'is-invalid': (submit && form['status']?.errors) || (form['status']?.invalid && (form['status']?.dirty || form['status']?.touched))}">
+                        <option *ngFor="let stat of statuses" [value]="stat.id">{{ stat.name }}</option>
+                    </select>
+                </div>
+
+                <!-- Submit Cancel -->
+                <div class="d-md-flex align-items-center mt-5">
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-sm btn-primary my-2">Submit</button>
+                    </div>
+                    <div class="ml-auto">
+                        <div class="dl">
+                            <button type="button" class="btn btn-sm btn-secondary my-2"
+                                (click)="cancelAction()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

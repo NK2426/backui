@@ -1,0 +1,132 @@
+<div class="container-flude">
+  <div class="card">
+    <div class="card-body">
+      <div class="p-5">
+        <!-- Vendor -->
+        <div class="col-md-12 col-sm-12 row">
+          <div class="col-md-3">
+            <ng-select
+              class="my-2"
+              name="orderTypeFilter"
+              placeholder="Filter by vendor"
+              [items]="vendorDetails"
+              bindLabel="name"
+              bindValue="uuid"
+              [(ngModel)]="selectedVendor"
+              (change)="onDropdownChange($event.uid)"
+            >
+            </ng-select>
+          </div>
+        </div>
+
+        <!-- Vendor Details -->
+        <div class="table-responsive" *ngIf="vendorExpenses?.length">
+          <h3 class="py-4">
+            Vendor Due Amount : <span class="text-primary fs-1">&#8377;{{ vendorDueAmount }}</span>
+          </h3>
+          <table class="table align-middle table-nowrap table-hover">
+            <thead>
+              <tr>
+                <th class="text-center p-4">#</th>
+                <th class="text-start p-4">Purchase OrderId</th>
+                <th class="text-start p-4">Total Purchase Amount</th>
+                <th class="text-start p-4">Total Paid</th>
+                <th class="text-start p-4">Paid</th>
+                <th class="text-start p-4">Balance AmountDue</th>
+                <th class="text-start p-4">Balance Cycles Left</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let item of vendorExpenses; let index = index">
+                <tr (click)="toggleAccordion(index)" class="example-accordion-item-header" style="cursor: pointer">
+                  <td class="text-center p-4 fw-bold">{{ page == 1 ? index + 1 : index + 1 + size * (page - 1) }}</td>
+                  <td class="text-start p-4 fw-bold">{{ item.purchaseOrderId }}</td>
+                  <td class="text-start p-4 fw-bold text-primary">&#8377;{{ item.totalPurchaseAmount }}</td>
+                  <td class="text-start p-4 text-primary">&#8377;{{ item.totalPaid }}</td>
+                  <td class="text-start p-4">{{ item.isFullyPaid == true ? 'Paid' : 'Unpaid' }}</td>
+                  <td class="text-start p-4">&#8377;{{ item.balanceAmountDue }}</td>
+                  <td class="text-start p-4">{{ item.balanceCyclesLeft }}</td>
+                </tr>
+                <ng-container *ngIf="expandedIndex === index">
+                  <tr>
+                    <td colspan="7" class="px-0">
+                      <table class="table align-middle table-nowrap table-hover">
+                        <thead style="background-color: #d984b0 !important; border: 1px solid #d984b0">
+                          <tr style="font-size: 16px">
+                            <th class="text-center p-4">#</th>
+                            <th class="text-start p-4">Payment Type</th>
+                            <th class="text-start p-4">Payment Days</th>
+                            <th class="text-start p-4">Payment Percentage</th>
+                            <th class="text-start p-4">PO Date</th>
+                            <th class="text-start p-4">Expected Date</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            class="example-accordion-item-body"
+                            style="border: 1px solid #d984b0"
+                            *ngFor="let data of item?.paymentStatus; let i = index"
+                          >
+                            <td class="p-4 text-center">{{ i + 1 }}</td>
+                            <td class="text-start p-4">{{ data?.cycle?.type }}</td>
+                            <td class="text-start p-4">{{ data?.cycle?.days }}</td>
+                            <td class="text-start p-4">{{ data?.cycle?.percentage }}%</td>
+                            <td class="text-start p-4">{{ data?.poDate }}</td>
+                            <td class="text-start p-4">{{ data?.expected_Date }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </ng-container>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div *ngIf="vendorID">
+          <div class="row justify-content-md-between align-items-md-center mt-2">
+            <div class="col-sm-12 col-md-4">
+              <div class="dataTables_length" id="tickets-table_length">
+                <label class="d-inline-flex align-items-center text-primary fw-bold"
+                  >Show
+                  <select class="form-select form-select-sm ms-2 me-2 cursor-pointer" (change)="handlePageSizeChange($event)">
+                    <option *ngFor="let size of pageSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select>
+                  Entries</label
+                >
+              </div>
+            </div>
+
+            <div class="col-sm-12 col-md-8">
+              <div class="text-md-right float-md-end pagination-rounded">
+                <ngb-pagination
+                  [maxSize]="5"
+                  [collectionSize]="count"
+                  [(page)]="page"
+                  [pageSize]="size"
+                  [rotate]="true"
+                  [ellipses]="false"
+                  [boundaryLinks]="true"
+                  (pageChange)="handlePageChange($event)"
+                ></ngb-pagination>
+              </div>
+            </div>
+          </div>
+
+          <!-- Download Pdf -->
+          <div class="float-end py-5">
+            <a *ngIf="showprint" (click)="downloadPdf()" class="btn btn-sm btn-primary my-2"><i class="fa fa-file-pdf"></i> Download PDF</a>
+            <span *ngIf="!showprint" class="btn btn-sm btn-warning my-2"
+              ><i class="bx bx-loader bx-spin"></i> Please Wait PDF is Generating ...
+            </span>
+            &nbsp;&nbsp;
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

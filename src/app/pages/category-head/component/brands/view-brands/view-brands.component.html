@@ -1,0 +1,38 @@
+<div class="pb-2">
+    <label class="col-md-4"><strong>Name : </strong></label> {{ selectedBrand?.name }}
+</div>
+<!-- <div class="pb-2">
+    <label class="col-md-4"><strong>Department : </strong></label> {{ selectedBrand?.department?.name }}
+</div> -->
+<div class="pb-2">
+    <label class="col-md-4"><strong>Supplier : </strong></label> {{ selectedBrand?.user?.roleID!==2 ?
+    selectedBrand?.user?.name : '' }}
+</div>
+<div class="pb-2">
+    <label class="col-md-4"><strong>Status : </strong></label> {{ selectedBrand?.status+'' === '0' ? 'Inactive' :
+    'Active' }}
+</div>
+<div class="pb-2">
+    <label class="col-md-4"><strong>CreateAt : </strong></label>
+    {{ selectedBrand?.createdAt | date:'medium' }}
+</div>
+<div class="pb-2">
+    <label class="col-md-4"><strong>UpdateAt : </strong></label>
+    {{ selectedBrand?.updatedAt | date:'medium' }}
+</div>
+<div class="pb-2">
+    <label class="col-md-4"><strong>Description : </strong></label> {{ selectedBrand?.description }}
+</div>
+
+<div *ngIf="!assignedparams.includes(selectedBrand.uuid)" class="d-md-flex align-items-center pt-3">
+    <div class="col-md-3">
+        <button class="btn btn-sm btn-primary my-2" (click)="editAction(selectedBrand)"><i
+                class="mdi mdi-pencil font-12"></i> Edit</button>
+    </div>
+    <div *ngIf="deleteaction" class="ml-auto">
+        <div class="dl">
+            <button class="btn btn-sm btn-danger my-2" (click)="deleteParameter(selectedBrand)"><i
+                    class="mdi mdi-delete font-12"></i> Delete</button>
+        </div>
+    </div>
+</div>

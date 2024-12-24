@@ -1,0 +1,146 @@
+<!-- <p>{{users | json}}</p> -->
+
+<div class="card mb-5 mb-xl-10 p-3">
+  <div class="card-header align-items-center py-0 gap-2 gap-md-5">
+    <!-- <div class="col-lg-12"> -->
+    <div class="card-header card-title p-0">
+      <!--begin::Search-->
+      <div class="d-flex align-items-center position-relative my-1 px-1">
+        <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+          <span class="path1"></span>
+          <span class="path2"></span>
+        </i>
+        <input type="text" (keyup)="searchTable($event)" placeholder="Search.."
+          class="form-control form-control-solid ps-12 w-200px" #input />
+      </div>
+      <!-- <div class="d-flex align-items-center position-relative my-1 px-1">
+                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                </i>
+                <input type="text" (keyup)="searchF($event)" placeholder="Search..."
+                    class="form-control form-control-solid w-200px ps-12" #input>
+            </div> -->
+      <!-- <select [(ngModel)]="selected" id="department" name="users.status" (ngModelChange)="onSelect($event)">
+                <option value='' selected>Select </option>
+                <option value="active">
+                    active
+                </option>
+                <option value="inactive">
+                    inactive
+                </option>
+            </select> -->
+    </div>
+    <div class="card-toolbar flex-row-fluid justify-content-end">
+      <div class="mw-180px">
+        <a [routerLink]="['add']" routerLinkActive="router-link-active" class="btn btn-primary text-white">Add New
+          Employee</a>
+        <!--end::Select2-->
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table align-left gs-0 gy-5">
+          <thead>
+            <tr>
+              <th class="p-5 w-50px">#</th>
+              <th class="text-start p-5 min-w-100px">EmployeeCode</th>
+              <th class="text-start p-5 min-w-100px">Name</th>
+              <th class="text-start p-5 min-w-100px">Role</th>
+              <th class="text-start p-5 min-w-100px">Email</th>
+              <th class="text-start p-5 min-w-100px">Mobile</th>
+              <th class="text-start p-5 min-w-100px">Status</th>
+              <th class="text-start p-5 min-w-100px">Created Date</th>
+              <th class="text-center p-5 min-w-100px">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="users?.length > 0; else  norecord">
+              <tr *ngFor="let user of users; let i = index">
+                <td class="text-center">
+                  <span class="">{{ page == 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}</span>
+                </td>
+                <td>
+                  <span class="fw-bold ms-3 text-uppercase">{{ user.uuid || '' }}</span>
+                </td>
+                <td>
+                  <span class="">
+                    {{ user.name }}
+                  </span>
+                </td>
+                <td>
+                  <span class="ms-3">{{ findRole(user.roleID) }}</span>
+                </td>
+                <td>
+                  <span class="ms-3">{{ user.email }}</span>
+                </td>
+                <td>
+                  <span class="ms-3">{{ user.mobile }}</span>
+                </td>
+                <!-- <td>
+                                    <div class="badge badge-light-danger">{{user.status+'' === '0' ?
+                                        'Inactive' : ''}}</div>
+                                </td> -->
+                <td>
+                  <div class="badge badge-light-success">{{ user.status + '' === '1' ? 'Active' : '' }}</div>
+                  <div class="badge badge-light-danger">{{ user.status + '' === '0' ? 'Inactive' : '' }}</div>
+                </td>
+                <td>{{ user.createdAt | date : 'dd/MM/yyyy' }}</td>
+                <td class="d-flex justify-content-center">
+                  <ul class="list-inline font-size-20 contact-links mb-0 d-flex">
+                    <li class="list-inline-item px-1 cursor-pointer">
+                      <a (click)="viewEdit('view', user.uuid)" ngbTooltip="View User">
+                        <app-keenicon name="eye" class="fs-2 text-info"></app-keenicon>
+                      </a>
+                    </li>
+                    <li class="list-inline-item px-1 cursor-pointer">
+                      <a (click)="viewEdit('edit', user.uuid)" ngbTooltip="Edit User"><app-keenicon name="pencil"
+                          class="fs-2 text-primary"></app-keenicon>
+                      </a>
+                    </li>
+                    <li class="list-inline-item px-1 cursor-pointer">
+                      <a ngbTooltip="Delete User" (click)="deleteUser(user)"><app-keenicon name="trash"
+                          class="fs-2 text-danger"></app-keenicon>
+                      </a>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination  -->
+      <div class="row justify-content-md-between align-items-md-center mt-2">
+        <div class="col-sm-12 col-md-8">
+          <div class="dataTables_length" id="tickets-table_length">
+            <label class="d-inline-flex align-items-center">Show
+              <select class="form-select form-select-sm ms-2 me-2 cursor-pointer"
+                (change)="handlePageSizeChange($event)">
+                <option *ngFor="let size of pageSizes" [ngValue]="size">
+                  {{ size }}
+                </option>
+              </select>Entries
+            </label>
+          </div>
+        </div>
+        <!-- Pagination -->
+        <div class="col-sm-12 col-md-4">
+          <div class="text-md-right float-md-end pagination-rounded">
+            <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false"
+              [boundaryLinks]="true" (pageChange)="handlePageChange($event)" [collectionSize]="count"></ngb-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #norecord>
+  <tr>
+    <td colspan="8" style="text-align:center;font-size:14px;font-weight: 600;">No Record Found</td>
+  </tr>
+</ng-template>

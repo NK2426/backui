@@ -1,0 +1,210 @@
+<div class="submit-form">
+    <div class="mb-3 row">
+    </div>
+    <form (ngSubmit)="savePaymentTerm()" [formGroup]="formData" *ngIf="!showCycleForm" novalidate>
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label required">Name</label>
+                    <input class="form-control" placeholder="Enter Payment Name" type="text" name="name"
+                        autocomplete="off" formControlName="name"
+                        [ngClass]="{'is-invalid': (submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))}" />
+
+                    <div *ngIf="(submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['name'].errors">Enter valid name</span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label required">Description</label>
+                    <input class="form-control" placeholder="Enter Payment Description" type="text" name="description"
+                        autocomplete="off" formControlName="description"
+                        [ngClass]="{'is-invalid': (submit && form['description']?.errors) || (form['description']?.invalid && (form['description']?.dirty || form['description']?.touched))}" />
+
+                    <div *ngIf="(submit && form['description']?.errors) || (form['description']?.invalid && (form['description']?.dirty || form['description']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['description'].errors">Enter valid description</span>
+                    </div>
+                </div>
+
+                <div class="mb-3" *ngIf="data.id">
+                    <label class="form-label required">Status</label>
+                    <ng-select [items]="options" [markFirst]="true"
+                        [ngClass]="{'is-invalid': (submit && form['status']?.errors) || (form['status']?.invalid && (form['status']?.dirty || form['status']?.touched))}"
+                        [searchable]="true" bindLabel="stat" bindValue="_id" formControlName="status">
+                    </ng-select>
+                    <div *ngIf="(submit && form['status']?.errors) || (form['status']?.invalid && (form['status']?.dirty || form['status']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['status'].errors">Enter valid status</span>
+                    </div>
+                </div>
+
+                <div class="d-md-flex align-items-center mt-5">
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary btn-sm my-2" id="upsert_submit">Submit</button>
+                    </div>
+                    <div class="ml-auto">
+                        <div class="dl">
+                            <button type="button" id="upsert_cancel" class="btn btn-secondary my-2 btn-sm"
+                                (click)="cancelAction()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="card" style="background: aliceblue;" *ngIf="submit">
+        <div class="card-body">
+            <button class="btn btn-sm btn-primary" (click)="addItem()">Add Payment Cycle</button>
+        </div>
+    </div>
+</div>
+
+<div class="d-md-flex align-items-center mt-5" *ngIf="editPaymentBtn">
+    <div class="col-md-3">
+        <button type="submit" class="btn btn-primary btn-sm my-2" id="upsert_submit">Submit</button>
+    </div>
+    <div class="ml-auto">
+        <div class="dl">
+            <button type="button" id="upsert_cancel" class="btn btn-secondary my-2 btn-sm"
+                (click)="cancelAction()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="showPaymentCycle">
+    <h5 class="py-3">Payment Cycle Maximum 100 Percentage Only</h5>
+    <!-- *ngIf="currentPaymentTermID && data && data.paymentcycles && data.paymentcycles.length" -->
+    <table class="table align-middle  table-nowrap table-hover">
+        <thead class="">
+            <tr class="">
+                <th>Type</th>
+                <th>Days</th>
+                <th>Percentage</th>
+                <!-- <th>Term ID</th> -->
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let paymentCycle of payment_array">
+                <td> {{paymentCycle.type}}</td>
+                <td>
+                    <div *ngIf="paymentCycle.days == '1'">0</div>
+                    <div *ngIf="paymentCycle.days !== '1'">{{paymentCycle.days}}</div>
+                </td>
+
+                <td>{{paymentCycle.percentage}}%</td>
+                <!-- <td>{{paymentCycle.paymentterm_id}}</td> -->
+                <td>
+                    <ul class="list-inline font-size-20 contact-links mb-0">
+                        <li class="list-inline-item px-2">
+                            <!-- <a href="javascript:void(0)" ngbTooltip="Edit Payment Cycle"><i
+                                    class="mdi mdi-pencil font-12" (click)="editPaymentCycle(paymentCycle)"></i></a> -->
+                            <a href="javascript:void(0)" ngbTooltip="Delete Payment Cycle"><app-keenicon name="trash"
+                                    class="fs-1 text-danger" (click)="deletePaymentCycle(paymentCycle)"
+                                    id="deletePaymentCycle"></app-keenicon></a>
+                        </li>
+                        <!-- <li class="list-inline-item px-2">
+                            <a href="javascript:void(0)" ngbTooltip="Edit Payment Cycle"><app-keenicon name='pencil'
+                                    class="fs-0 text-primary" (click)="editPaymentTerm(paymentCycle.id)">
+                                </app-keenicon>
+                            </a>
+                        </li> -->
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div *ngIf="new_cycle">
+    <form (ngSubmit)="savePaymentCycle()" [formGroup]="formPaymentData" novalidate>
+        <div formArrayName="items" *ngFor="let item of getControls(); let i = index;">
+            <div class="row" [formGroupName]="i">
+                <div class="col-12">
+                    <!-- *ngIf="100 >= percentage_values" id="percentage_values" -->
+                    <div class="mb-3">
+                        <label class="form-label required">Type</label>
+                        <ng-select [items]="paymentoptions" [markFirst]="true"
+                            [ngClass]="{'is-invalid': (paysubmit && form['type']?.errors) || (form['type']?.invalid && (form['type']?.dirty || form['type']?.touched))}"
+                            [searchable]="true" bindLabel="displayName" bindValue="value" formControlName="type"
+                            (change)="change_payment($event)">
+                        </ng-select>
+                        <div *ngIf="(paysubmit && form['type']?.errors) || (form['type']?.invalid && (form['type']?.dirty || form['type']?.touched))"
+                            class="invalid-feedback">
+                            <span *ngIf="form['type'].errors">Enter valid type</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3" *ngIf="payment">
+                        <!-- <pre>{{day|json}}</pre> -->
+                        <label class="form-label required">Days</label>
+                        <ng-select [items]="day" [markFirst]="true"
+                            [ngClass]="{'is-invalid': (paysubmit && form['type']?.errors) || (form['type']?.invalid && (form['type']?.dirty || form['type']?.touched))}"
+                            [searchable]="true" bindLabel="displayName" bindValue="value" formControlName="days">
+                        </ng-select>
+                        <div *ngIf="(paysubmit && form['days']?.errors) || (form['days']?.invalid && (form['days']?.dirty || form['days']?.touched))"
+                            class="invalid-feedback">
+                            <span *ngIf="form['days'].errors">Enter valid days</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3" *ngIf="advance">
+                        <!-- <pre>{{day_date|json}}</pre> -->
+                        <label class="form-label required">Days</label>
+                        <ng-select [items]="day_date" [markFirst]="false"
+                            [ngClass]="{'is-invalid': (paysubmit && form['type']?.errors) || (form['type']?.invalid && (form['type']?.dirty || form['type']?.touched))}"
+                            [searchable]="true" bindLabel="displayName" bindValue="value" formControlName="days">
+                        </ng-select>
+                        <div *ngIf="(paysubmit && form['days']?.errors) || (form['days']?.invalid && (form['days']?.dirty || form['days']?.touched))"
+                            class="invalid-feedback">
+                            <span *ngIf="form['days'].errors">Enter valid days</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label required">Percentage</label>
+                        <input class="form-control" placeholder="Enter percentage(1-100)" type="text" name="percentage"
+                            autocomplete="off" formControlName="percentage"
+                            (keypress)="($event.charCode >= 48 && $event.charCode < 58)"
+                            [ngClass]="{'is-invalid': (paysubmit && form['percentage']?.errors) || (form['percentage']?.invalid && (form['percentage']?.dirty || form['percentage']?.touched))}" />
+                        <div *ngIf="(paysubmit && form['percentage']?.errors) || (form['percentage']?.invalid && (form['percentage']?.dirty || form['percentage']?.touched))"
+                            class="invalid-feedback">
+                            <span *ngIf="form['percentage'].errors">Enter percentage</span>
+                            <span *ngIf="form['percentage'].errors.pattern">ENter Number Only</span>
+                        </div>
+                    </div>
+
+                    <div class="d-md-flex align-items-center mt-5">
+                        <div class="col-md-3">
+                            <button type="submit" [disabled]="formPaymentData.invalid"
+                                class="btn btn-primary btn-sm my-2">Submit</button>
+                        </div>
+                        <div class="ml-auto">
+                            <div class="dl">
+                                <button type="button" class="btn btn-secondary btn-sm my-2"
+                                    (click)="cancelPaymentCycleAction()">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- <div class="btn btn-sm btn-primary" (click)="addItem()">Add</div> -->
+</div>
+
+<div class="col-md-7" *ngIf="editPaymentFlag">
+    <button class="btn btn-sm btn-primary my-2" (click)="editPaymentTerm(paymentCycle, formData,data.id)">
+        <app-keenicon name="pencil" class="fs-0 text-primary"></app-keenicon> Edit Payment Term
+    </button>
+</div>
+<div class="col-md-5">
+    <!-- <div class="dl">
+        <button class="btn btn-sm btn-danger my-2" (click)="deletePaymentTerm(selectedPayment)">
+            <app-keenicon name="trash" class="fs-0 text-white"></app-keenicon> Delete Payment Term
+        </button>
+    </div> -->
+</div>

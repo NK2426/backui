@@ -1,0 +1,505 @@
+<div class="page-title d-flex flex-wrap me-3 flex-column justify-content-center ps-5">
+  <h1 class="page-heading d-flex text-dark fw-bold fs-3 my-0 flex-column justify-content-center mb-3">Add Stock</h1>
+</div>
+<div class="card mb-5 mb-xl-10 p-3">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <!-- Table -->
+        <div class="table-responsive">
+          <table id="datatable" class="table align-left gs-0 gy-5">
+            <thead>
+              <tr>
+                <th class="p-5 w-100px">
+                  Copy <input type="checkbox" class="cursor-pointer" [(ngModel)]="checked" (click)="checkall($event)" />
+                </th>
+                <!-- <th class="text-start p-5 min-w-100px" *ngFor="let variant of variants">{{ variant.displayname }}</th> -->
+                <th class="text-start p-5 min-w-100px">RC Price</th>
+                <th class="text-start p-5 min-w-100px">INV Count</th>
+                <th class="text-start p-5 min-w-100px">Stock Qty</th>
+                <th class="text-start p-5 min-w-100px">MRP</th>
+                <th class="text-start p-5 min-w-100px">Price</th>
+                <td class="p-5 min-w-50px" *ngFor="let header of variants; let j = index">{{ header.name }}</td>
+                <th class="text-start p-5 min-w-100px">Title</th>
+                <th class="text-start p-5 min-w-100px">Description</th>
+                <th class="text-start p-5 min-w-100px">Main Image</th>
+                <th class="text-start p-5 min-w-100px">Sub Images</th>
+                <th class="text-center p-5 min-w-100px">Videos</th>
+                <th class="text-start p-5 min-w-100px">Status</th>
+                <th class="text-center p-5 min-w-80px">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let itemlist of itemlists; let i = index">
+                <td class="p-5"><input type="checkbox" class="cursor-pointer" [(ngModel)]="itemlist.checked" /></td>
+                <!-- <td class="p-5" *ngFor="let variant of itemlist.skulist">
+                      {{ itemlist.variantlist[variant]['value'] || '' }}
+                    </td> -->
+                <td class="p-5">INR {{ itemlist.rprice }}</td>
+                <td class="p-5">{{ itemlist.stockqty }}</td>
+                <td class="p-5">{{ itemlist.quantity }}</td>
+                <td class="p-5">
+                  INR {{ itemlist.item?.mrp || itemlist.mrp }}
+                  <div *ngIf="priceupdate[i] && priceupdate[i]['show']">
+                    <input class="form-control form-control-sm" type="text" [(ngModel)]="priceupdate[i]['mrp']"
+                      #price="ngModel" appPriceMRPValidator="{{ priceupdate[i]['price'] }}" required />
+                    <div class="text-danger" *ngIf="price.dirty && price.invalid">
+                      <p *ngIf="price.errors?.['required']">MRP is required field!</p>
+                      <p *ngIf="price.errors?.['priceInvalid']">Please enter mrp greater than price</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="p-5">
+                  INR <strong>{{ itemlist.item?.price || itemlist.price }}</strong>
+                  <div *ngIf="priceupdate[i] && priceupdate[i]['show']">
+                    <input class="form-control form-control-sm my-1" type="text" [(ngModel)]="priceupdate[i]['price']"
+                      #price="ngModel" appMRPPriceValidator="{{ priceupdate[i]['mrp'] }}" required />
+                    <a id="price" ngbTooltip="Save Price" (click)="saveprice(i)"><app-keenicon name="add-folder"
+                        class="fs-3 text-primary cursor-pointer"></app-keenicon></a>
+                    <a ngbTooltip="Cancel" (click)="priceupdate[i]['show'] = false"
+                      style="padding-left: 3px;"><app-keenicon name="abstract-11"
+                        class="fs-3 pt-3 text-danger cursor-pointer"></app-keenicon>
+                    </a>
+                    <div class="text-danger" *ngIf="price.dirty && price.invalid">
+                      <p *ngIf="price.errors?.['required']">Price is required field!</p>
+                      <p *ngIf="price.errors?.['priceInvalid']">Please enter price less than MRP</p>
+                    </div>
+                  </div>
+                  <div *ngIf="priceupdate[i] && !priceupdate[i]['show']">
+                    <a ngbTooltip="Edit Price" (click)="priceupdate[i]['show'] = true">
+                      <app-keenicon name="pencil" class="fs-3 text-primary cursor-pointer"></app-keenicon>
+                    </a>
+                  </div>
+                </td>
+                <td class="p-5 min-w-50px" *ngFor="let variant of getVariantValues(itemlist.variantlist); let j = index">{{ variant }}</td>
+                <td class="p-5">{{ itemlist?.item?.name }}</td>
+                <td class="p-5">{{ itemlist?.item?.description }}</td>
+                <td class="p-5">
+                  <img src="{{ itemlist?.item?.path }}" alt="" width="50" height="70" *ngIf="itemlist?.item?.path" />
+
+                  <!-- <a (click)="openGallery(mediacontent,'single', itemlist.uuid)"
+                        class="btn btn-primary waves-effect waves-light">+</a> -->
+                </td>
+                <td class="p-5">
+                  <span *ngFor="let itemimg of itemlist.item?.itemsimages">
+                    <img src="{{ itemimg?.path }}" alt="" width="50" height="70" />
+                  </span>
+                  <!-- <a (click)="openGallery(mediacontent,'', itemlist.uuid)"
+                        class="btn btn-primary waves-effect waves-light">+</a> -->
+                </td>
+                <td class="p-5 text-center" *ngIf="defimage">
+                  <!-- <i class="fa-solid fa-video text-primary fs-3"></i> -->
+                  <!-- <video width="220" height="150" controls>
+                    <source src="{{ itemlist?.item?.vpath }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video> -->
+                  <!-- {{itemlist.item?.vpath}} -->
+                  <ng-container *ngIf="itemlist?.item?.vpath && itemlist?.item?.vpath!==''">
+                    <a class="" (click)="variantGallery(videopcontent,i)"><i
+                        class="fa-solid fa-video text-primary fs-1 mt-2 cursor-pointer"></i></a>
+                  </ng-container>
+
+                </td>
+                <td class="p-5">{{ itemlist.item?.status }}</td>
+                <td class="p-5 text-center">
+                  <!-- (click)="viewGroup(content, itemlist.uuid)" -->
+
+                  <a [routerLink]="['/catalog/stocks/' + itemlist.uuid]">
+                    <app-keenicon name="pencil" ngbTooltip="Edit Product" class="fs-1 text-primary"></app-keenicon></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="row">
+            <!-- Copy Type -->
+            <div class="col-md-3 col-sm-3">
+              <label class="form-label col-12">Copy Type :</label>
+              <select class="form-select form-select-sm cursor-pointer" [(ngModel)]="copytype">
+                <option class="fs-6" *ngFor="let stat of copyoptions" [value]="stat.name">{{ stat.value }}</option>
+              </select>
+            </div>
+            <!-- Copy from -->
+            <div class="col-md-3 col-sm-3" *ngIf="copytype !== '3'">
+              <label class="form-label col-12">Copy From :</label>
+              <ng-select name="selcopyfrom" [(ngModel)]="selcopyfrom" placeholder="Copy From" [items]="copyfrom"
+                bindLabel="value" class="ng-select fs-6" bindValue="key">
+              </ng-select>
+            </div>
+            <!-- Status -->
+            <div class="col-md-3 col-sm-3" *ngIf="copytype === '3'">
+              <label class="form-label col-12">Status :</label>
+              <select class="form-control form-control-sm" [(ngModel)]="status">
+                <option *ngFor="let stat of statuses" [value]="stat.name">{{ stat.value }}</option>
+              </select>
+            </div>
+            <!-- Update Button -->
+            <div class="col-md-3 col-sm-3">
+              <label class="form-label col-12">&nbsp;</label>
+              <button type="button" class="btn btn-sm btn-primary" (click)="clonedata()">
+                <i class="fas fa-save"></i>
+                Update
+              </button>
+            </div>
+          </div>
+
+          <form (submit)="saveProductdetail()" name="form" [formGroup]="addstockForm" novalidate>
+            <div class="row">
+              <div class="col-12">
+                <h4 class="card-title mt-5 mb-3">Info</h4>
+              </div>
+              <!-- <div class="col-lg-2">
+                    <h5 class="font-size-14 mb-3">COD Available</h5>
+                    <div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" formControlName="cod" id="type"
+                          [checked]="product.cod == 1 ?  true : false">
+                      </div>
+                    </div>
+                  </div> -->
+              <div class="col-lg-2">
+                <h5 class="font-size-14 mb-3">Product Returnable</h5>
+                <div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" formControlName="returnable" id="type"
+                      [checked]="product.returnable === 1 ? true : false" />
+                  </div>
+                </div>
+              </div>
+              <!-- Return Time -->
+              <div class="col-lg-2" *ngIf="stockform.returnable.value">
+                <h5 class="font-size-14 mb-3">Return Time</h5>
+                <div>
+                  <select class="form-select form-select-sm cursor-pointer" type="text" name="returntime"
+                    formControlName="returntime" [ngClass]="{
+                          'is-invalid':
+                            (submit && form['returntime']?.errors) ||
+                            (form['returntime']?.invalid && (form['returntime']?.dirty || form['returntime']?.touched))
+                        }">
+                    <option *ngFor="let stat of returns" [value]="stat.name">{{ stat.value }}</option>
+                  </select>
+                </div>
+              </div>
+              <!-- Warranty terms -->
+              <div class="col-lg-2">
+                <h5 class="font-size-14 mb-3">Warranty terms</h5>
+                <div>
+                  <select class="form-select form-select-sm cursor-pointer" type="text" name="terms"
+                    formControlName="terms" [ngClass]="{
+                          'is-invalid':
+                            (submit && form['terms']?.errors) ||
+                            (form['terms']?.invalid && (form['terms']?.dirty || form['terms']?.touched))
+                        }">
+                    <option *ngFor="let stat of terms" [value]="stat.name">{{ stat.value }}</option>
+                  </select>
+                </div>
+              </div>
+              <!-- <div class="col-lg-2">
+                    <h5 class="font-size-14 mb-3">Free Shipping</h5>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" formControlName="freeship" id="type"
+                        [checked]=" product.freeship == 1 ? true : false">
+                    </div>
+                  </div> -->
+              <!-- <div class="col-lg-2">
+                <h5 class="font-size-14 mb-3">Mugdha Coins</h5>
+                <select class="form-select form-select-sm cursor-pointer" type=" text" name="supercoins"
+                  formControlName="supercoins" [ngClass]="{
+                        'is-invalid':
+                          (submit && form['supercoins']?.errors) ||
+                          (form['supercoins']?.invalid && (form['supercoins']?.dirty || form['supercoins']?.touched))
+                      }">
+                  <option *ngFor="let coin of supercoins" [value]="coin.key">{{ coin.value }}</option>
+                </select>
+              </div> -->
+            </div>
+            <hr>
+
+            <!-- <h4 class="card-title mt-5">More Details</h4> -->
+            <div class="row">
+              <!-- <div class="12">
+                    <ckeditor [editor]="Editor"
+                      [config]="{ toolbar: [ 'heading', 'bold', 'italic','numberedList', 'bulletedList' ] }"
+                      formControlName="description"></ckeditor>
+                    <br /><br />
+                  </div> -->
+              <div class="row">
+                <label class="form-label col-12"> Search keywords * : </label>
+                <i class="pb-1">Comma Separator:</i>
+                <div class="col-12">
+                  <textarea class="form-control" placeholder="Enter Keywords" type="text" name="keywords"
+                    autocomplete="off" formControlName="keywords"></textarea>
+                </div>
+              </div>
+              <!--Select Tags-->
+
+              <div class="row py-3">
+                <div class="col-sm-4">
+                  <label for="typeahead-http" class="col-xs-3 col-sm-auto col-form-label">Search Tag </label>
+                  <div class="col">
+                    <input id="typeahead-template" type="text" class="form-control col" [(ngModel)]="model"
+                      [ngbTypeahead]="tagsearch" [resultTemplate]="rt" [inputFormatter]="formatter"
+                      [resultFormatter]="formatter" (selectItem)="itemSelected($event)"
+                      [class.is-invalid]="searchFailed" />
+
+                    <small *ngIf="searching" class="form-text text-muted">searching...</small>
+                    <div class="invalid-feedback" *ngIf="searchFailed && model?.length > 0">
+                      Sorry, Your tag is not in our list contact our admin.
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-8">
+                  <label class="form-label">Selected Tag</label>
+                  <div class="row" style="height: 50px; border: 1px solid #ccc; overflow-y: auto">
+                    <div class="col-sm-2" *ngFor="let tag of tags; let i = index">
+                      <span>{{ tag.name }}</span>&nbsp;
+                      <button style="padding-top: 1px; padding-left: 1px" (click)="clear(i)" type="button"
+                        aria-hidden="true" class="btn-close btn-sm"></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--Select Tags End-->
+              <div class="col-12">
+                <div class="text-end pe-3">
+                  <button type="button" class="btn btn-sm btn-primary" type="submit"><i class="fas fa-save"></i>
+                    Save</button>
+                </div>
+              </div>
+              <br />
+              <!-- <div class="col-xl-4" *ngIf="parameters.length > 0">
+                <div class="py-2 mt-3" *ngIf="parameters.length > 0">
+                  <h3 class="font-size-15 fw-bold">Product Details</h3>
+                </div>
+                <table class="table table-row-dashed">
+                  <tbody>
+                    <tr *ngFor="let param of parameters; let i = index">
+                      <th class="text-center bg-primary text-white">{{ param?.productparameter?.name }}</th>
+                      <td class="text-start">{{ param?.productparametervalue?.value }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div> -->
+              <div class="col-xl-8">
+                <div class="row" *ngIf="refimages.length">
+                  <div class="py-2 mt-3" *ngIf="refimages.length > 0">
+                    <h3 class="font-size-15 fw-bold">Reference Images</h3>
+                  </div>
+                  <div class="col-xl-4 col-sm-6" *ngFor="let item of refimages">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="product-img position-relative">
+                          <a href="javascript:void(0)">
+                            <img style="width: 200px; height: 150px" alt="Product" class="img-fluid mx-auto d-block"
+                              src="{{ item?.path }}" /></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- end row -->
+    <div class="text-start ms-5">
+      <div class="mb-5">
+        <button class="btn btn-sm btn-primary" [routerLink]="['/catalog/products']">Back</button>
+      </div>
+    </div>
+  </div>
+  <!-- container-fluid -->
+  <!-- Pop UP Open start -->
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">Edit Details</h5>
+      <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <form (submit)="saveGroup()" name="form" [formGroup]="groupForm" novalidate>
+        <div class="row">
+          <div class="col-12">
+            <div class="row mb-2">
+              <label class="form-label col-2 mt-2"> Title *</label>
+              <div class="col-6">
+                <input class="form-control" placeholder="Title" type="text" name="name" autocomplete="off"
+                  formControlName="name" [ngClass]="{
+                        'is-invalid':
+                          (gsubmit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))
+                      }" />
+                <div
+                  *ngIf="(gsubmit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))"
+                  class="invalid-feedback">
+                  <span *ngIf="form['name'].errors?.['required']">Enter valid title</span>
+                  <span *ngIf="form['name'].errors?.['minlength']">Minimum Length 3 Characters.</span>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <label class="form-label col-2 mt-2"> MRP *</label>
+              <div class="col-6">
+                <input class="form-control" placeholder="MRP" type="text" name="mrp" autocomplete="off"
+                  formControlName="mrp" [ngClass]="{
+                        'is-invalid':
+                          (gsubmit && form['mrp']?.errors) || (form['mrp']?.invalid && (form['mrp']?.dirty || form['mrp']?.touched))
+                      }" />
+                <div
+                  *ngIf="(gsubmit && form['mrp']?.errors) || (form['mrp']?.invalid && (form['mrp']?.dirty || form['mrp']?.touched))"
+                  class="invalid-feedback">
+                  <span *ngIf="form['mrp'].errors?.['required']">Enter Vaild MRP</span>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <label class="form-label col-2 mt-2"> Price *</label>
+              <div class="col-6">
+                <input class="form-control" placeholder="Price" type="text" name="price" autocomplete="off"
+                  formControlName="price" [ngClass]="{
+                        'is-invalid':
+                          (gsubmit && form['price']?.errors) || (form['price']?.invalid && (form['price']?.dirty || form['price']?.touched))
+                      }" />
+                <div *ngIf="
+                        (gsubmit && form['price']?.errors) || (form['price']?.invalid && (form['price']?.dirty || form['price']?.touched))
+                      " class="invalid-feedback">
+                  <span *ngIf="form['price'].errors?.['required']">Enter Valid Price</span>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <label class="form-label col-2 mt-2"> Status *</label>
+              <div class="col-6">
+                <select class="form-control" type="text" name="status" formControlName="status" [ngClass]="{
+                        'is-invalid':
+                          (submit && form['status']?.errors) ||
+                          (form['status']?.invalid && (form['status']?.dirty || form['status']?.touched))
+                      }">
+                  <option *ngFor="let stat of statuses" [value]="stat.name">{{ stat.value }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label"> Description *</label>
+              <textarea class="form-control" placeholder="Enter Description" type="text" name="description"
+                autocomplete="off" formControlName="description" [ngClass]="{
+                      'is-invalid':
+                        (submit && form['description']?.errors) ||
+                        (form['description']?.invalid && (form['description']?.dirty || form['description']?.touched))
+                    }"></textarea>
+              <div *ngIf="
+                      (submit && form['description']?.errors) ||
+                      (form['description']?.invalid && (form['description']?.dirty || form['description']?.touched))
+                    " class="invalid-feedback">
+                <span *ngIf="form['description'].errors?.['required']">Enter description.</span>
+                <span *ngIf="form['description'].errors?.['minlength']">Minimum Length 10 Characters.</span>
+              </div>
+            </div>
+            <div class="d-md-flex align-items-center mt-5">
+              <div class="col-md-4"></div>
+              <div class="ml-auto">
+                <div class="dl">
+                  <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+  <!-- Pop UP Open end -->
+  <!-- Pop UP Open start -->
+  <ng-template #mediacontent let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">Media Library</h5>
+      <button type="button" class="btn-close" aria-hidden="true" (click)="popupclose()"></button>
+    </div>
+    <div class="modal-body">
+      <form enctype="multipart/form-data">
+        <div class="row">
+          <div class="col-12">
+            <div style="margin-left: 30%; margin-bottom: 20px">
+              <input type="file" multiple="" class="btn btn-primary" (change)="onSelectedImage($event)"
+                style="position: absolute; height: 40px; width: 160px; opacity: 0" />
+              <span style="width: 160px; display: block; height: 40px; z-index: -1" class="col-3 btn btn-light w-sm">
+                <i class="mdi mdi-upload d-block font-size-16"></i>
+                New File Upload</span>
+            </div>
+            <div class="row">
+              <div class="col-xl-4 col-sm-6 mb-2" *ngFor="let image of images; let i = index" (click)="selectimage(i)">
+                <div class="product-img position-relative" [ngClass]="{ activeimgsel: image?.select }">
+                  <img class="img-fluid mx-auto d-block" src="{{ image?.path }}" alt="Mugdha"
+                    style="max-height: 200px" />
+                </div>
+              </div>
+            </div>
+            <!-- Pagination  -->
+            <div class="row justify-content-md-between align-items-md-center mt-2">
+              <!-- <div class="col-sm-12 col-md-4">
+                    <div class="dataTables_length" id="tickets-table_length"><label
+                        class="d-inline-flex align-items-center">Show
+                        <select class="form-select form-select-sm ms-2 me-2" (change)="handlePageSizeChange($event)">
+                          <option *ngFor="let size of pageSizes" [ngValue]="size">
+                            {{ size }}
+                          </option>
+                        </select> Entries</label></div>
+                  </div> -->
+              <!-- Pagination -->
+              <!-- <div class="col-sm-12 col-md-8">
+                    <div class="text-md-right float-md-end pagination-rounded">
+                      <ngb-pagination class="pagination pagination-rounded justify-content-center mt-4" size="lg"
+                        [(page)]="page" [pageSize]="pageSize" (pageChange)="handlePageChange($event)"
+                        [collectionSize]="count">
+                        <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i>
+                        </ng-template>
+                        <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+                      </ngb-pagination>
+                    </div>
+                  </div> -->
+            </div>
+            <!-- Pagination  -->
+            <div class="d-md-flex align-items-center mt-5">
+              <div class="col-md-4"></div>
+              <div class="ml-auto">
+                <div class="dl">
+                  <span (click)="saveimage()" class="btn btn-primary">Save and Close</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+  <!-- Pop UP Open end -->
+
+  <ng-template #rt let-r="result" let-t="term" style="position: relative !important">
+    <!-- <img [src]="'https://upload.wikimedia.org/wikipedia/commons/thumb/' + r['flag']" class="me-1"
+            style="width: 16px"> -->
+    <span *ngIf="!searchFailed">{{ r.group?.name }} / </span>
+    <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+  </ng-template>
+
+  <!-- Pop UP Open end -->
+  <ng-template #videopcontent let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">Media Library</h5>
+      <button type="button" class="btn-close" aria-hidden="true" (click)="popupclose()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-auto mb-2">
+          <div class="product-img position-relative">
+            <video width="450" height="270" controls>
+              <source src="{{ selectedPath?.vpath }}" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            <h6 class="text-break">{{selectVideos}}</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

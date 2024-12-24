@@ -1,0 +1,100 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18 pb-8">View Bankaccount</h4>
+                
+            </div>
+
+
+
+            <div class="card">
+                <div class="card-body">
+                        <div class="row mt-3">
+                            <div class="col-sm-12">
+                                <h4 class="card-title mb-4">Account Details</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="control-label col-sm-3">Account Name : </label>
+                                    {{viewaccount.accountname}}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="control-label col-sm-3">Account Number : </label> 
+                                    {{viewaccount.accountnumber}}
+                                </div>
+                            </div>
+                           
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="control-label col-sm-3">Bank Name : </label>
+                                    {{viewaccount.bankname}}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                   <label class="control-label col-sm-3">IFSC Code : </label>
+                                   {{viewaccount.ifsc}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="control-label col-sm-3">Description : </label>
+                                    {{viewaccount.description}}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="control-label col-sm-3">Type : </label>
+                                    {{viewaccount.type}}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="control-label col-sm-3"> Status : </label>
+                                    {{viewaccount.status === '0' ? 'Inactive' : 'Active'}}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="control-label col-sm-3"> CreateAt : </label>
+                                    {{viewaccount.createdAt | date:'medium'}}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="control-label col-sm-3">UpdateAt : </label>
+                                    {{viewaccount.updatedAt | date:'medium'}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            
+                            <div class="col-sm-12">
+                                <div class="text-sm-end">
+                                    <button [routerLink]="['/finance/bankaccounts']" class="btn btn-sm btn-primary me-4">Back</button>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

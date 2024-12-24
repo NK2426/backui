@@ -1,0 +1,213 @@
+<div class="page-title d-flex flex-wrap me-3 flex-column justify-content-center">
+  <h1 class="page-heading d-flex text-dark fw-bold fs-3 my-0 flex-column justify-content-center">In transit</h1>
+</div>
+<div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+  <div
+    id="kt_app_toolbar_container"
+    class="app-container container-fluid d-flex flex-stack"
+    ng-reflect-ng-class="container-fluid d-flex flex-st"
+  ></div>
+</div>
+<div class="card mb-5 mb-xl-10">
+  <div class="card-body pt-1 pb-0">
+    <div class="card-body py-3">
+      <div class="row align-items-center justify-content-start">
+        <div class="col-sm-3">
+          <div class="d-flex align-items-center position-relative my-1 px-1">
+            <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+              <span class="path1"></span>
+              <span class="path2"></span>
+            </i>
+            <input
+              type="text"
+              (keyup)="searchTable($event)"
+              placeholder="Search by P.O"
+              class="form-control form-control-solid ps-12"
+              #input
+            />
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <!-- <label class="form-label"> Select Vendor</label>
+                        <ng-select name="brand" placeholder="Select Vendor" [items]="vendors" bindLabel="name"
+                            bindValue="uid" [(ngModel)]="selectedVendor" (change)="changeVendor($event)">
+                        </ng-select> -->
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="mb-3">
+            <label class="form-label"> Select Supplier</label>
+            <ng-select
+              name="brand"
+              placeholder="Select Supplier"
+              [items]="vendors"
+              bindLabel="name"
+              bindValue="uid"
+              [(ngModel)]="selectedVendor"
+              (change)="changeVendor($event)"
+            >
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table align-left gs-0 gy-5">
+          <thead>
+            <tr>
+              <th class="p-5 w-50px">#</th>
+              <th class="text-start p-5 min-w-100px">P.O ID</th>
+              <!-- <th scope="col">Group</th> -->
+              <th class="text-start p-5 min-w-100px">Supplier</th>
+              <!-- <th class="text-start p-5 min-w-100px">Shipper</th> -->
+              <th class="text-start p-5 min-w-100px">Dispatched Date</th>
+              <th class="text-start p-5 min-w-100px">Estimated Delivery Date</th>
+              <th class="text-start p-5 min-w-100px">Documents</th>
+              <th class="text-start p-5 min-w-100px">Status</th>
+              <!-- <th scope="col"> P.O Status </th> -->
+              <th class="text-center p-5 min-w-100px">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of purchaseorders; let i = index">
+              <td class="p-5 w-50px">{{ page == 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}</td>
+              <td class="ps-4">
+                <span class="fw-bold"
+                  ><a href="javascript: void(0);" class="text-dark"></a>
+                  <a [routerLink]="['/warehouse/orders/view/' + order.uuid]" ngbTooltip="View P.O">{{ order.uuid }}</a>
+                </span>
+              </td>
+              <!-- <td class="ps-4">
+                                        {{(order.purchaseorderitems?
+                                        order.purchaseorderitems[0]['product']?.['group']?.['name'] : '')}}
+                                    </td> -->
+              <td class="ps-4">
+                <span class="fw-bold badge badge-light-info">
+                  {{ order.user?.name }}
+                </span>
+              </td>
+              <!-- <td class="ps-4">
+                <span class="fw-bold">
+                  {{ order.transporterid }}
+                </span>
+              </td> -->
+              <td class="ps-4">{{ order.updatedAt | date : 'mediumDate' }}</td>
+              <td class="ps-4">{{ order.deliverydate | date : 'mediumDate' }}</td>
+              <td class="ps-4">
+                <a target="_blank" href="{{ order?.invoice }}">Invoice</a>
+              </td>
+
+              <td class="ps-4">{{ order.ship_status == 'Received' || order.ship_status == 'Inward' ? order.ship_status : 'Pending' }}</td>
+              <!-- <td>{{order.ship_status == 'Inward' ? 'Shipped':order.ship_status}}</td> -->
+              <!-- <td>
+                                        <a [routerLink]="['/app/orders/view/'+order.uuid]" class="btn btn-info">Close P.O</a>
+                                    </td> -->
+              <td class="ps-4">
+                <ul class="list-inline font-size-20 contact-links mb-0 d-flex">
+                  <li class="list-inline-item px-1 cursor-pointer">
+                    <a
+                      *ngIf="order.ship_status == 'Pick Up'"
+                      [routerLink]="['/warehouse/orders/recevied/' + order.uuid]"
+                      href="javascript:void(0)"
+                      class="btn btn-sm btn-primary"
+                      >Received</a>
+                    <div *ngIf="order.ship_status !== 'Pick Up'">
+                      <a [routerLink]="['/warehouse/orders/view/' + order.uuid]">
+                        <app-keenicon name="eye" class="fs-2 text-info"> </app-keenicon>
+                      </a>
+                    </div>
+                    
+                    <!-- <span *ngIf="order.ship_status!='Pick Up'">--</span> -->
+                  </li>
+                </ul>
+              </td>
+              <!-- <td class="ps-4">
+                                <ul class="list-inline font-size-20 contact-links mb-0 d-flex">
+                                    <li class="list-inline-item px-1  cursor-pointer">
+                                        <a *ngIf="order.ship_status=='Pick Up'" (click)="setActivePO(content, order, i)"
+                                            href="javascript:void(0)" class="btn btn-sm btn-primary">Received</a>
+                                        <span *ngIf="order.ship_status!='Pick Up'">--</span>
+                                    </li>
+                                </ul>
+                            </td> -->
+            </tr>
+            <tr *ngIf="purchaseorders?.length === 0">
+              <td colspan="10" class="text-center fw-bold">No Records Found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination  -->
+      <div class="row justify-content-md-between align-items-md-center mt-2">
+        <div class="col-sm-12 col-md-8">
+          <div class="dataTables_length" id="tickets-table_length">
+            <label class="d-inline-flex align-items-center"
+              >Show
+              <select class="form-select form-select-sm ms-2 me-2" (change)="handlePageSizeChange($event)">
+                <option *ngFor="let size of pageSizes" [ngValue]="size">
+                  {{ size }}
+                </option>
+              </select>
+              Entries</label
+            >
+          </div>
+        </div>
+        <!-- Pagination -->
+        <div class="col-sm-12 col-md-4">
+          <div class="text-md-right float-md-end pagination-rounded">
+            <ngb-pagination
+              [(page)]="page"
+              [pageSize]="pageSize"
+              [maxSize]="5"
+              [rotate]="true"
+              [ellipses]="false"
+              [boundaryLinks]="true"
+              (pageChange)="handlePageChange($event)"
+              [collectionSize]="count"
+            ></ngb-pagination>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="row justify-content-md-between align-items-md-center mt-2">
+                <div class="col-sm-12 col-md-4">
+                    <div class="dataTables_length" id="tickets-table_length"><label
+                            class="d-inline-flex align-items-center">Show
+                            <select class="form-select form-select-sm ms-2 me-2"
+                                (change)="handlePageSizeChange($event)">
+                                <option *ngFor="let size of pageSizes" [ngValue]="size">
+                                    {{ size }}
+                                </option>
+                            </select> Entries</label></div>
+                </div>
+                <div class="col-sm-12 col-md-8">
+                    <div class="text-md-right float-md-end pagination-rounded">
+                        <ngb-pagination class="pagination pagination-rounded justify-content-center mt-4" size="lg"
+                            [(page)]="page" [pageSize]="pageSize" (pageChange)="handlePageChange($event)"
+                            [collectionSize]="count">
+                            <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i>
+                            </ng-template>
+                            <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+                        </ngb-pagination>
+                    </div>
+                </div>
+            </div> -->
+      <!-- Pagination  -->
+    </div>
+  </div>
+</div>
+
+<!-- Pop UP Open start -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" *ngIf="currentPO!.id && viewAction == true" id="modal-basic-title" (click)="addPO(content)">Receive PO</h5>
+    <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="viewAction">
+      <app-viewpo (refreshList)="refreshList($event)" (viewPO)="viewPO($event)" [selectedPO]="currentPO"> </app-viewpo>
+    </div>
+  </div>
+</ng-template>
+<!-- Pop UP Open end -->

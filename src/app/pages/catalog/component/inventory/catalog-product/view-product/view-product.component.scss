@@ -1,0 +1,94 @@
+.thead {
+    display: table-header-group;
+    border-bottom: 1px solid black;
+    //text-align: center;
+    background-color: #a91be9;
+}
+
+.tbody {
+    display: table-row-group;
+}
+
+.td {
+    padding: 10px 1px 1px 5px;
+}
+
+.thead div.d-table-row div.d-table-cell:last-child {
+    background-color: #fff;
+}
+
+i:hover {
+    cursor: pointer;
+}
+
+input.ng-invalid.ng-touched,
+select.ng-invalid.ng-touched {
+    border-color: #dc3545;
+}
+
+.elementToFadeInAndOut {
+    -webkit-animation: fadeinout 2s linear forwards;
+    animation: fadeinout 2s linear forwards;
+    opacity: 0;
+}
+
+@-webkit-keyframes fadeinout {
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeinout {
+    50% {
+        opacity: 1;
+    }
+}
+
+//Newly Added //
+.activeimg {
+    position: relative;
+    border: 3px solid #6c757d;
+}
+.qty{
+    width: 50px;
+}
+
+.activeimg::before {
+    content: '\274C';
+    font-family: 'boxicons' !important;
+    font-size: 16px;
+    background-color: rgb(234, 67, 67);
+    color: #fff;
+    top: -15px;
+    left: 97%;
+    position: absolute;
+    border-radius: 50%;
+    padding: 1px 4px;
+}
+
+button#enab {
+    background-color: #a91be9 !important;
+}
+
+::ng-deep .dropdown-menu {
+    &.show {
+        bottom: 100% !important;
+        height: 150px;
+        overflow: auto;
+        top: 100% !important;
+    }
+}
+
+::ng-deep .ng-dropdown-panel-items .scroll-host {
+    height: 100px !important;
+    width: 100px !important;
+}
+
+::ng-deep .ng-dropdown-panel .scroll-host {
+    height: 130px !important;
+    width: 130px !important;
+}
+
+.card-header {
+    border-bottom: none !important;
+}

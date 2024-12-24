@@ -1,0 +1,206 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="page-title-box d-flex align-items-center justify-content-between">
+                <!-- <h4 class="mb-10 font-size-18">Users Product Rating & Reviews</h4> -->
+                <!-- <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+                        <li class="breadcrumb-item active"> Product Rating & Reviews </li>
+                    </ol>
+                </div> -->
+            </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-2">
+            <!-- Search -->
+            <div class="col-sm-4">
+              <!-- <div class="search-box me-2 mb-2 d-inline-block">
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="search"
+                                        (keyup)="getUserProductRating()">
+                                    <i class="bx bx-search-alt search-icon"></i>
+                                </div>
+                            </div> -->
+              <div class="d-flex align-items-center position-relative my-1 px-1">
+                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+                <input
+                  type="text"
+                  [(ngModel)]="search"
+                  (keyup)="getUserProductRating()"
+                  placeholder="Search.."
+                  class="form-control form-control-solid ps-12"
+                  #input
+                />
+              </div>
+            </div>
+            <div class="col-sm-8">
+              <!-- <div class="text-sm-end">
+                                 <button (click)="addDepartment(content)" type="button" class="btn btn-success btn-rounded mb-2 me-2"><i class="mdi mdi-plus mr-1"></i>
+                                     Add New Department</button>
+                             </div> -->
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="table-responsive">
+            <table class="table align-left gs-0 gy-5">
+              <thead>
+                <tr>
+                  <th class="p-5 w-50px">#</th>
+                  <th class="text-start p-5" sortable="createdAt" valign="middle" (sort)="onSort($event)">Date</th>
+                  <th class="text-start p-5" sortable="user.name" valign="middle" (sort)="onSort($event)">User Name</th>
+                  <th class="text-start p-5" sortable="item.name" valign="middle" (sort)="onSort($event)">Item</th>
+                  <th class="text-start p-5" sortable="item.skuid" valign="middle" (sort)="onSort($event)">SKU ID</th>
+                  <th class="text-start p-5">Image</th>
+                  <th class="text-start p-5" sortable="orderID" valign="middle" (sort)="onSort($event)">Customer Mobile</th>
+                  <th class="text-start p-5" sortable="rating" valign="middle" (sort)="onSort($event)">Rating</th>
+                  <!-- <th class="text-start p-5" sortable="reviews" valign="middle" (sort)="onSort($event)">Review</th> -->
+                  <th class="text-start p-5" sortable="status" valign="middle" (sort)="onSort($event)">Status</th>
+                  <th class="text-start p-5" sortable="updatedAt" valign="middle" (sort)="onSort($event)">Updated At</th>
+                  <th class="text-start p-5">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let productRating of userProductRating; let i = index">
+                  <td class="text-center">{{ page == 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}</td>
+                  <td class="p-5">
+                    {{ productRating?.createdAt | date : 'medium' }}
+                  </td>
+                  <td class="p-5">
+                    <h5 class="font-size-14 mb-1">
+                      <a href="javascript: void(0);" class="text-dark"></a>{{ productRating.user?.name || '--' }}
+                    </h5>
+                  </td>
+
+                  <td class="p-5">
+                    {{ productRating?.item?.name }}
+                  </td>
+
+                  <td class="p-5">
+                    {{ productRating?.item?.itemslist?.skuid }}
+                  </td>
+                  <td class="p-5">
+                    <img src="{{ productRating?.item?.path }}" width="100" height="100" />
+                  </td>
+                  <td class="p-5">
+                    {{ productRating?.user?.mobile || '--' }}
+                  </td>
+                  <td class="p-5">{{ productRating.rating || '--' }}</td>
+                  <!-- <td class="p-5">{{ productRating.reviews || '--' }}</td> -->
+                  <td class="p-5">
+                    {{ getStatus(productRating?.status) }}
+                  </td>
+                  <td class="p-5">
+                    {{ productRating?.updatedAt | date : 'medium' }}
+                  </td>
+                  <td class="p-5">
+                    <ul class="list-inline font-size-20 contact-links mb-0">
+                      <li class="list-inline-item px-2">
+                        <a (click)="setActiveRating(content, productRating, i)" href="javascript:void(0)" ngbTooltip="View Ratings"
+                          ><app-keenicon name="eye" class="fs-2 text-info"></app-keenicon
+                        ></a>
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr *ngIf="userProductRating?.length === 0">
+                  <td colspan="12" class="text-center fw-bold">No Records Found</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Pagination  -->
+          <div class="row justify-content-md-between align-items-md-center mt-2">
+            <div class="col-sm-12 col-md-8">
+              <div class="dataTables_length" id="tickets-table_length">
+                <label class="d-inline-flex align-items-center"
+                  >Show
+                  <select class="form-select form-select-sm ms-2 me-2" (change)="handlePageSizeChange($event)">
+                    <option *ngFor="let size of pageSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select>
+                  Entries</label
+                >
+              </div>
+            </div>
+            <!-- Pagination -->
+            <div class="col-sm-12 col-md-4">
+              <div class="text-md-right float-md-end pagination-rounded">
+                <ngb-pagination
+                  [(page)]="page"
+                  [pageSize]="pageSize"
+                  [maxSize]="5"
+                  [rotate]="true"
+                  [ellipses]="false"
+                  [boundaryLinks]="true"
+                  (pageChange)="handlePageChange($event)"
+                  [collectionSize]="count"
+                ></ngb-pagination>
+              </div>
+            </div>
+          </div>
+          <!-- Pagination  -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Pop UP Open start -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h5
+      class="modal-title"
+      *ngIf="currentUserProductRating!.uuid && viewAction == true"
+      id="modal-basic-title"
+      (click)="addRating(content)"
+    >
+      View
+    </h5>
+    <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <label class="col-md-4"><strong>Date : </strong></label> {{ currentUserProductRating?.createdAt }}
+    </div>
+    <div>
+      <label class="col-md-4"><strong>User Name : </strong></label> {{ currentUserProductRating?.user?.name }}
+    </div>
+    <div>
+      <label class="col-md-4"><strong>Item Name : </strong></label> {{ currentUserProductRating?.item?.name }}
+    </div>
+    <div>
+      <label class="col-md-4"><strong>SKU ID : </strong></label> {{ currentUserProductRating?.item?.itemslist?.skuid }}
+    </div>
+    <div>
+      <label class="col-md-4"><strong>Image : </strong></label>
+      <img src="{{ currentUserProductRating?.item?.path }}" width="100" height="100" />
+    </div>
+    <div>
+      <label class="col-md-4"><strong>Order ID : </strong></label> {{ currentUserProductRating?.orderID }}
+    </div>
+    <div>
+      <label class="col-md-4"><strong>Rating : </strong></label> {{ currentUserProductRating?.rating }}
+    </div>
+    <div>
+      <label class="col-md-4"><strong>Reviews : </strong></label> {{ currentUserProductRating?.reviews }}
+    </div>
+    <div>
+      <label class="col-md-4"><strong>Status : </strong></label> {{ getStatus(currentUserProductRating?.status) }}
+    </div>
+    <div>
+      <label class="col-md-4"><strong>Updated At : </strong></label> {{ currentUserProductRating?.updatedAt }}
+    </div>
+    <br />
+    <div class="mb-3" *ngIf="currentUserProductRating.status == 0">
+      <input name="approve" class="btn btn-primary col-3 w-md" (click)="approve('Approve')" value="Approve" />
+      <input name="decline" (click)="approve('Decline')" class="btn btn-danger col-3 w-md ms-1" value="Decline" />
+    </div>
+  </div>
+</ng-template>
+<!-- Pop UP Open end -->

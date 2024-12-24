@@ -1,0 +1,28 @@
+<div class="pb-2">
+    <label class="col-md-4"><strong>Shipper : </strong></label> {{ selectedDepartment?.name }}
+</div>
+
+<div class="pb-2">
+    <label class="col-md-4"><strong>Location : </strong></label> {{ selectedDepartment?.location }}
+</div>
+<div class="pb-2">
+    <label class="col-md-4"><strong>CreateAt : </strong></label>
+    {{ selectedDepartment?.createdAt | date:'medium' }}
+</div>
+<div class="pb-2">
+    <label class="col-md-4"><strong>UpdateAt : </strong></label>
+    {{ selectedDepartment?.updatedAt | date:'medium' }}
+</div>
+
+<div class="d-md-flex align-items-center pb-3">
+    <div class="col-md-3">
+        <button class="btn btn-sm btn-primary my-2" (click)="editAction(selectedDepartment)"><i
+                class="mdi mdi-pencil font-12"></i> Edit</button>
+    </div>
+    <div class="ml-auto">
+        <div class="dl">
+            <button class="btn btn-sm btn-danger my-2" (click)="deleteParameter(selectedDepartment)"><i
+                    class="mdi mdi-delete font-12"></i> Delete</button>
+        </div>
+    </div>
+</div>

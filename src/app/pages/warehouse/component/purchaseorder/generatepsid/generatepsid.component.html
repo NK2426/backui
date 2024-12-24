@@ -1,0 +1,137 @@
+<div class="container-fluid">
+  <div class="page-title-box d-flex align-items-center justify-content-between">
+    <h4 class="mb-0 font-size-18">Tag</h4>
+    <div class="page-title-right">
+      <ol class="breadcrumb m-0">
+        <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+        <li class="breadcrumb-item"><a [routerLink]="['/app/orders']">Orders</a></li>
+        <li class="breadcrumb-item"><a [routerLink]="['/app/orders/view/'+purchaseorder.uuid]">View</a></li>
+        <li class="breadcrumb-item active"> Tag </li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="py-2 mt-3 table-responsive">
+            <div class="d-print-none">
+              <div class="float-end">
+                <a [routerLink]="['/app/orders/view/'+purchaseorder.uuid]" class="btn btn-info mb-4"><i
+                    class="mdi mdi-chevron-left"></i> Back </a>
+              </div>
+            </div>
+            <h3 class="font-size-15 fw-bold">Item Details</h3>
+            <table class="table align-middle  table-nowrap table-hover">
+              <thead>
+                <tr>
+                  <th>Product Name</th>
+                  <th *ngFor="let puritem of poitem.purchaseitemdetails">
+                    {{puritem.productvariant?.name}}
+                  </th>
+                  <th>Items Count</th>
+                </tr>
+              </thead>
+              <tr>
+                <td><label>{{poitem.product?.name}}</label></td>
+                <td *ngFor="let puritem of poitem.purchaseitemdetails">
+                  {{puritem.productvariantvalue?.value}}
+                </td>
+                <td><strong>{{poitem.quantity}}</strong></td>
+              </tr>
+            </table>
+          </div>
+          <div class="py-2">
+            <div class="d-print-none" *ngIf="inwarditems.length > 0">
+              <div class="float-end">
+                <a *ngIf="showprint" (click)="printPage()" class="btn btn-primary"><i class="fa fa-print"></i> Download
+                  Qrcodes</a>
+                <span *ngIf="!showprint" class="btn btn-secondary"><i class="bx bx-loader bx-spin"></i> PDF is
+                  Generating
+                  Please Wait
+                  ... </span>
+              </div>
+            </div>
+
+            <!-- Pagination  -->
+            <div class="row justify-content-md-between align-items-md-center mt-2">
+              <!-- Pagination -->
+              <div class="col-sm-12 col-md-12">
+                <div class="text-md-right float-center pagination-rounded">
+                  <ngb-pagination class="pagination pagination-rounded justify-content-center mt-4" size="lg"
+                    [(page)]="page" [pageSize]="pageSize" (pageChange)="handlePageChange($event)"
+                    [collectionSize]="count">
+                    <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i>
+                    </ng-template>
+                    <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+                  </ngb-pagination>
+                </div>
+              </div>
+            </div>
+            <!-- Pagination  -->
+            <table id="printpsid" style="margin-top: 10px; margin-left: 10px; width: 1200px; overflow: scroll;">
+              <tr>
+                <td>
+                  <table *ngFor="let item of inwarditems; let i = index"
+                    style="float:left;width:32%; border: 1px solid #ccc; margin: 5px;">
+                    <tr>
+                      <td colspan="2">
+                        <h5 class="text-center py-2" *ngIf="showprint">Count {{(page == 1 ? i+1 :
+                          (i+1)+(pageSize*(page-1))) }}</h5>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <qrcode [qrdata]="item.psid+''" [width]="200" [errorCorrectionLevel]="'M'" [elementType]="'img'"
+                          [margin]="3">
+                        </qrcode>
+                      </td>
+                      <td>
+                        <div class="display-block"><strong>{{slice(subcategory?.name)}}</strong></div>
+                        <div class="display-block"><strong>Variants : </strong><span
+                            *ngFor="let puritem of poitem.purchaseitemdetails; let i = index;">{{puritem.productvariantvalue?.value}}<span
+                              *ngIf="poitem.purchaseitemdetails?.length!=i+1">, </span></span></div>
+                        <div class="display-block" *ngIf="department.beauty==1"><strong>Exp. Date :
+                          </strong>{{poitem.expdate | date:'mediumDate'}}</div>
+                        <div class="display-block"><strong>Count : </strong>{{(page == 1 ? i+1 :
+                          (i+1)+(pageSize*(page-1))) }}</div>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <!-- Print  -->
+          <div class="d-print-none" *ngIf="inwarditems.length > 0">
+            <i>24 Tag's Download at the time</i>
+            <div class="float-end">
+              <a *ngIf="showprint" (click)="printPage()" class="btn btn-success"><i class="fa fa-print"></i> Download
+                Qrcodes</a>
+              <span *ngIf="!showprint" class="btn btn-secondary"><i class="bx bx-loader bx-spin"></i> PDF is Generating
+                Please Wait
+                ... </span>
+            </div>
+          </div>
+
+          <!-- Pagination  -->
+          <div class="row justify-content-md-between align-items-md-center mt-2">
+            <!-- Pagination -->
+            <div class="col-sm-12 col-md-12">
+              <div class="text-md-right float-center pagination-rounded">
+                <ngb-pagination class="pagination pagination-rounded justify-content-center mt-4" size="lg"
+                  [(page)]="page" [pageSize]="pageSize" (pageChange)="handlePageChange($event)"
+                  [collectionSize]="count">
+                  <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i>
+                  </ng-template>
+                  <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+                </ngb-pagination>
+              </div>
+            </div>
+          </div>
+          <!-- Pagination  -->
+        </div>
+      </div>
+      <!-- end row -->
+    </div> <!-- container-fluid -->

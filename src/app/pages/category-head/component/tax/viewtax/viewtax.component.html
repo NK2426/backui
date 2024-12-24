@@ -1,0 +1,25 @@
+<div>
+    <label class="col-md-4"><strong>Name : </strong></label> {{ selectedTax?.name }}
+</div>
+<div>
+    <label class="col-md-4"><strong>Percentage : </strong></label>
+    {{ selectedTax?.percentage }}
+</div>
+<div>
+    <label class="col-md-4"><strong>Status : </strong></label> {{ selectedTax?.status+'' === '0' ? 'Inactive' : 'Active' }}
+</div>
+
+
+
+<div *ngIf="!assignedparams.includes(selectedTax.id)" class="d-md-flex align-items-center">
+    <div *ngIf="deleteaction" class="col-md-3">
+        <button class="btn btn-sm btn-primary" (click)="editAction(selectedTax)"><i
+                class="mdi mdi-pencil font-12"></i> Edit</button>
+    </div>
+    <div *ngIf="deleteaction" class="ml-auto">
+        <div class="dl">
+            <button class="btn btn-sm btn-danger" (click)="deleteParameter(selectedTax)"><i
+                    class="mdi mdi-delete font-12"></i> Delete</button>
+        </div>
+    </div>
+</div>

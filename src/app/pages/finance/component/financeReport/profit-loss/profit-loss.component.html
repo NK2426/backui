@@ -1,0 +1,184 @@
+<div class="card mb-5 mb-xl-10 p-3">
+  <div class="card">
+    <div class="card-body">
+      <div class="row mb-5 m-auto col-md-10 col-sm-12">
+        <div class="col-md-5 col-sm-12">
+          <div class="dp-hidden position-absolute my-2">
+            <div class="input-group">
+              <input
+                name="datepicker"
+                class="form-control"
+                ngbDatepicker
+                #datepicker="ngbDatepicker"
+                [autoClose]="'outside'"
+                (dateSelect)="onDateSelection($event)"
+                [displayMonths]="2"
+                [dayTemplate]="t"
+                outsideDays="hidden"
+                [startDate]="ngbFromDate!"
+                tabindex="-1"
+              />
+              <ng-template #t let-date let-focused="focused">
+                <span
+                  class="custom-day"
+                  [class.focused]="focused"
+                  [class.range]="isRange(date)"
+                  [class.faded]="isHovered(date) || isInside(date)"
+                  (mouseenter)="hoveredDate = date"
+                  (mouseleave)="hoveredDate = null"
+                >
+                  {{ date.day }}
+                </span>
+              </ng-template>
+            </div>
+          </div>
+          <div class="input-group">
+            <input
+              #dpFromDate
+              class="form-control"
+              placeholder="yyyy-mm-dd"
+              name="dpFromDate"
+              [value]="formatter.format(ngbFromDate)"
+              (input)="ngbFromDate = validateInput(ngbFromDate, dpFromDate.value)"
+            />
+            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()" type="button">
+              <i class="fas fa-calendar-alt fa-fw"></i>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-5 col-sm-12">
+          <div class="input-group my-2">
+            <input
+              #dpToDate
+              class="form-control"
+              placeholder="yyyy-mm-dd"
+              name="dpToDate"
+              [value]="formatter.format(ngbToDate)"
+              (input)="ngbToDate = validateInput(ngbToDate, dpToDate.value)"
+            />
+            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()" type="button">
+              <i class="fas fa-calendar-alt fa-fw"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profit Table -->
+      <div *ngIf="profitListData?.length">
+        <div class="m-auto col-md-10 col-sm-12">
+          <div class="table-responsive" class="my-5">
+            <table class="table align-middle">
+              <tbody class="border border-1 border-primary">
+                <tr>
+                  <td>Total Revenue</td>
+                  <td class="fw-bold">&#8377;{{ totalRevenue }}</td>
+                </tr>
+                <tr>
+                  <td>Total Expense</td>
+                  <td class="fw-bold">&#8377;{{ totalExpense }}</td>
+                </tr>
+                <tr>
+                  <td>Total Profit</td>
+                  <td class="fw-bold">&#8377;{{ profit }}</td>
+                </tr>
+                <tr>
+                  <td>Total Loss</td>
+                  <td class="fw-bold">&#8377;{{ loss }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Profit details -->
+        <div class="col-md-10 col-sm-12 m-auto">
+          <div class="table-responsive">
+            <table class="table align-middle table-nowrap table-hover">
+              <thead>
+                <tr style="font-size: 20px">
+                  <th class="text-center p-4">#</th>
+                  <th class="text-start p-4">Name</th>
+                  <th class="text-start p-4">Total Amount</th>
+                  <th class="text-start p-4">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let item of profitListData; let index = index">
+                  <tr class="example-accordion-item-header">
+                    <td class="p-4 text-center">{{ index + 1 }}</td>
+                    <td class="p-4">{{ item?.name }}</td>
+                    <td class="p-4 fw-bold fs-2 text-primary">&#8377;{{ item?.totalAmount }}</td>
+                    <td class="example-accordion-item-description" style="cursor: pointer" (click)="toggleAccordion(index)">
+                      <button class="btn btn-sm btn-primary"> Click to {{ expandedIndex === index ? 'close' : 'open' }}</button>
+                    </td>
+                  </tr>
+                  <ng-container *ngIf="expandedIndex === index">
+                    <tr>
+                      <td colspan="4">
+                        <table class="table align-middle table-nowrap table-hover">
+                          <thead style="background-color: #d984b0 !important">
+                            <tr style="font-size: 16px">
+                              <th class="text-center p-4">#</th>
+                              <th class="text-start p-4">Expense Date</th>
+                              <th class="text-start p-4">Expense Amount</th>
+                              <th class="text-start p-4">Account Name</th>
+                              <th class="text-start p-4">Account Details</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr class="example-accordion-item-body" *ngFor="let data of item?.expenses; let i = index">
+                              <td class="p-4 text-center">{{ i + 1 }}</td>
+                              <td class="p-4 fw-bold">{{ data?.expensedate }}</td>
+                              <td class="p-4 fw-bold text-primary">&#8377;{{ data?.amount }}</td>
+                              <td class="p-4">{{ data?.bankaccount?.accountname }}</td>
+                              <td class="p-4">{{ data?.bankaccount?.accountnumber }}, {{ data?.bankaccount?.bankname }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Download Pdf -->
+        <div class="float-end">
+          <a *ngIf="showprint" (click)="downloadPdf()" class="btn btn-sm btn-primary my-2"><i class="fa fa-file-pdf"></i> Download PDF</a>
+          <span *ngIf="!showprint" class="btn btn-sm btn-warning my-2"
+            ><i class="bx bx-loader bx-spin"></i> Please Wait PDF is Generating ...
+          </span>
+          &nbsp;&nbsp;
+        </div>
+      </div>
+
+      <!-- List Datas -->
+      <!-- <div class="container" *ngIf="profitListData" class="my-5">
+        <div class="col-md-12 col-sm-12 row">
+          <h3 class="col-md-4 col-sm-6">Total Revenue</h3>
+          <h3 class="col-md-4 col-sm-6">{{ totalRevenue }}</h3>
+        </div>
+        <div class="col-md-12 col-sm-12 row">
+          <h3 class="col-md-4 col-sm-6">Total Expense</h3>
+          <h3 class="col-md-4 col-sm-6">{{ totalExpense }}</h3>
+        </div>
+        <div class="col-md-12 col-sm-12 row">
+          <h3 class="col-md-4 col-sm-6">Total Profit</h3>
+          <h3 class="col-md-4 col-sm-6">{{ profit }}</h3>
+        </div>
+        <div class="col-md-12 col-sm-12 row">
+          <h3 class="col-md-4 col-sm-6">Total Loss</h3>
+          <h3 class="col-md-4 col-sm-6">{{ loss }}</h3>
+        </div>
+        <div *ngFor="let item of profitListData" class="row">
+          <div class="form-group">
+            <label class="form-label"></label>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+</div>

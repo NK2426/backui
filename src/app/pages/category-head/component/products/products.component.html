@@ -1,0 +1,254 @@
+<div class="card mb-5 mb-xl-10 py-5">
+  <div class="card-header card-title pb-3">
+    <!--begin::Search-->
+    <div class="col-sm-2">
+      <div class="d-flex align-items-center position-relative mt-5 px-1">
+        <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+          <span class="path1"></span>
+          <span class="path2"></span>
+        </i>
+        <input type="text" (keyup)="searchTable($event)" placeholder="Search.."
+          class="form-control form-control-solid ps-12 mt-1" #input />
+      </div>
+    </div>
+    <!-- <div class="col-sm-3">
+                                    <select [(ngModel)]="searchdepart" class="form-select" type="text" name="department_id"
+                                        (change)="list()">
+                                        <option value="0">ALL Department</option>
+                                        <option *ngFor="let department of departments" [value]="department.did">{{
+                                            department.name }}</option>
+                                    </select>
+                                </div> -->
+
+    <!-- Select Department -->
+    <div class="col-sm-2">
+      <div class="mb-3">
+        <!-- <label class="form-label"> Select Department </label>
+                <ng-select name="department" placeholder="Select Department" [items]="departments" bindLabel="name"
+                    bindValue="did" (change)="changeDepartment($event)" [(ngModel)]="selectedDept" [disabled]="true">
+                </ng-select> -->
+      </div>
+    </div>
+
+    <!-- Select Vendor -->
+    <div class="col-sm-2">
+      <div class="mb-3">
+        <label class="form-label"> Select Supplier</label>
+        <ng-select name="brand" placeholder="Select Supplier" [items]="vendors" bindLabel="name" bindValue="uid"
+          [(ngModel)]="selectedVendor" (change)="changeVendor($event)">
+        </ng-select>
+      </div>
+    </div>
+
+    <!-- Select Brand -->
+    <div class="col-sm-2">
+      <div class="mb-3">
+        <label class="form-label"> Select Brand</label>
+        <ng-select name="brand" placeholder="Select Brand" [items]="brands" bindLabel="name" bindValue="bid"
+          [(ngModel)]="selectedBrand" (change)="changeBrand($event)">
+        </ng-select>
+      </div>
+    </div>
+
+    <!-- Add New Product -->
+    <div class="col-sm-2" style="padding-top: 0.5%">
+      <div class="text-sm-end mb-3">
+        <button [routerLink]="['/category-head/add']" type="button" class="btn btn-primary btn-rounded mt-5">
+          <i class="mdi mdi-plus mr-1"></i> Add New Product
+        </button>
+      </div>
+    </div>
+
+    <!-- <div class="col-sm-2">
+                                    <div class="mb-3">
+                                        <label class="form-label"> Select Class</label>
+                                        <ng-select name="class" placeholder="Select Class" [items]="class" bindLabel="name"
+                                            bindValue="cid" [(ngModel)]="selectedClass" (change)="changeCategory($event)">
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="mb-3">
+                                        <label class="form-label"> Select Subclass</label>
+                                        <ng-select name="class" placeholder="Select Subclass" [items]="subclass"
+                                            bindLabel="name" bindValue="id" [(ngModel)]="selectedSubclass"
+                                            (change)="changeSubcategory($event)">
+                                        </ng-select>
+                                    </div>
+                                </div> -->
+  </div>
+
+  <div class="card-body pt-1 pb-0">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table align-middle table-hover">
+          <thead>
+            <tr>
+              <th class="ps-3 w-30px text-center">#</th>
+              <th class="text-center min-w-100px">Image</th>
+              <th class="text-start min-w-70px">DesignID</th>
+              <th class="text-start min-w-100px">Name</th>
+              <th class="text-start min-w-100px">Supplier</th>
+              <th>Category</th>
+              <th class="text-start min-w-70px">SubCategory</th>
+              <th class="text-start min-w-70px">Group</th>
+              <th class="text-start min-w-70px">Brand</th>
+              <th class="text-center min-w-70px">Status</th>
+              <th class="text-start min-w-70px">Map Supplier</th>
+              <th class="text-center min-w-150px">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of products; let i = index">
+              <td class="p-5 w-50px text-center">{{ page == 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}</td>
+              <td width="10%" class="text-center">
+                <!-- <img src="{{product?.productselectimages?.[0]?.path}}" width="100" height="100" alt=""> -->
+                <img
+                  src="{{product?.productselectimages?.[0]?.path === '' ? './assets/media/avatars/blank.png' : product?.productselectimages?.[0]?.path}} "
+                  style="width: 80px; height: 80px" (click)="showFullImage($event, image)">
+              </td>
+              <td>{{ product.uuid }}</td>
+              <!-- <td>{{product?.vendorvariantmapping?.vendorproId}}</td> -->
+              <td>
+                <strong class="font-size-14 mb-1"><a href="javascript: void(0);" class="text-dark"></a>
+                  {{ product.name }}
+                </strong>
+              </td>
+              <td>
+                <span class="badge badge-light-info">{{ product?.vendormapping?.user?.name }}</span>
+              </td>
+              <!-- <td>{{product?.vendorvariantmapping?.price == 0 ? '--' :
+                                        product?.vendorvariantmapping?.price}}
+                                    </td> -->
+              <!-- <td>{{product?.department?.name}}</td>-->
+              <td>{{ product?.category?.name }}</td>
+              <td>{{ product?.subcategory?.name }}</td>
+              <td>{{ product?.group?.name }}</td>
+              <td>{{ product?.brand?.name }}</td>
+              <td class="p-5">
+                <div class="badge badge-light-info">{{ product.status === 'VenDraft' ? 'Waiting for Approval' : '' }}
+                </div>
+                <div class="badge badge-light-primary">{{ product.status !== 'VenDraft' ? product.status : '' }}</div>
+              </td>
+              <!-- <td>{{ product.status === 'VenDraft' ? 'Waiting for Approval' : product.status }}</td> -->
+              <td>
+                <!-- Vendor  <br /> -->
+                <button class="btn btn-sm btn-primary" (click)="setActiveProduct(content, product, i, 'value')">
+                  {{ product?.vendormapping ? 'Mapped' : '+Map' }}
+                </button>
+                <!-- <span (click)="setActiveProduct(content,product, i, 'value')"
+                                    class="border border-success px-2 py-1 font-size-12">
+                                    {{product?.vendormapping ? 'Mapped' : '+Map'}}</span> -->
+              </td>
+              <!-- <i class="mdi mdi-plus mr-1"></i> -->
+              <!-- <td> Variant  <br /><span (click)="setActiveProduct(varcontent,product, i, 'value')" class="btn-info btn-rounded px-2 py-1 font-size-10"> -->
+              <!-- <i class="mdi mdi-plus mr-1"></i> -->
+              <!-- +Map </span> </td> -->
+              <td>
+                <ul class="list-inline font-size-20 contact-links mb-0 text-center">
+                  <!-- view product -->
+                  <li class="list-inline-item px-1">
+                    <a [routerLink]="['/category-head/view/' + product.uuid]" [state]="{ uuid: product.uuid }"
+                      ngbTooltip="View Product">
+                      <app-keenicon name="eye" class="fs-1 text-info cursor-pointer"></app-keenicon></a>
+                  </li>
+
+                  <!-- Edit product -->
+                  <li class="list-inline-item px-1">
+                    <a [routerLink]="['/category-head/edit/' + product.uuid]" [state]="{ uuid: product.uuid }"
+                      ngbTooltip="Edit Product"><app-keenicon name="pencil"
+                        class="fs-1 text-primary cursor-pointer"></app-keenicon></a>
+                  </li>
+
+                  <!-- Delete Product -->
+                  <li class="list-inline-item px-1">
+                    <a (click)="deleteUser(product)" ngbTooltip="Delete Product">
+                      <app-keenicon name="trash" class="fs-1 text-danger cursor-pointer"></app-keenicon>
+                    </a>
+                    <!-- <button (click)="deleteUser(product)" ngbTooltip="Delete Product"><app-keenicon
+                                                name="trash" class="fs-1 text-danger"></app-keenicon></button> -->
+                  </li>
+
+                  <!-- Edit parameter -->
+                  <li class="list-inline-item my-3">
+                    <button class="btn btn-sm btn-primary"
+                      [routerLink]="['/category-head/mappingparams/' + product.uuid]"
+                      routerLinkActive="router-link-active" [state]="{ uuid: product.uuid }">
+                      Edit Parameter
+                    </button>
+                    <!-- <a [routerLink]="['/products/mappingparams/'+product.uuid]"
+                                            [state]="{uuid: product.uuid}" ngbTooltip="Edit Parameters">Edit
+                                            Parameter</a> -->
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr *ngIf="products?.length === 0">
+              <td colspan="13" class="text-center fw-bold">No records found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Pagination  -->
+      <div class="row justify-content-md-between align-items-md-center mt-2">
+        <div class="col-sm-12 col-md-8">
+          <div class="dataTables_length" id="tickets-table_length">
+            <label class="d-inline-flex align-items-center">Show
+              <select class="form-select form-select-sm ms-2 me-2 cursor-pointer"
+                (change)="handlePageSizeChange($event)">
+                <option *ngFor="let size of pageSizes" [ngValue]="size">
+                  {{ size }}
+                </option>
+              </select>
+              Entries</label>
+          </div>
+        </div>
+        <!-- Pagination -->
+        <div class="col-sm-12 col-md-4">
+          <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false"
+            [boundaryLinks]="true" (pageChange)="handlePageChange($event)" [collectionSize]="count"></ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Pop UP Open start -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title">Supplier Mapping</h5>
+    <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="viewAction">
+      <app-vendormapping (refreshList)="refreshList($event)" (editProduct)="editProduct($event)"
+        [selectedProduct]="currentProduct" [vendors]="vendors"></app-vendormapping>
+    </div>
+  </div>
+</ng-template>
+<!-- Pop UP Open end -->
+
+<!-- Pop UP Open start -->
+<ng-template #varcontent let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title">Variant Mapping</h5>
+    <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="viewAction">
+      <app-mapvariant (refreshList)="refreshList($event)" (editProduct)="editProduct($event)"
+        [selectedProduct]="currentProduct"></app-mapvariant>
+    </div>
+  </div>
+</ng-template>
+<!-- Pop UP Open end -->
+
+<ng-template #image let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Show Product Image</h5>
+    <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body p-5 m-2">
+    <img [src]="src" alt="Not Show Image" class="rounded-1 w-100">
+  </div>
+</ng-template>

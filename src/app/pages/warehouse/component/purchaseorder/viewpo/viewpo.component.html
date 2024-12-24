@@ -1,0 +1,80 @@
+<div class="submit-form">
+
+    <form (ngSubmit)="saveRemarks()" [formGroup]="formData" novalidate>
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col-6"><label class="control-label">Invoice Value</label></div>
+                        <div class="col-6"><label>{{selectedPO.invoicevalue}}</label></div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col-6"><label class="control-label">Invoice Date</label></div>
+                        <div class="col-6"><label>{{selectedPO.invoicedate}}</label></div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col-6"><label class="control-label">LR no.</label></div>
+                        <div class="col-6"><label>{{selectedPO.lrno}}</label></div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="control-label">Invoice No. *</label>
+                    <input type="text" class="form-control" formControlName="invoiceno"
+                        [ngClass]="{'is-invalid': (submit && form['invoiceno'].errors) || (form['invoiceno'].invalid && (form['invoiceno'].dirty || form['invoiceno'].touched))}" />
+                    <div *ngIf="(submit && form['invoiceno']?.errors) || (form['invoiceno']?.invalid && (form['invoiceno']?.dirty || form['invoiceno']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['invoiceno'].errors?.['required']">Enter Invoice No.</span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="control-label">Invoice Items Count*</label>
+                    <input type="text" class="form-control" formControlName="invoiceitemcount"
+                        [ngClass]="{'is-invalid': (submit && form['invoiceitemcount'].errors) || (form['invoiceitemcount'].invalid && (form['invoiceitemcount'].dirty || form['invoiceitemcount'].touched))}" />
+                    <div *ngIf="(submit && form['invoiceitemcount']?.errors) || (form['invoiceitemcount']?.invalid && (form['invoiceitemcount']?.dirty || form['invoiceitemcount']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['invoiceitemcount'].errors?.['required']">Enter Received Item Count</span>
+                        <span *ngIf="form['invoiceitemcount'].errors?.['min']">
+                            Minimum required number is 1
+                        </span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="control-label">Remarks *</label>
+                    <textarea class="form-control" placeholder="Enter Remarks" type="text" name="remarks"
+                        autocomplete="off" formControlName="remarks"
+                        [ngClass]="{'is-invalid': (submit && form['remarks']?.errors) || (form['remarks']?.invalid && (form['remarks']?.dirty || form['maxcount']?.touched))}">
+                    </textarea>
+
+                    <div *ngIf="(submit && form['remarks']?.errors) || (form['remarks']?.invalid && (form['remarks']?.dirty || form['remarks']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['remarks'].errors">Enter valid remarks</span>
+                    </div>
+                </div>
+                <!--  <div class="col-sm-6">
+                    <input type="file" class="file-input form-control" (change)="onSelectedFile($event)"
+                        autocomplete="off" #fileupload name="imgpath" formControlName="imgpath"
+                        [ngClass]="{'is-invalid': (submit && form['imgpath'].errors) || (form['imgpath'].invalid && (form['imgpath'].dirty || form['imgpath'].touched) && fileName=='')}" />
+                    <a *ngIf="fileName!=''" target="_blank" href="{{ baseurl+'/images/'+fileName }}">{{fileName}} </a>
+                    <div *ngIf="fileName=='' && ((submit && form['imgpath']?.errors) || (form['imgpath']?.invalid && (form['imgpath']?.dirty || form['imgpath']?.touched)))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['imgpath'].errors?.['required']">Upload Image.</span>
+                    </div>
+                </div> -->
+                <div class="d-md-flex align-items-center mt-5">
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                    <div class="ml-auto">
+                        <div class="dl">
+                            <button type="button" class="btn btn-secondary" (click)="cancelAction()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,27 @@
+<div>
+    <label class="col-md-4"><strong>Crate Name : </strong></label> {{ selectedCrate.name}}
+</div>
+<div>
+    <label class="col-md-4"><strong>Crate Type : </strong></label> {{ selectedCrate.type }}
+</div>
+
+<table id="print">
+    <tr>
+        <td>
+            <qrcode [qrdata]="selectedCrate.uuid+''" [width]="200" [errorCorrectionLevel]="'M'" [elementType]="'img'"
+                [margin]="3">
+            </qrcode>
+        </td>
+    </tr>
+</table>
+
+<div *ngIf="!assignedparams.includes(selectedCrate.id)" class="d-md-flex align-items-center">
+    <div class="col-md-3">
+        <button class="btn btn-sm btn-primary my-2" (click)="editAction(selectedCrate)"> Edit</button>
+    </div>
+    <div class="ml-auto">
+        <div class="dl">
+            <button class="btn btn-sm btn-danger my-2" (click)="deleteCrate(selectedCrate)"> Delete</button>
+        </div>
+    </div>
+</div>

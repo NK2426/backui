@@ -1,0 +1,30 @@
+<div class="mb-3">
+    <label class="col-md-4"><strong>Category : </strong></label> {{ selectedCategory?.name }}
+</div>
+<div class="mb-3">
+    <label class="col-md-4"><strong>Status : </strong></label> {{ selectedCategory?.status+'' === '0' ? 'Inactive' :
+    'Active' }}
+</div>
+<div class="mb-3">
+    <label class="col-md-4"><strong>CreateAt : </strong></label>
+    {{ selectedCategory?.createdAt | date:'medium' }}
+</div>
+<div class="mb-3">
+    <label class="col-md-4 "><strong>UpdateAt : </strong></label>
+    {{ selectedCategory?.updatedAt | date:'medium' }}
+</div>
+<div class="mb-3">
+    <label class="col-md-4 mb-3"><strong>Description : </strong></label> {{ selectedCategory?.description }}
+</div>
+<div *ngIf="!assignedparams.includes(selectedCategory.uuid)" class="d-md-flex align-items-center mb-2">
+    <div class="col-md-3">
+        <button class="btn btn-sm btn-primary" (click)="editAction(selectedCategory)"><i
+                class="mdi mdi-pencil font-12"></i> Edit</button>
+    </div>
+    <div class="ml-auto">
+        <div *ngIf="deleteaction" class="dl">
+            <button class="btn btn-sm btn-danger" (click)="deleteParameter(selectedCategory)"><i
+                    class="mdi mdi-delete font-12"></i> Delete</button>
+        </div>
+    </div>
+</div>

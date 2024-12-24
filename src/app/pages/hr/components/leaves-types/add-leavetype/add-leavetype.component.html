@@ -1,0 +1,29 @@
+<div class="submit-form">
+    <form (ngSubmit)="saveProductvariants()" [formGroup]="formData" novalidate>
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-lable required mb-2">LeaveType name</label>
+                    <input class="form-control" placeholder="Enter Leavetype name" type="text" name="name"
+                        autocomplete="off" formControlName="name"
+                        [ngClass]="{'is-invalid': submit && form['name'].errors}" />
+                    <div *ngIf="submit && form['name'].errors" class="invalid-feedback">
+                        <span *ngIf="form['name'].errors['required']">LeaveType is required.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="d-md-flex align-items-center mt-3">
+                <div class="col-md-3 mb-5">
+                    <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+                </div>
+                <div class="ml-auto mb-5">
+                    <div class="dl">
+                        <button type="button" class="btn btn-sm btn-secondary" (click)="cancelAction()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

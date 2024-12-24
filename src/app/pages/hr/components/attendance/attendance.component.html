@@ -1,0 +1,144 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">Attendance</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+                        <li class="breadcrumb-item active"> Attendance </li>
+                    </ol>
+                </div>
+            </div> -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2 mb-5">
+                        <div class="col-sm-4">
+                            <div class="search-box me-2 mb-2 d-inline-block">
+                                <div class="position-relative">
+                                    <input autocomplete="off" type="text" name="search" class="form-control"
+                                        placeholder="Search..." (keyup)="searchTable($event)">
+                                    <i class="bx bx-search-alt search-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead>
+                                <tr>
+                                    <th class="p-5 w-50px">#</th>
+                                    <th class="text-start p-5 min-w-100px">
+                                        Employee Name
+                                    </th>
+                                    <th class="text-start p-5 min-w-70px">Role</th>
+                                    <th class="text-start p-5 min-w-100px">Date</th>
+                                    <th class="text-start p-5 min-w-70px">Login Time</th>
+                                    <th class="text-start p-5 min-w-70px">Logout Time</th>
+                                    <th class="text-start p-5 min-w-70px">Status</th>
+                                    <th class="text-start p-5 min-w-70px">Created Date</th>
+                                    <th class="text-start p-5 min-w-70px">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>HR</td>
+                                    <td>2</td>
+                                    <td>2023-02-11</td>
+                                    <td>04:54:33</td>
+                                    <td>-</td>
+                                    <td>Active</td>
+                                    <td>2023-02-11</td>
+                                    <td>
+                                        <ul class="list-inline font-size-20 contact-links mb-0">
+                                            <li class="list-inline-item px-1">
+                                                <a (click)="view()" ngbTooltip="View User">
+                                                    <app-keenicon name="eye" class="fs-1 text-danger"></app-keenicon>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let attendance of attendances; let i = index">
+                                    <td class="p-5 w-50px">{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}</td>
+                                    <td>{{attendance?.user?.name}}</td>
+                                    <td>
+                                        {{attendance?.user?.role?.name}}
+                                    </td>
+                                    <td>{{attendance.date}}</td>
+                                    <td>{{attendance.logintime}}</td>
+                                    <td>{{attendance.logouttime==null ? '-' : attendance.logouttime }}</td>
+                                    <td>{{attendance.status+'' === '0' ? 'Inactive' : 'Active'}}</td>
+                                    <td>{{attendance.createdAt}}</td>
+                                    <td>
+                                        <ul class="list-inline font-size-20 contact-links mb-0">
+                                            <li class="list-inline-item px-1">
+                                                <a ngbTooltip="View User">
+                                                    <app-keenicon name="eye" class="fs-1 text-danger"></app-keenicon>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="attendances?.length === 0">
+                                    <td colspan="8" class="text-center fw-bold">No records found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex flex-stack flex-wrap pt-10">
+                        <div class="fs-6 fw-bold text-gray-700">
+                            <div class="d-flex flex-wrap mr-3">
+                                <div class="d-flex align-items-center">
+                                    <select
+                                        class="form-control form-control-sm text-primary font-weight-bold mr-4 border-0 bg-light-primary"
+                                        style="width: 75px;">
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="30">30</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                    <span class="text-muted">Page</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true"
+                            [ellipses]="false" [boundaryLinks]="true" (pageChange)="handlePageChange($event)">
+                        </ngb-pagination> -->
+                    </div>
+                    <!-- Pagination  -->
+                    <!-- <div class="row justify-content-md-between align-items-md-center mt-2"> -->
+                    <!-- <div class="col-sm-12 col-md-4">
+                            <div class="dataTables_length" id="tickets-table_length"><label
+                                    class="d-inline-flex align-items-center">Show
+                                    <select class="form-select form-select-sm ms-2 me-2"
+                                        (change)="handlePageSizeChange($event)">
+                                        <option *ngFor="let size of pageSizes" [ngValue]="size">
+                                            {{ size }}
+                                        </option>
+                                    </select> Entries</label></div>
+                        </div> -->
+                    <!-- Pagination -->
+                    <!-- <div class="col-sm-12 col-md-8"> -->
+                    <!-- <div class="text-md-right float-md-end pagination-rounded"> -->
+                    <!-- <ngb-pagination class="pagination pagination-rounded justify-content-center mt-4"
+                                    size="lg" [(page)]="page" [pageSize]="pageSize"
+                                    (pageChange)="handlePageChange($event)" [collectionSize]="count">
+                                    <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i>
+                                    </ng-template>
+                                    <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+                                </ngb-pagination> -->
+                    <!-- </div> -->
+                    <!-- </div> -->
+                    <!-- </div> -->
+                    <!-- Pagination  -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

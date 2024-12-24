@@ -1,0 +1,159 @@
+<!-- <p>{{user || json}}</p> -->
+
+<div class="card mb-5 mb-xl-10">
+    <div class="card-header align-items-center py-0 gap-2 gap-md-5">
+        <div class="card-header card-title">
+            <!--begin::Search-->
+            <div class="d-flex align-items-center position-relative my-1 px-1">
+                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                </i>
+                <input type="text" (keyup)="searchTable($event)" placeholder="Search.."
+                    class="form-control form-control-solid w-200px ps-12" #input>
+            </div>
+        </div>
+        <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
+            <div class="mw-180px" style="padding-right:25px;">
+                <a [routerLink]="['/hr/leaves/add']" routerLinkActive="router-link-active"
+                    class="btn btn-primary text-white"><app-keenicon name="plus" class="text-white"></app-keenicon>Add
+                    New Leave</a>
+                <!--end::Select2-->
+            </div>
+        </div>
+    </div>
+    <div class="card-body pt-1 pb-0">
+        <div class="card-body py-3">
+            <div class="table-responsive">
+                <table class="table align-left gs-0 gy-5">
+                    <thead>
+                        <tr>
+                            <th class="p-5 min-w-50px">#</th>
+                            <th class="text-start p-5 min-w-100px">Leave Type</th>
+                            <th class="text-start p-5 min-w-100px">Leave Date</th>
+                            <th class="text-start p-5 min-w-100px">Description</th>
+                            <th class="text-start p-5 min-w-100px">Status</th>
+                            <th class="text-start p-5 min-w-100px">Created Date</th>
+                            <th class="text-start p-5 min-w-100px">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container>
+                            <!-- <tr>
+                                <td>1</td>
+                                <td>Test casual type</td>
+                                <td>2023-03-03</td>
+                                <td>Testing</td>
+                                <td>Request</td>
+                                <td>2023-03-03</td>
+                                <td>
+                                    <ul class="list-inline font-size-20 contact-links mb-0">
+                                        <li class="list-inline-item px-1">
+                                            <a [routerLink]="['/hr/leaves/view']" routerLinkActive="router-link-active"
+                                                ngbTooltip="View User">
+                                                <app-keenicon name="eye" class="fs-1 text-info"></app-keenicon>
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item px-1">
+                                            <a [routerLink]="['/hr/leaves/add']" routerLinkActive="router-link-active"
+                                                ngbTooltip="Edit User"><app-keenicon name="pencil"
+                                                    class="fs-1 text-primary"></app-keenicon>
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item px-1">
+                                            <a ngbTooltip="Delete User"><app-keenicon name="trash"
+                                                    class="fs-2 text-danger"></app-keenicon>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr> -->
+                            <tr *ngFor="let user of users; let i = index">
+                                <td class="text-center">{{(page === 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}</td>
+                                <td>{{user.leavetype?.name}}</td>
+                                <td>{{user.leavedate}}</td>
+                                <td>
+                                    <h5 class="font-size-14 mb-1"><a href="javascript: void(0);" class="text-dark"></a>
+                                        {{user.description}}
+                                    </h5>
+                                </td>
+                                <td><b>{{getstatus(user.status)}}</b></td>
+                                <td>{{user.createdAt}}</td>
+                                <!-- Action -->
+                                <td>
+                                    <ul class="list-inline font-size-20 contact-links mb-0">
+                                        <li class="list-inline-item px-1">
+                                            <a [routerLink]="['/hr/leaves/view']" routerLinkActive="router-link-active"
+                                                ] ngbTooltip="View User">
+                                                <app-keenicon name="eye" class="fs-1 text-info"></app-keenicon>
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item px-1">
+                                            <a [routerLink]="['/hr/leaves/add']" ngbTooltip="Edit User"><app-keenicon
+                                                    name="pencil" class="fs-1 text-primary"></app-keenicon>
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item px-1 cursor-pointer">
+                                            <a ngbTooltip="Delete User"><app-keenicon name="trash"
+                                                    class="fs-1 text-danger"></app-keenicon>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </td>
+                                <!-- <td>
+                                        <ul class="list-inline font-size-20 contact-links mb-0">
+                                            <li class="list-inline-item px-1">
+                                                <a [routerLink]="['/app/leaves/view/'+user.uuid]"
+                                                    [state]="{uuid: user.uuid}" ngbTooltip="View Leave"><i
+                                                        class="bx bx-show"></i></a>
+                                            </li>
+                                            <li class="list-inline-item px-1">
+                                                <a [routerLink]="['/app/leaves/add']" [state]="{uuid: user.uuid}"
+                                                    ngbTooltip="Edit Leave"><i class="bx bx-edit"></i></a>
+                                            </li>
+                                            <li class="list-inline-item px-1">
+                                                <a (click)="deleteUser(user)" ngbTooltip="Delete Leave"><i
+                                                        class="bx bx-trash"></i></a>
+                                            </li>
+                                        </ul>
+                                    </td> -->
+                            </tr>
+                            <tr *ngIf="users?.length === 0">
+                                <td class="text-center fw-bold">No records found</td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination  -->
+            <div class="row justify-content-md-between align-items-md-center mt-2">
+                <div class="col-sm-12 col-md-8">
+                    <div class="dataTables_length" id="tickets-table_length"><label
+                            class="d-inline-flex align-items-center">Show
+                            <select class="form-select form-select-sm ms-2 me-2"
+                                (change)="handlePageSizeChange($event)">
+                                <option *ngFor="let size of pageSizes" [ngValue]="size">
+                                    {{ size }}
+                                </option>
+                            </select> Entries</label></div>
+                </div>
+                <!-- Pagination -->
+                <div class="col-sm-12 col-md-4">
+                    <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true"
+                        [ellipses]="false" [boundaryLinks]="true" (pageChange)="handlePageChange($event)"
+                        [collectionSize]="count"></ngb-pagination>
+                    <!-- <div class="text-md-right float-md-end pagination-rounded">
+                                                <ngb-pagination class="pagination pagination-rounded justify-content-center mt-4" size="lg"
+                                                    [(page)]="page" [pageSize]="pageSize" (pageChange)="handlePageChange($event)"
+                                                    [collectionSize]="count" [maxSize]="10" [rotate]="true">
+                                                    <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i>
+                                                    </ng-template>
+                                                    <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+                                                </ngb-pagination>
+                                            </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,52 @@
+<div class="submit-form">
+    <form (ngSubmit)="saveDepartment()" [formGroup]="formData" novalidate>
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label">Shipper name *</label>
+                    <input class="form-control" placeholder="Enter Shipper name" type="text" name="name"
+                        autocomplete="off" formControlName="name"
+                        [ngClass]="{'is-invalid': (submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))}" />
+
+                    <div *ngIf="(submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['name'].errors?.['required']">Enter Shipper name.</span>
+                        <span *ngIf="form['name'].errors?.['minlength']">Minimum Length 4
+                            Characters.</span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Location</label>
+                    <input class="form-control" placeholder="Enter Location" type="text" name="location"
+                        autocomplete="off" formControlName="location"
+                        [ngClass]="{'is-invalid': (submit && form['location']?.errors) || (form['location']?.invalid && (form['location']?.dirty || form['location']?.touched))}" />
+
+                    <div *ngIf="(submit && form['location']?.errors) || (form['location']?.invalid && (form['location']?.dirty || form['location']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['location'].errors">Enter valid location.</span>
+                        <span *ngIf="form['name'].errors?.['minlength']">Minimum Length 3 Characters.</span>
+                    </div>
+                </div>
+
+                <div class="mb-3" *ngIf="data.id">
+                    <label class="form-label"> Status *</label>
+                    <select class="form-control" type="text" name="status" formControlName="status"
+                        [ngClass]="{'is-invalid': (submit && form['status']?.errors) || (form['status']?.invalid && (form['status']?.dirty || form['status']?.touched))}">
+                        <option *ngFor="let stat of statuses" [value]="stat.id">{{ stat.name }}</option>
+                    </select>
+                </div>
+                <div class="d-md-flex align-items-center mt-5">
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-sm btn-primary my-2">Submit</button>
+                    </div>
+                    <div class="ml-auto">
+                        <div class="dl">
+                            <button type="button" class="btn btn-sm btn-secondary my-2"
+                                (click)="cancelAction()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

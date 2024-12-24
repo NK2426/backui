@@ -1,0 +1,296 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-flex align-items-center justify-content-between">
+            <h4 class="mb-0 font-size-18">Return Invoice Detail</h4>
+            
+        </div>
+    </div>
+</div>
+<div class="card mb-5 mb-xl-10">
+    <!-- start page title -->
+    
+    <!-- end page title -->
+
+    <!-- start row -->
+    <div class="card-body pt-1 pb-0">
+        <div class="card-body py-3">
+            <div class="invoice-title">
+                <div class="mb-5">
+                    <img src="./assets/media/logos/mlogo.png" alt="logo" width="50" />
+                </div>
+            </div>
+            <div class="row pb-3" *ngIf="returnDetail">
+                <div class="col-sm-6 pb-2">
+                    <h5>Order Id : {{returnDetail.orderID}} </h5>
+                    <div class="form-label col-sm-4"> <b>Drop Address</b> </div>
+                    <div [innerHTML]="settings?.billingaddress"></div>
+                </div>
+                <div class="col-sm-6 pb-2" *ngIf="returnDetail && returnDetail.address">
+                    <h5>Invoice Number : <b>{{returnDetail.invoiceno}} </b></h5>
+                    <div class="form-label col-sm-4"> <b>PICKUP Address</b> </div>
+                    <b> REV PICKUP Name :</b> {{returnDetail.address.name}} <br />
+                    <b> REV PICKUP Mobile Number :</b> {{returnDetail.address.mobile}}<br />
+                    <b> REV PICKUP Email : </b>{{returnDetail.address.email}}<br />
+                    <b> REV PICKUP Address: </b><span *ngIf="returnDetail.address.address">
+                        {{returnDetail.address.address}},</span>
+                    <span *ngIf="returnDetail.address.address2" class="ms-1">
+                        {{returnDetail.address.address2}}
+                    </span>
+                    <span *ngIf="returnDetail.address.city"> {{returnDetail.address.city}}, </span>
+                    <span *ngIf="returnDetail.address.state"> {{returnDetail.address.state}},</span>
+                    <span *ngIf="returnDetail.address.zipcode"> {{returnDetail.address.zipcode}} <br />
+                    </span>
+                </div>
+            </div>
+
+
+            <!-- Invoice item detail table   -->
+            <div class="row pb-2">
+                <div class="col-sm-12">
+                    <div class="media-body">
+                        <span class="text-primary fw-bold">INVOICE # : </span>
+                        <span class="text-muted fw-bold">
+                            <b>{{invoiceNumber}}</b> </span>
+
+                        <!-- <div class="d-md-flex align-items-right m-2" style="float: right"
+                            *ngIf="returnDetail && (returnDetail.awbnumber !== '' && returnDetail.status === 'Create')">
+                            <div class="mt-5 pt-3">
+                                <button (click)="returnRecevied()" type="submit" class="btn btn-sm btn-primary">Item
+                                    Received</button>
+                            </div>
+                        </div> -->
+                        <div class="d-md-flex align-items-right m-2" style="float: right"
+                            *ngIf="(awbnumber !== '' && returnstatus === 'Create')">
+                            <div class="mt-5 pt-3">
+                                <button (click)="returnRecevied()" type="submit" class="btn btn-primary">Item
+                                    Received</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1"></div>
+                <!-- <div class="col-md-3">
+                    <label class="form-label pb-1"> Select Tag's download format</label>
+                    <ng-select class="pb-1" name="brand" placeholder="Select Format" [items]="formats" bindLabel="name"
+                        bindValue="id" [(ngModel)]="selectedFormat" (change)="changeFormat($event)">
+                    </ng-select>
+                </div> -->
+            </div>
+
+
+            <div class="row" *ngIf="returnDetail?.returninvoiceitems?.length != 0">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="text-start p-5 min-w-200px">Product Name</th>
+                                <th class="text-start p-5 min-w-80px">Image</th>
+                                <th class="text-start p-5 min-w-80px">SKU / Description</th>
+                                <!-- <th class="text-start p-5 min-w-70px">Type</th> -->
+                                <!-- <th class="text-start p-5 min-w-60px">Reason</th> -->
+                                <!-- <th class="text-start p-5 min-w-100px">PSID</th> -->
+                                <th class="text-start p-5 min-w-100px">Action</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let returnItem of returnDetail?.returninvoiceitems; let i = index">
+                                <td class="ps-4"> {{returnItem?.item?.name}} </td>
+                                <td> <img style="width: 100px; height: 100px;" alt="Product"
+                                        src={{returnItem.item.path}} /> </td>
+                                <td class="ps-4"> {{returnItem?.itemslist?.skuid}} <br />
+                                    {{returnItem?.itemslist?.description}} </td>
+                                <!-- <td class="ps-4">{{returnItem?.returnitem?.type}}</td> -->
+                                <!-- <td class="ps-4">{{returnItem?.returnitem?.reason?.reason}}</td> -->
+                                <!-- <td class="ps-4">
+                                    <div *ngIf="returnItem?.psid">
+                                        <a *ngIf="showprint && returnItem.ship_status !== ''"
+                                            (click)="download(returnItem?.psid)" class="btn btn-sm btn-primary me-2"><i
+                                                class="fa fa-print"></i>
+                                            Download PSID</a>
+                                        <span *ngIf="!showprint" class="btn btn-secondary"><i
+                                                class="bx bx-loader bx-spin"></i> PDF Please Wait... </span>
+
+                                      
+                                    </div>
+                                </td> -->
+                                <td class="ps-4">
+                                    <div *ngIf="returnItem.ship_status === 'Picked'">
+                                        <!-- <select class="form-select form-select-sm" type="text" [(ngModel)]="status">
+                                            <option *ngFor="let status of statustypes" [value]="status.id">
+                                                {{status.name }}
+                                            </option>
+                                        </select> -->
+                                        <!-- <select class="form-select form-select-sm mt-2" type="text"
+                                            [(ngModel)]="disputestatus" [hidden]="!status">
+                                            <option *ngFor="let dispute of disputetypes" [value]="dispute.id">
+                                                {{dispute.name }}
+                                            </option>
+                                        </select> -->
+
+                                        <!-- <a *ngIf="returnItem.ship_status === 'Picked'"
+                                            [hidden]="!status "
+                                            (click)="submitQC(returnItem.orderitem_uuid)"
+                                            class="btn btn-sm btn-primary mt-2"><i class="fa fa-check"></i>
+                                            Submit
+                                        </a> -->
+                                        <a *ngIf="returnItem.ship_status === 'Picked'"
+                                        (click)="acceptQC(returnItem.orderitem_uuid)"
+                                        class="btn btn-sm btn-primary me-2"><i class="fa fa-check"></i> Accept </a>
+
+                                    <a *ngIf="returnItem.ship_status === 'Picked'"
+                                        (click)="rejectQC(returnItem.orderitem_uuid)"
+                                        class="btn btn-sm btn-danger me-2"><i class="fa fa-close"></i> Reject
+                                         </a>
+                                    </div>
+                                </td>
+                                
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Order Item Table End -->
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-6" *ngIf="returnDetail">
+                    <!--Generate AWB -->
+                    <form (ngSubmit)="saveReturnAWB()" [formGroup]="formData" novalidate
+                    *ngIf="returnDetail.awbnumber === '' || returnDetail.shipment === 'Cancel'">
+                        <h3 class="mt-4 mb-4 font-size-18">Generate RVAWB Details</h3>
+                        <div class="row mb-4">
+                            <label class="form-label col-sm-3">Logistics*</label>
+                            <div class="col-sm-5">
+                              <select class="form-control" type="text" name="logistics" formControlName="logistics"
+                                [ngClass]="{'is-invalid': (submit && form['logistics']?.errors) || (form['logistics']?.invalid && (form['status']?.dirty || form['status']?.touched))}">
+                                <option *ngFor="let stat of logistics" [value]="stat.id">{{ stat.name }}
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+                        <div class="row mb-4">
+                            <label class="form-label col-sm-3">Weight (KG) *</label>
+                            <div class="col-sm-5">
+                                <input class="form-control" placeholder="Enter Weight" type="text" name="weight"
+                                    autocomplete="off" formControlName="weight"
+                                    [ngClass]="{'is-invalid': (submit && form['weight']?.errors) || (form['weight']?.invalid && (form['weight']?.dirty || form['weight']?.touched))}" />
+                            </div>
+
+                            <div *ngIf="(submit && form['weight']?.errors) || (form['weight']?.invalid && (form['weight']?.dirty || form['weight']?.touched))"
+                                class="invalid-feedback">
+                                <span *ngIf="form['weight'].errors">Enter valid weight</span>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <label class="form-label col-sm-3">Length *</label>
+                            <div class="col-sm-5">
+                                <input class="form-control" placeholder="Length" type="text" name="length"
+                                    autocomplete="off" formControlName="length"
+                                    [ngClass]="{'is-invalid': (submit && form['length']?.errors) || (form['length']?.invalid && (form['length']?.dirty || form['length']?.touched))}" />
+
+                            </div>
+
+                            <div *ngIf="(submit && form['length']?.errors) || (form['length']?.invalid && (form['length']?.dirty || form['length']?.touched))"
+                                class="invalid-feedback">
+                                <span *ngIf="form['length'].errors">Enter valid length</span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <label class="form-label col-sm-3">Breath *</label>
+                            <div class="col-sm-5">
+                                <input class="form-control" placeholder="Enter Breath" type="text" name="breath"
+                                    autocomplete="off" formControlName="breath"
+                                    [ngClass]="{'is-invalid': (submit && form['breath']?.errors) || (form['breath']?.invalid && (form['breath']?.dirty || form['breath']?.touched))}" />
+                            </div>
+                            <div *ngIf="(submit && form['breath']?.errors) || (form['breath']?.invalid && (form['breath']?.dirty || form['breath']?.touched))"
+                                class="invalid-feedback">
+                                <span *ngIf="form['breath'].errors">Enter valid breath</span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="form-label col-sm-3">Height *</label>
+                            <div class="col-sm-5">
+                                <input class="form-control" placeholder="Enter Height" type="text" name="height"
+                                    autocomplete="off" formControlName="height"
+                                    [ngClass]="{'is-invalid': (submit && form['height']?.errors) || (form['height']?.invalid && (form['height']?.dirty || form['height']?.touched))}" />
+                            </div>
+
+                            <div *ngIf="(submit && form['height']?.errors) || (form['height']?.invalid && (form['height']?.dirty || form['height']?.touched))"
+                                class="invalid-feedback">
+                                <span *ngIf="form['height'].errors">Enter valid height</span>
+                            </div>
+                        </div>
+                        <div class="row d-md-flex align-items-center mt-3" *ngIf="!submit">
+                            <!-- <div class="col-md-4"></div> -->
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-sm btn-primary">Generate AWB</button>
+                            </div>
+                        </div>
+                        <div *ngIf="submit" class="row d-md-flex align-items-center mt-3">
+                            <!-- <div class="col-md-4"></div> -->
+                            <div class="col-md-4">
+                                <span class="btn btn-sm btn-secondary"><i class="bx bx-loader bx-spin"></i>
+                                    Awb is Generating ... </span>
+                            </div>
+                        </div>
+                    </form>
+                    <div *ngIf="awbnumber !== '' && returnstatus !== 'Create'">
+                        <h3 class="font-size-14" *ngIf="returnDetail && returnDetail.awbnumber != ''">
+                            AWB Number QR
+                          </h3>
+                        <table id=" print">
+                            <tr>
+                                <td>
+                                    <qrcode [qrdata]="returnDetail.awbnumber+''" [width]="200"
+                                        [errorCorrectionLevel]="'M'" [elementType]="'img'" [margin]="3">
+                                    </qrcode>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="d-md-flex align-items-center mt-5"
+                            *ngIf="returnDetail && (awbnumber !== '' && returnDetail.shipment === 'Create')">
+                            <div class="col-md-4">
+                                <button (click)="cancelreturnShipment()" type="submit"
+                                    class="btn btn-sm btn-primary">Cancel
+                                    Shipment</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-sm-6">
+                            <div class="table-responsive" *ngIf="returnDetail">
+                                <table class="table table-bordered mb-0">
+                                    <tbody>
+                                        <tr>
+                                            <td>Sub Total </td>
+                                            <td><b>{{this.returnDetail.grandtotal}}</b></td>
+                                        </tr>
+                                         <tr>
+                                            <td>Wallet Amount Used </td>
+                                            <td>--</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Super Coins User </td>
+                                            <td>-- </td>
+                                        </tr>
+                        <tr>
+                            <td>Final Total(In Figure) </td>
+                            <td><b>{{this.returnDetail.grandtotal}}</b></td>
+                            may need to be subtotal -(wallet amount+super coint)
+                        </tr>
+                        <tr>
+                            <td>Total (in words) </td>
+                            <td><b>Rs.{{inWords(this.returnDetail.grandtotal)}}</b> </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <!-- end row -->
+</div> <!-- container-fluid -->

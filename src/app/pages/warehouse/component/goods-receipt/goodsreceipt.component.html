@@ -1,0 +1,139 @@
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between mb-5">
+      <div class="col-sm-3">
+        <div class="d-flex align-items-center position-relative mt-5 px-1 pt-2">
+          <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+            <span class="path1"></span>
+            <span class="path2"></span>
+          </i>
+          <input type="text" (keyup)="searchTable($event)" placeholder="Search.."
+            class="form-control form-control-solid ps-12" #input>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div>
+          <label class="form-label"> Select Supplier</label>
+          <ng-select name="brand" placeholder="Select Supplier" [items]="vendors" bindLabel="name" bindValue="uid"
+            [(ngModel)]="selectedVendor" (change)="changeVendor($event)">
+          </ng-select>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table align-middle table-nowrap table-hover">
+        <thead>
+          <tr>
+            <th class="p-3 w-50px">#</th>
+            <th class="text-start p-3 min-w-100px">Invoice No.</th>
+            <th class="text-start p-3 min-w-100px">Supplier</th>
+            <th class="text-start p-3 min-w-100px">P.O ID</th>
+            <th class="text-start p-3 min-w-100px">GRN ID</th>
+            <th class="text-start p-3 min-w-150px">
+              P.O Received Date
+            </th>
+            <!-- <th class="text-start p-3 min-w-50px">
+              No.of Bundles
+            </th>
+            <th class="text-start p-3 min-w-50px">
+              Bundles Received
+            </th> -->
+            <th class="text-start p-3 min-w-50px">
+              Product Quantity
+            </th>
+            <th class="text-start p-3 min-w-50px">
+              Received Quantity
+            </th>
+            <!-- <th scope="col">
+                    Buying <br />
+                    Price
+                  </th> -->
+            <th class="text-start p-3 min-w-50px">Status</th>
+            <th class="text-start p-3 min-w-100px">Closed Date</th>
+            <th class="text-start p-3 min-w-50px">Sync</th>
+            <!-- <th scope="col"> Ship Status </th> -->
+            <th class="text-center p-3 min-w-100px">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let grn of grns; let i = index">
+            <td class="p-3 w-50px">
+              {{ page == 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}
+            </td>
+            <td class="p-3">
+              {{ grn.invoiceno }}
+            </td>
+            <td class="p-3">
+              <span class="badge badge-light-info">{{ grn.purchaseorder?.user?.name }}</span>
+            </td>
+            <td class="p-3">
+              <span class="fw-bold mb-1">
+                {{ grn?.purchaseorder?.uuid }}
+              </span>
+            </td>
+            <td class="p-3">
+              <span class="fw-bold mb-1">
+                {{ grn?.grnid }}
+              </span>
+            </td>
+            <td class="p-3">{{ grn.receiveddate | date : "mediumDate" }}</td>
+            <!-- <td class="p-3">
+              {{ grn.totalbundles }}
+            </td>
+            <td class="p-3">
+              {{ grn.receivedbundles }}
+            </td> -->
+            <td class="p-3">
+              {{ grn.totalitems }}
+            </td>
+            <td class="p-3">
+              {{ grn.receiveditems }}
+            </td>
+            <!-- <td>&#8377; {{ grn.buyingprice }}</td> -->
+            <td class="p-3">
+              <strong>{{ grn.status }}</strong>
+            </td>
+            <!-- <td>{{order.ship_status == 'Inward' ? 'Shipped':order.ship_status}}</td> -->
+            <td class="p-3">
+              {{ grn.closeddate | date : "mediumDate" || '--'}}
+            </td>
+            <td class="p-3">
+              <button *ngIf="grn?.status=='Open' && grn?.purchaseorder?.inwarditems?.[0]" class="btn btn-sm btn-info"
+                (click)="syncinventory(grn?.grnid || '')">
+                Sync Inventory
+              </button>
+            </td>
+            <td class="p-3 text-center">
+              <button class="btn btn-sm fw-bold btn-primary" [routerLink]=" [ '/warehouse/grn/' +
+                      grn?.grnid ]">
+                Receipt
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="grns?.length === 0">
+            <td colspan="10" class="text-center fw-bold">No Records Found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Pagination  -->
+    <div class="row justify-content-md-between align-items-md-center mt-2">
+      <div class="col-sm-12 col-md-8">
+        <div class="dataTables_length" id="tickets-table_length"><label class="d-inline-flex align-items-center">Show
+            <select class="form-select form-select-sm ms-2 me-2" (change)="handlePageSizeChange($event)">
+              <option *ngFor="let size of pageSizes" [ngValue]="size">
+                {{ size }}
+              </option>
+            </select> Entries</label></div>
+      </div>
+      <!-- Pagination -->
+      <div class="col-sm-12 col-md-4">
+        <div class="text-md-right float-md-end pagination-rounded">
+          <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false"
+            [boundaryLinks]="true" (pageChange)="handlePageChange($event)" [collectionSize]="count"></ngb-pagination>
+        </div>
+      </div>
+    </div>
+    <!-- Pagination  -->
+  </div>
+</div>

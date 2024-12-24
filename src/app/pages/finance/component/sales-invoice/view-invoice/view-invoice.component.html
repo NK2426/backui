@@ -1,0 +1,233 @@
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <!-- start row -->
+    <div class="row">
+
+        <div class="card">
+            <div class="card-body">
+                <div class="invoice-title">
+                    <div class="mb-4">
+                        <img src="./assets/media/logos/default.svg" alt="logo" height="20" />
+                    </div>
+                </div>
+                <div class="table-responsive" *ngIf="invoiceDetail">
+                    <table class="table table-bordered mb-0">
+                        <tbody>
+                            <tr>
+                                <td>Invoice Number : <b>{{invoiceDetail.invoiceno}}</b></td>
+                                <td>Invoice Date : <b>{{invoiceDetail.invoicedate}}</b></td>
+                                <td>Place of Supply(State code -State Name) : --</td>
+                            </tr>
+                            <tr>
+                                <td>Order Id : <b>{{invoiceDetail.orderID}} </b></td>
+                                <td>Order Date : <b>{{invoiceDetail.orderdatetime}}</b></td>
+                                <td>Nature of transaction :<b> {{ invoiceDetail.order.paymentmethod }}</b></td>
+                            </tr>
+                            <tr>
+                                <td>Nature of supply : <b>Goods</b></td>
+                                <td>Number of items :<b>{{invoiceDetail.invoiceorderitems.length}}</b> </td>
+                                <td>Payment mode : <b>{{invoiceDetail.modeofpayment}}</b></td>
+                            </tr>
+                            <tr>
+                                <td>Carrier Name : --</td>
+                                <td>AWB Number</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="control-label col-sm-4"> <b>Sold By / Bill From</b> </div>
+                        <p  [innerHTML]="invoiceDetail?.warehouse?.billingaddress"></p>
+
+                    </div>
+                    <div class="col-sm-6 " *ngIf="invoiceDetail && invoiceDetail.address">
+                        <div class="control-label col-sm-4"> <b>Bill to / Ship to</b> </div>
+                        <b> Name :</b> {{invoiceDetail.address.name}} <br />
+                        <b> Mobile Number :</b> {{invoiceDetail.address.mobile}}<br />
+                        <b> Email : </b>{{invoiceDetail.address.email}}<br />
+                        <b> Address: </b><span *ngIf="invoiceDetail.address.address">
+                            {{invoiceDetail.address.address}}, <br /></span>
+                        <span *ngIf="invoiceDetail.address.address2" class="ms-1">
+                            {{invoiceDetail.address.address2}} <br />
+                        </span>
+                        <span *ngIf="invoiceDetail.address.city"> {{invoiceDetail.address.city}}, <br /> </span>
+                        <span *ngIf="invoiceDetail.address.state"> {{invoiceDetail.address.state}}, <br /> </span>
+                        <span *ngIf="invoiceDetail.address.zipcode"> {{invoiceDetail.address.zipcode}} <br />
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Invoice item detail table   -->
+        <div class="col-md-12">
+            <div class="card mini-stats-wid">
+                <div class="card-body">
+                    <div class="media">
+                        <div class="media-body">
+                            <span class="text-muted fw-bold">INVOICE # : </span>
+                            <span class="text-muted fw-bold">
+                                <b>{{invoiceNumber}}</b> </span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <!-- Order Item Table Start -->
+                        <div class="table-responsive col-md-12">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">S.No</th>
+                                        <th scope="col">Product Name</th>
+                                        <th style="text-align:right;" scope="col">Quantity</th>
+                                        <th style="text-align:right;" scope="col">Gross Price</th>
+                                        <th style="text-align:right;" scope="col">Discount</th>
+                                        <th style="text-align:right;" scope="col">Taxable Amount</th>
+                                        <th scope="col">HSN</th>
+                                        <th style="text-align:right;" scope="col">Net Amount</th>
+
+                                        <th *ngIf="invoiceDetail.ifigst==0" style="text-align:right;" scope="col">CGST%
+                                        </th>
+                                        <th *ngIf="invoiceDetail.ifigst==0" style="text-align:right;" scope="col">CGST
+                                            Amnt</th>
+                                        <th *ngIf="invoiceDetail.ifigst==0" style="text-align:right;" scope="col">SGST%
+                                        </th>
+                                        <th *ngIf="invoiceDetail.ifigst==0" style="text-align:right;" scope="col">SGST
+                                            Amnt</th>
+                                        <th *ngIf="invoiceDetail.ifigst==1" style="text-align:right;" scope="col">IGST%
+                                        </th>
+                                        <th *ngIf="invoiceDetail.ifigst==1" style="text-align:right;" scope="col">IGST
+                                            Amnt</th>
+                                        <th style="text-align:right;" scope="col">CESS</th>
+                                        <th style="text-align:right;" scope="col">Tax %</th>
+
+                                        <th scope="col">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let invoiceItem of invoiceDetail?.invoiceorderitems; let i = index">
+                                        <td>{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}</td>
+                                        <td width="30%"> {{invoiceItem.item.name}} </td>
+                                        <td style="text-align:right;">{{invoiceItem.quantity}} </td>
+                                        <td style="text-align:right;"> {{numberFormat(invoiceItem.price)}} </td>
+                                        <td style="text-align:right;"> {{numberFormat(invoiceItem.discount)}} </td>
+                                        <td style="text-align:right;"> {{numberFormat(invoiceItem.taxamount)}} </td>
+                                        <td> {{invoiceItem.hsncode}} </td>
+                                        <td style="text-align:right;"> {{numberFormat(invoiceItem.total)}} </td>
+
+
+                                        <td *ngIf="invoiceDetail.ifigst==0" style="text-align:right;">
+                                            {{invoiceItem.ctax}}
+                                        </td>
+                                        <td *ngIf="invoiceDetail.ifigst==0" style="text-align:right;">
+                                            {{invoiceItem.ctaxval}}
+                                        </td>
+                                        <td *ngIf="invoiceDetail.ifigst==0" style="text-align:right;">
+                                            {{invoiceItem.stax}}
+                                        </td>
+                                        <td *ngIf="invoiceDetail.ifigst==0" style="text-align:right;">
+                                            {{invoiceItem.staxval}}
+                                        </td>
+                                        <td *ngIf="invoiceDetail.ifigst==1" style="text-align:right;">
+                                            {{invoiceItem.itax}}
+                                        </td>
+                                        <td *ngIf="invoiceDetail.ifigst==1" style="text-align:right;">
+                                            {{invoiceItem.itaxval}}
+                                        </td>
+                                        <td style="text-align:right;"> {{invoiceItem.shiptax || '--' }} </td>
+                                        <!-- NEED TO REPLACE WITH CESS-->
+                                        <td style="text-align:right;"> {{numberFormat(invoiceItem.taxpercentage)}} </td>
+
+                                        <td style="text-align:right;"> {{numberFormat(invoiceItem.grandtotal)}} </td>
+                                    </tr>
+                                    <tr *ngIf="invoiceDetail">
+                                        <td colspan="2"><b>Total</b></td>
+                                        <td style="text-align:right;"><b>{{total.quantity}}</b></td>
+                                        <td style="text-align:right;"><b>{{numberFormat(total.price)}}</b></td>
+                                        <td style="text-align:right;"><b>{{numberFormat(total.discount)}}</b></td>
+                                        <td style="text-align:right;"><b>{{numberFormat(total.taxamount)}}</b></td>
+                                        <td></td>
+                                        <td style="text-align:right;"><b>{{numberFormat(total.total)}}</b></td>
+                                        <td *ngIf="invoiceDetail.ifigst==0" style="text-align:right;"></td>
+                                        <td *ngIf="invoiceDetail.ifigst==0" style="text-align:right;"><b>
+                                                {{numberFormat(total.ctaxtotal)}}</b></td>
+                                        <td *ngIf="invoiceDetail.ifigst==0" style="text-align:right;"></td>
+                                        <td *ngIf="invoiceDetail.ifigst==0" style="text-align:right;"><b>
+                                                {{numberFormat(total.staxtotal)}}</b></td>
+                                        <td *ngIf="invoiceDetail.ifigst==1" style="text-align:right;"></td>
+                                        <td *ngIf="invoiceDetail.ifigst==1" style="text-align:right;"><b>
+                                                {{numberFormat(total.itaxtotal)}}</b></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td style="text-align:right;"><b>{{numberFormat(total.grandtotal)}}</b></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Order Item Table End -->
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <table id="print" *ngIf="invoiceDetail">
+                                <tr>
+                                    <td>
+
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="table-responsive" *ngIf="invoiceDetail">
+                                <table class="table table-bordered mb-0">
+                                    <tbody>
+                                        <tr>
+                                            <td>Sub Total </td>
+                                            <td><b>{{ numberFormat(invoiceDetail.totalamount)}}</b></td>
+                                        </tr>
+                                        <!-- <tr>
+                                            <td>Wallet Amount Used </td>
+                                            <td>--</td>
+                                        </tr> -->
+                                        <!-- <tr>
+                                            <td>Super Coins User </td>
+                                            <td>-- </td>
+                                        </tr> -->
+                                        <tr>
+                                            <td>Final Total(In Figure) </td>
+                                            <td><b>{{numberFormat(invoiceDetail.totalamount)}}</b></td>
+                                            <!--may need to be subtotal -(wallet amount+super coint)-->
+                                        </tr>
+                                        <tr>
+                                            <td>Total (in words) </td>
+                                            <td><b>Rs.{{inWords(invoiceDetail.totalamount)}}only</b> </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row -->
+
+</div> <!-- container-fluid -->

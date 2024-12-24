@@ -1,0 +1,174 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <!-- <div class="page-title-box d-flex align-items-center justify-content-between">
+        <h4 class="mb-0 font-size-18">{{ title }}</h4>
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+            <li class="breadcrumb-item active">{{ title }}</li>
+          </ol>
+        </div>
+      </div> -->
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-2">
+            <!-- 
+            <div class="col-sm-2">
+              <div class="search-box me-2 mb-2 d-inline-block">
+                <div class="position-relative">
+                  <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="search"
+                    (keyup)="list()" />
+                  <i class="bx bx-search-alt search-icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <ng-select name="orderTypeFilter" placeholder="Filter by status" [items]="salesOrderFilter"
+                bindLabel="displayName" bindValue="value" [(ngModel)]="orderStatus" groupBy="type"
+                (change)="onDropdownChange($event)">
+                <ng-template ng-optgroup-tmp let-item="item">
+                  {{ item.type || 'Unnamed group' }}
+                </ng-template>
+              </ng-select>
+            </div>-->
+
+            <div class="col-sm-6">
+              <form class="row">
+                <div class="col-6">
+                  <div class="dp-hidden position-absolute">
+                    <div class="input-group">
+                      <input name="datepicker" class="form-control" ngbDatepicker #datepicker="ngbDatepicker"
+                        [autoClose]="'outside'" (dateSelect)="onDateSelection($event)" [displayMonths]="2"
+                        [dayTemplate]="t" outsideDays="hidden" [startDate]="ngbFromDate!" tabindex="-1" />
+                      <ng-template #t let-date let-focused="focused">
+                        <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+                          [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+                          (mouseleave)="hoveredDate = null">
+                          {{ date.day }}
+                        </span>
+                      </ng-template>
+                    </div>
+                  </div>
+                  <div class="input-group">
+                    <input #dpFromDate class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate"
+                      [value]="formatter.format(ngbFromDate)"
+                      (input)="ngbFromDate = validateInput(ngbFromDate, dpFromDate.value)" />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()"
+                      type="button">
+                      <i class="fas fa-calendar-alt fa-fw"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="input-group">
+                    <input #dpToDate class="form-control" placeholder="yyyy-mm-dd" name="dpToDate"
+                      [value]="formatter.format(ngbToDate)"
+                      (input)="ngbToDate = validateInput(ngbToDate, dpToDate.value)" />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()"
+                      type="button">
+                      <i class="fas fa-calendar-alt fa-fw"></i>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="col-sm-6 text-end">
+              <button (click)="download()" type="button" class="btn btn-primary btn-sm btn-rounded">
+                <i class="mdi mdi-arrow-down mr-1"></i> Download
+              </button>
+            </div>
+          </div>
+          <!-- <div style="min-height: 300px"></div>-->
+
+          <div class="table-responsive">
+            <table class="table align-middle table-nowrap table-hover">
+              <thead>
+                <tr>
+                  <th class="text-center min-w-30px">#</th>
+                  <th class="text-center min-w-50px">Order ID</th>
+                  <th class="text-center min-w-50px">Order Date</th>
+                  <th class="text-center min-w-50px">Warehouse</th>
+                  <th class="text-center min-w-50px">Customer Name</th>
+                  <!-- <th class="text-center min-w-50px">Department</th> -->
+                 
+                  <th class="text-center min-w-50px">Category</th>
+                  <th class="text-center min-w-50px">SubCategory</th>
+                  <th class="text-center min-w-50px">Group</th>
+                  <th class="text-center min-w-50px">Order Type</th>
+                  <th class="text-center min-w-50px">Product</th>
+                  <th class="text-center min-w-50px">Quantity</th>
+                  <th class="text-center min-w-50px">Order Value</th>
+                  <th class="text-center min-w-50px">Cancelled Date</th>
+                  <th class="text-center min-w-50px">Reason</th>
+                  <!-- <th class="text-center min-w-50px">Action</th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let orderitem of cancelcustomerOrder; let i = index">
+                  <td>{{ page === 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}</td>
+                  <td>
+                    <!-- <a [routerLink]="['/customer/salesorders/orderdetail/' + orderitem.order?.uuid]"> -->
+                    {{ orderitem.order?.orderID }}
+                    <!-- </a> -->
+                  </td>
+                  <td>{{ orderitem.order.createdAt | date: 'medium' }}</td>
+                  <td>{{ orderitem.storehouse.name }}</td>
+                  <td>{{ orderitem.order.user?.name || '--' }}</td>
+                  <!-- <td>{{ orderitem.item?.department?.name }}</td> -->
+                  <td>{{ orderitem.item?.category?.name }}</td>
+                  <td>{{ orderitem.item?.subcategory?.name }}</td>
+                  <td>{{ orderitem.item?.group?.name }}</td>
+                  <td>
+                    <!-- <a [routerLink]="['/customer/salesorders/orderdetail/' + orderitem.order?.uuid]"> -->
+                    {{ orderitem.order?.ordertype }}
+                    <!-- </a> -->
+                  </td>
+                  <td style="text-align: left">{{ orderitem.item?.name }}</td>
+                  <td style="text-align: center">{{ orderitem.qty }}</td>
+                  <td style="text-align: right">{{ orderitem.subtotal }}</td>
+                  <td>{{ orderitem.deliverydate | date:'medium' }}</td>
+                  <td>{{ orderitem.reason?.reason }}</td>
+                  <!-- <td>
+                    <a [routerLink]="['/salesorders/orderdetail/' + orderitem.order?.uuid]" href="javascript:void(0)" ngbTooltip="View Shelf">
+                    <app-keenicon name="eye" class="fs-2 text-primary"
+                      ></app-keenicon>
+                    </a>
+                  </td> -->
+
+                </tr>
+                <tr *ngIf="cancelcustomerOrder?.length === 0">
+                  <td colspan="14" class="text-center fw-bold">No records found</td>
+                </tr>
+              </tbody>
+            </table>
+          </div> <!---->
+          <!-- Pagination  -->
+          <!-- -->
+          <div class="row justify-content-md-between align-items-md-center mt-2">
+            <div class="col-sm-12 col-md-4">
+              <div class="dataTables_length" id="tickets-table_length">
+                <label class="d-inline-flex align-items-center">Show
+                  <select class="form-select form-select-sm ms-2 me-2 cursor-pointer"
+                    (change)="handlePageSizeChange($event)">
+                    <option *ngFor="let size of pageSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select>
+                  Entries</label>
+              </div>
+            </div>
+            <!-- Pagination -->
+            <div class="col-sm-12 col-md-8">
+              <div class="text-md-right float-md-end pagination-rounded">
+                <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false"
+                  [boundaryLinks]="true" (pageChange)="handlePageChange($event)" [collectionSize]="count"></ngb-pagination>
+              </div>
+            </div>
+          </div>
+          <!-- Pagination -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

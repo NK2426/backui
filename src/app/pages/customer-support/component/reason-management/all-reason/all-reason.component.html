@@ -1,0 +1,273 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <!-- <div class="page-title-box d-flex align-items-center justify-content-between">
+        <h4 class="mb-0 font-size-18">Reason List</h4>
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+            <li class="breadcrumb-item active">Reason List</li>
+          </ol>
+        </div>
+      </div> -->
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-lg-3 col-sm-4">
+              <div class="d-flex align-items-center position-relative my-1 px-1">
+                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+                <input
+                  type="text"
+                  (keyup)="getReasonList()"
+                  placeholder="Search.."
+                  [(ngModel)]="search"
+                  class="form-control form-control-solid ps-12"
+                  #input
+                />
+              </div>
+            </div>
+            <!-- <div class="col-sm-4">
+              <div class="search-box me-2 mb-2 d-inline-block">
+                <div class="position-relative">
+                  <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="search"
+                    (keyup)="getReasonList()" />
+                  <i class="bx bx-search-alt search-icon"></i>
+                </div>
+              </div>
+            </div> -->
+            <div class="col-lg-9 col-sm-8">
+              <div class="text-sm-end">
+                <button (click)="addReason(content)" type="button" class="btn btn-primary btn-rounded mb-2 me-2">
+                  Add Reason
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Table -->
+          <div class="table-responsive">
+            <table class="table align-left gs-0 gy-5">
+              <thead>
+                <tr>
+                  <th class=" text-center w-50px">#</th>
+                  <!-- <th class="text-start p-5">Department</th> -->
+                  <th class="text-start p-5 w-200px">Type</th>
+                  <th class="text-start p-5 w-200px">Reason</th>
+                  <th class="text-start p-5 w-200px">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let reason of reasons; let i = index">
+                  <td class="text-center p-5">
+                    {{ page == 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}
+                  </td>
+                  <!-- <td class="p-5">
+                    <h5 class="font-size-14 mb-1">
+                      <a href="javascript: void(0);" class="text-primary"></a>
+                      {{ reason.department.name }}
+                    </h5>
+                  </td> -->
+                  <td class="p-5" class="badge badge-light-primary">{{ reason.type }}</td>
+                  <td class="p-5">{{ reason.reason || '--' }}</td>
+                  <td class="p-5">
+                    <ul class="list-inline font-size-20 contact-links mb-0">
+                      <a href="javascript:void(0)" ngbTooltip="Edit Payment Cycle" (click)="editReason(reason, content)"
+                        ><app-keenicon name="pencil" class="fs-2 text-primary"></app-keenicon>
+                      </a>
+                      <li class="list-inline-item px-2">
+                        <a [routerLink]="reason.uuid" href="javascript:void(0)" ngbTooltip="View Shelf">
+                          <app-keenicon name="eye" class="fs-2 text-primary"></app-keenicon>
+                         
+                        </a>
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr *ngIf="reasons?.length === 0">
+                  <td colspan="5" align="center">No Records Found</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination  -->
+          <div class="row justify-content-md-between align-items-md-center mt-2">
+            <div class="col-sm-12 col-md-8">
+              <div class="dataTables_length" id="tickets-table_length">
+                <label class="d-inline-flex align-items-center"
+                  >Show
+                  <select class="form-select form-select-sm ms-2 me-2" (change)="handlePageSizeChange($event)">
+                    <option *ngFor="let size of pageSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select>
+                  Entries</label
+                >
+              </div>
+            </div>
+            <!-- Pagination -->
+            <div class="col-sm-12 col-md-4">
+              <div class="text-md-right float-md-end pagination-rounded">
+                <ngb-pagination
+                  [(page)]="page"
+                  [pageSize]="pageSize"
+                  [maxSize]="5"
+                  [rotate]="true"
+                  [ellipses]="false"
+                  [boundaryLinks]="true"
+                  (pageChange)="handlePageChange($event)"
+                  [collectionSize]="count"
+                ></ngb-pagination>
+              </div>
+            </div>
+            <!-- <div class="col-sm-12 col-md-8">
+              <div class="text-md-right float-md-end pagination-rounded">
+                <ngb-pagination
+                  class="pagination pagination-rounded justify-content-center mt-4"
+                  size="lg"
+                  [(page)]="page"
+                  [pageSize]="pageSize"
+                  (pageChange)="handlePageChange($event)"
+                  [collectionSize]="count"
+                >
+                  <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i> </ng-template>
+                  <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+                </ngb-pagination>
+              </div>
+            </div> -->
+          </div>
+          <!-- Pagination  -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Pop UP Open start -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Add Reason</h5>
+    <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="submit-form">
+      <div class="mb-3 row"></div>
+      <form (ngSubmit)="upsertReason()" [formGroup]="formData" novalidate>
+        <div class="row">
+          <div class="col-12">
+            <!-- Department -->
+            <!-- <div class="mb-3" *ngIf="options && options.length">
+              <label class="control-label required">Department</label>
+              <ng-select
+                [items]="options"
+                [markFirst]="true"
+                (change)="onDropDownChange($event)"
+                [ngClass]="{
+                  'is-invalid':
+                    (submit && form['department_id']?.errors) ||
+                    (form['department_id']?.invalid && (form['department_id']?.dirty || form['department_id']?.touched))
+                }"
+                [searchable]="true"
+                bindLabel="name"
+                bindValue="did"
+                formControlName="department_id"
+                [(ngModel)]="selectedCategory"
+              >
+              </ng-select>
+              <div
+                *ngIf="
+                  (submit && form['department_id']?.errors) ||
+                  (form['department_id']?.invalid && (form['department_id']?.dirty || form['department_id']?.touched))
+                "
+                class="invalid-feedback"
+              >
+                <span *ngIf="form['department_id'].errors">Select valid category</span>
+              </div>
+            </div> -->
+
+            <!-- Reason -->
+            <div class="mb-3">
+              <label class="control-label required">Reason</label>
+              <input
+                class="form-control"
+                placeholder="Enter reason"
+                type="text"
+                name="reason"
+                autocomplete="off"
+                formControlName="reason"
+                [ngClass]="{
+                  'is-invalid':
+                    (submit && form['reason']?.errors) || (form['reason']?.invalid && (form['reason']?.dirty || form['reason']?.touched))
+                }"
+              />
+              <div
+                *ngIf="
+                  (submit && form['reason']?.errors) || (form['reason']?.invalid && (form['reason']?.dirty || form['reason']?.touched))
+                "
+                class="invalid-feedback"
+              >
+                <span *ngIf="form['reason'].errors">Enter valid reason</span>
+              </div>
+            </div>
+
+            <!-- Type -->
+            <div class="mb-3">
+              <div class="control-label required">Type</div>
+              <div>
+                <label class="p-2">
+                  <input type="radio" value="Return" formControlName="type" />
+                  <span class="p-2">Return</span>
+                </label>
+                <!-- <label class="p-2">
+                  <input type="radio" value="Replace" formControlName="type" />
+                  <span class="p-2">Replacement</span>
+                </label> -->
+                <label class="p-2">
+                  <input type="radio" value="Cancel" formControlName="type" />
+                  <span class="p-2">Cancel</span>
+                </label>
+              </div>
+
+              <div
+                *ngIf="
+                  (submit && form['status']?.errors) || (form['status']?.invalid && (form['status']?.dirty || form['status']?.touched))
+                "
+                class="invalid-feedback"
+              >
+                <span *ngIf="form['status'].errors">Choose type</span>
+              </div>
+            </div>
+
+            <!-- Show Variant -->
+            <div class="mb-3">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  formControlName="showvariant"
+                  id="showvariant"
+                  [checked]="reason?.showvariant == 0 ? '' : 'isChecked'"
+                />
+                <label class="form-check-label" for="type"> Show Variant </label>
+              </div>
+            </div>
+
+            <div class="d-md-flex align-items-center mt-5">
+              <div class="col-md-3">
+                <button type="submit" class="btn btn-primary btn-sm my-2">Submit</button>
+              </div>
+              <div class="ml-auto">
+                <div class="dl">
+                  <button type="button" class="btn btn-secondary btn-sm my-2" (click)="cancelAction()">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+<!-- Pop UP Open end -->

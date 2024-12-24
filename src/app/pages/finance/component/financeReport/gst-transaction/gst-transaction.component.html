@@ -1,0 +1,185 @@
+<div class="card">
+  <div class="card-body">
+    <!-- Dropdown -->
+    <!-- <div class="col-sm-12 col-md-12 row">
+      <div class="col-sm-3 col-md-2 col-lg-3">
+        <select class="form-select" (change)="getGstType($event)">
+          <option value="{{ item.value }}" selected="item[0].value" *ngFor="let item of gstTransaction">
+            {{ item.name }}
+          </option>
+        </select>
+      </div>
+    </div> -->
+
+    <!-- Apexchart -->
+    <!-- <div id="chart" *ngIf="eventName == 'chart'">
+      <apx-chart
+        [series]="chartOptions.series"
+        [chart]="chartOptions.chart"
+        [dataLabels]="chartOptions.dataLabels"
+        [plotOptions]="chartOptions.plotOptions"
+        [yaxis]="chartOptions.yaxis"
+        [legend]="chartOptions.legend"
+        [fill]="chartOptions.fill"
+        [stroke]="chartOptions.stroke"
+        [tooltip]="chartOptions.tooltip"
+        [xaxis]="chartOptions.xaxis"
+      ></apx-chart>
+    </div> -->
+
+    <!-- List GST -->
+    <div class="my-5 pt-5 col-md-12 col-sm-12">
+      <div>
+        <div class="row">
+          <!-- From Date -->
+          <div class="col-md-3 col-sm-12">
+            <div class="dp-hidden position-absolute my-2">
+              <div class="input-group">
+                <input
+                  name="datepicker"
+                  class="form-control"
+                  ngbDatepicker
+                  #datepicker="ngbDatepicker"
+                  [autoClose]="'outside'"
+                  (dateSelect)="onDateSelection($event)"
+                  [displayMonths]="1"
+                  [dayTemplate]="t"
+                  outsideDays="hidden"
+                  [startDate]="ngbFromDate!"
+                  tabindex="-1"
+                />
+                <ng-template #t let-date let-focused="focused">
+                  <span
+                    class="custom-day"
+                    [class.focused]="focused"
+                    [class.range]="isRange(date)"
+                    [class.faded]="isHovered(date) || isInside(date)"
+                    (mouseenter)="hoveredDate = date"
+                    (mouseleave)="hoveredDate = null"
+                  >
+                    {{ date.day }}
+                  </span>
+                </ng-template>
+              </div>
+            </div>
+            <div class="input-group">
+              <input
+                #dpFromDate
+                class="form-control"
+                placeholder="yyyy-mm-dd"
+                name="dpFromDate"
+                [value]="formatter.format(ngbFromDate)"
+                (input)="ngbFromDate = validateInput(ngbFromDate, dpFromDate.value)"
+              />
+              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()" type="button">
+                <i class="fas fa-calendar-alt fa-fw"></i>
+              </button>
+            </div>
+          </div>
+          <!-- TO date -->
+          <div class="col-md-3 col-sm-12">
+            <div class="input-group my-2">
+              <input
+                #dpToDate
+                class="form-control"
+                placeholder="yyyy-mm-dd"
+                name="dpToDate"
+                [value]="formatter.format(ngbToDate)"
+                (input)="ngbToDate = validateInput(ngbToDate, dpToDate.value)"
+              />
+              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()" type="button">
+                <i class="fas fa-calendar-alt fa-fw"></i>
+              </button>
+            </div>
+          </div>
+          <!-- Empty -->
+          <div class="col-md-6"></div>
+        </div>
+        <!-- Table -->
+        <div class="row col-sm-12 col-md-12">
+          <div *ngIf="dateWiseGstList?.length">
+            <div class="table-responsive py-5">
+              <table class="align-middle table-nowrap table-hover w-100">
+                <thead style="border-bottom: 1px solid #e6e6e6; border-top: 1px solid #e6e6e6">
+                  <tr style="font-size: 16px">
+                    <th class="text-center p-4">#</th>
+                    <th class="text-start p-4">HSN Code</th>
+                    <th class="text-start p-4">SKUID</th>
+                    <th class="text-start p-4">CGST</th>
+                    <th class="text-start p-4">CGST Value</th>
+                    <th class="text-start p-4">SGST</th>
+                    <th class="text-start p-4">SGST Value</th>
+                    <th class="text-start p-4">IGST</th>
+                    <th class="text-start p-4">IGST Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of dateWiseGstList; let index = index">
+                    <td class="p-4 text-center">{{ page == 1 ? index + 1 : index + 1 + size * (page - 1) }}</td>
+                    <td class="p-4 text-start fw-bold">{{ item?.invoiceItem?.hsncode || '--' }}</td>
+                    <td class="p-4 text-start fw-bold">{{ item?.invoiceItem?.skuid || '--' }}</td>
+                    <td class="p-4 text-start">{{ item.ctax || '--' }} <span *ngIf="item.ctax">%</span></td>
+                    <td class="p-4 text-start fw-bold" style="color: #1a73e8">
+                      <span *ngIf="item.ctaxval">&#8377;</span>{{ item.ctaxval || '--' }}
+                    </td>
+                    <td class="p-4 text-start">{{ item.stax || '--' }} <span *ngIf="item.stax">%</span></td>
+                    <td class="p-4 text-start fw-bold" style="color: #1a73e8">
+                      <span *ngIf="item.staxval">&#8377;</span>{{ item.staxval || '--' }}
+                    </td>
+                    <td class="p-4 text-start">{{ item.itax || '--' }} <span *ngIf="item.itax">%</span></td>
+                    <td class="p-4 text-start fw-bold" style="color: #1a73e8">
+                      <span *ngIf="item.itaxval">&#8377;</span>{{ item.itaxval || '--' }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- Pagination -->
+            <div>
+              <div class="row justify-content-md-between align-items-md-center mt-2">
+                <div class="col-sm-12 col-md-4">
+                  <div class="dataTables_length" id="tickets-table_length">
+                    <label class="d-inline-flex align-items-center text-primary fw-bold"
+                      >Show
+                      <select class="form-select form-select-sm ms-2 me-2 cursor-pointer" (change)="handlePageSizeChange($event)">
+                        <option *ngFor="let size of pageSizes" [ngValue]="size">
+                          {{ size }}
+                        </option>
+                      </select>
+                      Entries</label
+                    >
+                  </div>
+                </div>
+
+                <div class="col-sm-12 col-md-8">
+                  <div class="text-md-right float-md-end pagination-rounded">
+                    <ngb-pagination
+                      [maxSize]="5"
+                      [collectionSize]="count"
+                      [(page)]="page"
+                      [pageSize]="size"
+                      [rotate]="true"
+                      [ellipses]="false"
+                      [boundaryLinks]="true"
+                      (pageChange)="handlePageChange($event)"
+                    ></ngb-pagination>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Download XL -->
+            <div class="my-5 py-5 text-end">
+              <a *ngIf="showprintxl" class="btn btn-sm btn-primary text-white" (click)="downloadExcel()"
+                ><i class="fa fa-file-excel"></i> Download Excel</a
+              >
+              <span *ngIf="!showprintxl" class="btn btn-sm btn-warning my-2"
+                ><i class="bx bx-loader bx-spin"></i> Please Wait Excel is Generating ...
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

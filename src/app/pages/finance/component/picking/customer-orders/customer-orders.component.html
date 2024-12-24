@@ -1,0 +1,132 @@
+<div class="card mb-5 mb-xl-10 p-3">
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-5">
+                <div class="col-md-2 col-sm-6">
+                    <div class="d-flex align-items-center position-relative my-2 px-1">
+                        <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                        <input type="text" (keyup)="searchTable($event)" placeholder="Search.."
+                            class="form-control form-control-solid ps-12" #input>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <ng-select class="my-2" name="orderTypeFilter" placeholder="Filter by status"
+                        [items]="salesOrderFilter" bindLabel="displayName" bindValue="value" [(ngModel)]="orderStatus"
+                        (change)="onDropdownChange($event)">
+                    </ng-select>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="dp-hidden position-absolute my-2">
+                        <div class="input-group">
+                            <input name="datepicker" class="form-control" ngbDatepicker #datepicker="ngbDatepicker"
+                                [autoClose]="'outside'" (dateSelect)="onDateSelection($event)" [displayMonths]="2"
+                                [dayTemplate]="t" outsideDays="hidden" [startDate]="ngbFromDate!" tabindex="-1" />
+                            <ng-template #t let-date let-focused="focused">
+                                <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+                                    [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+                                    (mouseleave)="hoveredDate = null">
+                                    {{ date.day }}
+                                </span>
+                            </ng-template>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <input #dpFromDate class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate"
+                            [value]="formatter.format(ngbFromDate)"
+                            (input)="ngbFromDate = validateInput(ngbFromDate, dpFromDate.value)" />
+                        <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()"
+                            type="button">
+                            <i class="fas fa-calendar-alt fa-fw"></i></button>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="input-group my-2">
+                        <input #dpToDate class="form-control" placeholder="yyyy-mm-dd" name="dpToDate"
+                            [value]="formatter.format(ngbToDate)"
+                            (input)="ngbToDate = validateInput(ngbToDate, dpToDate.value)" />
+                        <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()"
+                            type="button">
+                            <i class="fas fa-calendar-alt fa-fw"></i></button>
+                    </div>
+                </div>
+                <div class="col-md-2 text-end">
+                    <button (click)="download()" type="button" class="btn btn-primary my-2 me-2"><i
+                            class="mdi mdi-arrow-down mr-1"></i>
+                        Export Excel</button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle  table-nowrap table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center p-4 w-50px">#</th>
+                            <th class="text-start p-4 min-w-100px">Order ID</th>
+                            <th class="text-start p-4 min-w-100px">Order Date</th>
+                            <th class="text-start p-4 min-w-100px">Customer Name</th>
+                            <th class="text-start p-4 min-w-100px">Customer ID</th>
+                            <th class="text-start p-4 min-w-100px">Number of items ordered</th>
+                            <th class="text-start p-4 min-w-100px">Number of items cancelled</th>
+                            <th class="text-start p-4 min-w-100px">Order Value</th>
+                            <th class="text-start p-4 min-w-100px">Payment Type</th>
+                            <th class="text-start p-4 min-w-100px">Payment Mode</th>
+                            <th class="text-start p-4 min-w-100px">Payment Status</th>
+                            <th class="text-start p-4 min-w-100px">Current Order Status</th>
+                            <th class="text-center p-4 min-w-100px">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let order of customerOrder; let i = index">
+                            <td class="p-4 text-center">{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}</td>
+                            <td class="p-4"> {{order.orderID}} </td>
+                            <td class="p-4"> {{order.createdAt | date : 'medium'}} </td>
+                            <td class="p-4"> {{order.user?.name || '--' }} </td>
+                            <td class="p-4"> {{order.user?.uid || '--' }} </td>
+                            <td class="p-4"> {{order.orderitems?.length || '--' }}
+                            </td>
+                            <td class="p-4">
+                                {{getCancelledItemsCount(order?.orderitems || []) || '--' }}
+                            </td>
+                            <td class="p-4"> {{numberFormat(order.amount) }} </td>
+                            <td class="p-4"> {{ order.modeofpayment }} </td>
+                            <td class="p-4"> {{ order.paymentmethod }} </td>
+                            <td class="p-4" > {{ order.paymentStatus ==='captured' || 'CHARGED' ? 'CHARGED' : order.paymentStatus }} </td>
+                            <td class="p-4"> {{order.status || '--'}} </td>
+                            <td class="p-4">
+                                <button class="btn btn-primary btn-sm"
+                                    [routerLink]="['/finance/salesorders/orderdetail/'+order?.uuid]">View
+                                    Order</button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="customerOrder?.length === 0">
+                            <td colspan="12" class="text-center fw-bold">No records found</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Pagination  -->
+            <div class="row justify-content-md-between align-items-md-center mt-2">
+                <div class="col-sm-12 col-md-8">
+                    <div class="dataTables_length" id="tickets-table_length">
+                        <label class="d-inline-flex align-items-center">Show
+                            <select class="form-select form-select-sm ms-2 me-2 cursor-pointer"
+                                (change)="handlePageSizeChange($event)">
+                                <option *ngFor="let size of pageSizes" [ngValue]="size">
+                                    {{ size }}
+                                </option>
+                            </select>
+                            Entries</label>
+                    </div>
+                </div>
+                <!-- Pagination -->
+                <div class="col-sm-12 col-md-4">
+                    <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true"
+                        [ellipses]="false" [boundaryLinks]="true" (pageChange)="handlePageChange($event)"
+                        [collectionSize]="count"></ngb-pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,131 @@
+<div class="card mb-5 mb-xl-10 p-3">
+    <!-- <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">{{title}}</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+                        <li class="breadcrumb-item active"> {{title}} </li>
+                    </ol>
+                </div>
+            </div> -->
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-5">
+                <!-- Search -->
+                <div class="col-sm-6">
+                    <div class="d-flex align-items-center position-relative mt-5 px-1">
+                        <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                        <input type="text" (keyup)="searchTable($event)" placeholder="Search..."
+                            class="form-control form-control-solid ps-12 w-200px" #input>
+                    </div>
+                </div>
+                <!-- Vendor -->
+                <div class="col-sm-3">
+                    <div class="mb-3">
+                        <label class="form-label"> Select Supplier</label>
+                        <ng-select name="brand" placeholder="Select Vendor" [items]="vendors" bindLabel="name"
+                            bindValue="uid" [(ngModel)]="selectedVendor" (change)="changeVendor($event)">
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="mb-3">
+                        <label class="form-label"> Select store</label>
+                        <ng-select name="brand" placeholder="Select store" [items]="warehouseData" bindLabel="name"
+                            bindValue="id" [(ngModel)]="selectedStore" (change)="changeVendor($event)">
+                        </ng-select>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle  table-nowrap table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center p-5 w-50px">#</th>
+                            <th class="text-start p-5 min-w-100px">P.O ID</th>
+                            <!-- <th class="text-start p-5 min-w-100px">Group</th> -->
+                            <th class="text-start p-5 min-w-100px">Supplier</th>
+                            <th class="text-start p-5 min-w-100px"> Shipper</th>
+                            <th class="text-start p-5 min-w-100px"> Dispatched Date</th>
+                            <th class="text-center p-5 min-w-100px"> Estimated Delivery Date </th>
+                            <th class="text-start p-5 min-w-100px"> Documents </th>
+                            <th class="text-start p-5 min-w-100px"> Status </th>
+                            <!-- <th class="text-start p-5 min-w-100px"> P.O Status </th> -->
+                            <!-- <th class="text-start p-5 min-w-100px">Action</th> -->
+                            <!-- <th class="text-start p-5 min-w-100px">Action</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let order of purchaseorders; let i = index">
+                            <td class="p-5">{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}</td>
+                            <td class="p-5">
+                                <strong><a href="javascript: void(0);" class="text-dark"></a>
+                                    <a [routerLink]="['/finance/po/view/'+order.uuid]"
+                                        ngbTooltip="View P.O">{{order.uuid}}</a>
+                                </strong>
+                            </td>
+                            <!-- <td class="p-5">
+                                        {{(order.purchaseorderitems?
+                                        order.purchaseorderitems[0]['product']?.['group']?.['name'] : '')}}
+                                    </td> -->
+                            <td class="p-5">
+                                {{order.user?.name}}
+                            </td>
+                            <td class="p-5">{{order.transporterid}}</td>
+                            <td class="p-5">{{order.updatedAt | date:'mediumDate'}}</td>
+                            <td class="p-5 text-center">{{order.deliverydate | date:'mediumDate'}}</td>
+                            <td class="p-5">
+                                <a target="_blank" href="{{ order?.invoice }}">Invoice</a>
+                            </td>
+
+                            <td class="p-5">{{order.ship_status == 'Received' || order.ship_status == 'Inward' ?
+                                order.ship_status : 'Pending'}}</td>
+                            <!-- <td class="p-5">{{order.ship_status == 'Inward' ? 'Shipped':order.ship_status}}</td> -->
+                            <!-- <td class="p-5">
+                                        <a [routerLink]="['/app/orders/view/'+order.uuid]" class="btn btn-info">Close P.O</a>
+                                    </td> -->
+                            <!-- <td class="p-5">
+                                        <ul class="list-inline font-size-20 contact-links mb-0">
+                                            <li class="list-inline-item px-2">
+                                                <a *ngIf="order.ship_status=='Pick Up'"
+                                                    (click)="setActivePO(content, order, i)" href="javascript:void(0)"
+                                                    class="btn btn-success">Received</a>
+                                                <span *ngIf="order.ship_status!='Pick Up'">--</span>
+                                            </li>
+                                        </ul>
+                                    </td> -->
+
+                        </tr>
+                        <tr *ngIf="purchaseorders?.length === 0">
+                            <td colspan="10" class="text-center fw-bold">No Records Found</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Pagination  -->
+            <div class="row justify-content-md-between align-items-md-center mt-2">
+                <div class="col-sm-12 col-md-8">
+                    <div class="dataTables_length" id="tickets-table_length"><label
+                            class="d-inline-flex align-items-center">Show
+                            <select class="form-select form-select-sm ms-2 me-2"
+                                (change)="handlePageSizeChange($event)">
+                                <option *ngFor="let size of pageSizes" [ngValue]="size">
+                                    {{ size }}
+                                </option>
+                            </select> Entries</label></div>
+                </div>
+                <!-- Pagination -->
+                <div class="col-sm-12 col-md-4">
+                    <div class="text-md-right float-md-end pagination-rounded">
+                        <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true"
+                            [ellipses]="false" [boundaryLinks]="true" (pageChange)="handlePageChange($event)"
+                            [collectionSize]="count"></ngb-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

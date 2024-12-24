@@ -1,0 +1,341 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="page-title-box d-flex align-items-center justify-content-between">
+        <h4 class="mb-2 font-size-18">View Supplier</h4>
+        <!-- <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+                        <li class="breadcrumb-item"><a [routerLink]="['/app/vendors']">Vendor</a></li>
+                        <li class="breadcrumb-item active"> View </li>
+                    </ol>
+                </div> -->
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="row mt-3">
+            <div class="col-sm-12">
+              <h4 class="card-title mb-4">Basic Details</h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3">Company Name : </label>
+                {{ viewvendor.name }}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3"> Supplier ID : </label>
+                {{ viewvendor.uuid }}
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3">Firstname : </label>
+                {{ vendordetail.firstname }}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3">Lastname : </label>
+                {{ vendordetail.lastname }}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3">Contact Number : </label>
+                {{ viewvendor.mobile }}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3">Email : </label>
+                {{ viewvendor.email }}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3"> Status : </label>
+                {{ viewvendor.status === '0' ? 'Inactive' : 'Active' }}
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-sm-12">
+              <h4 class="card-title mb-4">Login Details</h4>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3">Username : </label>
+                {{ viewvendor.username }}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3">Role : </label>
+                Supplier
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3">Supplier Agent : </label>
+                {{ agentName }}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3">Supplier Category : </label>
+                {{ agentCat }}
+              </div>
+            </div>
+          </div>
+          <!-- <div class="row mt-3">
+            <div class="col-sm-12">
+              <h4 class="card-title mb-4">PaymentTerm Details</h4>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="mb-3">
+                  <label class="form-label col-sm-3">PaymentTerm : </label>
+                  {{ vendordetail.paymentterm_id }}
+                </div>
+              </div>
+            </div>
+          </div> -->
+          <div class="row mt-3">
+            <div class="col-sm-12">
+              <h4 class="card-title mb-4">Other Details</h4>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3">Website : </label>
+                {{ vendordetail.website }}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3">Mobile Number : </label>
+                {{ vendordetail.mobile }}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3"> GSTIN Number : </label>
+                {{ vendordetail.gstin }}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3">TIN Number : </label>
+                {{ vendordetail.tin }}
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-sm-12">
+              <h4 class="card-title mb-4">Bank Details</h4>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3">Account Name : </label>
+                {{ vendordetail?.account_name }}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3">Account Number : </label>
+                {{ vendordetail?.account_no }}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3"> IFSC Code : </label>
+                {{ vendordetail?.ifsc }}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3">Bank Name : </label>
+                {{ vendordetail?.bankname }}
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <h4 class="card-title mt-4 mb-4">Billing Address</h4>
+              <div class="mb-3">
+                <label class="form-label col-sm-3"> Address 1 : </label>
+                {{ baddress.address }}
+              </div>
+              <div class="mb-3">
+                {{ baddress.address2 }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label col-sm-3"> City : </label>
+                {{ baddress.city }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label col-sm-3"> State : </label>
+                {{ baddress['superstate.name'] || baddress.state }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label col-sm-3"> Zipcode : </label>
+                {{ baddress.zipcode }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label col-sm-3"> Phone : </label>
+                {{ baddress.phone }}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <h4 class="card-title mt-4 mb-4 col-sm-3">Shipping Address</h4>
+              <div class="mb-3">
+                <label class="form-label col-sm-3"> Address 1 : </label>
+                {{ saddress.address }}
+              </div>
+              <div class="mb-3">
+                {{ saddress.address2 }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label col-sm-3"> City : </label>
+                {{ saddress.city }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label col-sm-3"> State : </label>
+                {{ saddress['superstate.name'] || saddress.state }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label col-sm-3"> Zipcode : </label>
+                {{ saddress.zipcode }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label col-sm-3"> Phone : </label>
+                {{ saddress.phone }}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3"> Created At : </label>
+                {{ viewvendor?.createdAt | date : 'medium' }}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3">Updated At : </label>
+                {{ viewvendor?.updatedAt | date : 'medium' }}
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="viewvendor?.documents?.length > 0">
+            <!--vendorMappings.length > 0 && -->
+            <h4 class="card-title mb-4">Documents</h4>
+            <div class="table-responsive col-md-8">
+              <table class="table align-middle table-nowrap table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 5px">#</th>
+                    <th scope="col" style="width: 20px">Document</th>
+                    <th scope="col" style="width: 20px">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let vendordoc of viewvendor?.documents; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>
+                      <a href="{{ vendordoc?.path }}" target="_blank">{{ vendordoc?.name }}</a>
+                    </td>
+
+                    <td>{{ vendordoc?.status == 1 ? 'Active' : 'Inactive' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="vendorproducts?.length > 0">
+            <h4 class="card-title mb-4">Products</h4>
+            <div class="table-responsive">
+              <table class="table align-middle table-hover">
+                <thead>
+                  <tr>
+                    <th class="p-5 w-50px">#</th>
+                    <th class="text-start min-w-100px">Image</th>
+                    <th class="text-start min-w-100px">DesignID</th>
+                    <!-- <th class="text-start min-w-100px">Vendor D.ID</th> -->
+                    <th class="text-start min-w-100px">Name</th>
+                    <!-- <th class="text-start min-w-100px">Variants</th> -->
+                    <!-- <th class="text-start min-w-100px">Price</th> -->
+                    <th class="text-start min-w-100px">Subcategory</th>
+                    <th class="text-start min-w-100px">Group</th>
+                    <th class="text-start min-w-100px">Brand</th>
+                    <th class="text-start min-w-100px">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let product of vendorproducts; let i = index">
+                    <td class="p-5 w-50px">{{ i + 1 }}</td>
+                    <td width="10%"><img src="{{product?.productselectimages?.[0]?.path}}" width="100" height="100" /></td>
+                    <td>{{ product.uuid }}</td>
+                    <!-- <td>{{product?.vendormapping?.vendorproId}}</td> -->
+                    <td>
+                      <strong class="font-size-14 mb-1"
+                        ><a href="javascript: void(0);" class="text-dark"></a>
+                        {{ product.name }}
+                      </strong>
+                    </td>
+                    <!-- <td>
+                                            <span *ngFor="let variant of variants;">
+                                                <div *ngIf="variant?.product_id == product.pid">
+                                                    <span *ngFor="let variantvalue of variant.productvariant.productvariantvalues; let varno=index
+                                                    ">{{variantvalue.value}}<span
+                                                            *ngIf="varno+1 != variant.productvariant.productvariantvalues?.length">,</span>
+                                                    </span>
+                                                </div>
+                                            </span>
+                                        </td> -->
+                    <!-- <td>{{product?.vendormapping?.price == 0 ? '--' :
+                                            product?.vendormapping?.price}}</td> -->
+
+                    <td>{{ product?.subcategory?.name }}</td>
+                    <td>{{ product?.group?.name }}</td>
+                    <td>{{ product?.brand?.name }}</td>
+                    <td>{{ product.status == 'VenDraft' ? 'Waiting for Approval' : product.status }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <a [routerLink]="['/category-head/vendors']" class="btn btn-sm btn-primary me-4">Back</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

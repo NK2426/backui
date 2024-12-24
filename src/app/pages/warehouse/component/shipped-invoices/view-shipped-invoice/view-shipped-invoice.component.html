@@ -1,0 +1,308 @@
+<div class="container-fluid">
+    <!-- start page title -->
+    <!-- <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">Shipped Invoice order</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a [routerLink]="['/warehouse']">Home</a></li>
+                        <li class="breadcrumb-item active"> <a [routerLink]="['/warehouse/shipped-invoices']">Shipped
+                                Invoices</a>
+                        </li>
+                        <li class="breadcrumb-item">Shipped Invoice order</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- end page title -->
+
+    <!-- start row -->
+    <div class="row">
+
+        <div class="card">
+            <div class="card-body">
+                <div class="invoice-title">
+                    <div class="mb-4">
+                        <img src="./assets/media/logos/mlogo.png" alt="logo" width="50" />
+                    </div>
+                </div>
+                <div class="table-responsive" *ngIf="invoiceDetail">
+                    <table class="table align-left gy-5 table-bordered">
+                        <tbody>
+                            <tr>
+                                <td>Invoice Number : <b>{{invoiceDetail.invoiceno}}</b></td>
+                                <td>Invoice Date : <b>{{invoiceDetail.invoicedate}}</b></td>
+                                <td>Place of Supply(State code) : {{invoiceDetail.address.state}}</td>
+                            </tr>
+                            <tr>
+                                <td>Order Id : <b>{{invoiceDetail.orderID}} </b></td>
+                                <td>Order Date : <b>{{invoiceDetail.orderdatetime}}</b></td>
+                                <td>Nature of transaction : {{invoiceDetail.order.paymentmethod}}</td>
+                            </tr>
+                            <tr>
+                                <td>Nature of supply : <b>Goods</b></td>
+                                <td>Number of items :<b>{{invoiceDetail.invoiceorderitems.length}}</b> </td>
+                                <td>Payment mode : {{invoiceDetail.order.modeofpayment}}</td>
+                            </tr>
+                            <tr>
+                                <td>Carrier Name : EcomExpress</td>
+                                <td>AWB Number : {{invoiceDetail.awbnumber}}</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="control-label col-sm-4 fs-5 pb-3"> <b>Sold By / Bill From</b> </div>
+                        <!-- <p [innerHTML]="warehouse.billingaddress"></p> -->
+                        <p [innerHTML]="invoiceDetail.warehouse.billingaddress"></p>
+                    </div>
+                    <div class="col-sm-6 " *ngIf="invoiceDetail && invoiceDetail.address">
+                        <div class="control-label col-sm-4 fs-5 pb-3"> <b>Bill to / Ship to</b> </div>
+                        <b> Name :</b> {{invoiceDetail.address.name}} <br />
+                        <b> Mobile Number :</b> {{invoiceDetail.address.mobile}}<br />
+                        <b> Email : </b>{{invoiceDetail.address.email}}<br />
+                        <b> Address: </b><span *ngIf="invoiceDetail.address.address">
+                            {{invoiceDetail.address.address}}, <br /></span>
+                        <span *ngIf="invoiceDetail.address.address2" class="ms-1">
+                            {{invoiceDetail.address.address2}} <br />
+                        </span>
+                        <span *ngIf="invoiceDetail.address.city"> {{invoiceDetail.address.city}}, <br /> </span>
+                        <span *ngIf="invoiceDetail.address.state"> {{invoiceDetail.address.state}}, <br /> </span>
+                        <span *ngIf="invoiceDetail.address.zipcode"> {{invoiceDetail.address.zipcode}} <br />
+                        </span>
+                    </div>
+
+                </div>
+
+                <!-- Invoice item detail table   -->
+                <div class="col-md-12">
+                    <div class="media pb-2">
+                        <div class="media-body">
+                            <span class="text-muted fw-bold">INVOICE # : </span>
+                            <span class="text-muted fw-bold">
+                                <b>{{invoiceNumber}}</b> </span>
+                        </div>
+                    </div>
+
+                    <!-- <div class="row"> -->
+                    <!-- Order Item Table Start -->
+                    <div class="table-responsive">
+                        <table class="table align-left gs-0 gy-5">
+                            <thead>
+                                <tr>
+                                    <th class="p-5 w-50px">S.No</th>
+                                    <th class="text-start p-3 min-w-150px">Product Name</th>
+                                    <th class="text-start p-3 min-w-50px">Quantity</th>
+                                    <th class="text-start p-3 min-w-80px">Gross Price</th>
+                                    <th class="text-start p-3 min-w-50px">Discount</th>
+                                    <th class="text-start p-3 min-w-70px">Taxable Amount</th>
+                                    <th class="text-start p-3 min-w-100px">HSN</th>
+                                    <th class="text-start p-3 min-w-100px">Net Amount</th>
+
+                                    <th class="text-start p-3 min-w-80px">CGST(%)</th>
+                                    <th class="text-start p-3 min-w-80px">SGST(%)</th>
+                                    <th class="text-start p-3 min-w-80px">IGST(%)</th>
+                                    <th class="text-start p-3 min-w-50px">CESS</th>
+                                    <th class="text-start p-3 min-w-50px">Tax %</th>
+                                    <th class="text-start p-3 min-w-80px">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let invoiceItem of invoiceDetail?.invoiceorderitems; let i = index">
+                                    <td class="p-5 w-50px">{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}</td>
+                                    <td> {{invoiceItem.item.name}} </td>
+                                    <td>{{invoiceItem.quantity}} </td>
+                                    <td> {{invoiceItem.price}} </td>
+                                    <td> {{invoiceItem.discount}} </td>
+                                    <td> {{invoiceItem.taxamount}} </td>
+                                    <td> {{invoiceItem.hsncode}} </td>
+                                    <td> {{invoiceItem.total}} </td>
+                                    <td> {{invoiceItem.ctaxval}}( {{invoiceItem.ctax}})
+                                    </td>
+                                    <td> {{invoiceItem.itaxval}} ({{invoiceItem.itax}})
+                                    </td>
+                                    <td> {{invoiceItem.staxval}} ({{invoiceItem.stax}})
+                                    </td>
+                                    <td> {{invoiceItem.shiptax || '--' }} </td> <!-- NEED TO REPLACE WITH CESS-->
+                                    <td> {{invoiceItem.taxpercentage}} </td>
+                                    <td> {{invoiceItem.grandtotal}} </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Order Item Table End -->
+                    <!-- </div> -->
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h3 class="font-size-14" *ngIf="invoiceDetail && invoiceDetail.awbnumber != ''">AWB Number
+                                QR</h3>
+                            <table id="print" *ngIf="invoiceDetail && invoiceDetail.awbnumber != ''">
+                                <tr>
+                                    <td>
+                                        <qrcode [qrdata]="invoiceDetail.awbnumber+''" [width]="200"
+                                            [errorCorrectionLevel]="'M'" [elementType]="'img'" [margin]="3">
+                                        </qrcode>
+                                    </td>
+                                </tr>
+                            </table>
+                            <form (ngSubmit)="hittingNDR()" [formGroup]="formData" novalidate>
+                                <div class="row">
+                                    <div
+                                        *ngIf="invoiceDetail && (invoiceDetail.awbnumber === '' || invoiceDetail.shipment === 'Cancel')">
+                                        <h3 class="mt-4 mb-4 font-size-18">RAD: Reattempt, RTO:
+                                            Cancellation/ Return to Origin</h3>
+                                        <div class="row mb-4">
+                                            <label class="control-label col-sm-3">Instruction <br /> (RAD or RTO)
+                                                *</label>
+                                            <div class="col-sm-7">
+                                                <ng-select formControlName="instruction" name="instruction"
+                                                    placeholder="Select instruction" [items]="instruction"
+                                                    bindLabel="displayname" bindValue="value"></ng-select>
+                                            </div>
+                                            <div *ngIf="(submit && form['instruction']?.errors) || (form['instruction']?.invalid && (form['instruction']?.dirty || form['instruction']?.touched))"
+                                                class="invalid-feedback">
+                                                <span *ngIf="form['instruction'].errors">Select Instruction</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <label class="control-label col-sm-3">Comments *</label>
+                                            <div class="col-sm-7">
+                                                <input class="form-control" placeholder="Enter comments" type="text"
+                                                    name="comments" autocomplete="off" formControlName="comments"
+                                                    [ngClass]="{'is-invalid': (submit && form['comments']?.errors) || (form['comments']?.invalid && (form['comments']?.dirty || form['comments']?.touched))}" />
+                                            </div>
+                                            <div *ngIf="(submit && form['comments']?.errors) || (form['comments']?.invalid && (form['comments']?.dirty || form['comments']?.touched))"
+                                                class="invalid-feedback">
+                                                <span *ngIf="form['comments'].errors">Enter valid comments</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <label class="control-label col-sm-3"> Scheduled Delivery Date </label>
+                                            <div class="col-sm-7">
+                                                <div class="input-group">
+                                                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp"
+                                                        formControlName="deliverydate" ngbDatepicker #d="ngbDatepicker"
+                                                        [minDate]="model">
+                                                    <button class="btn btn-sm my-3 btn-outline-secondary calendar"
+                                                        (click)="d.toggle()" type="button"><i
+                                                            class="fas fa-calendar-alt fa-fw"></i></button>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="(submit && form['deliverydate']?.errors) || (form['deliverydate']?.invalid && (form['deliverydate']?.dirty || form['deliverydate']?.touched))"
+                                                class="invalid-feedback">
+                                                <span *ngIf="form['deliverydate'].errors">Enter valid
+                                                    deliverydate</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label class="control-label col-sm-3">Delivery Slot *</label>
+                                            <div class="col-sm-7">
+                                                <ng-select name="qdp" placeholder="Select Slot" [items]="slotsOption"
+                                                    bindLabel="displayName" bindValue="value"
+                                                    formControlName="deliveryslot" (change)="changeSlotOptions($event)">
+                                                </ng-select>
+                                            </div>
+                                            <div *ngIf="(submit && form['deliveryslot']?.errors) || (form['deliveryslot']?.invalid && (form['deliveryslot']?.dirty || form['deliveryslot']?.touched))"
+                                                class="invalid-feedback">
+                                                <span *ngIf="form['deliveryslot'].errors">Enter valid
+                                                    deliveryslot</span>
+                                            </div>
+                                        </div>
+                                        <div class="row d-md-flex align-items-center mt-3" *ngIf="!submit">
+                                            <div class="col-md-5"></div>
+                                            <div class="col-md-3">
+                                                <button type="submit" class="btn btn-sm btn-primary my-3">Generate
+                                                    NDR</button>
+                                            </div>
+                                            <!-- <div class="ml-auto">
+                                                <div class="dl">
+                                                    <button type="button" class="btn btn-sm btn-warning my-3">Cancel</button>
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                    <div class="d-md-flex align-items-center mt-5"
+                                        *ngIf="invoiceDetail && (invoiceDetail.awbnumber !== '' && invoiceDetail.shipment === 'Create')">
+                                        <div class="col-md-3">
+                                            <button (click)="cancelShipment()" type="submit"
+                                                class="btn btn-sm btn-warning my-3">Cancel Shipment</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="table-responsive" *ngIf="invoiceDetail">
+                                <table class="table table-bordered mb-0">
+                                    <tbody>
+                                        <tr>
+                                            <td>Sub Total </td>
+                                            <td><b>{{invoiceDetail.totalamount}}</b></td>
+                                        </tr>
+                                        <!-- <tr>
+                                            <td>Wallet Amount Used </td>
+                                            <td>--</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Super Coins User </td>
+                                            <td>-- </td>
+                                        </tr> -->
+                                        <tr>
+                                            <td>Final Total(In Figure) </td>
+                                            <td><b>{{invoiceDetail.totalamount}}</b></td>
+                                            <!--may need to be subtotal -(wallet amount+super coint)-->
+                                        </tr>
+                                        <tr>
+                                            <td>Total (in words) </td>
+                                            <td><b>Rs.{{inWords(invoiceDetail.totalamount)?.toUpperCase()}}</b> </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div *ngIf="invoiceDetail && invoiceDetail.shipstatus !== ''">
+                                <h3 class="mt-4 font-size-18">Shiping Status</h3>
+                                <label class="mb-2 font-size-16 color-primary">{{invoiceDetail.shipment}}</label>
+                                <div class="mb-3" [innerHTML]="invoiceDetail.shipstatus" style="line-height: 30px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="float-end" *ngIf="
+                                invoiceDetail &&
+                                invoiceDetail.awbnumber !== '' &&
+                                invoiceDetail.shipment !== 'Cancel'
+                                ">
+                                <a *ngIf="showprint && this.invoiceNumber" (click)="download()"
+                                    class="btn btn-sm btn-primary my-3"><i class="fa fa-print"></i> Download AWB</a>
+                                <span *ngIf="!showprint" class="btn btn-sm btn-sm btn-secondary my-3"><i
+                                        class="bx bx-loader bx-spin"></i>
+                                    Please Wait PDF is Generating ...
+                                </span>
+                            </div>
+                            <div class="float-end">
+                                <a *ngIf="showprintinv && this.invoiceNumber" (click)="downloadinv()"
+                                    class="btn btn-sm btn-primary my-3"><i class="fa fa-print"></i> Download
+                                    Invoice</a>&nbsp;&nbsp;
+                                <span *ngIf="!showprintinv" class="btn btn-sm btn-secondary my-3"><i
+                                        class="bx bx-loader bx-spin"></i>
+                                    Please Wait PDF is
+                                    Generating ... </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row -->
+</div> <!-- container-fluid -->

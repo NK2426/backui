@@ -1,0 +1,229 @@
+<div class="page-title d-flex flex-wrap me-3 flex-column justify-content-center">
+  <!-- 
+  <h1 class="page-heading d-flex text-dark fw-bold fs-3 my-0 flex-column justify-content-center" *ngIf="type===''">
+    PO List
+  </h1> -->
+</div>
+
+
+<div class="card">
+  <div class="card-body">
+    <div class="row mb-2">
+      <!--begin::Search-->
+      <div class="col-sm-2 px-2">
+        <div class="d-flex align-items-center position-relative my-1 px-1 mt-5">
+          <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+            <span class="path1"></span>
+            <span class="path2"></span>
+          </i>
+          <input type="text" (keyup)="searchTable($event)" placeholder="Search by P.O"
+            class="form-control form-control-solid ps-12 mt-1" #input />
+        </div>
+      </div>
+
+      <div class="col-sm-2 px-2">
+        <label class="form-label"> Select Procurement type</label>
+        <ng-select name="brand" placeholder="Select PO" [items]="types" bindLabel="id" bindValue="name"
+         (change)="changePage($event)">
+        </ng-select>
+      </div>
+      <div class="col-sm-2 px-2">
+        <label class="form-label"> Select Supplier</label>
+        <ng-select name="brand" placeholder="Select Supplier" [items]="vendors" bindLabel="name" bindValue="uid" class="ng-select-height"
+          [(ngModel)]="selectedVendor" (change)="changeVendor($event)">
+        </ng-select>
+      </div>
+      <div class="col-sm-3 px-2">
+        <label class="form-label">Select Warehouse</label>
+        <ng-select name="brand" 
+                   placeholder="Select warehouse" 
+                   [items]="warehouse" 
+                   bindLabel="name" 
+                   bindValue="id" 
+                   class="ng-select-height"
+                   [(ngModel)]="selectedWarehouse" 
+                   (change)="changeWarehouse($event)">
+          <!-- Tooltip for the dropdown options -->
+          <ng-template ng-option-tmp let-item="item">
+            <span [ngbTooltip]="item.name">{{ item.name }}</span>
+          </ng-template>
+          
+        </ng-select>
+      </div>
+      
+    
+      <!-- <div class="col-sm-2 px-2">
+        <label class="form-label"> Select Vendor</label>
+        <select class="form-control" type="text" (change)="changeVendor($event)">
+          <option> Choose vendor</option>
+          <option *ngFor="let stat of vendors" [value]="stat.uid">
+            {{
+            stat.name }}
+        </option>
+        </select>
+      </div> -->
+      <!-- <div class="col-sm-2 px-2">
+        <label class="form-label"> Select PO type</label>
+        <select class="form-control" type="text"  (change)="changePage($event)">
+      
+          <option *ngFor="let stat of types" [value]="stat.name">
+            {{
+            stat.id }}
+        </option>
+        </select>
+      </div> -->
+      <div class="col-sm-2" *ngxPermissionsOnly="['PURCHASE_HEAD']">
+        <label class="form-label"> Select Purchaser</label>
+        <ng-select name="brand" placeholder="Select Vendor" [items]="purchaseid" bindLabel="uuid" bindValue="uid"
+          [(ngModel)]="selectedPurchaser" (change)="changePurchaser($event)">
+        </ng-select>
+      </div>
+
+      <div class="col-sm-3 text-end">
+        <div *ngIf="user.role === 3 || user.role === 0">
+          <div class="pt-3">
+            <a [routerLink]="['/po/create-po']" class="btn btn-primary">New Procurement</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-toolbar flex-row-fluid justify-content-end gap-5" *ngIf="user.role === 3"></div>
+    <!--end::Card toolbar-->
+    <!-- begin::Body -->
+    <!-- begin::Table container -->
+    <div class="table-responsive">
+      <!-- begin::Table -->
+      <table class="table align-left gs-0 gy-5">
+        <!-- begin::Table head -->
+        <thead>
+          <tr>
+            <th class="text-center w-80px">#</th>
+            <th class="text-start p-5 min-w-100px"># P.O</th>
+            <th class="text-start p-5 min-w-100px">P.O Date</th>
+            <th class="text-start p-5 min-w-100px">Supplier</th>
+            <th class="text-start p-5 min-w-100px" *ngxPermissionsOnly="['ADMIN', 'PURCHASE_HEAD']">Purchaser</th>
+            <th class="text-start p-5 min-w-100px">Total</th>
+            <!-- <th class="text-start p-5 min-w-70px">Payment Term</th> -->
+            <th class="text-start p-5 min-w-100px">Status</th>
+            <th class="text-start p-5 min-w-100px">Ship Status</th>
+            <th class="text-start p-5 min-w-100px">Actions</th>
+          </tr>
+        </thead>
+        <!-- end::Table head -->
+
+        <!-- begin::Table body -->
+        <tbody>
+          <ng-container *ngIf="orders?.length > 0; else norecord">
+            <tr *ngFor="let order of orders; let i = index">
+              <td class="text-center">
+                <span class="fw-bold">{{ page === 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}</span>
+              </td>
+              <td data-order="34">
+                <span class="fw-bold ms-3">{{ order.uuid || '' }}</span>
+              </td>
+              <td>{{ order?.date | date : 'dd/MM/yyyy' }}</td>
+
+              <td data-order="Published">
+                <div class="badge badge-light-info">{{ order?.user?.name }}</div>
+              </td>
+              <td *ngxPermissionsOnly="['ADMIN', 'PURCHASE_HEAD']">
+                <div class="badge badge-light-primary">{{ order.purchase }}</div>
+              </td>
+              <td data-order="34">
+                <span class="fw-bold ms-3">{{ order?.grandtotal }}</span>
+              </td>
+              <!-- <td data-order="34">
+                  <span class="fw-bold ms-3"> {{ order?.paymentterm?.name }}</span>
+                </td> -->
+              <td data-order="34">
+                <span class="fw-bold ms-3 badge badge-light-primary">{{ order.status }}</span>
+              </td>
+              <td data-order="34">
+                <span class="fw-bold ms-3">{{ order.ship_status === '' ? '--' : order.ship_status }}</span>
+              </td>
+              <td>
+                <ul class="list-inline font-size-20 contact-links mb-0">
+                  <li class="list-inline-item cursor-pointer">
+                    <a (click)="viewEdit('view', order.uuid)" ngbTooltip="View Order">
+                      <app-keenicon name="eye" class="fs-2 text-info"></app-keenicon></a>
+                  </li>
+                  <li class="list-inline-item cursor-pointer">
+                    <ng-container *ngIf="
+                            (user.role == 3 || user.role == 0) &&
+                            (order.status === 'Draft' || order.status === 'Revise' || order.status === 'Vendor_revise')
+                          " class="list-inline-item px-1">
+                      <a (click)="viewEdit('edit', order.uuid)">
+                        <app-keenicon name="pencil" class="fs-2 text-primary"></app-keenicon></a>
+                    </ng-container>
+                  </li>
+                  <li class="list-inline-item cursor-pointer">
+                    <ng-container class="list-inline-item px-1"
+                      *ngIf="user.role === 0 || (user.role === 3 && order.status === 'Draft')">
+                      <a (click)="deleteUser(order)" ngbTooltip="Delete Order">
+                        <app-keenicon name="trash" class="fs-2 text-danger"></app-keenicon>
+                      </a>
+                    </ng-container>
+                  </li>
+                </ul>
+                <!-- <ul class="list-inline font-size-20 contact-links mb-0">
+                    <li class="list-inline-item px-1">
+                      <a (click)="viewEdit('view',order.uuid)" ngbTooltip="View Order">
+                        <app-keenicon name="eye" class="fs-1 text-info"></app-keenicon></a>
+                    </li>
+                    <li
+                      *ngIf="(user.role == 3 || user.role == 0) && (order.status === 'Draft' || order.status === 'Revise' || order.status === 'Vendor_revise') "
+                      class="list-inline-item px-1">
+                      <a (click)="viewEdit('edit',order.uuid)">
+                        <app-keenicon name="pencil" class="fs-1 text-primary"></app-keenicon></a>
+                    </li>
+                    <li class="list-inline-item px-1"
+                      *ngIf="user.role === 0 || user.role===3 && order.status === 'Draft' ">
+                      <a (click)="deleteUser(order)" ngbTooltip="Delete Order">
+                        <app-keenicon name="trash" class="fs-1 text-danger"></app-keenicon>
+                      </a>
+                    </li>
+                  </ul> -->
+                <!--end::Menu-->
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+        <!-- end::Table body -->
+      </table>
+      <!-- end::Table -->
+    </div>
+    <div class="row justify-content-md-between align-items-md-center mt-2">
+      <div class="col-sm-12 col-md-8">
+        <div class="d-flex flex-wrap mr-3">
+          <div class="d-flex align-items-center">
+            Show
+            <select class="form-select form-select-sm ms-2 me-2" style="width: 75px" [(ngModel)]="pageSize"
+              (ngModelChange)="handlePageSizeChange($event)">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+            <span class="text-center fw-bold">Entries</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-12 col-md-4">
+        <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false"
+          [boundaryLinks]="true" (pageChange)="handlePageChange($event)" [collectionSize]="count"></ngb-pagination>
+      </div>
+    </div>
+
+    <!-- end::Table container -->
+    <!-- </div> -->
+    <!-- </div> -->
+  </div>
+  <ng-template #norecord>
+    <tr>
+      <td colspan="8" style="text-align: center; font-size: 14px; font-weight: 600">No Record Found</td>
+    </tr>
+  </ng-template>
+</div>

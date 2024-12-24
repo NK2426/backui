@@ -1,0 +1,240 @@
+<div class="page-title d-flex flex-wrap me-3 flex-column justify-content-center">
+    <h1 class="page-heading d-flex text-dark fw-bold fs-3 my-0 flex-column justify-content-center mb-3">GRN</h1>
+</div>
+<div class="card mb-5 mb-xl-10">
+    <div class="card-body pt-1 pb-02">
+        <div class="card-body py-3">
+            <div class="row">
+                <div class="">
+                    <div class="page-title-box d-flex align-items-center justify-content-between">
+                        <p class="mb-2 font-size-18"><strong>P.O ID: </strong>{{grn?.purchaseorder?.uuid}}</p>
+                        <p class="mb-0 font-size-18"><strong>Receipt ID: </strong>{{ grn.grnid }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-between">
+                <p class="mb-0 font-size-18"><strong>Receipt Date: </strong>{{grn.createdAt | date:'medium'}}</p>
+                <button *ngIf="showprint && grn.status == 'Closed'" class="btn btn-sm btn-primary mt-3"
+                    (click)="downloadgrn()">Download
+                    Receipt</button>
+                <span *ngIf="!showprint" class="btn btn-sm btn-secondary"><i class="bx bx-loader bx-spin"></i> Please Wait
+                    PDF is Generating ... </span>
+            </div>
+
+            <!-- first table -->
+
+            <!-- <div class="table-responsive">
+                <h5 class="mb-4 mt-5">Receipt Bundle Summary</h5>
+                <table id="datatable" bgcolor="#ffffff" class="table table-bordered nowrap"
+                    style="border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th class="text-start p-5 min-w-100px">Bundle ID</th>
+                            <th class="text-start p-5 min-w-100px">Bundle Status</th>
+                            <th class="text-start p-5 min-w-100px">Bundle Quantity by Supplier</th>
+
+                            <th class="text-start p-5 min-w-100px">Files</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let order of bundles; let i = index;">
+                            <td class="p-5">
+                                {{i+1}}
+                            </td>
+                            <td class="p-5">
+                                {{order.status}}
+                            </td>
+                            <td class="p-5">
+                                {{(order.itemscount)}}
+                            </td>
+                            <td class="p-5"><a *ngIf="order?.status=='Dispute'" (click)="setActiveGrn(content,order,i)"
+                                    href="javascript:void(0)"
+                                    class="btn btn-sm btn-primary waves-effect waves-light">View
+                                    Image</a>
+                                <span *ngIf="order?.status!='Dispute'">--</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="p-5"><strong>TOTAL</strong></td>
+                            <td class="p-5"><strong>{{bundles.length}} Bundles</strong></td>
+                            <td class="p-5"><strong>{{bundleitemscount}}</strong></td>
+                        </tr>
+                    </tfoot>
+
+                </table>
+            </div> -->
+
+            <!-- second table -->
+
+            <div class="table-responsive">
+                <h5 class="mb-4 mt-5 pt-5"> Goods Receipt Summary</h5>
+                <table id="datatable" bgcolor="#ffffff" class="table table-bordered dt-responsive nowrap"
+                    style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                    <thead>
+                        <tr>
+                            <th class="p-5 w-50px">No</th>
+                            <th class="text-start p-5 min-w-100px">Product Name & ID</th>
+                            <th class="text-start p-5 min-w-100px">Image</th>
+                            <th class="text-start p-5 min-w-100px">Variants</th>
+                            <th class="text-start p-5 min-w-100px">P.O Qty</th>
+                            <th class="text-start p-5 min-w-100px">Received Qty</th>
+                            <th class="text-start p-5 min-w-100px">GRN Qty</th>
+                            <th class="text-start p-5 min-w-100px">Goods Damaged</th>
+                            <th class="text-start p-5 min-w-100px">View Damaged</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let itm of grnitems; let i = index;">
+                            <td class="p-5">{{i+1}}</td>
+                            <td class="p-5">
+                                {{itm.product?.name }} & {{itm.product?.uuid ||
+                                itm.vendorvariantmapping?.vendorproId}}
+                            </td>
+                            <td class="p-5"><img fetchpriority="low" loading="lazy" style="width: 80px; height: 100px;"
+                                    alt="Product" src="{{ itm?.productselectimage?.path }}" />
+                            </td>
+                            <td class="p-5">
+                                <strong>{{itm?.vendorvariantmapping?.description}}</strong>
+                            </td>
+                            <td class="p-5">
+                                {{(itm.quantity)}}
+                            </td>
+                            <td>
+                                {{(itm.receivedqty)}}
+                            </td>
+                            <td>
+                                {{(itm.inwarditemcount)}}
+                            </td>
+                            <td>
+                                {{(itm.disputeqty)}}
+                            </td>
+                            <td class="p-5"><a (click)="setDamagedGrn(dcontent,itm?.id,i)" href="javascript:void(0)"
+                                    class="btn btn-sm btn-primary waves-effect waves-light">View</a></td>
+                            <!-- <td><a (click)="setActiveGrn(content,order,i)" href="javascript:void(0)" class="btn btn-success waves-effect waves-light">View</a></td> -->
+                        </tr>
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="p-5" [colSpan]="4" class="text-center"><strong>Total</strong></td>
+                            <td class="p-5"><strong>{{poTotalQty}}</strong></td>
+                            <td><strong>{{invoiceqty}}</strong></td>
+                            <td><strong>{{receivedTotalQty}}</strong></td>
+                            <td><strong>{{damagedTotalQty}}</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <br />
+                <table id="datatable" bgcolor="#ffffff" class="table table-bordered dt-responsive nowrap"
+                    style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                    <thead>
+                        <tr>
+                            <th bgcolor="#ffc107">PO Qty</th>
+                            <th bgcolor="#ffc107">Invoice Qty</th>
+                            <th bgcolor="#ffc107">GRN Qty</th>
+                            <th bgcolor="#ffc107">Damage Qty</th>
+                            <th bgcolor="#ffc107">Shortage Qty</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td><strong>{{poTotalQty}}</strong></td>
+                            <td><strong>{{invoiceqty}} </strong>
+                            </td>
+                            <td><strong>{{receivedTotalQty}}</strong></td>
+                            <td><strong>{{damagedTotalQty}}</strong></td>
+                            <td><strong>{{ invoiceqty -
+                                    (receivedTotalQty +
+                                    damagedTotalQty)}}</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="text-sm-end" *ngIf="grn?.status=='Open'">
+            <button class="btn btn-primary btn-sm" (click)="closegrn()">Close Receipt</button>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="text-end pb-8">
+          <button class="btn btn-sm fw-bold btn-primary mx-2" [routerLink]="['/warehouse/goods-receipt']" routerLinkActive="router-link-active">
+            Back
+          </button>
+        </div>
+      </div>
+
+</div> <!-- container-fluid -->
+
+<!-- Pop UP Open start -->
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">View Image</h5>
+        <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row" *ngIf="currentBundle.disputebundles!.length > 0">
+            <div class="col-xl-4 col-sm-4" *ngFor="let item of currentBundle.disputebundles">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="product-img position-relative">
+                            <a href="javascript:void(0)">
+                                <img fetchpriority="low" alt="Product" class="img-fluid mx-auto d-block"
+                                    src="{{ item?.path }}"></a>
+                            <!-- style="width: 250px; height: 200px;" -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<!-- Pop UP Open end -->
+
+<!-- Pop UP Open start -->
+<ng-template #dcontent let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">View Damaged</h5>
+        <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row" *ngIf="disputeitems!.length > 0">
+            <div class="col-xl-12" *ngFor="let item of disputeitems">
+                <div class="card">
+                    <div class="card-body">
+                        <table id="datatable" bgcolor="#ffffff" class="table table-bordered dt-responsive nowrap"
+                            style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th bgcolor="#ffc107">Image</th>
+                                    <th bgcolor="#ffc107">Reason</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <img alt="Product" class="w-75 img-fluid mx-auto d-block"
+                                            src="{{ item?.path }}">
+                                    </td>
+                                    <td>
+                                        {{item?.reason}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="disputeitems!.length == 0">
+            <b>No Dispute item images</b>
+        </div>
+    </div>
+</ng-template>
+<!-- Pop UP Open end -->

@@ -1,0 +1,39 @@
+<div class="card-header border-0 pt-5">
+  <h3 class="card-title align-items-start flex-column">
+    <span class="card-label fw-bolder fs-3 mb-1">Inward Quantity Status</span>
+
+    <!-- <span class="text-muted fw-bold fs-7">More than 500 new customers</span> -->
+  </h3>
+
+  <div class="card-toolbar">
+    <!-- begin::Menu-->
+    <!-- end::Menu-->
+  </div>
+</div>
+
+<div class="card-body">
+  <!-- <div #chartRef id="kt_charts_widget_4_chart" [style.height]="'350px'">
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [plotOptions]="chartOptions.plotOptions"
+      [labels]="chartOptions.labels"
+      [colors]="chartOptions.colors"
+      [responsive]="chartOptions.responsive"
+      [tooltip]="chartOptions.tooltip"
+      [markers]="chartOptions.markers"
+      [stroke]="chartOptions.stroke"
+    ></apx-chart>
+
+  </div> -->
+  <div #chart>
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [plotOptions]="chartOptions.plotOptions"
+      [labels]="chartOptions.labels"
+      [legend]="chartOptions.legend"
+      [colors]="chartOptions.colors"
+    ></apx-chart>
+  </div>
+</div>

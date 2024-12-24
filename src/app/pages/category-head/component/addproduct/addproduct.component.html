@@ -1,0 +1,592 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <!-- <div class="page-title-box d-flex align-items-center justify-content-between">
+                  <h4 class="mb-0 font-size-18">{{edit?'Edit':'New'}} Product</h4>
+                  <div class="page-title-right">
+                      <ol class="breadcrumb m-0">
+                          <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+                          <li class="breadcrumb-item"><a [routerLink]="['/app/products']">Product</a></li>
+                          <li class="breadcrumb-item active"> {{edit?'Edit':'New'}} </li>
+                      </ol>
+                  </div>
+              </div> -->
+      <div class="card" style="min-height: 800px">
+        <div class="card-body px-5">
+          <!-- <div class="row mt-3">
+            <div class="col-sm-12">
+              <h4 class="card-title mb-4">Product Details</h4>
+            </div>
+          </div> -->
+          <!-- <div class="pb-3 row">
+            <label for="typeahead-http" class="col-xs-3 col-sm-auto col-form-label">Select Product
+              Group</label>
+            <div class="col">
+              <ng-select name="class" placeholder="Select Group" [items]="grupsdata" bindLabel="name" bindValue="id"
+                (change)="getSaree($event)">
+              </ng-select>
+            </div>
+          </div> -->
+          <!--  <div class="mb-3 row">
+                          <label for="typeahead-http" class="col-xs-3 col-sm-auto col-form-label">Search Product
+                              Group</label>
+                          <div class="col">
+                              <input id="typeahead-template" type="text" class="form-control col"
+                                  [(ngModel)]="model" [ngbTypeahead]="search" [resultTemplate]="rt"
+                                  [inputFormatter]="formatter" [resultFormatter]="formatter"
+                                  (selectItem)="itemSelected($event)" [class.is-invalid]="searchFailed" />
+  
+                              <small *ngIf="searching" class="form-text text-muted">searching...</small>
+                              <div class="invalid-feedback" *ngIf="searchFailed && model.length > 0">Sorry, Your product
+                                  group not our list contact our admin.
+                              </div>
+  
+                          </div>
+                      </div> -->
+          <form (ngSubmit)="saveProduct()" [formGroup]="formData">
+            <!-- *ngIf="group && group.id" -->
+            <div class="row">
+              <!-- <div class="col-sm-6">
+                                  <div class="mb-3">
+                                      <label class="form-label">SKU *</label>
+                                      <input class="form-control" placeholder="Enter SKU" type="text" name="sku"
+                                          autocomplete="off" formControlName="sku"
+                                          [ngClass]="{'is-invalid': (submit && form['sku']?.errors) || (form['sku']?.invalid && (form['sku']?.dirty || form['sku']?.touched))}" />
+  
+                                      <div *ngIf="(submit && form['sku']?.errors) || (form['sku']?.invalid && (form['sku']?.dirty || form['sku']?.touched))"
+                                          class="invalid-feedback">
+                                          <span *ngIf="form['sku'].errors?.['required']">Enter valid name</span>
+                                          <span *ngIf="form['sku'].errors?.['minlength']">Minimum Length 3
+                                              Characters.</span>
+                                      </div>
+                                  </div>
+                              </div> -->
+            </div>
+            <div class="row mt-4">
+              <!-- Department -->
+              <!-- <div class="col-sm-6 pb-3">
+                <div class="mb-3">
+                  <label class="form-label required">Department</label>
+                  <label class="form-label">
+                    Department : <strong>{{ group.department?.name }}</strong></label> 
+                  <ng-select name="department" placeholder="Select Department" [items]="departments" bindLabel="name"
+                    bindValue="did" formControlName="department_id" (change)="getSelectvalues()"
+                    [ngClass]="{'is-invalid': (submit && form['department_id']?.errors) || (form['department_id']?.invalid && (form['department_id']?.dirty || form['department_id']?.touched))}">
+                  </ng-select>
+                  <div
+                    *ngIf="(submit && form['department_id']?.errors) || (form['department_id']?.invalid && (form['department_id']?.dirty || form['department_id']?.touched))"
+                    class="invalid-feedback">
+                    <span *ngIf="form['department_id'].errors">Enter valid department</span>
+                  </div>
+                </div>
+              </div> -->
+
+              <!-- Category -->
+              <div class="col-sm-6 pb-3">
+                <div class="mb-3">
+                  <label class="form-label required"> Category </label>
+                  <ng-select name="category_id" placeholder="Select Category" [items]="categories" bindLabel="name"
+                    bindValue="cid" formControlName="category_id" (change)="getSubclass()" [ngClass]="{
+                      'is-invalid':
+                        (submit && form['category_id']?.errors) ||
+                        (form['category_id']?.invalid && (form['category_id']?.dirty || form['category_id']?.touched))
+                    }">
+                    <option value=""></option>
+                  </ng-select>
+                  <div *ngIf="
+                      (submit && form['category_id']?.errors) ||
+                      (form['category_id']?.invalid && (form['category_id']?.dirty || form['category_id']?.touched))
+                    " class="invalid-feedback">
+                    <span *ngIf="form['category_id'].errors?.['required']">Enter valid Category</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Subcategory -->
+              <div class="col-sm-6 pb-3">
+                <div class="mb-3">
+                  <label class="form-label required"> Subcategory </label>
+                  <ng-select name="subcategory_id" placeholder="Select Subcategory" [items]="subcategories"
+                    bindLabel="name" bindValue="id" formControlName="subcategory_id" [(ngModel)]="subcategories[0]"
+                    (change)="getGroup($event)" [ngClass]="{
+                      'is-invalid':
+                        (submit && form['subcategory_id']?.errors) ||
+                        (form['subcategory_id']?.invalid && (form['subcategory_id']?.dirty || form['subcategory_id']?.touched))
+                    }">
+                    <option value=""></option>
+                  </ng-select>
+                  <div
+                    *ngIf="(submit && form['subcategory_id']?.errors) || (form['subcategory_id']?.invalid && (form['subcategory_id']?.dirty || form['subcategory_id']?.touched))"
+                    class="invalid-feedback">
+                    <span *ngIf="form['subcategory_id'].errors?.['required']">Enter valid Subcategory</span>
+                  </div>
+                  <!-- <div *ngIf="formData.get('subcategory_id').invalid && formData.get('subcategory_id').touched"
+                    class="invalid-feedback">
+                    <div *ngIf="!!formData.get('subcategory_id').hasError('required')">Supplier is required</div>
+                  </div> -->
+                </div>
+              </div>
+
+              <!-- Group Name -->
+              <div class="col-sm-6 pb-3">
+                <div class="mb-3">
+                  <label for="typeahead-http" class="form-label required">Group</label>
+                  <ng-select name="class" placeholder="Select Group" formControlName="group_id" [items]="grupsdata"
+                    bindLabel="name" bindValue="id" [ngClass]="{
+                      'is-invalid':
+                        (submit && form['group_id']?.errors) ||
+                        (form['group_id']?.invalid && (form['group_id']?.dirty || form['group_id']?.touched))
+                    }">
+                  </ng-select>
+                  <div
+                    *ngIf="(submit && form['group_id']?.errors) || (form['group_id']?.invalid && (form['group_id']?.dirty || form['group_id']?.touched))"
+                    class="invalid-feedback">
+                    <span *ngIf="form['group_id'].errors?.['required']">Enter Valid Group</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Name -->
+              <div class="col-sm-6 pb-3">
+                <div class="mb-3">
+                  <label class="form-label required">Name</label>
+                  <input class="form-control" placeholder="Product Name" type="text" name="name" autocomplete="off"
+                    formControlName="name" [ngClass]="{
+                                      'is-invalid':
+                                        (submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))
+                                    }" />
+
+                  <div
+                    *ngIf="(submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))"
+                    class="invalid-feedback">
+                    <span *ngIf="form['name'].errors?.['required']">Enter valid name</span>
+                    <span *ngIf="form['name'].errors?.['minlength']">Minimum Length 3 Characters.</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Product Status -->
+              <!-- <div class="col-sm-6 pb-3" *ngIf="edit">
+                <div class="mb-3">
+                  <label class="form-label required">Product Status</label>
+                  <select class="form-select" type="text" name="status" formControlName="status" [ngClass]="{
+                                      'is-invalid':
+                                        (submit && form['status']?.errors) ||
+                                        (form['status']?.invalid && (form['status']?.dirty || form['status']?.touched))
+                                    }">
+                    <option *ngFor="let stat of statuses" [value]="stat.id">{{ stat.name }}</option>
+                  </select>
+                </div>
+              </div> -->
+
+              <!-- Brand -->
+              <div class="col-sm-6 pb-3">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="mb-3">
+                      <label class="form-label required">Select Brand</label>
+                      <div class="row">
+                        <div class="col-8">
+                          <ng-select name="brand_id" placeholder="Select Brand" [items]="brands" bindLabel="name"
+                            bindValue="bid" formControlName="brand_id" [ngClass]="{
+                              'is-invalid':
+                                (submit && form['brand_id']?.errors) ||
+                                (form['brand_id']?.invalid && (form['brand_id']?.dirty || form['brand_id']?.touched))
+                            }">
+                          </ng-select>
+                          <div *ngIf="
+                              (submit && form['brand_id']?.errors) ||
+                              (form['brand_id']?.invalid && (form['brand_id']?.dirty || form['brand_id']?.touched))
+                            " class="invalid-feedback">
+                            <span *ngIf="form['brand_id'].errors">Enter valid brand</span>
+                          </div>
+                        </div>
+                        <div class="col-4" *ngIf="!edit">
+                          <button (click)="viewBrand(content)" class="btn btn-sm btn-primary">Add Brand</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- HSN Code -->
+              <div class="col-sm-6 pb-3">
+                <div class="mb-3">
+                  <label class="form-label required">HSN Code</label>
+                  <input type="number" class="form-control" placeholder="Enter HSN code" type="text" name="hsncode"
+                    autocomplete="off" formControlName="hsncode" [ngClass]="{
+                                    'is-invalid':
+                                      (submit && form['hsncode']?.errors) ||
+                                      (form['hsncode']?.invalid && (form['hsncode']?.dirty || form['hsncode']?.touched))
+                                  }" />
+
+                  <div *ngIf="
+                                    (submit && form['hsncode']?.errors) ||
+                                    (form['hsncode']?.invalid && (form['hsncode']?.dirty || form['hsncode']?.touched))
+                                  " class="invalid-feedback">
+                    <span *ngIf="form['hsncode'].errors?.['required']">Enter valid HSN code</span>
+                    <span *ngIf="form['hsncode'].errors?.['pattern']">Enter only Numbers.</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Vendor -->
+              <div class="col-sm-6 pb-3">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="mb-3">
+                      <label for="typeahead-http" class="form-label col-xs-3 col-sm-auto required">Search Supplier</label>
+                      <div class="row">
+                        <div class="col-7">
+                          <input id="btypeahead-template" type="text" class="form-control col" [(ngModel)]="vmodel"
+                            [ngbTypeahead]="vsearch" [resultTemplate]="vrt" [inputFormatter]="vformatter"
+                            [resultFormatter]="vformatter" (selectItem)="vitemSelected($event)"
+                            [class.is-invalid]="vsearchFailed" formControlName="vendor_id" [ngClass]="{
+                              'is-invalid':
+                                (submit && form['vendor_id']?.errors) || (form['vendor_id']?.invalid && (form['vendor_id']?.dirty || form['vendor_id']?.touched))
+                            }" />
+                          <div
+                            *ngIf="(submit && form['vendor_id']?.errors) || (form['vendor_id']?.invalid && (form['vendor_id']?.dirty || form['vendor_id']?.touched))"
+                            class="invalid-feedback">
+                            <span *ngIf="form['vendor_id'].errors?.['required']">Enter valid Supplier</span>
+                          </div>
+
+                          <small *ngIf="vsearching" class="form-text text-muted">searching...</small>
+                          <div class="invalid-feedback" *ngIf="vsearchFailed && vmodel?.length > 0">
+                            Sorry, Your Supplier is not in our list, please add Supplier.
+                          </div>
+                        </div>
+
+                        <div class="col-5" *ngIf="vendor && vendor.uid">
+                          <label class="form-label">Supplier :
+                            <strong>{{ vendor?.name }}</strong>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Unit Type -->
+              <div class="col-sm-6 pb-3">
+                <div class="mb-3">
+                  <label class="form-label required">Unit Type</label>
+                  <select class="form-select" name="unit" formControlName="unit" [ngClass]="{
+                      'is-invalid':
+                        (submit && form['unit']?.errors) || (form['unit']?.invalid && (form['unit']?.dirty || form['unit']?.touched))
+                    }">
+                    <option *ngFor="let unit of units" [value]="unit.id">{{ unit.name }}</option>
+                  </select>
+                  <div
+                    *ngIf="(submit && form['unit']?.errors) || (form['unit']?.invalid && (form['unit']?.dirty || form['unit']?.touched))"
+                    class="invalid-feedback">
+                    <span *ngIf="form['unit'].errors">Enter valid unit</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tax -->
+              <div class="col-sm-6 pb-3">
+                <div class="mb-3">
+                  <label class="form-label required">Tax</label>
+                  <ng-select name="itax_id" placeholder="Select Tax" [items]="taxes" (change)="taxchange($event)"
+                    bindLabel="name" bindValue="id" formControlName="tax_id" [ngClass]="{
+                      'is-invalid':
+                        (submit && form['tax_id']?.errors) ||
+                        (form['tax_id']?.invalid && (form['tax_id']?.dirty || form['tax_id']?.touched))
+                    }">
+                    <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                      <span class="my-3" class="form-option">{{ item.name }} - {{ item.percentage }}%</span>
+                    </ng-template>
+                  </ng-select>
+                  <div *ngIf="
+                      (submit && form['tax_id']?.errors) || (form['tax_id']?.invalid && (form['tax_id']?.dirty || form['tax_id']?.touched))
+                    " class="invalid-feedback">
+                    <span *ngIf="form['tax_id'].errors">Enter valid tax</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Metrics -->
+              <div class="col-sm-6 pb-3">
+                <div class="mb-3">
+                  <label class="form-label">Metrics</label>
+                  <select class="form-select" name="measure" formControlName="measure" (change)="changemetric($event)"
+                    [ngClass]="{
+                      'is-invalid':
+                        (submit && form['measure']?.errors) ||
+                        (form['measure']?.invalid && (form['measure']?.dirty || form['measure']?.touched))
+                    }">
+                    <option *ngFor="let measure of measures" [value]="measure">{{ measure }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <div class="col-sm-6 pb-3">
+                <div class="mb-3">
+                  <label class="form-label"> Description </label>
+                  <textarea class="form-control" placeholder="Enter Description" type="text" name="description"
+                    autocomplete="off" formControlName="description"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="row mt-3">
+                              <div class="col-sm-1">
+                                  <h4 class="card-title mb-4">Tax</h4>
+                              </div>
+                              <div class="col-sm-3">
+                                  <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" formControlName="ifigst" id="type" [checked]=" data.ifigst == 0 ?  '' : 'isChecked'" (change)="ifigst($event)">
+                                      <label class="form-check-label" for="type">
+                                          If IGST?
+                                      </label>
+                                  </div>
+                              </div>
+                          </div> -->
+            <div class="row">
+              <!-- <div class="col-sm-4" *ngIf="!showigst">
+                                  <div class="mb-3">
+                                      <label class="form-label">CGST</label>
+                                      <ng-select name="tax_id" placeholder="Select C_Tax" [items]="taxes" (change)="cstaxchange($event)"
+                                          bindLabel="name" bindValue="id" formControlName="ctax_id" 
+                                          [ngClass]="{'is-invalid': (submit && form['ctax_id']?.errors) || (form['ctax_id']?.invalid && (form['ctax_id']?.dirty || form['ctax_id']?.touched))}">
+                                          <option value=""></option>
+                                          <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                                              <span>{{item.name}}  -  {{item.percentage}}%</span>
+                                            </ng-template>
+                                      </ng-select>
+                                      <div *ngIf="(submit && form['ctax_id']?.errors) || (form['ctax_id']?.invalid && (form['ctax_id']?.dirty || form['ctax_id']?.touched))"  class="invalid-feedback">
+                                          <span *ngIf="form['ctax_id'].errors">Enter valid c_tax</span>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-sm-4" *ngIf="!showigst">
+                                  <div class="mb-3">
+                                      <label class="form-label">SGST</label>
+                                      <ng-select name="stax_id" placeholder="Select S_Tax" [items]="taxes" (change)="cstaxchange($event)"
+                                          bindLabel="name" bindValue="id" formControlName="stax_id" 
+                                          [ngClass]="{'is-invalid': (submit && form['stax_id']?.errors) || (form['stax_id']?.invalid && (form['stax_id']?.dirty || form['stax_id']?.touched))}">
+                                          <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                                              <span>{{item.name}}  -  {{item.percentage}}%</span>
+                                          </ng-template>
+                                      </ng-select>
+                                      <div *ngIf="(submit && form['stax_id']?.errors) || (form['stax_id']?.invalid && (form['stax_id']?.dirty || form['stax_id']?.touched))"  class="invalid-feedback">
+                                          <span *ngIf="form['stax_id'].errors">Enter valid s_tax</span>
+                                      </div>
+                                  </div>
+                              </div> -->
+            </div>
+            <!-- <div class="row mt-3">
+                              <div class="col-sm-3">
+                                  <h4 class="card-title mb-4">Item Packing Details</h4>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-sm-2">
+                                  <label class="form-label">Metrics</label>
+                                  <select class="form-select" name="measure" formControlName="measure"
+                                      (change)="changemetric($event)"
+                                      [ngClass]="{'is-invalid': (submit && form['measure']?.errors) || (form['measure']?.invalid && (form['measure']?.dirty || form['measure']?.touched))}">
+                                      <option *ngFor="let measure of measures" [value]="measure">{{ measure }}</option>
+                                  </select>
+                                  <div *ngIf="(submit && form['measure']?.errors) || (form['measure']?.invalid && (form['measure']?.dirty || form['measure']?.touched))"
+                                      class="invalid-feedback">
+                                      <span *ngIf="form['measure'].errors">Enter valid metric</span>
+                                  </div> 
+                              </div>
+  
+                              <div class="col-sm-2">
+                                  <div class="mb-3">
+                                      <label class="form-label">Packing Length ({{measurement}})</label>
+                                      <input class="form-control" placeholder="Enter Length" type="text" name="length"
+                                          autocomplete="off" formControlName="length"
+                                          [ngClass]="{'is-invalid': (submit && form['length']?.errors) || (form['length']?.invalid && (form['length']?.dirty || form['length']?.touched))}" />
+  
+                                      <div *ngIf="(submit && form['length']?.errors) || (form['length']?.invalid && (form['length']?.dirty || form['length']?.touched))"
+                                          class="invalid-feedback">
+                                          <span *ngIf="form['length'].errors">Enter valid length</span>
+                                      </div>
+                                  </div>
+                              </div>
+  
+                              <div class="col-sm-2">
+                                  <div class="mb-3">
+                                      <label class="form-label">Packing Width ({{measurement}})</label>
+                                      <input class="form-control" placeholder="Enter width" type="text" name="width"
+                                          autocomplete="off" formControlName="width"
+                                          [ngClass]="{'is-invalid': (submit && form['width']?.errors) || (form['width']?.invalid && (form['width']?.dirty || form['width']?.touched))}" />
+  
+                                      <div *ngIf="(submit && form['width']?.errors) || (form['width']?.invalid && (form['width']?.dirty || form['width']?.touched))"
+                                          class="invalid-feedback">
+                                          <span *ngIf="form['width'].errors">Enter valid number</span>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-sm-2">
+                                  <div class="mb-3">
+                                      <label class="form-label">Packing Height ({{measurement}})</label>
+                                      <input class="form-control" placeholder="Enter Height" type="text" name="height"
+                                          autocomplete="off" formControlName="height"
+                                          [ngClass]="{'is-invalid': (submit && form['height']?.errors) || (form['height']?.invalid && (form['height']?.dirty || form['height']?.touched))}" />
+  
+                                      <div *ngIf="(submit && form['height']?.errors) || (form['height']?.invalid && (form['height']?.dirty || form['height']?.touched))"
+                                          class="invalid-feedback">
+                                          <span *ngIf="form['height'].errors">Enter valid
+                                              number</span>
+                                      </div>
+                                  </div>
+                              </div>
+  
+                              <div class="col-sm-4">
+                                  <div class="mb-3">
+                                      <label class="form-label">Packing Weight (Grams)</label>
+                                      <input class="form-control" placeholder="Enter Weight" type="text" name="weight"
+                                          autocomplete="off" formControlName="weight"
+                                          [ngClass]="{'is-invalid': (submit && form['weight']?.errors) || (form['weight']?.invalid && (form['weight']?.dirty || form['weight']?.touched))}" />
+  
+                                      <div *ngIf="(submit && form['weight']?.errors) || (form['weight']?.invalid && (form['weight']?.dirty || form['weight']?.touched))"
+                                          class="invalid-feedback">
+                                          <span *ngIf="form['weight'].errors">Enter valid weight</span>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div> -->
+            <!-- <div class="row">
+                              <div class="col-sm-6">
+                                  <div class="mb-3">
+                                      <label class="form-label">Cost Price </label>
+                                      <input class="form-control" placeholder="Cost Price" type="text" name="cost_price"
+                                          autocomplete="off" formControlName="cost_price"
+                                          [ngClass]="{'is-invalid': (submit && form['cost_price']?.errors) || (form['cost_price']?.invalid && (form['cost_price']?.dirty || form['cost_price']?.touched))}" />
+  
+                                      <div *ngIf="(submit && form['cost_price']?.errors) || (form['cost_price']?.invalid && (form['cost_price']?.dirty || form['cost_price']?.touched))"
+                                          class="invalid-feedback">
+                                          <span *ngIf="form['cost_price'].errors?.['required']">Enter valid
+                                              cost_price</span>
+                                          <span *ngIf="form['cost_price'].errors?.['minlength']">Minimum Length 3
+                                              Characters.</span>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-sm-6">
+                                  <div class="mb-3">
+                                      <label class="form-label">Selling Price</label>
+                                      <input class="form-control" placeholder="Selling Price" type="text"
+                                          name="selling_price" id="example-date-input" autocomplete="off"
+                                          formControlName="selling_price"
+                                          [ngClass]="{'is-invalid': (submit && form['selling_price']?.errors) || (form['selling_price']?.invalid && (form['selling_price']?.dirty || form['selling_price']?.touched))}" />
+  
+                                      <div *ngIf="(submit && form['selling_price']?.errors) || (form['selling_price']?.invalid && (form['selling_price']?.dirty || form['selling_price']?.touched))"
+                                          class="invalid-feedback">
+                                          <span *ngIf="form['selling_price'].errors?.['required']">Enter valid
+                                              selling price</span>
+                                          <span *ngIf="form['selling_price'].errors?.['minlength']">Minimum Length 3
+                                              Characters.</span>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div> -->
+
+            <div class="mt-2">
+              <div class="text-sm-end">
+                <a [routerLink]="['/category-head/products']" class="btn btn-sm btn-secondary me-4">Cancel</a>
+                <button type="submit" class="btn btn-sm btn-primary">Save & Next</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #rt let-r="result" let-t="term">
+  <!-- <img [src]="'https://upload.wikimedia.org/wikipedia/commons/thumb/' + r['flag']" class="me-1"
+          style="width: 16px"> -->
+  <span *ngIf="!searchFailed">{{ r.department?.name }} / {{ r.category?.name }} / {{ r.subcategory?.name }} / </span>
+  <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+</ng-template>
+
+<ng-template #vrt let-r="result" let-t="term">
+  <!-- <img [src]="'https://upload.wikimedia.org/wikipedia/commons/thumb/' + r['flag']" class="me-1"
+          style="width: 16px"> -->
+  <span *ngIf="!vsearchFailed"> </span>
+  <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+</ng-template>
+
+<!-- Pop UP Open start -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title">Add Brand</h5>
+    <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form (submit)="savebrand()" name="form" [formGroup]="brandForm" novalidate>
+      <div class="row">
+        <div class="col-12">
+          <div class="mb-3">
+            <label class="form-label">Brand name *</label>
+            <input class="form-control" placeholder="Enter Brand Name" type="text" name="name" autocomplete="off"
+              formControlName="name" [ngClass]="{
+                'is-invalid':
+                  (gsubmit && brandform['name']?.errors) ||
+                  (brandform['name']?.invalid && (brandform['name']?.dirty || brandform['name']?.touched))
+              }" />
+
+            <div *ngIf="
+                (gsubmit && brandform['name']?.errors) ||
+                (brandform['name']?.invalid && (brandform['name']?.dirty || brandform['name']?.touched))
+              " class="invalid-feedback">
+              <span *ngIf="brandform['name'].errors?.['required']">Enter brand name.</span>
+              <span *ngIf="brandform['name'].errors?.['minlength']">Minimum Length 3 Characters.</span>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label"> Select Supplier</label>
+            <ng-select name="brand" placeholder="Select Supplier" [items]="vendors" bindLabel="name" bindValue="uid"
+              formControlName="createdBy" name="createdBy">
+            </ng-select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label"> Select Department *</label>
+            <select class="form-select" type="text" name="department_id" formControlName="department_id"
+              [ngClass]="{'is-invalid': (gsubmit && brandform['department_id']?.errors) || (brandform['department_id']?.invalid && (brandform['department_id']?.dirty || brandform['department_id']?.touched))}">
+              <option *ngFor="let department of departments" [value]="department.did">{{ department.name }}</option>
+            </select>
+            <div
+              *ngIf="(gsubmit && brandform['department_id']?.errors) || (brandform['department_id']?.invalid && (brandform['department_id']?.dirty || brandform['department_id']?.touched))"
+              class="invalid-feedback">
+              <span *ngIf="brandform['department_id'].errors?.['required']">Select Department</span>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label"> Description </label>
+            <textarea class="form-control" placeholder="Enter Description" type="text" name="description"
+              autocomplete="off" formControlName="description" [ngClass]="{
+                'is-invalid':
+                  (gsubmit && brandform['description']?.errors) ||
+                  (brandform['description']?.invalid && (brandform['description']?.dirty || brandform['description']?.touched))
+              }"></textarea>
+          </div>
+          <!-- <div class="mb-3" *ngIf="data.uuid">
+                  <label class="form-label"> Status *</label>
+                  <select class="form-control" type="text" name="status" formControlName="status"
+                      [ngClass]="{'is-invalid': (gsubmit && brandform['status']?.errors) || (brandform['status']?.invalid && (brandform['status']?.dirty || brandform['status']?.touched))}">
+                      <option *ngFor="let stat of statuses" [value]="stat.id">{{ stat.name }}</option>
+                  </select>
+              </div> -->
+          <div class="d-md-flex align-items-center mt-5">
+            <div class="col-md-5">
+              <button type="submit" class="btn btn-sm btn-primary">Add Brand</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+<!-- Pop UP Open end -->

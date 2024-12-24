@@ -1,0 +1,38 @@
+.tdoverlab td {
+  word-wrap: anywhere !important;
+}
+
+
+//Newly Added //
+.activeimgsel {
+  position: relative;
+  border: 3px solid #a91be9;
+}
+
+.activeimgsel::before {
+  content: '\2713';
+  font-family: 'font-awesome' !important;
+  font-size: 16px;
+  background-color: rgb(24, 228, 21);
+  color: #fff;
+  top: -15px;
+  left: 97%;
+  position: absolute;
+  border-radius: 10px;
+  padding: 0px 5px;
+}
+
+.activeimg:before {
+  content: "✖";
+  font-family: boxicons !important;
+  font-size: 16px;
+  background-color: #a91be9;
+  color: #fff;
+  top: -15px;
+  right: -15px;
+  position: absolute;
+  border-radius: 50%;
+  padding: 1px 4px;
+  cursor: pointer;
+}
+

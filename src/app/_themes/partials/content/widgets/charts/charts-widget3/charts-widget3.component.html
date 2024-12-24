@@ -1,0 +1,69 @@
+<!-- begin::Header -->
+<div class="card-header border-0 pt-5">
+  <h3 class="card-title align-items-start flex-column">
+    <span class="card-label fw-bolder fs-3 mb-1">PO Counts</span>
+
+    <!-- <span class="text-muted fw-bold fs-7">More than 1000 new records</span> -->
+  </h3>
+
+  <!-- begin::Toolbar -->
+  <div class="card-toolbar">
+    <!-- begin::Menu-->
+    <div class="px-7 py-5">
+      <div class="mb-10">
+        <label class="form-label fw-bold">Year:</label>
+
+        <div>
+          <select class="form-select form-select-solid" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true">
+            
+            <option selected value="1">2021</option>
+            <option value="2">2022</option>
+            <option value="3">2023</option>
+            <option value="4">2024</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- end::Menu-->
+  </div>
+  <!-- end::Toolbar -->
+</div>
+<!-- end::Header -->
+
+<!-- begin::Body -->
+<div class="card-body">
+  <!-- begin::Chart -->
+  <!-- <div #chartRef id="kt_charts_widget_3_chart" [style.height]="'350px'">
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [xaxis]="chartOptions.xaxis"
+      [yaxis]="chartOptions.yaxis"
+      [dataLabels]="chartOptions.dataLabels"
+      [stroke]="chartOptions.stroke"
+      [legend]="chartOptions.legend"
+      [fill]="chartOptions.fill"
+      [states]="chartOptions.states"
+      [tooltip]="chartOptions.tooltip"
+      [colors]="chartOptions.colors"
+      [markers]="chartOptions.markers"
+      [plotOptions]="chartOptions.plotOptions"
+    ></apx-chart>
+  </div> -->
+
+  <div id="chart">
+    <apx-chart
+    [series]="chartOptions.series"
+    [chart]="chartOptions.chart"
+    [xaxis]="chartOptions.xaxis"
+    [dataLabels]="chartOptions.dataLabels"
+    [grid]="chartOptions.grid"
+    [stroke]="chartOptions.stroke"
+    [title]="chartOptions.title"
+  ></apx-chart>
+  </div>
+  <!-- end::Chart -->
+</div>
+<!-- end::Body -->
+

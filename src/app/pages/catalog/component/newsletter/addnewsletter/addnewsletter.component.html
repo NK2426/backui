@@ -1,0 +1,171 @@
+<div class="card mb-5 mb-xl-10">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body pt-1 pb-5">
+        <form (ngSubmit)="save()" [formGroup]="formData" novalidate>
+          <div class="row my-3">
+            <div class="col-sm-12">
+              <h4 class="card-title mb-4">Newsletter Details</h4>
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- Name -->
+            <div class="col-sm-6 mb-3 fv-row fv-plugins-icon-container">
+              <label class="form-label required fs-6 fw-semibold mb-2">Title</label>
+              <input
+                class="form-control"
+                placeholder="Enter title"
+                type="text"
+                name="title"
+                autocomplete="off"
+                formControlName="title"
+                [ngClass]="{
+                  'is-invalid':
+                    (submit && form['title']?.errors) || (form['title']?.invalid && (form['title']?.dirty || form['title']?.touched))
+                }"
+              />
+
+              <div
+                *ngIf="(submit && form['title']?.errors) || (form['title']?.invalid && (form['title']?.dirty || form['title']?.touched))"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form['title'].errors?.['required']">Title is required</span>
+                <span *ngIf="form['title'].errors?.['minlength']">Minimum Length 3 Characters.</span>
+                <span *ngIf="form['title'].errors?.['maxlength']">Title cannot exceed 150 characters.</span>
+              </div>
+            </div>
+
+            <div class="col-sm-6 mb-3 fv-row fv-plugins-icon-container">
+              <label class="form-label required fs-6 fw-semibold mb-2">Newsletter Image</label>
+              <input
+                class="form-control"
+                placeholder="Select image"
+                type="file"
+                name="image"
+                accept=".jpg, .jpeg, .png"
+                autocomplete="off"
+                formControlName="image"
+                accept=""
+                maxLength="10"
+                (change)="onFileSelected($event)"
+                [ngClass]="{
+                  'is-invalid':
+                    (submit && form['image']?.errors) || (form['image']?.invalid && (form['image']?.dirty || form['image']?.touched))
+                }"
+              />
+
+              <div
+                *ngIf="(submit && form['image']?.errors) || (form['image']?.invalid && (form['image']?.dirty || form['image']?.touched))"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form['image'].errors">Image is required</span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <!-- Name -->
+            <div class="col-sm-6 mb-3 fv-row fv-plugins-icon-container">
+              <label class="form-label required fs-6 fw-semibold mb-2">Link Type</label>
+
+              <select
+                name="type"
+                id="type"
+                class="form-control"
+                [ngClass]="{
+                  'is-invalid':
+                    (submit && form['type']?.errors) || (form['type']?.invalid && (form['type']?.dirty || form['type']?.touched))
+                }"
+                (change)="changeType($event)"
+                formControlName="type"
+              >
+                <option [value]="" selected disabled>Select Type</option>
+                <option *ngFor="let type of types" [value]="type.id">{{ type.label }}</option>
+              </select>
+
+              <div
+                *ngIf="(submit && form['type']?.errors) || (form['type']?.invalid && (form['type']?.dirty || form['type']?.touched))"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form['type'].errors?.['required']">Link is required</span>
+              </div>
+            </div>
+
+            <div class="col-sm-6 mb-3 fv-row fv-plugins-icon-container">
+              <label class="form-label required fs-6 fw-semibold mb-2">Link</label>
+              <select
+                name="link"
+                id="link"
+                class="form-control"
+                [ngClass]="{
+                  'is-invalid':
+                    (submit && form['link']?.errors) || (form['link']?.invalid && (form['link']?.dirty || form['link']?.touched))
+                }"
+                formControlName="link"
+              >
+                <option [value]="" selected disabled>Select Link</option>
+                <option *ngFor="let type of linkitems" [value]="type.uuid">{{ type.name }}</option>
+              </select>
+
+              <div
+                *ngIf="(submit && form['link']?.errors) || (form['link']?.invalid && (form['link']?.dirty || form['link']?.touched))"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form['link'].errors?.['required']">Select a valid link</span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <!-- Address -->
+            <div class="col-sm-6 mb-3 fv-row fv-plugins-icon-container">
+              <label class="form-label required fs-6 fw-semibold mb-2">Content</label>
+              <div class="NgxEditor__Wrapper">
+                <ngx-editor-menu [editor]="editor"> </ngx-editor-menu>
+                <ngx-editor
+                  [editor]="editor"
+                  [(ngModel)]="html"
+                  [disabled]="false"
+                  formControlName="content"
+                  [placeholder]="'Type here...'"
+                ></ngx-editor>
+              </div>
+              <!-- <p class="text-primary fw-bold pt-1">(Copy Paste Not Allowed)</p> -->
+
+              <div
+                *ngIf="
+                  (submit && form['content']?.errors) || (form['content']?.invalid && (form['content']?.dirty || form['content']?.touched))
+                "
+                class="invalid-feedback"
+              >
+                <span *ngIf="form['content'].errors?.['required']">Enter valid content</span>
+                <span *ngIf="form['content'].errors?.['minlength']">Minimum Length 3 Characters.</span>
+              </div>
+              <!--  -->
+              <div *ngIf="formData.get('content').touched && formData.get('content').invalid">
+                <small class="text-danger" *ngIf="formData.get('content').hasError('required')"> Content is required. </small>
+                <small class="text-danger" *ngIf="formData.get('content').hasError('emptyContent')"> Content cannot be empty. </small>
+              </div>
+              <!--  -->
+            </div>
+
+            <div class="col-sm-6 mb-3 fv-row fv-plugins-icon-container">
+              <label class="form-label required fs-6 fw-semibold mb-2">Start Date Time</label>
+              <div class="form-group col-sm-6">
+                <app-date-time-picker formControlName="date" name="date" [minDate]="minDate"></app-date-time-picker>
+                <div class="text-danger" *ngIf="isRequired(formData, 'date')">Date Time is required.</div>
+                <div class="text-danger" *ngIf="isValid(formData, 'date')">Date Time must be valid.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2 pe-5">
+            <div class="text-sm-end">
+              <a class="btn btn-sm btn-secondary me-4" (click)="back()">Cancel</a>
+              <button type="submit" class="btn btn-sm btn-primary">Save</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

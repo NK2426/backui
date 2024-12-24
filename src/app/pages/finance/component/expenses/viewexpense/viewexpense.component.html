@@ -1,0 +1,98 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <!-- <div class="page-title-box d-flex align-items-center justify-content-between">
+        <h4 class="mb-0 font-size-18 pb-8">View Expense</h4>
+      </div> -->
+      <div class="card">
+        <div class="card-body">
+          <div class="row mt-3">
+            <div class="col-sm-12">
+              <h4 class="card-title mb-5">View Expense Details</h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="control-label col-sm-3">Expense Date : </label>
+                {{ viewexpense.expensedate }}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="control-label col-sm-3">Expense Type : </label>
+                {{ viewexpense.expensetype?.name }}
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="control-label col-sm-3">Warehouse Name: </label>
+                {{ viewexpense.warehouse?.name }}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="control-label col-sm-3">Paid Through : </label>
+                {{ viewexpense.bankaccount?.accountnumber }}
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="control-label col-sm-3">Amount : </label>
+                {{ numberFormat(viewexpense.amount) }}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="control-label col-sm-3">File : </label>
+                <a *ngIf="viewexpense.file != ''" target="_blank" href="{{ viewexpense.file }}">{{ viewexpense.file }} </a>
+                <app-keenicon *ngIf="viewexpense.file != ''" name="trash" class="fs-2 text-primary" (click)="removeFile()"></app-keenicon>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="control-label col-sm-3">Description : </label>
+                {{ viewexpense.description }}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="control-label col-sm-3"> Status : </label>
+                {{ viewexpense.status === '0' ? 'Inactive' : 'Active' }}
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="control-label col-sm-3"> CreateAt : </label>
+                {{ viewexpense.createdAt | date : 'medium' }}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="control-label col-sm-3">UpdateAt : </label>
+                {{ viewexpense.updatedAt | date : 'medium' }}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-11"></div>
+            <div class="col-sm-1">
+              <button class="btn btn-sm btn-white border border-primary" [routerLink]="['/finance/expenses']">Back</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

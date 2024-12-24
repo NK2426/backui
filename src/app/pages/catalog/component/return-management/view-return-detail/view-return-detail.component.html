@@ -1,0 +1,106 @@
+
+<div class="row">
+  <div class="col-12">
+      <div class="page-title-box d-flex align-items-center justify-content-between">
+          <h4 class="mb-2 font-size-18">Return Detail</h4>
+         
+      </div>
+  </div>
+</div>
+
+<div class="card mb-5 mb-xl-10">
+  <!-- start page title -->
+  
+  <!-- start row -->
+  <div class="">
+    <div class="card-body pt-1 pb-0">
+      <div class="card-body py-3">
+        <div class="invoice-title">
+          <div class="mb-5">
+            <img src="./assets/media/logos/mlogo.png" alt="logo" width="50" />
+          </div>
+        </div>
+        <div>
+          <div class="row pb-3" *ngIf="returnDetail">
+            <div class="col-sm-6 pb-2">
+              <h5>Order Id : {{ returnDetail.orderID }}</h5>
+              <div class="control-label col-sm-4"><b>Drop Address</b></div>
+              <div [innerHTML]="settings?.billingaddress"></div>
+            </div>
+            <div class="col-sm-6 pb-2" *ngIf="returnDetail && returnDetail.address">
+              <div class="control-label col-sm-4"><b>PICKUP Address</b></div>
+              <b> REV PICKUP Name :</b> {{ returnDetail.address.name }} <br />
+              <b> REV PICKUP Mobile Number :</b> {{ returnDetail.address.mobile }}<br />
+              <b> REV PICKUP Email : </b>{{ returnDetail.address.email }}<br />
+              <b> REV PICKUP Address: </b><span *ngIf="returnDetail.address.address"> {{ returnDetail.address.address }},</span>
+              <span *ngIf="returnDetail.address.address2" class="ms-1">
+                {{ returnDetail.address.address2 }}
+              </span>
+              <span *ngIf="returnDetail.address.city"> {{ returnDetail.address.city }}, </span>
+              <span *ngIf="returnDetail.address.state"> {{ returnDetail.address.state }},</span>
+              <span *ngIf="returnDetail.address.zipcode"> {{ returnDetail.address.zipcode }} <br /> </span>
+            </div>
+          </div>
+
+          <!-- Invoice item detail table   -->
+          <div class="media pb-2">
+            <div class="media-body">
+              <span class="text-muted fw-bold">INVOICE # : </span>
+              <span class="text-muted fw-bold">
+                <b>{{ invoiceNumber }}</b>
+              </span>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="returnDetail?.returnitems?.length != 0">
+            <!-- Order Item Table Start -->
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">SKU</th>
+                    <th scope="col">Description</th>
+                    <th scope="col" class="text-center" *ngIf="showAction">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let returnItem of returnDetail?.returnitems; let i = index">
+                    <td ><input class="form-check-input" type="checkbox" (click)="check($event)" [(ngModel)]="returnItem.checked" *ngIf="returnItem.status!=='Create'"/></td>
+                    <td width="30%">{{ returnItem?.item?.name }}</td>
+                    <td><img style="width: 100px; height: 100px" alt="Product" src="{{ returnItem.item.path }}" /></td>
+                    <td>{{ returnItem?.orderitem?.qty }}</td>
+                    <td>{{ returnItem?.itemslist?.skuid }}</td>
+                    <td>{{ returnItem?.itemslist?.description }}</td>
+                    <td class="text-center">
+                      <div *ngIf="returnItem?.uuid && returnItem?.status === 'Create'">
+                        <button 
+                        type="button" class="btn btn-primary btn-sm"
+                        (click)="acceptitem(returnItem?.uuid || '')">
+                        Accept
+                    </button>
+                    <button 
+                        type="button" class="btn btn-danger btn-sm ms-2"
+                        (click)=" rejectitem(returnItem?.uuid || '' )">
+                        Reject
+                    </button>
+                  </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- Order Item Table End -->
+          </div>
+
+          <div class="col-md-12 my-2" style="text-align: right" *ngIf="show_inv_btn">
+            <button (click)="submitDetail()" [disabled]="checked <= 0" class="btn btn-sm btn-primary">Generate Return Invoice</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

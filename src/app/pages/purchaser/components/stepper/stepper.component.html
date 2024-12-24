@@ -1,0 +1,241 @@
+<!-- Mecctronic -->
+<p>stepper works!</p>
+<div class="card">
+    <div class="card-body">
+        <div class="stepper stepper-links d-flex flex-column pt-15">
+            <div class="stepper-nav mb-5">
+                <div class="stepper-item">
+                    <!-- [ngClass]="{current: currentStep$.value === 1}"> -->
+                    <h3 class="stepper-title">Account Type</h3>
+                </div>
+
+                <div class="stepper-item">
+                    <!-- [ngClass]="{current: currentStep$.value === 2}" -->
+                    <h3 class="stepper-title">Account Info</h3>
+                </div>
+
+                <div class="stepper-item">
+                    <!-- [ngClass]="{current: currentStep$.value === 3}" -->
+                    <h3 class="stepper-title">Business Info</h3>
+                </div>
+
+                <div class="stepper-item">
+                    <!-- [ngClass]="{current: currentStep$.value === 4}" -->
+                    <h3 class="stepper-title">Billing Details</h3>
+                </div>
+
+                <div class="stepper-item">
+                    <!-- [ngClass]="{ current: currentStep$.value === 5 }" -->
+                    <h3 class="stepper-title">Completed</h3>
+                </div>
+            </div>
+
+            <form class="mx-auto mw-600px w-100 pt-15 pb-10" noValidate id="kt_create_account_form" novalidate>
+                <div class="current">
+                    <ng-container *ngIf="currentStep$.value === 1">
+                        <!-- Select Vendor -->
+                        <div class="">
+                            <label for="" class="form-label mb-2">Select Vendor *</label>
+                            <select formControlName="vendor" class="form-select form-select-sm custom-select mb-3">
+                                <option value="" selected>Choose Vendor</option>
+                                <!-- <ng-container *ngFor="let vendor of vendors">
+                                    <option>{{vendor.name}}</option>
+                                </ng-container> -->
+                            </select>
+                        </div>
+                        <!-- Select Billing Address -->
+                        <div class="">
+                            <label for="" class="form-label mb-2">Select Billing Address *</label>
+                            <select formControlName="billing_address"
+                                class="form-select form-select-sm custom-select mb-3">
+                                <option value="" selected>Choose <address></address>
+                                </option>
+                                <!-- <option *ngFor="let warehouses of warehouse" [innerHtml]="warehouses.address"></option> -->
+                            </select>
+                        </div>
+                        <!-- Warehouse -->
+                        <div class="">
+                            <label for="" class="form-label mb-2">Warehouse *</label>
+                            <select formControlName="warehouse" class="form-select form-select-sm custom-select mb-3">
+                                <option value="" selected>Choose City</option>
+                                <!-- <option *ngFor="let warehouses of warehouse">{{warehouses.name}}</option> -->
+                            </select>
+                        </div>
+                        <!-- Estimate Delivery Date -->
+                        <div class="">
+                            <label for="" class="form-label mb-2"> Estimated Delivery Date *</label>
+                            <input formControlName="delivery_date" type="date"
+                                class="form-control form-control-sm datepicker" />
+                        </div>
+                        <!-- PO Date -->
+                        <div class="">
+                            <label for="" class="form-label mb-2">P.O Date *</label>
+                            <input formControlName="po_date" type="date"
+                                class="form-control form-control-sm datepicker" />
+                        </div>
+                    </ng-container>
+
+                    <div formArrayName="productDetailsItems">
+                        <ng-container *ngIf="currentStep$.value === 2">
+                            <div>
+                                <!-- *ngFor="let productData of poCreationForm.controls['productDetailsItems']?.controls(); let i=index"
+                [formGroupName]="i" -->
+                                <!-- Product -->
+                                <div class="">
+                                    <label for="" class="form-label mb-2">Product *</label>
+                                    <select formControlName="designID"
+                                        class="form-select form-select-sm custom-select mb-3">
+                                        <option value="" selected>Choose Product</option>
+                                        <option value="two">ID 001</option>
+                                        <option value="three">ID 002</option>
+                                        <option value="four">ID 003</option>
+                                        <option value="five">ID 004</option>
+                                    </select>
+                                </div>
+                                <!-- Varient -->
+                                <div class="">
+                                    <label for="" class="form-label mb-2">Varient *</label>
+                                    <select formControlName="designID"
+                                        class="form-select form-select-sm custom-select mb-3">
+                                        <option value="" selected>Choose varient</option>
+                                        <option value="two">Varient 001</option>
+                                        <option value="three">varient 002</option>
+                                        <option value="four">varient 003</option>
+                                        <option value="five">varient 004</option>
+                                    </select>
+                                </div>
+                                <!-- Photo -->
+                                <div class="">
+                                    <label for="" class="form-label mb-2">Photo *</label>
+                                    <select formControlName="photo"
+                                        class="form-select form-select-sm custom-select mb-3">
+                                        <option value="" selected>Select Photo</option>
+                                        <option value="one">pto 001</option>
+                                        <option value="two">pto 002</option>
+                                        <option value="three">pto 003</option>
+                                        <option value="four">pto 004</option>
+                                    </select>
+                                </div>
+                                <!-- Price -->
+                                <div class="">
+                                    <label for="" class="form-label mb-2">Price(₹) *</label>
+                                    <input formControlName="price" type="text" class="form-control form-control-sm"
+                                        placeholder="250" />
+                                </div>
+                                <!-- Quantity -->
+                                <div class="">
+                                    <label for="" class="form-label mb-2">Quantity *</label>
+                                    <input formControlName="quantity" type="text" class="form-control form-control-sm"
+                                        placeholder="100" />
+                                </div>
+                                <!-- Subtotal -->
+                                <div class="">
+                                    <label for="" class="form-label mb-2">Subtotal *</label>
+                                    <input formControlName="subTotal" type="text" class="form-control form-control-sm"
+                                        placeholder="143" />
+                                </div>
+                                <!-- Discount Type -->
+                                <div class="">
+                                    <label for="" class="form-label mb-2">Discount Type*</label>
+                                    <select name="" id="" formControlName="discountType"
+                                        class="form-select form-select-sm">
+                                        <option selected value="">Select One</option>
+                                        <option value="peritem">Per Item</option>
+                                        <option value="overall">Overall</option>
+                                    </select>
+                                </div>
+                                <!-- Discount -->
+                                <div>
+                                    <label for="" class="form-label mb-2 d-flex">Discount</label>
+                                    <input type="number" placeholder="Discount" formControlName="discount"
+                                        class="form-control form-control-sm d-inline w-50">
+                                    <select name="" id="" class="form-select form-select-sm d-inline w-50">
+                                        <option value="percentage">%</option>
+                                        <option value="inr">INR</option>
+                                    </select>
+                                </div>
+                                <!-- Total Discount-->
+                                <div class="">
+                                    <label for="" class="form-label mb-2">Total Discount*</label>
+                                    <input formControlName="totalDiscount" type="text"
+                                        class="form-control form-control-sm" placeholder="10" />
+                                </div>
+                                <!-- Total -->
+                                <div class="">
+                                    <label for="" class="form-label mb-2">Total *</label>
+                                    <input formControlName="total" type="text" class="form-control form-control-sm"
+                                        placeholder="2,000" />
+                                </div>
+                                <!-- GST -->
+                                <div class="">
+                                    <label class="form-label" for="">IGST *</label>
+                                    <select formControlName="gst" class="form-select form-select-sm mb-3">
+                                        <option value="" selected>Choose GST</option>
+                                        <option value="">5%</option>
+                                        <option value="twelve">12%</option>
+                                        <option value="eighteen">18%</option>
+                                    </select>
+                                </div>
+                                <!-- GST -->
+                                <div class="">
+                                    <label class="form-label" for="">IGST *</label>
+                                    <input type="text" formControlName="igst" class="form-control form-control-sm"
+                                        placeholder="0">
+                                </div>
+                                <!-- Grand Total -->
+                                <div class="">
+                                    <label class="form-label mb-2" for="">Grand Total*</label>
+                                    <input type="text" placeholder="143" formControlName="grandTotal"
+                                        class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                        </ng-container>
+                        <!-- <div class="" *ngIf="currentStep$.value === 2">
+                            <button class="border border-1 border-secondary btn btn-light me-1 mb-1 text-primary"
+                                type="button" (click)="new_product()">New</button>
+                        </div> -->
+                    </div>
+
+
+                    <ng-container *ngIf="currentStep$.value === 3">
+                        <p>three</p>
+                    </ng-container>
+
+                    <ng-container *ngIf="currentStep$.value === 4">
+                        <input type="button" />sdfgd
+                        <p>four</p>
+                    </ng-container>
+
+                    <ng-container *ngIf="currentStep$.value === 5">
+                        <p>five</p>
+                    </ng-container>
+                </div>
+
+                <div class="d-flex flex-stack pt-15">
+                    <div class="mr-2">
+                        <ng-container *ngIf="currentStep$.value !== 1 && currentStep$.value <= 4">
+                            <button type="button" class="btn btn-lg btn-light-primary me-3" (click)="prevStep()">
+                                Back
+                            </button>
+                        </ng-container>
+                    </div>
+
+                    <ng-container *ngIf="currentStep$.value  >= 1 && currentStep$.value <= 5">
+                        <div>
+                            <button type=" button" class="btn btn-lg btn-primary me-3" (click)="nextStep()">
+                                <span class="indicator-label">
+                                    <ng-container *ngIf="currentStep$.value >= 1 && currentStep$.value < 5">
+                                        Continue {{ " " }}
+                                    </ng-container>
+                                    <ng-container *ngIf="currentStep$.value === 5">
+                                        Submit
+                                    </ng-container>
+                                </span>
+                            </button>
+                        </div>
+                    </ng-container>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

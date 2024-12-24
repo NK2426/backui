@@ -1,0 +1,409 @@
+<div class="container-fluid">
+    <!-- <div class="page-title-box d-flex align-items-center justify-content-between">
+        <h4 class="mb-0 font-size-18">Add Stock</h4>
+        <div class="page-title-right">
+            <ol class="breadcrumb m-0">
+                <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+                <li class="breadcrumb-item active"> Add Stock </li>
+            </ol>
+        </div>
+    </div> -->
+    <div class="row">
+        <div class="col-lg-12 ps-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mt-3" *ngIf="data?.grnid">
+                        <div class="col-sm-12">
+                            <h4 class="card-title mb-4">P.O Details</h4>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="data?.grnid">
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="control-label col-sm-3"> PO ID : </label>
+                                <b>{{data?.purchaseorder?.uuid}}</b>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="control-label col-sm-3"> GRN ID : </label>
+                                <b>{{data?.grnid}}</b>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="control-label col-sm-3"> Invoice No : </label>
+                                {{data?.invoiceno}}
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="control-label col-sm-3">Supplier : </label>
+                                {{data?.user?.name}}
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="control-label col-sm-3"> Shipper : </label>
+                                {{data?.transporterid}}
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="control-label col-sm-3">Received Date : </label>
+                                {{data?.receiveddate | date:'mediumDate'}}
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="control-label col-sm-3">No. of bundles : </label>
+                                {{ data?.totalbundles }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 70px;">
+                        <div class="col-8">
+                            <div class="row" *ngIf="images.length">
+                                <div class="col-xl-3 col-sm-4" *ngFor="let item of images">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="product-img position-relative">
+                                                <a href="javascript:void(0)">
+                                                    <img fetchpriority="low" style="width:100%" alt="Product"
+                                                        class="img-fluid mx-auto d-block" src="{{item?.path}}"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="py-2 mt-3" *ngIf="productmapparams.length > 0">
+                                <h3 class="font-size-15 fw-bold">Product Prameters</h3>
+                            </div>
+                            <div class="table-responsive" *ngIf="productmapparams.length > 0">
+                                <table class="table">
+                                    <tbody>
+                                        <tr *ngFor="let param of productmapparams; let i = index;">
+                                            <th class="center">{{param?.productparameter?.name}}</th>
+                                            <td>{{param?.productparametervalue?.value}}</td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="card-title py-4" *ngIf="inwarditem.id"> Product Name :
+                        {{viewProduct.name}} </h4>
+                    <div class="py-2 mt-3">
+                        <h3 class="font-size-15 fw-bold">Scan Qrcode</h3>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <zxing-scanner [torch]="torchEnabled" (scanSuccess)="onCodeResult($event)"
+                                    [tryHarder]="tryHarder" (permissionResponse)="onHasPermission($event)"
+                                    (torchCompatible)="onTorchCompatible($event)" [enable]="showqcscan"></zxing-scanner>
+                            </div>
+                        </div>
+                        <input class="form-control" [(ngModel)]="scanbarcode" placeholder="Scan Qrcode" type="text"
+                            name="image" autocomplete="off" (change)="verifyQRcode()"
+                            style="width: 50%; height: 70px; display: inline-block;" />
+                    </div>
+                    <!-- <div class="row py-1" *ngIf="inwarditem.id">
+                        <form (submit)="saveStock()" name="form" [formGroup]="addstockForm" novalidate>
+                            <div class="col-sm-12" *ngFor="let item of insbulkitems">
+                                <div class="col">
+                                    {{item | json}}
+                                    <label class="control-label mt-2">Tag</label>
+                                    <div class="mt-2">{{item.psid || 'Scan New'}}</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="row">                                        
+                                        <div class="col" *ngFor="let variant of item.variants; let i=index;">
+                                            <label class="control-label mt-2"> {{variant.name}} *</label>
+                                            <div>
+                                                {{variant | json}}
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <label class="control-label mt-2">&nbsp;</label>
+                                            <div>
+                                                <button type="submit" class="btn btn-success"><i
+                                                        class="fas fa-plus"></i>
+                                                    Pass</button>
+
+                                                    <a (click)="openDispute(content)" class="btn btn-danger ms-2"><i
+                                                        class="fas fa-trash"></i>
+                                                    Fail</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div> -->
+                    <div style="margin-top: 70px;" *ngIf="insbulkitems.length > 0">
+                        <div class="row">
+                            <div class="col-4">
+                                <strong>Tag</strong>
+                            </div>
+                            <div class="col-6">
+                                <strong>Variants</strong>
+                            </div>
+                            <div class="col-2">
+                                <strong> Is Damage ? </strong>
+                            </div>
+                        </div>
+                        <p><strong class="font-size-16">{{insbulkitems.length}}</strong></p>
+                        <div class="row mt-2" *ngFor="let item of insbulkitems; let i = index;">
+
+                            <div class="col-4"><span style="margin-right: 20px;">{{i+1}},</span> {{ item.psid || '---'
+                                }}
+                            </div>
+                            <div class="col-6">
+                                <strong>{{item.variants.description}}</strong>
+                            </div>
+                            <div class="col-2">
+                                <div class="col">
+                                    <div>
+                                        <a [style.background-color]="item.status === 'Dispute' ? '#f41c1c' : '#ccc' "
+                                            (click)="openDispute(content, item.psid, item.purchaseorderitem_id)"
+                                            class="btn ms-2"><i class="fas fa-trash"></i> {{item.status === 'Dispute' ?
+                                            'Dispute' :
+                                            'Yes'}}</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- <div class="col">
+                                <a (click)="removepsid(i)" ngbTooltip="Remove Tag" class="text-danger"><i
+                                        class="bx bx-trash font-size-18"></i></a>
+                            </div> -->
+                        </div>
+                    </div>
+
+                    <div class="row py-3" *ngIf="inwarditem.id" style="display: none;">
+                        <h4 class="card-title mb-4"> Quality Check Status </h4>
+                        <form (ngSubmit)="updateformstatus()" #form="ngForm" enctype="multipart/form-data">
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <select class="form-select" #arstatus="ngModel" name="arstatus"
+                                        [(ngModel)]="stockapprove.status" required="">
+                                        <option value="">Select Status</option>
+                                        <option *ngFor="let stat of status" [value]="stat.id">
+                                            {{stat.name }}
+                                        </option>
+                                    </select>
+                                    <div [hidden]="arstatus.valid || arstatus.pristine" class="alert alert-danger"
+                                        style="background-color: #fff; border: none;">
+                                        Select Status
+                                    </div>
+                                </div>
+                                <div class="mb-3" *ngIf="stockapprove.status && stockapprove.status !== 'Inventory'">
+                                    <label class="control-label"> Comments </label>
+                                    <textarea class="form-control" [(ngModel)]="stockapprove.comments" #reason
+                                        name="reason"></textarea>
+                                    <div [hidden]="!actionreason || stockapprove.comments.length > 0"
+                                        class="alert alert-danger" style="background-color: #fff; border: none;">
+                                        Enter Reason
+                                    </div>
+                                </div>
+                                <div class="mb-3" *ngIf="stockapprove.status && stockapprove.status !== 'Inventory'">
+                                    <label class="control-label">Image</label>
+                                    <input [(ngModel)]="stockapprove.image" #arimage="ngModel" class="form-control"
+                                        placeholder="Select Image" type="file" name="image" autocomplete="off"
+                                        (change)="onSelectedFile($event)"
+                                        [required]="stockapprove.status !== 'Inventory'" />
+                                    <div [hidden]="arimage.valid || arimage.pristine" class="alert alert-danger"
+                                        style="background-color: #fff; border: none;">
+                                        Select Image
+                                    </div>
+                                </div>
+                                <input *ngIf="stockapprove.status && stockapprove.status !== 'Inventory'"
+                                    [disabled]="!form.valid" type="submit" name="submit"
+                                    class="btn btn-primary w-md ms-1" value="Submit">
+                            </div>
+                        </form>
+                    </div>
+                    <!-- *ngIf="stockapprove.status && stockapprove.status === 'Inventory'" -->
+                    <!-- <form (submit)="movetoShelf()" name="form" [formGroup]="addstockForm" novalidate
+                        *ngIf="insbulkitems.length > 0"> -->
+                    <div class="row py-4">
+                        <div class="d-md-flex align-items-center mt-5" *ngIf="shelf && shelf.shelfID">
+                            <div class="col-sm-6 mt-5">
+                                <!-- <h2 class="mb-4">Shelf ID : <strong class="text-primary">{{shelves}}</strong>
+                                </h2> -->
+                            </div>
+                            <div class="ml-auto">
+                                <div class="dl" *ngIf="shelf.shelfID">
+                                    <button class="btn btn-primary" (click)="movetoShelf(shelf.shelfID)">
+                                        <i class="fas fa-cart-plus"></i>
+                                        Move to Shelf</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="!shelf">
+                            <p>Shelf not avialble this product. Please Create Shelf..</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-sm btn-primary" [routerLink]="['/warehouse/orders/qc']"
+                        routerLinkActive="active" routerLinkActive="router-link-active">Back</button>
+                    <!-- </form> -->
+                </div>
+                <!-- end row -->
+            </div> <!-- container-fluid -->
+        </div>
+    </div>
+</div>
+<!-- Pop UP Open start -->
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">Dispute Item</h5>
+        <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <form (submit)="saveDispute()" name="form" [formGroup]="disputeForm" novalidate>
+            <div class="row">
+                <div class="col-12">
+                    <div class="row mb-2">
+                        <label class="control-label col-4 mt-2"> Reason *</label>
+                        <div class="col-6">
+
+                            <select class="form-select" type="text" name="reason" formControlName="reason"
+                                formControlName="reason"
+                                [ngClass]="{'is-invalid': (gsubmit && disputeform['reason']?.errors) || (disputeform['reason']?.invalid && (disputeform['reason']?.dirty || disputeform['reason']?.touched))}">
+                                <option *ngFor="let dispute of disputetypes" [value]="dispute.id">
+                                    {{dispute.name }}
+                                </option>
+                            </select>
+                            <div *ngIf="(gsubmit && disputeform['reason']?.errors) || (disputeform['reason']?.invalid && (disputeform['reason']?.dirty || disputeform['reason']?.touched))"
+                                class="invalid-feedback">
+                                <span *ngIf="disputeform['reason'].errors?.['required']">Select valid reason</span>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="row mb-2 mt-4">
+                        <label class="control-label col-4 mt-4"> Image </label>
+                        <div class="col-6">
+                            <div>
+                                <input type="file" class="btn btn-primary" (change)="onSelectedImage($event)"
+                                    accept='image/*'
+                                    style="position: absolute; height: 70px; width: 160px; opacity: 0;" />
+                                <span style="width: 160px;display: block;height: 70px;z-index: -1;"
+                                    class="col-3 btn btn-light w-sm">
+                                    <i class="mdi mdi-upload d-block font-size-16"></i>
+                                    New File Upload</span>
+                            </div>
+                            <img [src]="disputeimage" width="100" />
+                        </div>
+                    </div>
+                    <div class="d-md-flex align-items-center mt-5">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="ml-auto" *ngIf="showsubmit">
+                            <div class="dl">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
+<!-- Pop UP Open end -->
+
+
+<!-- With move shelf modal content-->
+<ng-template #shelfcontent let-modal>
+    <div class="modal-header">
+        <div class="col-lg-12 col-sm-12">
+            <h4 class="d-inline-block card-title py-4">Scan Shelf</h4>
+            <button type="button" class="btn-close fa-pull-right" style="height: 70px;" aria-hidden="true"
+                (click)="closeModal()"></button>
+        </div>
+    </div>
+    <div class="modal-body">
+        <zxing-scanner [torch]="torchEnabled" (scanSuccess)="scantoShelf($event)" [tryHarder]="tryHarder"
+            (permissionResponse)="onHasPermission($event)" (torchCompatible)="onTorchCompatible($event)"
+            [enable]="!showqcscan">
+        </zxing-scanner>
+        <br />
+
+        <button *ngIf="showShelf" class="btn btn-primary" (click)="movetoShelf(shelf.shelfID)">
+            <i class="fas fa-cart-plus"></i>
+            Move to Shelf</button>
+    </div>
+</ng-template>
+<!-- Popup open start -->
+<ng-template #novarients let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">Add New Variant</h5>
+        <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="col-sm-12">
+            <div class="mb-3">
+                <label class="control-label"> Select Department </label>
+                <ng-select name="department" placeholder="Select Department" [items]="departments" bindLabel="name"
+                    bindValue="did" (change)="changeDepartment($event)">
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="mb-3">
+                <label class="control-label"> Select Category</label>
+                <ng-select name="class" placeholder="Select Category" [items]="class" bindLabel="name" bindValue="cid"
+                    [(ngModel)]="selectedClass" (change)="changeCategory($event)">
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="mb-3">
+                <label class="control-label"> Select Subcategory</label>
+                <ng-select name="class" placeholder="Select Subcategory" [items]="subclass" bindLabel="name" bindValue="id"
+                    [(ngModel)]="selectedSubclass" (change)="changeSubcategory($event)">
+                </ng-select>
+            </div>
+        </div>
+        <!-- <div class="col-sm-12">
+            <div class="mb-3">
+                <label class="control-label"> Select Group</label>
+                <ng-select name="class" placeholder="Select Group" [items]="groups" bindLabel="name" bindValue="id"
+                    [(ngModel)]="selectedGroup" (change)="changeGroup($event)">
+                </ng-select>
+            </div>
+        </div> -->
+        <div class="col-sm-12">
+            <div class="mb-3">
+                <label class="control-label"> Select Variant</label>
+                <ng-select name="class" placeholder="Select Variant" [items]="variantLists" bindLabel="name" bindValue="id"
+                    [(ngModel)]="selectedGroup" (change)="getVariantList()">
+                </ng-select>
+                <select name="" id="">
+                    <option value="" selected>Choose Variant</option>
+                    <option *ngFor="let variants of variantLists; index as i">
+                        {{variants[i].productvariantvalues[i].value}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div>
+            <label class="form-label">Image</label>
+            <select class="form-select form-select-sm"></select>
+        </div>
+        <div>
+            <label class="form-label d-block">Description :</label>
+            <textarea class="w-100"></textarea>
+        </div>
+    </div>
+</ng-template>

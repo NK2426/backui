@@ -1,0 +1,185 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <!-- <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">ALL Groups</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+                        <li class="breadcrumb-item active"> Groups </li>
+                    </ol>
+                </div>
+            </div> -->
+      <div class="card">
+        <div class="card-body p-5">
+          <div class="row mb-2">
+            <div class="col-sm-3">
+              <!-- <div class="search-box me-2 mb-2 d-inline-block" style="padding-top: 6%;">
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="search"
+                                        (keyup)="list()">
+                                    <i class="bx bx-search-alt search-icon" style="left: 22px;"></i>
+                                </div>
+                            </div> -->
+
+              <!--begin::Search-->
+              <div class="d-flex align-items-center position-relative my-1 px-1 pt-5 mt-2">
+                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+                <input
+                  type="text"
+                  (keyup)="searchTable($event)"
+                  placeholder="Search..."
+                  class="form-control form-control-solid ps-12"
+                  #input
+                />
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="mb-3">
+                <!-- <label class="form-label"> Select Department </label>
+                                <ng-select name="department" placeholder="Select Department" [items]="departments"
+                                    bindLabel="name" bindValue="did" (change)="changeDepartment($event)"
+                                    [(ngModel)]="selectedDept" [disabled]="true">
+                                </ng-select> -->
+              </div>
+            </div>
+
+            <div class="col-sm-2">
+              <div class="mb-3">
+                <label class="form-label"> Select Category</label>
+                <ng-select
+                  name="class"
+                  placeholder="Select Category"
+                  [items]="class"
+                  bindLabel="name"
+                  bindValue="cid"
+                  [(ngModel)]="selectedClass"
+                  (change)="changeCategory($event)"
+                >
+                </ng-select>
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <div class="mb-3">
+                <label class="form-label"> Select Subcategory</label>
+                <ng-select
+                  name="class"
+                  placeholder="Select Subcategory"
+                  [items]="subclass"
+                  bindLabel="name"
+                  bindValue="id"
+                  [(ngModel)]="selectedSubclass"
+                  (change)="changeSubcategory($event)"
+                >
+                </ng-select>
+              </div>
+            </div>
+            <div class="col-sm-2" style="padding-top: 1.9%">
+              <div class="text-sm-end">
+                <button [routerLink]="['/category-head/groups/add']" type="button" class="btn btn-primary btn-sm mt-2 me-2">
+                  <i class="mdi mdi-plus mr-1"></i> Add New Group
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table align-middle table-nowrap table-hover">
+              <thead class="">
+                <tr class="">
+                  <th scope="col" class="text-center" style="width: 70px">#</th>
+                  <th scope="col" >Name</th>
+                  <!-- <th scope="col">Department</th> -->
+                  <th scope="col">Category</th>
+                  <th scope="col">SubCategory</th>
+                  <th scope="col">Status</th>
+                  <!-- <th scope="col">Created Date</th> -->
+                  <th scope="col" class="text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of products; let i = index">
+                  <td class="text-center">{{ page === 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}</td>
+                  <td>
+                    <strong class="font-size-14 mb-1"
+                      ><a href="javascript: void(0);" class="text-dark"></a>
+                      {{ product.name }}
+                    </strong>
+                  </td>
+                  <!-- <td>{{ product?.department?.name }}</td> -->
+                  <td>{{ product?.category?.name }}</td>
+                  <td>{{ product?.subcategory?.name }}</td>
+                  <td><div class="badge badge-light-success">{{ product.status + '' === '1' ? 'Active' : '' }}</div>
+                    <div class="badge badge-light-danger">{{ product.status + '' === '0' ? 'Inactive' : '' }}</div></td>
+                  <!-- <td>{{product.createdAt}}</td> -->
+
+                  <td class="text-center">
+                    <ul class="list-inline font-size-20 contact-links mb-0">
+                      <li class="list-inline-item px-1">
+                        <a
+                          [routerLink]="['/category-head/groups/view/' + product.id]"
+                          [state]="{ uuid: product.id }"
+                          ngbTooltip="View Group"
+                          ><app-keenicon name="eye" class="fs-1 text-primary cursor-pointer"></app-keenicon
+                        ></a>
+                      </li>
+                      <li class="list-inline-item px-1">
+                        <a
+                          [routerLink]="['/category-head/groups/edit/' + product.id]"
+                          [state]="{ uuid: product.id }"
+                          ngbTooltip="Edit Group"
+                          ><app-keenicon name="pencil" class="fs-1 text-primary cursor-pointer"></app-keenicon
+                        ></a>
+                      </li>
+                      <li class="list-inline-item px-1">
+                        <a (click)="deleteUser(product)" ngbTooltip="Delete Group"
+                          ><app-keenicon name="trash" class="fs-1 text-danger cursor-pointer"></app-keenicon
+                        ></a>
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr *ngIf="products?.length === 0">
+                  <td colspan="8" class="text-center fw-bold">No records found</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Pagination  -->
+          <div class="row justify-content-md-between align-items-md-center mt-2">
+            <div class="col-sm-12 col-md-4">
+              <div class="dataTables_length" id="tickets-table_length">
+                <label class="d-inline-flex align-items-center"
+                  >Show
+                  <select class="form-select form-select-sm ms-2 me-2 cursor-pointer" (change)="handlePageSizeChange($event)">
+                    <option *ngFor="let size of pageSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select>
+                  Entries</label
+                >
+              </div>
+            </div>
+            <!-- Pagination -->
+            <div class="col-sm-12 col-md-8">
+              <div class="text-md-right float-md-end pagination-rounded">
+                <ngb-pagination
+                  [(page)]="page"
+                  [pageSize]="pageSize"
+                  [maxSize]="5"
+                  [rotate]="true"
+                  [ellipses]="false"
+                  [boundaryLinks]="true"
+                  (pageChange)="handlePageChange($event)"
+                  [collectionSize]="count"
+                ></ngb-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

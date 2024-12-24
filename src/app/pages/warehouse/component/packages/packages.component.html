@@ -1,0 +1,116 @@
+<div class="card mb-5 mb-xl-10">
+    <!-- <h4 class="font-size-18"></h4> -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-5">
+                        <div class="col-sm-4">
+                            <!--begin::Search-->
+                            <div class="d-flex align-items-center position-relative my-1 px-1">
+                                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                </i>
+                                <input type="text" (keyup)="searchTable($event)" placeholder="Search..."
+                                    class="form-control form-control-solid w-200px ps-12" #input>
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="text-sm-end">
+                                <button (click)="addPackage(content)" type="button"
+                                    class="btn btn-primary btn-rounded mb-2 me-2"><i class="mdi mdi-plus mr-1"></i>
+                                    Add New Package</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle table-nowrap table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="p-5 w-50px">#</th>
+                                    <th scope="col" class="p-5">Name</th>
+                                    <th scope="col" class="p-5">Type</th>
+                                    <!-- <th scope="col" class="p-5">Group</th>
+                                     <th scope="col" class="p-5">Department</th>
+                                     <th scope="col" class="p-5">Class</th>
+                                     <th scope="col" class="p-5">Sub Class</th> -->
+                                    <th scope="col" class="p-5">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let package of packages; let i = index">
+                                    <td class="text-center fw-bold">{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}
+                                    </td>
+                                    <td> {{package.name}} </td>
+                                    <td> {{package.packagetype?.name}} </td>
+                                    <!-- <td> {{package?.group?.name}} </td>
+                                     <td> {{package?.department?.name}} </td>
+                                     <td> {{package.category?.name}} </td>
+                                     <td> {{package.subcategory?.name}} </td> -->
+                                    <td>
+                                        <ul class="list-inline font-size-20 contact-links mb-0">
+                                            <li class="list-inline-item px-2">
+                                                <a (click)="setActiveDepartment(content, package, i)"
+                                                    href="javascript:void(0)" ngbTooltip="View Package"><i
+                                                        class="bx bx-show"></i><strong>View Package</strong></a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="packages?.length === 0">
+                                    <td colspan="12" class="text-center fw-bold">No Records Found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination  -->
+                    <div class="row justify-content-md-between align-items-md-center mt-2">
+                        <div class="col-sm-12 col-md-4">
+                            <div class="dataTables_length" id="tickets-table_length">
+                                <label class="d-inline-flex align-items-center">Show
+                                    <select class="form-select form-select-sm ms-2 me-2"
+                                        (change)="handlePageSizeChange($event)">
+                                        <option *ngFor="let size of pageSizes" [ngValue]="size">
+                                            {{ size }}
+                                        </option>
+                                    </select>
+                                    Entries</label>
+                            </div>
+                        </div>
+                        <!-- Pagination -->
+                        <div class="col-sm-12 col-md-8">
+                            <div class="text-md-right float-md-end pagination-rounded">
+                                <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true"
+                                    [ellipses]="false" [boundaryLinks]="true" (pageChange)="handlePageChange($event)"
+                                    [collectionSize]="count"></ngb-pagination>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pop UP Open start -->
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" *ngIf="!currentPackage!.id" id="modal-basic-title">Add Package</h5>
+        <h5 class="modal-title" *ngIf="currentPackage!.id && addAction==true" id="modal-basic-title"
+            (click)="addPackage(content)">Edit Package</h5>
+        <h5 class="modal-title" *ngIf="currentPackage!.id && addAction==false" id="modal-basic-title"
+            (click)="addPackage(content)">View Package</h5>
+        <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div *ngIf="viewAction">
+            <app-viewpackages (refreshList)='refreshList($event)' (editPackage)='editPackage($event)'
+                [selectedPackage]="currentPackage"></app-viewpackages>
+        </div>
+        <div *ngIf="addAction">
+            <app-addpackages (refreshList)='refreshList($event)' [data]="currentPackage"></app-addpackages>
+        </div>
+    </div>
+</ng-template>
+<!-- Pop UP Open end -->

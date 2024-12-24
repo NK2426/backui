@@ -1,0 +1,116 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-sm-3">
+                            <div class="search-box me-2 mb-2 d-inline-block">
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="search"
+                                        (keyup)="list()">
+                                    <i class="bx bx-search-alt search-icon" style="left: 22px;"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <!-- <select [(ngModel)]="searchdepart" class="form-select" type="text" name="department_id"
+                                (change)="list()">
+                                <option value="0">ALL Department</option>
+                                <option *ngFor="let department of departments" [value]="department.did">{{
+                                    department.name }}</option>
+                            </select> -->
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="text-sm-end">
+                                <button [routerLink]="['/finance/expenses/add']" type="button"
+                                    class="btn btn-primary btn-rounded mb-2 me-2"><i class="mdi mdi-plus mr-1"></i>
+                                    Add New Expense </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle  table-nowrap table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="width: 70px;" class="text-center">#</th>
+                                    <th scope="col">Expense Type</th>
+                                    <th style="text-align: right" scope="col">Amount</th>
+                                    <th scope="col">Bank Account</th>
+                                    <th scope="col">Expense Date</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Created Date</th>
+                                    <th scope="col" align="center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let expense of expenses; let i = index">
+                                    <td class="text-center">{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}</td>
+                                    <td>
+                                        <h5 class="font-size-14 mb-1"><a href="javascript: void(0);"
+                                                class="text-dark"></a>
+                                            {{expense?.expensetype?.name}}
+                                        </h5>
+                                    </td>
+                                    <td style="text-align: right">{{numberFormat(expense?.amount)}}</td>
+                                    <td>{{expense?.bankaccount?.accountname}}</td>
+                                    <td>{{expense?.expensedate}}</td>
+                                    <td>{{expense.status+'' === '0' ? 'Inactive' : 'Active'}}</td>
+                                    <td>{{expense.createdAt}}</td>
+                                    <td>
+                                        <ul class="list-inline font-size-20 contact-links mb-0">
+                                            <li class="list-inline-item px-1">
+                                                <a [routerLink]="['/finance/expenses/view/'+expense.uuid]"
+                                                    [state]="{uuid: expense.uuid}" ngbTooltip="View Expense">
+                                                    <app-keenicon name="eye" class="fs-2 text-primary"></app-keenicon>
+                                                </a>
+                                            </li>
+                                            <li class="list-inline-item px-1">
+                                                <a [routerLink]="['/finance/expenses/edit/'+expense.uuid]"
+                                                    [state]="{uuid: expense.uuid}" ngbTooltip="Edit Expense">
+                                                    <app-keenicon name="pencil"
+                                                        class="fs-2 text-primary"></app-keenicon></a>
+                                            </li>
+                                            <li class="list-inline-item px-1">
+                                                <a (click)="deleteUser(expense)" ngbTooltip="Delete Expense">
+                                                    <app-keenicon name="trash" class="fs-2 text-primary"></app-keenicon>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="expenses?.length === 0">
+                                    <td colspan="8" align="center">No records found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination  -->
+                    <div class="row justify-content-md-between align-items-md-center mt-2">
+                        <div class="col-sm-12 col-md-8">
+                            <div class="dataTables_length" id="tickets-table_length">
+                                <label class="d-inline-flex align-items-center">Show
+                                    <select class="form-select form-select-sm ms-2 me-2 cursor-pointer"
+                                        (change)="handlePageSizeChange($event)">
+                                        <option *ngFor="let size of pageSizes" [ngValue]="size">
+                                            {{ size }}
+                                        </option>
+                                    </select>
+                                    Entries</label>
+                            </div>
+                        </div>
+                        <!-- Pagination -->
+                        <div class="col-sm-12 col-md-4">
+                            <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true"
+                                [ellipses]="false" [boundaryLinks]="true" (pageChange)="handlePageChange($event)"
+                                [collectionSize]="count"></ngb-pagination>
+                        </div>
+                    </div>
+                    <!-- Pagination  -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

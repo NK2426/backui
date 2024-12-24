@@ -1,0 +1,81 @@
+<div class="card mb-5 mb-xl-10">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body pt-1 pb-5">
+                <form (ngSubmit)="save()" [formGroup]="formData" novalidate>
+                    <div class="row my-3">
+                        <div class="col-sm-12">
+                            <h4 class="card-title mb-4">Testimonial Details</h4>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Name -->
+                        <div class="col-sm-6 mb-3 fv-row fv-plugins-icon-container">
+                            <label class="form-label required fs-6 fw-semibold mb-2">Name</label>
+                            <input class="form-control" placeholder="Enter Name" type="text" name="name"
+                                autocomplete="off" formControlName="name" [ngClass]="{
+                    'is-invalid':
+                      (submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))
+                  }" />
+
+                            <div *ngIf="(submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))"
+                                class="invalid-feedback">
+                                <span *ngIf="form['name'].errors?.['required']">Please enter name</span>
+                                <span *ngIf="form['name'].errors?.['minlength']">Minimum Length 3 Characters.</span>
+                                <span *ngIf="form['name'].errors?.['maxlength']">Name cannot be exceed 30
+                                    characters.</span>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 mb-3 fv-row fv-plugins-icon-container">
+                            <label class="form-label required fs-6 fw-semibold mb-2">Image (ratio 400*400)</label>
+                            <input class="form-control" placeholder="Select image" type="file" name="image"
+                                autocomplete="off" formControlName="image" maxLength="10"
+                                (change)="onFileSelected($event)" [ngClass]="{
+                      'is-invalid':
+                        (submit && form['image']?.errors) || (form['image']?.invalid && (form['image']?.dirty || form['image']?.touched))
+                    }" />
+
+                            <div *ngIf="(submit && form['image']?.errors) || (form['image']?.invalid && (form['image']?.dirty || form['image']?.touched))"
+                                class="invalid-feedback">
+                                <span *ngIf="form['image'].errors">Please Select image</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Address -->
+                        <div class="col-sm-6 mb-3 fv-row fv-plugins-icon-container">
+                            <label class="form-label required fs-6 fw-semibold mb-2">Content</label>
+                            <div class="NgxEditor__Wrapper">
+                                <textarea class="form-control" placeholder="Enter content" name="content" rows="5"
+                                    autocomplete="off" formControlName="content"
+                                    [ngClass]="{'is-invalid': (submit && form['content']?.errors) || (form['content']?.invalid && (form['content']?.dirty || form['content']?.touched))}"></textarea>
+
+                                    <div *ngIf="(submit && form['content']?.errors) || (form['content']?.invalid && (form['content']?.dirty || form['content']?.touched))"
+                                    class="invalid-feedback">
+                                    <span *ngIf="form['content'].errors?.['required']">Please Enter Content</span>
+                                    <span *ngIf="form['content'].errors?.['minlength']">Minimum Length 10 Characters.</span>
+                                    <span *ngIf="form['content'].errors?.['maxlength']">Content cannot be exceed 200
+                                        characters.</span>
+                                </div>
+                            </div>
+                            <!-- <p class="text-primary fw-bold pt-1">(Copy Paste Not Allowed)</p> -->
+
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="row mt-2 pe-5">
+                        <div class="text-sm-end">
+                            <a class="btn btn-sm btn-secondary me-4" (click)="back()">Cancel</a>
+                            <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

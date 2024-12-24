@@ -1,0 +1,234 @@
+::ng-deep .mat-step-header .mat-step-icon-selected,
+::ng-deep .mat-step-header .mat-step-icon-state-edit {
+  background-color: #a91be9;
+  color: #fff;
+}
+
+::ng-deep .mat-step-header .mat-step-icon-state-done {
+  background-color: #25b003;
+  color: #fff;
+}
+
+::ng-deep .mat-step-header .mat-step-icon-selected {
+  //animation: blink 1s linear infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@mixin styleStepLine($index) {
+  .mat-horizontal-stepper-header {
+    &+.mat-stepper-horizontal-line:nth-child(#{$index}) {
+      height: 2px;
+      background-image: linear-gradient(to right, #25b003, #6ab956);
+    }
+  }
+}
+
+::ng-deep .last-edited-step-1 {
+  @include styleStepLine(2);
+}
+
+::ng-deep .last-edited-step-2 {
+  @include styleStepLine(2);
+  @include styleStepLine(4);
+}
+
+.card-header {
+  border-bottom: none !important;
+}
+
+.card-counter {
+  box-shadow: 2px 2px 10px #dadada;
+  margin: 5px;
+  padding: 20px 10px;
+  background-color: #fff;
+  height: 100px;
+  border-radius: 5px;
+  transition: 0.3s linear all;
+}
+
+.card-counter:hover {
+  box-shadow: 4px 4px 20px #dadada;
+  transition: 0.3s linear all;
+}
+
+.card-counter.primary {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.card-counter.danger {
+  background-color: #ef5350;
+  color: #fff;
+}
+
+.card-counter.success {
+  background-color: #66bb6a;
+  color: #fff;
+}
+
+.card-counter.info {
+  background-color: #26c6da;
+  color: #fff;
+}
+
+.card-counter i {
+  font-size: 5em;
+  opacity: 0.2;
+}
+
+.card-counter .count-numbers {
+  position: absolute;
+  right: 35px;
+  top: 20px;
+  font-size: 32px;
+  display: block;
+}
+
+.card-counter .count-name {
+  position: absolute;
+  right: 35px;
+  top: 65px;
+  font-style: italic;
+  text-transform: capitalize;
+  opacity: 0.5;
+  display: block;
+  font-size: 18px;
+}
+
+.mat-vertical-content-container {
+  width: auto !important;
+}
+
+/* Default styles for table and row */
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.vertical-align-mobile {
+  /* Vertical alignment for mobile */
+  align-self: flex-start;
+}
+
+.horizontal-align-tablet-desktop {
+  /* Horizontal alignment for tablet and desktop */
+  text-align: center;
+  flex: 1;
+  /* Equal width for tablet and desktop */
+}
+
+/* Media query for tablet and desktop */
+@media screen and (min-width: 768px) {
+  .horizontal-align-tablet-desktop {
+    text-align: left;
+    /* Adjust as needed */
+    flex: initial;
+    /* Reset flex to default */
+  }
+}
+
+/* Media query for mobile */
+@media screen and (max-width: 767px) {
+  .row {
+    flex-direction: column;
+  }
+}
+
+.mat-stepper-previous.btn.btn-sm.btn-primary.text-primary.fw-bold.text-white {
+  color: white !important;
+}
+
+.alert__container {
+  .spacer {
+    margin-bottom: 1rem;
+  }
+
+  .alert {
+    border-radius: 0.125rem;
+
+    &__icon {
+      margin: 0 1rem;
+    }
+
+    &__text {
+      display: inline-block;
+      font-size: 1.125rem;
+    }
+
+    &__primary {
+      background-color: #ccf2ff;
+    }
+  }
+}
+
+::ng-deep mat-step-header {
+  pointer-events: none !important;
+}
+
+.card-header {
+  border-bottom: none !important;
+}
+
+#last-child {
+  border: 1px solid #a91be9 !important;
+  border-style: dashed !important;
+}
+
+#variant_details {
+  display: none;
+}
+
+.example-chip-list {
+  width: 100%;
+}
+
+//Newly Added //
+.activeimgsel {
+  position: relative;
+  border: 3px solid #a91be9;
+}
+
+.activeimgsel::before {
+  content: '\2713';
+  font-family: 'font-awesome' !important;
+  font-size: 16px;
+  background-color: rgb(24, 228, 21);
+  color: #fff;
+  top: -15px;
+  left: 97%;
+  position: absolute;
+  border-radius: 10px;
+  padding: 0px 5px;
+}
+
+.activeimg:before {
+  content: "✖";
+  font-family: boxicons !important;
+  font-size: 16px;
+  background-color: #a91be9;
+  color: #fff;
+  top: -15px;
+  right: -15px;
+  position: absolute;
+  border-radius: 50%;
+  padding: 1px 4px;
+  cursor: pointer;
+}

@@ -1,0 +1,60 @@
+<div class="submit-form">
+    <div class="mb-3 row">
+    </div>
+    <form (ngSubmit)="saveCrate()" [formGroup]="formData" novalidate>
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label required">Name</label>
+                    <input class="form-control" placeholder="Enter Crate Name" type="text" name="name"
+                        autocomplete="off" formControlName="name"
+                        [ngClass]="{'is-invalid': (submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['maxcount']?.touched))}" />
+
+                    <div *ngIf="(submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['name'].errors">Enter valid name</span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label required"> Crate Size</label>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <ng-select name="type" placeholder="Select" [items]="crateSize" formControlName="type"
+                                bindLabel="name" bindValue="type"
+                                [ngClass]="{'is-invalid': (submit && form['type']?.errors) || (form['type']?.invalid && (form['type']?.dirty || form['type']?.touched))}">
+                            </ng-select>
+                            <div *ngIf="(submit && form['type']?.errors) || (form['type']?.invalid && (form['type']?.dirty || form['type']?.touched))"
+                                class="invalid-feedback">
+                                <span *ngIf="form['type'].errors">Select Crate type</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-md-flex align-items-center mt-5">
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-sm btn-primary my-2">Submit</button>
+                    </div>
+                    <div class="ml-auto">
+                        <div class="dl">
+                            <button type="button" class="btn btn-sm btn-secondary my-2"
+                                (click)="cancelAction()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<!-- Pop UP Open start  -->
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">Add Crate</h5>
+        <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+</ng-template>
+<!-- Pop UP Open end -->

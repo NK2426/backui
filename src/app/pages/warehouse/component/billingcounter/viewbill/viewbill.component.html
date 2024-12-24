@@ -1,0 +1,30 @@
+<div>
+    <label class="col-md-4"><strong>Bill Name : </strong></label> {{ selectedBill.name}}
+</div>
+<div>
+    <label class="col-md-4"><strong>Description : </strong></label> {{ selectedBill.description }}
+</div>
+<table id="print">
+    <tr>
+        <td>
+            <qrcode [qrdata]="selectedBill.uuid+''" [width]="200" [errorCorrectionLevel]="'M'" [elementType]="'img'"
+                [margin]="3">
+            </qrcode>
+        </td>
+    </tr>
+</table>
+
+
+<div *ngIf="!assignedparams.includes(selectedBill.id)" class="d-md-flex align-items-center">
+    <div class="col-md-3">
+        <button class="btn btn-sm btn-primary" (click)=" editAction(selectedBill)"><i
+                class="mdi mdi-pencil font-12"></i>
+            Edit</button>
+    </div>
+    <div class="ml-auto">
+        <div class="dl">
+            <button class="btn btn-sm btn-secondary" (click)="deleteBill(selectedBill)"><i
+                    class="mdi mdi-delete font-12"></i> Delete</button>
+        </div>
+    </div>
+</div>

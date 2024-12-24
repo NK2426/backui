@@ -1,0 +1,138 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-3 font-size-18">{{edit?'Edit':'New'}} Group</h4>
+                <!-- <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+                        <li class="breadcrumb-item"><a [routerLink]="['/app/groups']">Group</a></li>
+                        <li class="breadcrumb-item active"> {{edit?'Edit':'New'}} </li>
+                    </ol>
+                </div> -->
+            </div>
+            <div class="card">
+                <div class="card-body px-5">
+                    <form (ngSubmit)="saveGroup()" [formGroup]="formData">
+                        <div class="row">
+                            <!-- Name -->
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="form-label required">Name</label>
+                                    <input class="form-control" placeholder="Group Name" type="text" name="name"
+                                        autocomplete="off" formControlName="name"
+                                        [ngClass]="{'is-invalid': (submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))}" />
+
+                                    <div *ngIf="(submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))"
+                                        class="invalid-feedback">
+                                        <span *ngIf="form['name'].errors?.['required']">Enter valid name</span>
+                                        <span *ngIf="form['name'].errors?.['minlength']">Minimum Length 3
+                                            Characters.</span>
+                                    </div>
+                                </div>
+                            </div>
+                              <!-- Category -->
+                              <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="form-label required">Select Category</label>
+                                    <ng-select name="category_id" placeholder="Select Category" [items]="categories"
+                                        bindLabel="name" bindValue="cid" formControlName="category_id"
+                                        (change)="getSubclass()"
+                                        [ngClass]="{'is-invalid': (submit && form['category_id']?.errors) || (form['category_id']?.invalid && (form['category_id']?.dirty || form['category_id']?.touched))}">
+                                        <option value=""></option>
+                                    </ng-select>
+                                    <div *ngIf="(submit && form['category_id']?.errors) || (form['category_id']?.invalid && (form['category_id']?.dirty || form['category_id']?.touched))"
+                                        class="invalid-feedback">
+                                        <span *ngIf="form['category_id'].errors">Enter valid Category</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Department -->
+                            <!-- <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="form-label required">Select Department</label>
+                                    <ng-select name="department" placeholder="Select Department" [items]="departments"
+                                        bindLabel="name" bindValue="did" formControlName="department_id"
+                                        (change)="getSelectvalues()"
+                                        [ngClass]="{'is-invalid': (submit && form['department_id']?.errors) || (form['department_id']?.invalid && (form['department_id']?.dirty || form['department_id']?.touched))}">
+                                    </ng-select>
+
+                                    <div *ngIf="(submit && form['department_id']?.errors) || (form['department_id']?.invalid && (form['department_id']?.dirty || form['department_id']?.touched))"
+                                        class="invalid-feedback">
+                                        <span *ngIf="form['department_id'].errors">Enter valid department</span>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="row">
+                          
+                            <!-- Subcategory -->
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="form-label required">Select Subcategories</label>
+                                    <ng-select name="subcategory_id" placeholder="Select SubCategory"
+                                        [items]="subcategories" bindLabel="name" bindValue="id"
+                                        formControlName="subcategory_id"
+                                        [ngClass]="{'is-invalid': (submit && form['subcategory_id']?.errors) || (form['subcategory_id']?.invalid && (form['subcategory_id']?.dirty || form['subcategory_id']?.touched))}">
+                                        <option value=""></option>
+                                    </ng-select>
+                                    <div *ngIf="(submit && form['subcategory_id']?.errors) || (form['subcategory_id']?.invalid && (form['subcategory_id']?.dirty || form['subcategory_id']?.touched))"
+                                        class="invalid-feedback">
+                                        <span *ngIf="form['subcategory_id'].errors">Enter valid Subcategories</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Description -->
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-control" placeholder="Enter description" name="description"
+                                        autocomplete="off" formControlName="description"
+                                        [ngClass]="{'is-invalid': (submit && form['description']?.errors) || (form['description']?.invalid && (form['description']?.dirty || form['description']?.touched))}"></textarea>
+
+                                    <!-- <div *ngIf="(submit && form['description']?.errors) || (form['description']?.invalid && (form['description']?.dirty || form['description']?.touched))"
+                                        class="invalid-feedback">
+                                        <span *ngIf="form['description'].errors?.['required']">Enter valid
+                                            description</span>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        <div class="row" *ngIf="edit">
+                            <!-- <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="form-label"> Items </label>
+                                    <ng-select formControlName="grpitems" class="ng-select" name="grpitems"
+                                        placeholder="Select Item" [items]="items" bindLabel="name"
+                                        bindValue="id" [multiple]="true">
+                                    </ng-select>
+                                </div>
+                            </div> -->
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="form-label"> Status </label>
+                                    <ng-select formControlName="status" class="ng-select" name="status"
+                                        placeholder="Select status" [items]="statuses" bindLabel="name" bindValue="id">
+                                        <!-- [(ngModel)]="itemArray" -->
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="mt-2">
+                            <div class="text-sm-end">
+                                <a [routerLink]="['/category-head/groups']"
+                                    class="btn btn-sm btn-secondary me-4 fw-bold">Cancel</a>
+                                <button type="submit" class="btn btn-sm btn-primary fw-bold">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

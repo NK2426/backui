@@ -1,0 +1,104 @@
+<div class="page-title d-flex flex-wrap me-3 flex-column justify-content-center">
+  <h1 class="page-heading d-flex text-dark fw-bold fs-3 my-0 flex-column justify-content-center pb-5">View Warehouse
+  </h1>
+</div>
+<div class="card mb-5 mb-xl-10">
+  <div class="card-body pt-1 pb-0">
+    <div class="card-body py-3">
+      <div class="row mt-3">
+        <div class="col-sm-12">
+          <h4 class="card-title mb-4">Basic Details</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label col-sm-3 fw-bold">Warehouse name : </label>
+            {{ data.name }}
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label col-sm-3 fw-bold">Mobile : </label>
+            {{ data.mobile }}
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label col-sm-3 fw-bold">GST : </label>
+            {{ data.gstin }}
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-sm-12">
+          <h4 class="card-title mb-4">Address Details</h4>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <div class="table-responsive">
+              <table class="table table-sm align-middle table-row-dashed fs-6">
+                <tr class="text-start">
+                  <td class="pe-0">
+                    <label class="form-label col-sm-3 fw-bold p-0">Address : </label>
+                    <p class="mb-0 p-0">
+                      {{ data?.address }} <br />
+                      {{ data?.address1 }}, <br />
+                      {{ data?.address2 }}, <br />
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <div class="table-responsive">
+              <table class="table table-sm align-middle table-row-dashed fs-6">
+                <tr class="text-start">
+                  <td class="pe-0">
+                    <label class="form-label col-sm-3 fw-bold p-0">Billing Address : </label>
+                    <p class="mb-0 p-0">
+                      {{ data.billingaddress }}
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label col-sm-3 fw-bold">Address 1 : </label>
+            {{ data.address1 }}
+          </div>
+        </div> -->
+      </div>
+      <!-- <div class="row">
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label col-sm-3 fw-bold">Address 2 : </label>
+            {{ data.address2 }}
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label col-sm-3 fw-bold">Billing Address : </label>
+            {{ data.billingaddress }}
+          </div>
+        </div>
+      </div> -->
+
+      <div class="row">
+        <div class="text-end">
+          <button class="btn btn-sm mt-3 fw-bold btn-primary mx-2" (click)="back()">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

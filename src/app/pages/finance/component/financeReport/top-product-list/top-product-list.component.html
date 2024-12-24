@@ -1,0 +1,50 @@
+<div class="card mb-5 mb-xl-10 p-3">
+  <div class="card">
+    <div class="card-body">
+      <!-- Row -->
+      <!-- <div class="row col-md-2 col-lg-2 col-sm-2">
+        <select class="form-select" (change)="getDetail($event)">
+          <option *ngFor="let item of topDetailsList" [value]="item.value">
+            {{ item.name }}
+          </option>
+        </select>
+      </div> -->
+      <!-- Table -->
+      <div>
+        <div class="col-sm-12 col-md-12 row">
+          <div class="table-responsive">
+            <table class="align-middle table-nowrap table-hover w-100">
+              <thead style="background-color: #e4e4e4">
+                <tr style="font-size: 16px">
+                  <th class="text-center p-4">#</th>
+                  <th class="text-start p-4">Product Name</th>
+                  <th class="text-start p-4">Product Image</th>
+                  <!-- <th class="text-start p-4">Product product_sku</th> -->
+                  <th class="text-start p-4">Total Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of topProductList; let index = index">
+                  <td class="p-4 text-center">{{ index + 1 }}</td>
+                  <td class="p-4 text-start">{{ item.productName }}</td>
+                  <td class="p-4 text-start">
+                    <img src="{{ item.productImage }}" style="height: 150px" alt="No Image" />
+                  </td>
+                  <!-- <td class="p-4 text-start">{{ item.product_sku }}</td> -->
+                  <td class="p-4 text-start fw-bold fs-4" style="color: #007eff">&#8377;{{ item.totalAmount }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <style>
+  #chart {
+    max-width: 650px;
+    margin: 35px auto;
+  }
+</style> -->

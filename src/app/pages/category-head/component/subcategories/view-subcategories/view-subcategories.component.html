@@ -1,0 +1,37 @@
+<div class="mb-3">
+    <label class="col-md-4"><strong>Subcategory : </strong></label> {{ selectedSubcategory?.name }}
+</div>
+<div class="mb-3">
+    <label class="col-md-4"><strong>Category : </strong></label> {{ selectedSubcategory?.category?.name }}
+</div>
+<div class="mb-3">
+    <label class="col-md-4"><strong>Department : </strong></label> {{ selectedSubcategory?.department?.name }}
+</div>
+<div class="mb-3">
+    <label class="col-md-4"><strong>Status : </strong></label> {{ selectedSubcategory?.status+'' === '0' ? 'Inactive' :
+    'Active' }}
+</div>
+<div class="mb-3">
+    <label class="col-md-4"><strong>CreateAt : </strong></label>
+    {{ selectedSubcategory?.createdAt | date:'medium' }}
+</div>
+<div class="mb-3">
+    <label class="col-md-4"><strong>UpdateAt : </strong></label>
+    {{ selectedSubcategory?.updatedAt | date:'medium' }}
+</div>
+<div class="mb-3">
+    <label class="col-md-4 mb-3"><strong>Description : </strong></label> {{ selectedSubcategory?.description }}
+</div>
+
+<div *ngIf="!assignedparams.includes(selectedSubcategory.uuid)" class="d-md-flex align-items-center">
+    <div class="col-md-3">
+        <button class="btn btn-sm btn-primary" (click)="editAction(selectedSubcategory)"><i
+                class="mdi mdi-pencil font-12"></i> Edit</button>
+    </div>
+    <div class="ml-auto">
+        <div *ngIf="deleteaction" class="dl">
+            <button class="btn btn-sm btn-danger" (click)="deleteParameter(selectedSubcategory)"><i
+                    class="mdi mdi-delete font-12"></i> Delete</button>
+        </div>
+    </div>
+</div>

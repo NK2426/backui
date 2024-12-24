@@ -1,0 +1,70 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="page-title-box d-flex align-items-center justify-content-between">
+        <h4 class="mb-4 font-size-18">Manifest Invoice</h4>
+        <div class="page-title-right">
+          <!-- <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item"><a [routerLink]="['/warehouse']">Home</a></li>
+            <li class="breadcrumb-item active">{{ title }}</li>
+          </ol> -->
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table align-middle table-nowrap table-hover">
+              <thead>
+                <tr>
+                  <th class="p-5 w-50px">
+                    <input class="form-check-input" type="checkbox" (click)="checkAll()" />
+                  </th>
+                  <th class="text-start p-5 min-w-100px">AWB Number</th>
+                  <th class="text-start p-5 min-w-100px">Invoice</th>
+                  <th class="text-start p-5 min-w-100px">Invoice Date</th> 
+                 <th class="text-start p-5 min-w-100px">OrderID</th>
+                  <th class="text-start p-5 min-w-100px">Order Date</th>
+                  <th class="text-start p-5 min-w-100px">P Mode</th> 
+                  <th class="text-start p-5 min-w-100px">Image</th>
+                  <th class="text-start p-5 min-w-100px">Status</th>
+                  <th class="text-start p-5 min-w-100px">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let invoiceItem of invorderitems; let i = index">
+                  <td class="p-5 w-50px">
+                    <input class="form-check-input" type="checkbox" (click)="check($event)" [(ngModel)]="invoiceItem.checked" />
+                  </td>
+                  <td>{{ invoiceItem.awbnumber }}</td>
+                  <td>{{ invoiceItem.invoiceno }}</td>
+                  <!-- <td>{{ invoiceItem?.createdAt }}</td> -->
+                  <!-- <td>{{ invoiceItem?.orderitem?.orderID }}</td> -->
+                 <!-- <td>{{ invoiceItem.orderdatetime }}</td>
+                  <td>{{ invoiceItem.modeofpayment }}</td> -->
+                  <td>
+                    <img fetchpriority="low" [src]="invoiceItem?.item?.path" width="50" height="50" alt="Item Image" />
+                  </td>
+                  <td>{{ invoiceItem?.orderitem?.status }}</td>
+                  <td>
+                                        <a *ngIf="invoiceItem?.orderitem?.status === 'Cancel Request'"
+                                            (click)="cancelInvoice(invoiceItem.uuid)"
+                                            class="btn btn-sm btn-primary me-2"><i class="fa fa-check"></i> Cancel
+                                            Invoice & AWB </a>
+                                    </td>
+                </tr>
+                <tr *ngIf="invoiceDetails?.length === 0">
+                  <td colspan="10" class="text-center fw-bold">No Records Found</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="col-md-3">
+              <button type="submit" [disabled]="checked <= 0 || submit" (click)="submitmanifest()" class="btn btn-primary btn-sm">
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

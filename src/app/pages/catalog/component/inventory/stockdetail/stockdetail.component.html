@@ -1,0 +1,112 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">Product Detail</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a [routerLink]="['/catalog']">Home</a></li>
+                        <li class="breadcrumb-item active"> <a [routerLink]="['/catalog/stocks']">Stocks</a> </li>
+                    </ol>
+                </div> 
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-xl-6">
+                                    <div class="product-detai-imgs">
+                                        <div class="row">
+                                            <ul ngbnav="" orientation="vertical"
+                                                class="col-md-2 col-sm-3 col-4 nav flex-column"
+                                                ng-reflect-orientation="vertical" aria-orientation="vertical"
+                                                role="tablist" *ngFor="let img of images;let i = index;">
+                                                <li class="p-2 nav-item" ng-reflect-_id="0">
+                                                    <a href="" ngbnavlink="" id="ngb-nav-0" role="tab"
+                                                        aria-selected="false" aria-disabled="false"
+                                                        class="nav-link"><img _ngcontent-gcl-c160="" alt=""
+                                                            class="img-fluid mx-auto d-block rounded"
+                                                            src="{{ baseurl+'/'+img.path }}"></a><!--container-->
+                                                </li>
+                                            </ul>
+                                            <div class="col-md-7 offset-md-1 col-sm-9 col-8 tab-content"
+                                                ng-reflect-nav="[object Object]">
+                                                <div ngbnavpane="" class="tab-pane fade active show"
+                                                    ng-reflect-item="[object Object]" ng-reflect-nav="[object Object]"
+                                                    id="ngb-nav-2-panel" role="tabpanel" aria-labelledby="ngb-nav-2">
+                                                    <img id="expandedImg" alt="" class="img-fluid mx-auto d-block"
+                                                        src="{{ baseurl+'/'+images[0].path }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="mt-4 mt-xl-3">
+                                        <a href="javascript: void(0);" class="text-primary">{{item?.group?.name}}</a>
+                                        <h4 class="mt-1 mb-3">{{item?.name}}</h4>
+                                        <p class="text-muted float-left me-3">
+                                            <span class="bx bx-star text-warning"></span><span
+                                                class="bx bx-star text-warning"></span><span
+                                                class="bx bx-star text-warning"></span>
+                                            <span class="bx bx-star text-warning"></span><span
+                                                class="bx bx-star"></span>
+                                        </p>
+                                        <p class="text-muted mb-4">( 0 Customers Review )</p>
+                                        <h6 class="text-success text-uppercase">10 % Off</h6>
+                                        <h5 class="mb-4">Price : <span class="text-muted me-2">
+                                                <del>$450 USD</del>
+                                            </span><b>$405 USD</b>
+                                        </h5>
+                                        <p class="text-muted mb-4">To achieve this, it would be necessary to have
+                                            uniform grammar pronunciation and more common words If several languages
+                                            coalesce</p>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <div>
+                                                    <p class="text-muted">
+                                                        <i
+                                                            class="bx bx-caret-right font-size-16 align-middle text-primary mr-1"></i>
+                                                        Fit Type: Regular Fit
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div>
+                                                    <p class="text-muted">
+                                                        <i
+                                                            class="bx bx-caret-right font-size-16 align-middle text-primary mr-1"></i>
+                                                        Fit Type: Regular Fit
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="product-color">
+                                            <h5 class="font-size-15">Color :</h5>
+                                            <a href="javascript: void(0);" class="active">
+                                                <div class="product-color-item border rounded">
+                                                    <img alt="" class="avatar-md" src="assets/images/product/img-1.png">
+                                                </div>
+                                                <p _ngcontent-gcl-c160="">red</p>
+                                            </a>
+                                            <a href="javascript: void(0);" class="active">
+                                                <div class="product-color-item border rounded">
+                                                    <img alt="" class="avatar-md" src="assets/images/product/img-1.png">
+                                                </div>
+                                                <p _ngcontent-gcl-c160="">black</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- end row -->
+            </div>
+        </div>
+    </div>
+</div>

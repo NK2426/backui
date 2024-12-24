@@ -1,0 +1,60 @@
+<div class="submit-form">
+    <form (ngSubmit)="saveProductvariants()" [formGroup]="formData" novalidate>
+        <div class="row">
+            <div class="col-12">
+                <!-- <div class="mb-3">
+                    <label class="form-label required"> Select Department</label>
+                    <select class="form-select" type="text" name="department_id" formControlName="department_id"
+                        [ngClass]="{'is-invalid': (submit && form['department_id']?.errors) || (form['department_id']?.invalid && (form['department_id']?.dirty || form['department_id']?.touched))}">
+                        <option *ngFor="let department of departments" [value]="department.did">{{ department.name }}
+                        </option>
+                    </select>
+                    <div *ngIf="(submit && form['department_id']?.errors) || (form['department_id']?.invalid && (form['department_id']?.dirty || form['department_id']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['department_id'].errors?.['required']">Select Department</span>
+                    </div>
+                </div> -->
+                
+                <div class="mb-3">
+                    <label class="form-label required">Category Name</label>
+                    <input class="form-control" placeholder="Enter Category Name" type="text" name="name"
+                        autocomplete="off" formControlName="name"
+                        [ngClass]="{'is-invalid': (submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))}" />
+
+                    <div *ngIf="(submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['name'].errors?.['required']">Enter Category name.</span>
+                        <span *ngIf="form['name'].errors?.['minlength']">Minimum Length 3
+                            Characters.</span>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label"> Description</label>
+                    <textarea class="form-control" placeholder="Enter Description" type="text" name="description"
+                        autocomplete="off" formControlName="description"
+                        [ngClass]="{'is-invalid': (submit && form['description']?.errors) || (form['description']?.invalid && (form['description']?.dirty || form['description']?.touched))}"></textarea>
+                </div>
+
+                <div class="mb-3" *ngIf="data.uuid">
+                    <label class="form-label"> Status *</label>
+                    <select class="form-control" type="text" name="status" formControlName="status"
+                        [ngClass]="{'is-invalid': (submit && form['status']?.errors) || (form['status']?.invalid && (form['status']?.dirty || form['status']?.touched))}">
+                        <option *ngFor="let stat of statuses" [value]="stat.id">{{ stat.name }}</option>
+                    </select>
+                </div>
+                <div class="d-md-flex align-items-center mt-5">
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+                    </div>
+                    <div class="ml-auto">
+                        <div class="dl">
+                            <button type="button" class="btn btn-sm btn-secondary"
+                                (click)="cancelAction()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,432 @@
+<div class="card mb-5 mb-xl-10 p-3">
+  <div class="card">
+    <div class="card-body">
+      <div class="invoice-title">
+        <h4 class="float-end font-size-16 text-primary"># {{ data?.uuid }}</h4>
+        <div class="mb-4">
+          <img src="./assets/media/logos/mlogo.png" alt="logo" height="30" />
+        </div>
+      </div>
+      <hr />
+
+      <div class="card card-flush">
+        <div class="card-body pt-0">
+          <div class="row">
+            <div class="col-md-4">
+              <h3 class="font-size-15 fw-bold">Bill Address</h3>
+              <table class="table table-sm align-middle table-row-dashed fs-6">
+                <tr class="text-start text-dark fw-bold text-uppercase gs-0">
+                  <td class="pe-0">
+                    <p class="mb-0" style="font-size: 12px" [innerHTML]="data?.billing?.billingaddress">
+                      <!-- {{ warehouse?.name }}<br />
+                      {{ warehouse?.address }}, <br />
+                      {{ warehouse?.address1 }}, <br />
+                      {{ warehouse?.address2 }} <br /> -->
+                      <!-- {{ warehouse?.name }}<br />
+                        {{ warehouse?.mobile }}<br />
+                        {{ warehouse?.address }} <br />
+                        {{ warehouse?.address1 }} <br />
+                        {{ warehouse?.address2 }} <br />
+                        {{ warehouse?.pincode }} <br /> -->
+                      <!-- {{warehouse?.billingaddress}} -->
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="col-md-4">
+              <h3 class="font-size-15 fw-bold">Ship Address</h3>
+              <table class="table table-sm align-middle table-row-dashed fs-6">
+                <tr class="text-start text-dark fw-bold text-uppercase gs-0">
+                  <td class="pe-0">
+                    <p class="mb-0 py-0" style="font-size: 12px">
+                      {{ warehouse?.name }}<br />
+                      {{ warehouse?.mobile }}<br />
+                      {{ warehouse?.address }} <br />
+                      {{ warehouse?.address1 }} <br />
+                      {{ warehouse?.address2 }} <br />
+                      {{ warehouse?.pincode }} <br />
+                      {{ warehouse?.gstin }} <br />
+                    </p>
+                    <!-- <p class="mb-0 py-0" style="font-size: 12px" [innerHTML]="warehouse?.billingaddress"></p> -->
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="col-md-1"></div>
+
+            <div class="col-md-3">
+              <h3 class="font-size-15 fw-bold">Supplier Details</h3>
+              <div class="table-responsive">
+                <table class="table table-sm align-middle table-row-dashed fs-6">
+                  <tr class="text-start text-dark fw-bold text-uppercase gs-0">
+                    <td class="pe-0">
+                      <p class="mb-0" style="font-size: 12px">
+                        {{ data?.user?.name }} <br />
+                        {{ data?.user?.mobile }}<br />
+                        {{ data?.user?.email }}<br />
+                        {{ billaddress.address }}, <br />
+                        <!-- <span>{{data?.user?.addresses.address}}<br></span> -->
+                        {{ billaddress?.address2 }} <br />
+                        {{ billaddress?.city }}, <br />
+                        {{ billaddress?.state }}, <br />
+                        {{ billaddress?.zipcode }} <br />
+                        GST : {{ data?.user?.vendordetail?.gstin }}<br />
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Item Summary -->
+      <div class="py-2 mt-3">
+        <h3 class="font-size-15 fw-bold">Product Item summary</h3>
+      </div>
+      <div class="table-responsive">
+        <table class="table align-left gs-0 gy-5 table-hover">
+          <thead>
+            <tr>
+              <th class="p-4 w-50px text-center">#</th>
+              <th class="text-start p-4 min-w-100px">Product ID</th>
+              <th class="text-start p-4 min-w-80px">Supplier D.ID</th>
+              <th class="text-center p-4 min-w-80px">Image</th>
+              <th class="text-start p-4 min-w-100px">Group</th>
+              <!-- <th class="text-start p-4 min-w-100px" *ngFor="let item of variants">
+                    {{item?.name}}
+                  </th> -->
+              <th class="text-start p-4 min-w-100px">Variants</th>
+              <th class="text-start p-4 min-w-80px">MRP<br />&#8377;</th>
+              <th class="text-start p-4 min-w-80px">Price<br />&#8377;</th>
+              <th class="text-center p-4 min-w-80px">Qty</th>
+              <th class="text-end p-4 min-w-80px">Received Qty</th>
+              <th class="text-end p-4 min-w-100px">Subtotal<br />&#8377;</th>
+              <th class="text-end p-4 min-w-80px">Discount <br />&#8377;</th>
+              <th class="text-end p-4 min-w-100px">Total <br />&#8377;</th>
+              <th class="text-start p-4 min-w-70px" *ngIf="taxtotal.ifigst == 0">CGST<br />%</th>
+              <th class="text-start p-4 min-w-70px" *ngIf="taxtotal.ifigst == 0">SGST<br />%</th>
+              <th class="text-start p-4 min-w-70px" *ngIf="taxtotal.ifigst == 1">IGST<br />%</th>
+              <th class="text-start p-4 min-w-70px" *ngIf="taxtotal.ifigst == 0">CGST<br />INR</th>
+              <th class="text-start p-4 min-w-70px" *ngIf="taxtotal.ifigst == 0">SGST<br />INR</th>
+              <th class="text-start p-4 min-w-70px" *ngIf="taxtotal.ifigst == 1">IGST<br />INR</th>
+              <th class="text-start p-4 min-w-100px">Grand<br />Total (&#8377;)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of data?.purchaseorderitems; let i = index">
+              <td class="p-4 text-center">{{ i + 1 }}</td>
+              <td class="p-4">
+                {{ item.product?.uuid }} <br />
+                {{ item.product?.name }}
+              </td>
+              <td class="p-4">{{ item.product?.vendormappings?.[0]?.vendorproId }}</td>
+              <td class="p-4 text-center">
+                <img style="width: 50px; height: 50px" alt="Product" src="{{ item?.productselectimage?.path }}" />
+              </td>
+              <td class="p-4">
+                {{ item.product?.category?.name }} - {{ item.product?.subcategory?.name }} - {{ item.product?.group?.name }}
+              </td>
+              <!-- <td *ngFor="let variant of variants">
+                    <div *ngFor="let puritem of item.purchaseitemdetails">
+                      <span
+                        *ngIf="variant.id == puritem.variant_id && mappedvaiants[item.product_id || ''][variant.id || '']">{{puritem.productvariantvalue?.value}}</span>
+                    </div>
+                  </td> -->
+              <td class="p-4">
+                <b>{{ item.vendorvariantmapping?.description }}</b>
+              </td>
+              <td class="p-4">{{ numberFormat(item.mrp) }}</td>
+              <td class="p-4">{{ numberFormat(item.price) }}</td>
+              <td class="p-4 text-center">{{ item.quantity }}</td>
+              <td class="p-4 text-end">{{ item.receivedqty }}</td>
+              <td class="p-4 text-end">{{ numberFormat(item.subtotal) }}</td>
+              <td class="p-4 text-end">{{ numberFormat(item.discounttotal) }}</td>
+              <td class="p-4 text-end">{{ numberFormat(item.total) }}</td>
+              <td class="p-4" *ngIf="taxtotal.ifigst == 0">{{ numberFormat(item.ctax) }}%</td>
+              <td class="p-4" *ngIf="taxtotal.ifigst == 0">{{ numberFormat(item.stax) }}%</td>
+              <td class="p-4" *ngIf="taxtotal.ifigst == 1">{{ numberFormat(item.itax) }}%</td>
+              <td class="p-4" *ngIf="taxtotal.ifigst == 0">{{ numberFormat(item.ctaxval) }}</td>
+              <td class="p-4" *ngIf="taxtotal.ifigst == 0">{{ numberFormat(item.staxval) }}</td>
+              <td class="p-4" *ngIf="taxtotal.ifigst == 1">{{ numberFormat(item.itaxval) }}</td>
+              <td class="p-4">{{ numberFormat(item.grandtotal) }}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td class="p-4 text-center" [colSpan]="8"><strong>Total</strong></td>
+              <td class="p-4 text-center">
+                <strong>{{ qtytotal }}</strong>
+              </td>
+              <td class="p-4 text-end">
+                <strong>{{ data.invoiceitemcount }}</strong>
+              </td>
+              <td class="p-4 text-end">
+                <strong>{{ data?.subtotal }}</strong>
+              </td>
+              <td class="p-4 text-end">
+                <strong>{{ data?.discounttotal }}</strong>
+              </td>
+              <td class="p-4 text-center">
+                <strong>{{ numberFormat(data?.total) }} </strong>
+              </td>
+              <td class="p-4 text-center" [colSpan]="taxtotal.ifigst == 1 ? 0 : 2"></td>
+              <td class="p-4 text-center" *ngIf="taxtotal.ifigst == 0">
+                <strong>{{ numberFormat(taxtotal.ctaxtotal) }}</strong>
+              </td>
+              <td class="p-4 text-center" *ngIf="taxtotal.ifigst == 0">
+                <strong>{{ numberFormat(taxtotal.staxtotal) }}</strong>
+              </td>
+              <td class="p-4 text-center" *ngIf="taxtotal.ifigst == 1">
+                <strong> {{ numberFormat(taxtotal.itaxtotal) }}</strong>
+              </td>
+              <td class="p-4 text-center">
+                <strong> {{ numberFormat(data?.grandtotal) }} </strong>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="float-end">
+            <a *ngIf="showprint && this.data.uuid" (click)="download()" class="btn btn-sm btn-primary mt-5"
+              ><i class="fa fa-print"></i> Download PDF</a
+            >
+            <span *ngIf="!showprint" class="btn btn-sm btn-warning"
+              ><i class="bx bx-loader bx-spin"></i> Please Wait PDF is Generating ...
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="table-responsive"
+        *ngIf="data?.ship_status === 'Pick Up' || data?.ship_status === 'Inward' || data?.ship_status === 'Received'"
+      >
+        <div class="py-2 mt-3">
+          <h3 class="font-size-15 fw-bold">Pick Up Details</h3>
+        </div>
+        <table id="datatable" class="table align-left gs-0 gy-5 table-hover">
+          <thead>
+            <tr>
+              <th class="text-start p-5 min-w-100px">GST Detail</th>
+              <th class="text-start p-5 min-w-100px">Invoice</th>
+              <th class="text-start p-5 min-w-100px">Expire Document</th>
+              <th class="text-start p-5 min-w-100px">Handover Slip</th>
+              <th class="text-start p-5 min-w-100px">Transporter Id</th>
+              <th class="text-start p-5 min-w-100px">Pickup Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="p-5"><a target="_blank" href="{{ data?.gstdetail }}">GST Detail</a></td>
+              <td class="p-5"><a target="_blank" href="{{ data?.invoice }}">Invoice</a></td>
+              <td class="p-5" *ngIf="show; else tpl"><a target="_blank" href="{{ data?.expiredoc }}">Expire Document</a></td>
+              <td class="p-5"><a target="_blank" href="{{ data?.handoverslip }}">Handover Slip </a></td>
+              <td class="p-5">{{ data?.transporterid }}</td>
+              <td class="p-5">{{ data?.updatedAt | date : 'medium' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-responsive">
+        <h5 class="mb-0 font-size-18">Transactions</h5>
+        <table id="datatable" class="table table-bordered nowrap">
+          <thead>
+            <tr>
+              <th class="text-start p-5 min-w-100px">No</th>
+              <th class="text-start p-5 min-w-100px">Account Name</th>
+              <th class="text-start p-5 min-w-100px">Account Number</th>
+              <th class="text-start p-5 min-w-100px">Transaction Id</th>
+              <th class="text-start p-5 min-w-100px">Transaction Date</th>
+              <th class="text-start p-5 min-w-100px">Payment Cycle</th>
+              <th class="text-start p-5 min-w-100px text-end">Amount</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let transaction of transactions; let i = index">
+              <td class="p-5">{{ i + 1 }}</td>
+              <td class="p-5">
+                {{ transaction?.bankaccount?.accountname }}
+              </td>
+              <td class="p-5">
+                {{ transaction?.bankaccount?.accountnumber }}
+              </td>
+              <td class="p-5">
+                {{ transaction?.transactionid }}
+              </td>
+              <td class="p-5">{{ transaction?.expensedate | date : 'mediumDate' }}</td>
+              <td class="p-5" *ngIf="transaction.paymentcycle">
+                {{ transaction.paymentcycle?.type }} - {{ transaction.paymentcycle?.percentage }}%
+              </td>
+              <td class="p-5" *ngIf="!transaction.paymentcycle">--</td>
+              <td class="p-5 text-end">{{ numberFormat(transaction.amount) }}</td>
+            </tr>
+            <tr *ngIf="transactions.length == 0">
+              <td colspan="6" style="text-align: center">No records found</td>
+            </tr>
+            <tr *ngIf="transactions.length > 0">
+              <td colspan="6" style="text-align: right"><b>Total</b></td>
+              <td style="text-align: right">
+                <b>{{ numberFormat(totalamount) }}</b>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="row" *ngIf="totalgrnvalue > totalamount && data?.potype == 'Inventory'">
+        <!--*ngIf="bundleitemscount<itemscount" -->
+        <h4 class="card-title mb-4 mt-4">Make Payment</h4>
+        <form [formGroup]="payform" novalidate>
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                  <label class="form-label">Transaction Id *</label>
+                  <input
+                    class="form-control"
+                    placeholder="Enter Transaction Id"
+                    type="text"
+                    name="transactionid"
+                    autocomplete="off"
+                    formControlName="transactionid"
+                    [ngClass]="{
+                      'is-invalid':
+                        (submit && form['transactionid'].errors) ||
+                        (form['transactionid'].invalid && (form['transactionid'].dirty || form['transactionid'].touched))
+                    }"
+                  />
+
+                  <div
+                    *ngIf="
+                      (submit && form['transactionid']?.errors) ||
+                      (form['transactionid']?.invalid && (form['transactionid']?.dirty || form['transactionid']?.touched))
+                    "
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form['transactionid'].errors?.['required']">Enter Transaction Id.</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                  <label class="form-label">Transaction Date *</label>
+                  <input
+                    class="form-control"
+                    formControlName="expensedate"
+                    type="date"
+                    [ngClass]="{
+                      'is-invalid':
+                        (submit && form['expensedate'].errors) ||
+                        (form['expensedate'].invalid && (form['expensedate'].dirty || form['expensedate'].touched))
+                    }"
+                  />
+                </div>
+
+                <div
+                  *ngIf="
+                    (submit && form['expensedate']?.errors) ||
+                    (form['expensedate']?.invalid && (form['expensedate']?.dirty || form['expensedate']?.touched))
+                  "
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form['expensedate'].errors?.['required']">Enter Transaction Date.</span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                  <label class="form-label">Payment Cycle *</label>
+                  <ng-select
+                    formControlName="paymentcycle_id"
+                    class="ng-select"
+                    name="paymentcycle_id"
+                    placeholder="Select Type"
+                    [items]="paymentcyclearr"
+                    bindLabel="name"
+                    bindValue="id"
+                    [ngClass]="{
+                      'is-invalid':
+                        (submit && form['paymentcycle_id']?.errors) ||
+                        (form['paymentcycle_id']?.invalid && (form['paymentcycle_id']?.dirty || form['paymentcycle_id']?.touched))
+                    }"
+                  >
+                  </ng-select>
+
+                  <div
+                    *ngIf="
+                      (submit && form['paymentcycle_id']?.errors) ||
+                      (form['paymentcycle_id']?.invalid && (form['paymentcycle_id']?.dirty || form['paymentcycle_id']?.touched))
+                    "
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form['paymentcycle_id'].errors">Enter valid Payment Cycle</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                  <label class="form-label"> Amount *</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="amount"
+                    placeholder="Enter Amount"
+                    [ngClass]="{
+                      'is-invalid':
+                        (submit && form['amount'].errors) || (form['amount'].invalid && (form['amount'].dirty || form['amount'].touched))
+                    }"
+                  />
+                  <div
+                    *ngIf="
+                      (submit && form['amount']?.errors) || (form['amount']?.invalid && (form['amount']?.dirty || form['amount']?.touched))
+                    "
+                    class="invalid-feedback"
+                  >
+                    <span class="float-end" *ngIf="form['amount'].errors?.['required']">Enter Amount</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                  <label class="form-label">Notes</label>
+                  <textarea class="form-control" formControlName="description" placeholder="Enter Notes"></textarea>
+                </div>
+              </div>
+            </div>
+            <br />
+            <div class="text-end">
+              <input
+                [disabled]="!payform.valid"
+                type="submit"
+                name="submit"
+                class="btn btn-sm btn-primary w-md ms-1"
+                value="Submit"
+                (click)="savePayment()"
+              />
+            </div>
+            <!-- <div class="text-start">
+              <button class="btn btn-sm btn-primary" [routerLink]="['/finance/po/po']"
+                routerLinkActive="router-link-active">Back</button>
+            </div> -->
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <ng-template #tpl>
+    <td class="text-center">--</td>
+  </ng-template>
+</div>

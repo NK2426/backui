@@ -1,0 +1,207 @@
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18 pb-8">Order Detail</h4>
+                
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <!-- <div class="row" style="margin-bottom:10px">
+        <div class="col-lg-6" *ngIf="hasOrderDetail()">
+            <a *ngIf="(orderDatum.crateID === '') || (+orderDatum.crateID > 0) " class="btn btn-primary"
+                (click)="scanCrateUUID(content)" href="javascript:void(0)">With
+                Crate</a>
+            <a *ngIf="(orderDatum.crateID === '') || (orderDatum.crateID === '-1')" style="margin-left:10px;"
+                class="btn btn-secondary" (click)="onCodeResult('-1')" href="javascript:void(0)">With Out
+                Crate
+            </a>
+        </div>
+    </div> -->
+
+    <!-- start row -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mini-stats-wid">
+                <div class="card-body">
+
+                    <div class="media">
+                        <div class="media-body">
+                            <span class="text-muted fw-bold">Order ID: </span>
+                            <span class="text-muted fw-bold"><a [routerLink]="['/finance/salesorders']">
+                                    {{orderDatum?.orderID}}</a> </span>
+
+                        </div>
+                        <div class="media-body">
+                            <span class="text-muted fw-bold mb-2">Customer: </span>
+                            <span class="text-muted fw-bold"> {{orderDatum?.user?.name}} </span>
+
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+
+                        <!-- Order Item Table Start -->
+                        <div class="table-responsive col-md-12">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="text-align: center"> #</th>
+                                        <th scope="col">Item Name</th>
+                                        <th scope="col">Item Image</th>
+                                        <th style="text-align: right;" scope="col">Quantity</th>
+                                        <th style="text-align: right;" scope="col">Price</th>
+                                        <th style="text-align: right;" scope="col">Discount</th>
+                                        <th style="text-align: right;" scope="col">Subtotal</th>
+                                        <th scope="col" style="text-align: center">Current order status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let orderItem of orderDatum?.orderitems; let i = index">
+                                        <td style="text-align: center">{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}</td>
+                                        <td width="30%"> {{orderItem.item.name || '--'}} </td>
+                                        <td> <img [src]="orderItem.item.path" width="100" height="100"
+                                                alt="Item Image" /> </td>
+                                        <td style="text-align: right;"> {{orderItem.qty}} </td>
+                                        <td style="text-align: right;"> {{numberFormat(orderItem.price)}} </td>
+                                        <td style="text-align: right;"> {{numberFormat(orderItem.discount)}} </td>
+                                        <td style="text-align: right;"> {{numberFormat(orderItem.subtotal)}} </td>
+                                        <td style="text-align: center;"> {{orderItem.status || '--'}} </td>
+                                        <!-- <td [style.color]="(orderItem.status != '') ? 'green' : 'red'">
+                                            {{orderItem.status || 'Yet to scan'}}
+                                            <i *ngIf="(orderItem.status != '')" class="fa fa-check"
+                                                aria-hidden="true"></i>
+                                        </td>
+                                        <td>
+                                            <ul class="list-inline font-size-20 contact-links mb-0">
+                                                <li class="list-inline-item px-2">
+                                                    <a *ngIf="(orderDatum.crateID !== '')"
+                                                        (click)="confirmBilling(qrcontent, orderItem, i)"
+                                                        href="javascript:void(0)"
+                                                        ngbTooltip="click here to scan this item">
+                                                        <i class="fa font-size-24 fa-qrcode"></i>
+                                                        &nbsp;<span class="fa font-size-14">Scan</span>
+                                                    </a>
+                                                    <span class="fa font-size-14"
+                                                        *ngIf="(orderDatum.crateID === '')">Select With/With out
+                                                        Crate</span>
+                                                </li>
+                                            </ul>
+                                        </td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Order Item Table End -->
+                    </div>
+                    <!-- <div class="text-center" *ngIf="readyForBilling">
+                        <a style="margin-left:10px;" class="btn btn-success" (click)="moveToBilling(billQR)"
+                            href="javascript:void(0)">
+                            Move
+                            To Billing
+                        </a>
+                    </div> -->
+
+                    <!--  item 1 OD_000000031
+                    <qrcode [qrdata]="'a9825705-bd42-4ff9-b3cb-54427852753a'" [width]="200" [errorCorrectionLevel]="'M'"
+                        [elementType]="'img'" [margin]="3"> </qrcode>
+                    item 2 OD_000000031
+                    <qrcode [qrdata]="'73339b6a-6255-4d6d-b24b-28baa7bd2a9a'" [width]="200" [errorCorrectionLevel]="'M'"
+                        [elementType]="'img'" [margin]="3"> </qrcode> -->
+
+
+
+                    <!--  item 1 OD_000000074
+                    <qrcode [qrdata]="'a9825705-bd42-4ff9-b3cb-54427852753a'" [width]="200" [errorCorrectionLevel]="'M'"
+                        [elementType]="'img'" [margin]="3"> </qrcode>
+                    item 2 OD_000000074
+                    <qrcode [qrdata]="'ce90cf45-8355-4fa4-ae0a-6bde29fda982'" [width]="200" [errorCorrectionLevel]="'M'"
+                        [elementType]="'img'" [margin]="3"> </qrcode>
+                    item 3 OD_000000074
+                    <qrcode [qrdata]="'73339b6a-6255-4d6d-b24b-28baa7bd2a9a'" [width]="200" [errorCorrectionLevel]="'M'"
+                        [elementType]="'img'" [margin]="3"> </qrcode> -->
+
+                    <!--  crate 002
+                    <qrcode [qrdata]="'795d0247-51fa-4586-b611-063058440213'" [width]="200" [errorCorrectionLevel]="'M'"
+                        [elementType]="'img'" [margin]="3"> </qrcode>
+                    crate 003
+                    <qrcode [qrdata]="'058e1cb1-0176-46df-88a9-5e1836cca633'" [width]="200" [errorCorrectionLevel]="'M'"
+                        [elementType]="'img'" [margin]="3"> </qrcode> -->
+
+                    <!-- bill counter test 003
+                    <qrcode [qrdata]="'89b74aca-76b4-4078-a68a-83276a9a5cae'" [width]="200" [errorCorrectionLevel]="'M'"
+                        [elementType]="'img'" [margin]="3"> </qrcode>
+                    Bill counter test 005
+                    <qrcode [qrdata]="'fb36438d-d67b-4788-87d4-44671feeb85f'" [width]="200" [errorCorrectionLevel]="'M'"
+                        [elementType]="'img'" [margin]="3"> </qrcode> -->
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- end row -->
+
+</div> <!-- container-fluid -->
+
+<!-- With crate modal content-->
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <div class="col-lg-12 col-sm-12">
+            <h4 class="d-inline-block card-title py-4">Scan QRcode</h4>
+            <button type="button" class="btn-close fa-pull-right" style="height: 70px;" aria-hidden="true"
+                (click)="closeModal()"></button>
+        </div>
+    </div>
+    <div class="modal-body">
+        <!-- <zxing-scanner [torch]="torchEnabled" (scanSuccess)="onCodeResult($event)" [tryHarder]="tryHarder"
+            (permissionResponse)="onHasPermission($event)" (torchCompatible)="onTorchCompatible($event)">
+        </zxing-scanner> -->
+        <br />
+    </div>
+</ng-template>
+
+
+<!-- Item pick modal content-->
+<ng-template #qrcontent let-qrcontent>
+    <div class="modal-header">
+        <div class="col-sm-12">
+            <div class="col-lg-12 col-sm-12">
+                <h4 style="max-width: 420px;" class="d-inline-block modal-title" id="modal-title">
+                    {{currentItemClickedForQR?.item?.name || '--'}}
+                </h4>
+                <button type="button" class="btn-close fa-pull-right" aria-hidden="true" style="height: 30px;"
+                    (click)="closeModal()"></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body">
+        <div *ngIf="uuid_mismatch" class="alert alert-danger alert-dismissible fade show">
+            <strong>Error !</strong> Item mismatched, Please scan the correct item !
+        </div>
+        <!-- <zxing-scanner [torch]="torchEnabled" (scanSuccess)="onItemScan($event)" [tryHarder]="tryHarder"
+            (permissionResponse)="onHasPermission($event)" (torchCompatible)="onTorchCompatible($event)">
+        </zxing-scanner> -->
+    </div>
+</ng-template>
+
+
+<!-- Assign bill counter for the order-->
+<ng-template #billQR let-billQR>
+    <div class="modal-header">
+        <div class="col-lg-12 col-sm-12">
+            <h4 class="d-inline-block card-title">Scan Bill Counter</h4>
+            <button type="button" class="btn-close fa-pull-right" aria-hidden="true" (click)="closeModal()"></button>
+        </div>
+    </div>
+    <div class="modal-body">
+        <!-- <zxing-scanner [torch]="torchEnabled" (scanSuccess)="onBillCounterQRScan($event)" [tryHarder]="tryHarder"
+            (permissionResponse)="onHasPermission($event)" (torchCompatible)="onTorchCompatible($event)">
+        </zxing-scanner> -->
+        <br />
+    </div>
+</ng-template>

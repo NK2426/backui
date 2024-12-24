@@ -1,0 +1,169 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+
+            </div>
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="row mb-2">
+
+                        <div class="col-sm-4">
+                            <div class="col-sm-10 d-inline-block">
+                                <div>
+                                    <label class="control-label"> Supplier : </label>
+                                    <label> &nbsp; &nbsp;<b>{{debitNote?.user?.name}}</b></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+
+                            <div class="col-sm-8  d-inline-block">
+                                <div>
+                                    <label class="control-label"> PO ID : </label>
+                                    <label> &nbsp; &nbsp; <b>
+                                            {{debitNote?.purchaseorder?.uuid}}</b></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+
+                            <div class="col-sm-8  d-inline-block">
+                                <div>
+                                    <label class="control-label"> Remarks : </label>
+                                    <label> &nbsp; &nbsp; <b>
+                                            {{debitNote?.remarks}}</b></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col-sm-4">
+                            <div class="col-sm-10 d-inline-block">
+                                <div>
+                                    <label class="control-label"> DN No. : </label>
+                                    <label> &nbsp; &nbsp;<b>{{debitNote?.uuid}}</b></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+
+                            <div class="col-sm-8  d-inline-block">
+                                <div>
+                                    <label class="control-label"> No. of Items : </label>
+                                    <label> &nbsp; &nbsp; <b>
+                                            {{debitNote?.noofitems}}</b></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+
+                            <div class="col-sm-8  d-inline-block">
+                                <div>
+                                    <label class="control-label"> Status : </label>
+                                    <label> &nbsp; &nbsp; <b>
+                                            {{ getStatusMessage(debitNote?.status || 0) }}</b></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <!-- <div class="col-sm-4">
+                            <div class="col-sm-10 d-inline-block">
+                                <div>
+                                    <label class="control-label"> Item Tax : </label>
+                                    <label> &nbsp; &nbsp;<b>{{debitNote?.tax}} %</b></label>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="col-sm-4">
+
+                            <div class="col-sm-8  d-inline-block">
+                                <div>
+                                    <label class="control-label"> Total Tax : </label>
+                                    <label> &nbsp; &nbsp; <b>
+                                            {{debitNote?.totaltax}}</b></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+
+                            <div class="col-sm-8  d-inline-block">
+                                <div>
+                                    <label class="control-label"> Total Value : </label>
+                                    <label> &nbsp; &nbsp; <b>
+                                            {{ debitNote?.dnvalue }}</b></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table align-middle  table-nowrap">
+                                    <thead class="table-light">
+                                        <tr class="bg-light">
+                                            <th scope="col" style="width: 70px;">#</th>
+                                            <th scope="col">PSID</th>
+                                            <th scope="col">Design ID</th>
+                                            <th scope="col">SKUID</th>
+                                            <th scope="col">Group Name</th>
+                                            <th scope="col">Shelf ID</th>
+                                            <!-- <th></th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let list of debitNote?.inwarditems; let i = index">
+                                            <td>{{(page === 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}</td>
+                                            <td> {{list.psid}} </td>
+                                            <td> {{list?.inventory?.product?.uuid}} </td>
+                                            <td> {{list?.inventory?.skuid}} </td>
+                                            <td> {{list?.inventory?.group?.name}} </td>
+                                            <td> {{list?.shelfing?.shelfID}} </td>
+                                            <!-- <td *ngIf="debitNote.status == 0 || debitNote.status == 3"> <a
+                                                    (click)="deletePSID(list.psid)" title="DELETE"><i
+                                                        class="fa fa-light fa-trash" style="color: #ff0000;"></i></a>
+                                            </td> -->
+                                        </tr>
+
+                                        <tr *ngIf="debitNote?.inwarditems?.length === 0">
+                                            <td colspan="12" align="center">No Records Found</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div *ngIf="debitNote?.status === 1" class="float-end">
+                                <button (click)="approval('Approve')" type="button" class="btn btn-success">
+                                    Approve
+                                </button> &nbsp;
+                                <button (click)="approval('Reject')" type="button" class="btn btn-danger">
+                                    Reject
+                                </button>
+                            </div>
+
+                            <div class="row" *ngIf="debitNote?.status === 2">
+                                <div class="col-12">
+                                    <div class="float-end">
+                                        <a *ngIf="showprint && debitNote.uuid" (click)="download()"
+                                            class="btn btn-info"><i class="fa fa-print"></i> Download PDF</a>
+                                        <span *ngIf="!showprint" class="btn btn-warning"><i
+                                                class="bx bx-loader bx-spin"></i> Please Wait PDF is
+                                            Generating ... </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

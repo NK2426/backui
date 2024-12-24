@@ -1,0 +1,176 @@
+<div class="card mb-5 mb-xl-10 py-5">
+    <div class="card-header card-title pb-5">
+        <!--begin::Search-->
+        <div class="col-sm-2">
+            <div class="d-flex align-items-center position-relative mt-5 px-1">
+                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                </i>
+                <input type="text" placeholder="Search.." (keyup)="searchTable($event)"
+                    class="form-control form-control-solid ps-12 mt-1" #input />
+            </div>
+        </div>
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-2">
+            <div class="mb-3">
+                <label class="control-label">Slots</label>
+                <ng-select name="class" placeholder="Select Slot" [items]="slots" bindLabel="value" bindValue="id"
+                    [(ngModel)]="selectedSlot" (change)="changeSlot($event)">
+                </ng-select>
+            </div>
+        </div>
+
+        <div class="col-sm-2">
+            <div class="mb-3">
+                <label for="date" class="control-label">Select Date:</label>
+                <input type="date" id="date" formControlName="date" class="form-control"
+                    (change)="onDateChange($event)">
+
+            </div>
+        </div>
+
+        <!-- Add New Product -->
+        <!-- <div class="col-sm-2" style="padding-top: 0.5%">
+        <div class="text-sm-end">
+          <button type="button" class="btn btn-primary btn-rounded mt-3" [routerLink]="['/catalog/add-store']">
+            <i class="mdi mdi-plus mr-1"></i> Add New Store
+          </button>
+        </div>
+      </div> -->
+    </div>
+
+    <div class="card-body pt-1 pb-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table align-middle table-hover">
+                    <thead>
+                        <tr>
+                            <th class="p-5 w-30px">#</th>
+                            <th class="text-start p-5 min-w-100px">date</th>
+                            <th class="text-start p-5 min-w-70px">Country code</th>
+                            <th class="text-start p-5 min-w-100px">Phone</th>
+                            <th class="text-start p-5 min-w-100px">Slot</th>
+                            <th class="text-start p-5 min-w-70px">Status</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let warehouse of warehouses; let i = index">
+                            <td class="text-center fw-bold p-5">{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}
+                            </td>
+                            <td class="p-5">
+                                <strong><a href="javascript: void(0)" class="text-dark"></a>
+                                    {{warehouse.date}}
+                                </strong>
+                            </td>
+                            <td class="p-5">
+
+                                {{warehouse.c_code}}
+
+                            </td>
+                            <td class="p-5">
+
+                                {{warehouse.phone}}
+
+                            </td>
+                            <td class="p-5">
+
+                                {{warehouse.slot}}
+
+                            </td>
+
+                            <td>
+                                <div class="badge badge-light-success">{{ warehouse.status + '' === '1' ? 'Completed' :
+                                    '' }}
+                                </div>
+                                <div class="badge badge-light-danger">{{ warehouse.status + '' === '0' ? 'Not Completed'
+                                    : ''
+                                    }}</div>
+                                <div class="badge badge-light-danger">{{ warehouse.status + '' === '2' ? 'InProgress' :
+                                    ''
+                                    }}</div>
+                            </td>
+                            <td class="p-5">
+                                <ul class="list-inline font-size-20 contact-links mb-0">
+                                    <li>
+                                        <a (click)="setActiveCategory(content, warehouse, i)" href="javascript:void(0)"
+                                            ngbTooltip="View">
+                                            <app-keenicon name="eye"
+                                                class="fs-1 text-info cursor-pointer"></app-keenicon>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr *ngIf="warehouses?.length === 0">
+                            <td colspan="7" class="text-center fw-bold">No Records Found</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Pagination  -->
+            <div class="row justify-content-md-between align-items-md-center mt-2">
+                <div class="col-sm-12 col-md-4">
+                    <div class="dataTables_length" id="tickets-table_length">
+                        <label class="d-inline-flex align-items-center">Show
+                            <select class="form-select form-select-sm ms-2 me-2 cursor-pointer"
+                                (change)="handlePageSizeChange($event)">
+                                <option *ngFor="let size of pageSizes" [ngValue]="size">
+                                    {{ size }}
+                                </option>
+                            </select>
+                            Entries</label>
+                    </div>
+                </div>
+                <!-- Pagination -->
+                <div class="col-sm-12 col-md-8">
+                    <div class="text-md-right float-md-end pagination-rounded">
+                        <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true"
+                            [ellipses]="false" [boundaryLinks]="true" (pageChange)="handlePageChange($event)"
+                            [collectionSize]="count"></ngb-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">View</h5>
+        <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <!-- status-form.component.html -->
+        <div class="status-form-container">
+            <form [formGroup]="disputeForm" (ngSubmit)="changeStatus()">
+                <!-- Dropdown for status selection -->
+                <div class="form-group">
+                    <label for="status">Select Status:</label>
+                    <ng-select formControlName="status" class="ng-select" placeholder="Select status"
+                        [items]="statusList" bindLabel="label" bindValue="value">
+                    </ng-select>
+                    <div *ngIf="form.status.touched && form.status.invalid" class="invalid-feedback">
+                        <div *ngIf="form.status.errors?.required">Status is required.</div>
+                    </div>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="comments">Comments:</label>
+                    <textarea class="form-control" id="comments" placeholder="Enter Comments" rows="5"
+                        formControlName="comments"></textarea>
+                    <div *ngIf="form.comments.touched && form.comments.invalid" class="invalid-feedback">
+                        <div *ngIf="form.comments.errors?.required">Comments are required.</div>
+                        <div *ngIf="form.comments.errors?.minlength">Comments must be at least 5 characters long.</div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-sm btn-primary mt-3"
+                    [disabled]="disputeForm.invalid">Submit</button>
+            </form>
+        </div>
+    </div>
+</ng-template>

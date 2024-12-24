@@ -1,0 +1,117 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-sm-3">
+                            <div class="search-box me-2 mt-4 d-inline-block">
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="search"
+                                        (keyup)="getDebitNotesList()">
+                                    <i class="bx bx-search-alt search-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="col-sm-6 d-inline-block">
+                                <div>
+                                    <label class="control-label"> Select Supplier</label>
+                                    <ng-select name="vendor" placeholder="Select Vendor" [items]="vendors"
+                                        bindLabel="name" bindValue="uid" [(ngModel)]="selectedVendor"
+                                        (change)="changeVendor($event)">
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 mt-4 d-inline-block text-end">
+                            <!-- <button (click)="navigateToDebitNotes()" type="button" class="btn btn-success btn-rounded">
+                                <i class="fa fa-solid fa-plus"></i> Debit Notes
+                            </button> -->
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle  table-nowrap table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="width: 70px;">#</th>
+                                    <th scope="col">DN #</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Supplier Name</th>
+                                    <th scope="col">PO ID</th>
+                                    <th scope="col">No of Items</th>
+                                    <!-- <th scope="col">Item Tax</th> -->
+                                    <th scope="col">Total Tax</th>
+                                    <th scope="col">DN Value</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let returnObj of debitNotesList; let i = index">
+                                    <td>{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}</td>
+                                    <td> {{returnObj.uuid || '--'}} </td>
+                                    <td> {{returnObj.createdAt | date:'medium'}} </td>
+                                    <td> {{returnObj.user?.name }} </td>
+                                    <td> {{returnObj.purchaseorder?.uuid }} </td>
+                                    <td> {{returnObj.noofitems }} </td>
+                                    <!-- <td> {{returnObj.tax }} </td> -->
+                                    <td> {{returnObj.totaltax }} </td>
+                                    <td> {{returnObj.dnvalue }} </td>
+                                    <td> {{getStatusMessage(returnObj.status)}}</td>
+
+                                    <td>
+                                        <a class="fa fa-eye"
+                                            [routerLink]="['/finance/debit-notes/view/'+returnObj.uuid]"
+                                            title="VIEW"></a>&nbsp;&nbsp;
+                                    </td>
+                                </tr>
+                                <tr *ngIf="debitNotesList?.length === 0">
+                                    <td colspan="10" align="center">No Records Found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination  -->
+                    <div class="row justify-content-md-between align-items-md-center mt-2">
+                        <div class="col-sm-12 col-md-4">
+                            <div class="dataTables_length" id="tickets-table_length"><label
+                                    class="d-inline-flex align-items-center">Show
+                                    <select class="form-select form-select-sm ms-2 me-2"
+                                        (change)="handlePageSizeChange($event)">
+                                        <option *ngFor="let size of pageSizes" [ngValue]="size">
+                                            {{ size }}
+                                        </option>
+                                    </select> Entries</label></div>
+                        </div>
+                        <!-- Pagination  -->
+                        <div class="row justify-content-md-between align-items-md-center mt-2">
+                            <div class="col-sm-12 col-md-8">
+                                <div class="dataTables_length" id="tickets-table_length">
+                                    <label class="d-inline-flex align-items-center">Show
+                                        <select class="form-select form-select-sm ms-2 me-2 cursor-pointer"
+                                            (change)="handlePageSizeChange($event)">
+                                            <option *ngFor="let size of pageSizes" [ngValue]="size">
+                                                {{ size }}
+                                            </option>
+                                        </select>
+                                        Entries</label>
+                                </div>
+                            </div>
+                            <!-- Pagination -->
+                            <div class="col-sm-12 col-md-4">
+                                <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true"
+                                    [ellipses]="false" [boundaryLinks]="true" (pageChange)="handlePageChange($event)"
+                                    [collectionSize]="count"></ngb-pagination>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Pagination  -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

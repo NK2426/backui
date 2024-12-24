@@ -1,0 +1,492 @@
+<div class="card mb-5 mb-xl-10 p-3">
+  <div class="card">
+    <div class="card-body">
+      <!-- <a class="btn btn-sm btn-primary me-4 float-end" [routerLink]="['/catalog/editproduct/' + product.uuid]"> Back</a> -->
+      <div class="step-1" *ngIf="step === 1">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-4" *ngIf="parameters.length > 0">
+              <div class="py-2" *ngIf="parameters.length > 0">
+                <h3 class="font-size-15 fw-bold">Product Details</h3>
+              </div>
+              <table class="table table-row-dashed">
+                <tbody>
+                  <tr *ngFor="let param of parameters; let i = index">
+                    <th class="text-center bg-primary text-white">{{ param?.productparameter?.name }}</th>
+                    <td>{{ param?.productparametervalue?.value }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-md-8">
+              <div class="row" *ngIf="refimages.length">
+                <div class="py-2" *ngIf="refimages.length > 0">
+                  <h3 class="font-size-15 fw-bold">Reference Images</h3>
+                </div>
+                <div class="col-xl-4 col-sm-6" *ngFor="let item of refimages">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="product-img position-relative">
+                        <a href="javascript:void(0)">
+                          <img style="width: 200px; height: 150px" alt="Product" class="img-fluid mx-auto d-block"
+                            src="{{ item?.path }}" /></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-12">
+                  <p>{{ product.vendordescription }}</p>
+                </div>
+              </div>
+
+              <!-- <div class="py-2 mt-3" *ngIf="variants.length > 0">
+                                    <h4 class="font-size-15 fw-bold" *ngFor="let variant of variants">{{varinatupdate[variant.id || '']['name']}} : {{varinatupdate[variant.id || '']['value']}}
+                                    </h4>
+                                </div> -->
+
+              <h4 class="card-title mt-4 mb-4">Basic Details</h4>
+              <form (submit)="saveStock()" name="form" [formGroup]="addstockForm">
+                <div class="mb-3">
+                  <div class="row">
+                    <label class="form-label col-12">Product Name * :</label>
+                    <div class="col-12">
+                      <input class="form-control" placeholder="Enter name" type="text" name="name" autocomplete="off"
+                        formControlName="name" [ngClass]="{
+                          'is-invalid':
+                            (submit && stockform.name.errors) ||
+                            (stockform.name.invalid && (stockform.name.dirty || stockform.name.touched))
+                        }" />
+                      <div *ngIf="
+                          (submit && stockform['name']?.errors) ||
+                          (stockform['name']?.invalid && (stockform['name']?.dirty || stockform['name']?.touched))
+                        " class="invalid-feedback">
+                        <span *ngIf="stockform['name']?.errors">Enter valid name.</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <label class="form-label col-12">Quantity :</label>
+                    <div class="col-12">
+                      <input class="form-control" placeholder="Enter Quantity" type="text" name="qty" (onChange)="getqty($event)"
+                       formControlName="qty" />
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <label class="form-label col-12">Show Type :</label>
+                    <div class="col-12">
+                      <select
+                    class="form-select"
+                    name="show_type"
+                    formControlName="show_type"
+                    [ngClass]="{
+                      'is-invalid':
+                        (submit && form['unit']?.errors) || (form['unit']?.invalid && (form['unit']?.dirty || form['unit']?.touched))
+                    }"
+                  >
+                    <option *ngFor="let unit of show_type" [value]="unit.id">{{ unit.name }}</option>
+                  </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <label class="form-label col-12">Slug * :</label>
+                    <div class="col-12">
+                      <input class="form-control" placeholder="Enter slug" type="text" name="slug" autocomplete="off"
+                        formControlName="slug" [ngClass]="{
+                          'is-invalid':
+                            (submit && stockform.slug.errors) ||
+                            (stockform.slug.invalid && (stockform.slug.dirty || stockform.slug.touched))
+                        }" />
+                      <div *ngIf="
+                          (submit && stockform['slug']?.errors) ||
+                          (stockform['slug']?.invalid && (stockform['slug']?.dirty || stockform['slug']?.touched))
+                        " class="invalid-feedback">
+                        <span *ngIf="stockform['slug']?.errors">Enter valid Slug.</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <label class="form-label col-12">Store :</label>
+                    <div class="col-12">
+                      <select
+                      class="form-select"
+                      name="store_id"
+                      formControlName="store_id"
+                      [ngClass]="{
+                        'is-invalid':
+                          (submit && form['unit']?.errors) || (form['unit']?.invalid && (form['unit']?.dirty || form['unit']?.touched))
+                      }"
+                    >
+                      <option *ngFor="let unit of warehouse" [value]="unit.id">{{ unit.name }}</option>
+                    </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="row">
+                    <label class="form-label col-12"> Description * : </label>
+                    <div class="col-12">
+                      <textarea class="form-control" placeholder="Enter Description" type="text" name="description"
+                        autocomplete="off" formControlName="description" [ngClass]="{
+                          'is-invalid':
+                            (submit && stockform.description.errors) ||
+                            (stockform.description.invalid && (stockform.description.dirty || stockform.description.touched))
+                        }"></textarea>
+
+                      <div *ngIf="
+                          (submit && stockform['description']?.errors) ||
+                          (stockform['description']?.invalid && (stockform['description']?.dirty || stockform['description']?.touched))
+                        " class="invalid-feedback">
+                        <span *ngIf="stockform['description'].errors?.['required']">Enter description.</span>
+                        <span *ngIf="stockform['description'].errors?.['minlength']">Minimum Length 10
+                          Characters.</span>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div class="row mt-2">
+                    <label class="form-label col-12"> Tamil Description (Optional): </label>
+                    <div class="col-12">
+                      <textarea class="form-control" placeholder="Enter Tamil Description" type="text"
+                        name="description_ta" autocomplete="off" formControlName="description_ta"></textarea>
+                    </div>
+                  </div> -->
+                </div>
+                <div class="ml-auto float-end">
+                  <button type="submit" class="btn btn-sm btn-primary">
+                    <i class="fas fa-cart-plus"></i>
+                    Save Content
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-2 mt-4 row">
+        <div class="col-12 col-md-6">
+          <!-- <div class="py-2 mt-3" *ngIf="variants.length > 0">
+                    <h4 class="font-size-15 fw-bold">
+                        {{this.varinatupdate[this.selvariantvalue]['name']}} : {{this.varinatupdate[this.selvariantvalue]['value']}}
+                    </h4>
+                </div> -->
+
+          <div class="row">
+            <div class="col-sm-12">
+              <h4 class="card-title mb-4">Product Images ({{ itemlist?.description }})</h4>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-5">
+              <div class="dropzone" (click)="openGallery(mediacontent, 'Single')">
+                <div class="dz-wrapper dropzone mt-4 text-center">
+                  <div class="dz-message">
+                    <div class="dz-text">Click to {{ !defimage ? 'Add' : 'Change' }} Default Image</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-auto col-sm-10 col-md-7">
+              <div class="card" *ngIf="defimage">
+                <div class="card-body">
+                  <div class="product-img position-relative">
+                    <a href="javascript:void(0)">
+                      <img alt="" style="width: 150px; height: 250px" class="img-fluid mx-auto d-block"
+                        src="{{ defimage }}" /></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add more Videos -->
+        <div class="col-12 col-md-6">
+          <!-- <div class="py-2 mt-3" *ngIf="variants.length > 0">
+                            <h4 class="font-size-15 fw-bold">
+                                {{this.varinatupdate[this.selvariantvalue]['name']}} : {{this.varinatupdate[this.selvariantvalue]['value']}}
+                            </h4>
+                        </div> -->
+
+          <div class="row">
+            <div class="col-sm-12">
+              <h4 class="card-title mb-4">Product Video</h4>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-5">
+              <div class="dropzone" (click)="variantGallery(videocontent)">
+                <div class="dz-wrapper dropzone mt-4 text-center">
+                  <div class="dz-message">
+                    <div class="dz-text">Click to {{ !defimage ? 'Add' : 'Change' }}  Video</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-10 col-md-7">
+              <div class="card" *ngIf="defimage">
+                <div class="card-body">
+                  <p><strong>{{ selectVideos }}</strong></p>
+                  <div class="row">
+                    <a class="" (click)="variantGallery(videopcontent)"><i
+                        class="fa-solid fa-video text-primary fs-1 mt-2 cursor-pointer"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mb-4">
+          <!-- <div class="mb-3">
+                    <div class="row">
+                        <label class="form-label col-3"> Image Group By Variant* :</label>
+                        <div class="col-6">
+                            <ng-select formControlName="variantgroup_id" class="ng-select" name="group"
+                                placeholder="Select Group" [items]="variantslist" bindLabel="name" bindValue="id"
+                                [ngClass]="{'is-invalid': (submit && stockform.group.errors) || (stockform.group.invalid && (stockform.group.dirty || stockform.group.touched))}"
+                                (change)="selectedVariants()">
+                                <option value=""></option>
+                            </ng-select>
+                        </div>
+                    </div>
+                </div> -->
+
+          <div class="row">
+            <div class="col-sm-12">
+              <h4 class="card-title mb-4">{{ selectvariant.name }}</h4>
+            </div>
+            <br />
+            <br />
+          </div>
+          <div class="row py-3" style="border: 3px dashed #ccc; margin-top: 10px">
+            <!-- <div class="col-sm-12">
+                            <h2 class="card-title mb-4">{{this.varinatupdate[this.selvariantvalue]['value']}}</h2>
+                        </div> -->
+
+            <div class="col-xl-3 col-sm-4" *ngFor="let item of insertedimages[selvariantvalue]; let i = index">
+              <div class="card">
+                <div class="card-body">
+                  <div class="product-img position-relative" (click)="removeimage(i, item.iimid)"
+                    [ngClass]="{ activeimg: true }">
+                    <a href="javascript:void(0)">
+                      <img alt="" class="img-fluid mx-auto d-block" src="{{ item?.path }}"
+                        style="width: 125px; height: 200px" /></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Upload Photo -->
+            <div class="col-12 mt-auto">
+              <button type="button" class="btn btn-primary text-center m-3 py-3" (click)="variantGallery(mediacontent)">
+                <i class="fas fa-images"></i> Add More Photos
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="justify-content-end col-10">
+          <div class="ml-auto">
+            <a class="btn btn-sm btn-primary me-4" [routerLink]="['/catalog/editproduct/' + product.uuid]">Back</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pop UP Open start -->
+  <ng-template #mediacontent let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">Media Library</h5>
+      <button type="button" class="btn-close" aria-hidden="true" (click)="popupclose()"></button>
+    </div>
+    <div class="modal-body">
+      <form enctype="multipart/form-data">
+        <div class="row">
+          <div *ngFor="let progressInfo of progressInfos" class="mb-2">
+            <span [ngStyle]="{ color: progressInfo.color }">{{ progressInfo.fileName }} | {{ progressInfo.msg }}</span>
+            <div class="progress">
+              <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+                attr.aria-valuenow="{{ progressInfo.value }}" aria-valuemin="0" aria-valuemax="100"
+                [ngStyle]="{ width: progressInfo.value + '%' }">
+                {{ progressInfo.value }}%
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div style="margin-left: 30%; margin-bottom: 20px">
+              <input type="file" multiple="" class="btn btn-primary" (change)="selectFiles($event)"
+                style="position: absolute; height: 40px; width: 160px; opacity: 0" />
+              <span style="width: 160px; display: block; height: 40px; z-index: -1"
+                class="col-3 btn btn-light w-sm border border-1 border-dark cursor-pointer">
+                <i class="mdi mdi-upload d-block font-size-16"></i>
+                New File Upload</span>
+                <h6 class="text-primary" style="margin-left: -36px;">(Image ration should be 800*1200 )</h6>
+            </div>
+            <div class="row">
+              <div class="col-xl-4 col-sm-6 mb-2" *ngFor="let image of images; let i = index" (click)="selectimage(i)">
+                <div class="product-img position-relative" [ngClass]="{ activeimgsel: image?.select }">
+                  <img class="img-fluid mx-auto d-block" src="{{ image?.path }}" alt="Mugdha"
+                    style="max-height: 200px" />
+                  <span>{{ image?.name }}</span>
+                </div>
+              </div>
+
+              <div class="col-12 text-center mt-5">
+                <button class="btn btn-sm btn-primary" type="button" aria-hidden="true" (click)="formsubmit()">
+                  <i class="fas fa-image"></i> Save
+                </button>
+              </div>
+            </div>
+            <!-- Pagination  -->
+            <div class="row justify-content-md-between align-items-md-center mt-2">
+              <!-- <div class="col-sm-12 col-md-4">
+                    <div class="dataTables_length" id="tickets-table_length"><label
+                        class="d-inline-flex align-items-center">Show
+                        <select class="form-select form-select-sm ms-2 me-2" (change)="handlePageSizeChange($event)">
+                          <option *ngFor="let size of pageSizes" [ngValue]="size">
+                            {{ size }}
+                          </option>
+                        </select> Entries</label></div>
+                  </div> -->
+              <!-- Pagination -->
+              <!-- <div class="col-sm-12 col-md-8">
+                    <div class="text-md-right float-md-end pagination-rounded">
+                      <ngb-pagination class="pagination pagination-rounded justify-content-center mt-4" size="lg"
+                        [(page)]="page" [pageSize]="pageSize" (pageChange)="handlePageChange($event)"
+                        [collectionSize]="count">
+                        <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i>
+                        </ng-template>
+                        <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+                      </ngb-pagination>
+                    </div>
+                  </div> -->
+            </div>
+            <!-- Pagination  -->
+            <div class="d-md-flex align-items-center mt-5">
+              <div class="col-md-4"></div>
+              <div class="ml-auto">
+                <div class="dl">
+                  <!-- <span (click)="saveimage()" class="btn btn-success">Save and Close</span> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+  <!-- Pop UP Open end -->
+
+  <!-- Pop UP Open start -->
+  <ng-template #videocontent let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">Media Library</h5>
+      <button type="button" class="btn-close" aria-hidden="true" (click)="popupclose()"></button>
+    </div>
+    <div class="modal-body">
+      <form enctype="multipart/form-data">
+        <div class="row">
+          <div *ngFor="let progressInfo of progressInfos" class="mb-2">
+            <span [ngStyle]="{ color: progressInfo.color }">{{ progressInfo.fileName }} | {{ progressInfo.msg }}</span>
+            <div class="progress">
+              <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+                attr.aria-valuenow="{{ progressInfo.value }}" aria-valuemin="0" aria-valuemax="100"
+                [ngStyle]="{ width: progressInfo.value + '%' }">
+                {{ progressInfo.value }}%
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div style="margin-left: 30%; margin-bottom: 20px">
+              <input type="file" multiple="" class="btn btn-primary" (change)="selectFiles($event)"
+                style="position: absolute; height: 70px; width: 160px; opacity: 0" />
+              <span style="width: 160px; display: block; height: 50px; z-index: -1"
+                class="col-3 btn btn-light w-sm border border-1 border-dark cursor-pointer">
+                <i class="mdi mdi-upload d-block font-size-16"></i>
+                New File Upload</span>
+                <h6 class="text-primary" style="margin-left: -36px;">(Video size should be 5MB below )</h6>
+            </div>
+            <div class="row">
+              <div class="col-xl-4 col-sm-6 mb-2" *ngFor="let video of videos; let i = index" (click)="selectvideo(i)">
+                <div class="product-img position-relative">
+                  <video width="230" height="200" controls>
+                    <source src="{{ video?.path }}" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                  <span class="text-break">{{ video?.name }}</span>
+                  <div >
+                    <input type="radio" name="video"  value="{{ video?.path }}" (change)="onChange($event)" />
+                    <span >Select Video</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 text-center mt-5">
+                <button class="btn btn-sm btn-primary" type="button" aria-hidden="true" (click)="videosubmit()">
+                  <i class="fas fa-image"></i> Save
+                </button>
+              </div>
+            </div>
+            <!-- Pagination  -->
+            <div class="row justify-content-md-between align-items-md-center mt-2">
+              <!-- <div class="col-sm-12 col-md-4">
+                    <div class="dataTables_length" id="tickets-table_length"><label
+                        class="d-inline-flex align-items-center">Show
+                        <select class="form-select form-select-sm ms-2 me-2" (change)="handlePageSizeChange($event)">
+                          <option *ngFor="let size of pageSizes" [ngValue]="size">
+                            {{ size }}
+                          </option>
+                        </select> Entries</label></div>
+                  </div> -->
+              <!-- Pagination -->
+              <!-- <div class="col-sm-12 col-md-8">
+                    <div class="text-md-right float-md-end pagination-rounded">
+                      <ngb-pagination class="pagination pagination-rounded justify-content-center mt-4" size="lg"
+                        [(page)]="page" [pageSize]="pageSize" (pageChange)="handlePageChange($event)"
+                        [collectionSize]="count">
+                        <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i>
+                        </ng-template>
+                        <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+                      </ngb-pagination>
+                    </div>
+                  </div> -->
+            </div>
+            <!-- Pagination  -->
+            <div class="d-md-flex align-items-center mt-5">
+              <div class="col-md-4"></div>
+              <div class="ml-auto">
+                <div class="dl">
+                  <!-- <span (click)="saveimage()" class="btn btn-success">Save and Close</span> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+  <!-- Pop UP Open end -->
+  <ng-template #videopcontent let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">Media Library</h5>
+      <button type="button" class="btn-close" aria-hidden="true" (click)="popupclose()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-auto mb-2">
+          <div class="product-img position-relative">
+            <video width="450" height="270" controls>
+              <source src="{{ selectedPath }}" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            <span>{{ selectVideos }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>
+<!-- container-fluid -->

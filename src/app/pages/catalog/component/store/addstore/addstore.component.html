@@ -1,0 +1,285 @@
+<div class="card mb-5 mb-xl-10">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body pt-1 pb-5">
+        <form (ngSubmit)="save()" [formGroup]="formData" novalidate>
+          <div class="row my-3">
+            <div class="col-sm-12">
+              <h4 class="card-title mb-4">Basic Details</h4>
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- Name -->
+            <div class="col-sm-6 mb-3 fv-row fv-plugins-icon-container">
+              <label class="form-label required fs-6 fw-semibold mb-2">Name</label>
+              <input
+                class="form-control"
+                placeholder="Enter name"
+                type="text"
+                name="name"
+                autocomplete="off"
+                formControlName="name"
+                [ngClass]="{
+                  'is-invalid':
+                    (submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))
+                }"
+              />
+
+              <div
+                *ngIf="(submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form['name'].errors?.['required']">Enter valid name</span>
+                <span *ngIf="form['name'].errors?.['minlength']">Minimum Length 3 Characters.</span>
+              </div>
+            </div>
+
+            <!-- Mobile -->
+            <div class="col-sm-6 mb-3 fv-row fv-plugins-icon-container">
+              <label class="form-label required fs-6 fw-semibold mb-2">Mobile</label>
+              <input
+                class="form-control"
+                placeholder="Enter Phone"
+                type="text"
+                name="mobile"
+                autocomplete="off"
+                (keypress)="($event.charCode >= 48 && $event.charCode < 58)"
+                formControlName="mobile"
+                maxLength="10"
+                [ngClass]="{
+                  'is-invalid':
+                    (submit && form['mobile']?.errors) || (form['mobile']?.invalid && (form['mobile']?.dirty || form['mobile']?.touched))
+                }"
+              />
+
+              <div
+                *ngIf="
+                  (submit && form['mobile']?.errors) || (form['mobile']?.invalid && (form['mobile']?.dirty || form['mobile']?.touched))
+                "
+                class="invalid-feedback"
+              >
+                <span *ngIf="form['mobile'].errors">Enter valid Mobile</span>
+              </div>
+            </div>
+
+            <!-- Address Details -->
+            <div class="row my-3">
+              <div class="col-sm-12">
+                <h4 class="card-title mb-4">Address Details</h4>
+              </div>
+            </div>
+            <div class="row">
+              <!-- Address -->
+              <div class="col-sm-6 mb-3 fv-row fv-plugins-icon-container">
+                <label class="form-label required fs-6 fw-semibold mb-2">Address</label>
+                <textarea
+                  class="form-control"
+                  placeholder="address"
+                  type="text"
+                  name="address"
+                  autocomplete="off"
+                  formControlName="address"
+                  [ngClass]="{
+                    'is-invalid':
+                      (submit && form['address']?.errors) ||
+                      (form['address']?.invalid && (form['address']?.dirty || form['address']?.touched))
+                  }"
+                ></textarea>
+                <!-- <p class="text-primary fw-bold pt-1">(Copy Paste Not Allowed)</p> -->
+
+                <div
+                  *ngIf="
+                    (submit && form['address']?.errors) ||
+                    (form['address']?.invalid && (form['address']?.dirty || form['address']?.touched))
+                  "
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form['address'].errors?.['required']">Enter valid address</span>
+                  <span *ngIf="form['address'].errors?.['minlength']">Minimum Length 3 Characters.</span>
+                </div>
+              </div>
+
+              <!-- Address 1 -->
+              <div class="col-sm-6 mb-3 fv-row fv-plugins-icon-container">
+                <label class="form-label required fs-6 fw-semibold mb-2">City name</label>
+                <input
+                  class="form-control"
+                  placeholder="address1"
+                  type="text"
+                  name="address1"
+                  autocomplete="off"
+                  formControlName="address1"
+                  [ngClass]="{
+                    'is-invalid':
+                      (submit && form['address1']?.errors) ||
+                      (form['address1']?.invalid && (form['address1']?.dirty || form['address1']?.touched))
+                  }"
+                />
+                <!-- <p class="text-primary fw-bold pt-1">(Copy Paste Not Allowed)</p> -->
+
+                <div
+                  *ngIf="
+                    (submit && form['address1']?.errors) ||
+                    (form['address1']?.invalid && (form['address1']?.dirty || form['address1']?.touched))
+                  "
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form['address1'].errors?.['required']">Enter valid address</span>
+                  <span *ngIf="form['address1'].errors?.['minlength']">Minimum Length 3 Characters.</span>
+                </div>
+              </div>
+
+              <!-- Address 2 -->
+              <div class="col-sm-6 mb-3 fv-row fv-plugins-icon-container">
+                <label class="form-label required fs-6 fw-semibold mb-2">State name</label>
+                
+                <select
+                  class="form-control"
+                  type="text"
+                  name="address2"
+                  formControlName="address2"
+                  [ngClass]="{
+                    'is-invalid':
+                      (submit && form['address2']?.errors) ||
+                      (form['address2']?.invalid && (form['address2']?.dirty || form['address2']?.touched))
+                  }"
+
+                  (change)="getstatename($event)"
+                >
+                  <option *ngFor="let stat of states" [value]="stat.name">{{ stat.name }}</option>
+                </select>
+                <!-- <p class="text-primary fw-bold pt-1">(Copy Paste Not Allowed)</p> -->
+
+                <div
+                  *ngIf="
+                    (submit && form['address2']?.errors) ||
+                    (form['address2']?.invalid && (form['address2']?.dirty || form['address2']?.touched))
+                  "
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form['address2'].errors?.['required']">Enter valid address</span>
+                  <span *ngIf="form['address2'].errors?.['minlength']">Minimum Length 3 Characters.</span>
+                </div>
+              </div>
+
+              <!-- Billing Address -->
+              <div class="col-sm-6 mb-3 fv-row fv-plugins-icon-container">
+                <label class="form-label required fs-6 fw-semibold mb-2">Store Live location</label>
+                <textarea
+                  class="form-control"
+                  placeholder="Please enter google map location.."
+                  type="text"
+                  name="map"
+                  autocomplete="off"
+                  formControlName="map"
+                  [ngClass]="{
+                    'is-invalid': (submit && form['map']?.errors) || (form['map']?.invalid && (form['map']?.dirty || form['map']?.touched))
+                  }"
+                >
+                </textarea>
+                <!-- <p class="text-primary fw-bold pt-1">(Copy Paste Not Allowed)</p> -->
+                <div
+                  *ngIf="(submit && form['map']?.errors) || (form['map']?.invalid && (form['map']?.dirty || form['map']?.touched))"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form['map'].errors?.['required']">Enter valid Location</span>
+                  <span *ngIf="form['map'].errors?.['minlength']">Minimum Length 3 Characters.</span>
+                </div>
+              </div>
+
+              <!-- Zip Code -->
+              <div class="col-sm-6 mb-3 fv-row fv-plugins-icon-container">
+                <label class="form-label required fs-6 fw-semibold mb-2">ZipCode</label>
+                <input
+                  class="form-control"
+                  placeholder="Enter ZipCode"
+                  type="text"
+                  name="pincode"
+                  autocomplete="off"
+                  (keypress)="($event.charCode >= 48 && $event.charCode < 58)"
+                  formControlName="pincode"
+                  maxLength="10"
+                  [ngClass]="{
+                    'is-invalid':
+                      (submit && form['pincode']?.errors) ||
+                      (form['pincode']?.invalid && (form['pincode']?.dirty || form['pincode']?.touched))
+                  }"
+                />
+
+                <div
+                  *ngIf="
+                    (submit && form['pincode']?.errors) ||
+                    (form['pincode']?.invalid && (form['pincode']?.dirty || form['pincode']?.touched))
+                  "
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form['pincode'].errors">Enter valid ZipCode</span>
+                </div>
+              </div>
+              <div class="col-sm-6 mb-3 fv-row fv-plugins-icon-container">
+                <label class="form-label required fs-6 fw-semibold mb-2">Store Image</label>
+                <input
+                  class="form-control"
+                  placeholder="Select image"
+                  type="file"
+                  name="image"
+                  autocomplete="off"
+                  formControlName="image"
+                  maxLength="10"
+                  (change)="onFileSelected($event)"
+                  [ngClass]="{
+                    'is-invalid':
+                      (submit && form['image']?.errors) || (form['image']?.invalid && (form['image']?.dirty || form['image']?.touched))
+                  }"
+                />
+
+                <div
+                  *ngIf="(submit && form['image']?.errors) || (form['image']?.invalid && (form['image']?.dirty || form['image']?.touched))"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form['image'].errors">Select valid image</span>
+                </div>
+              </div>
+              <div class="col-sm-6 mb-3 fv-row fv-plugins-icon-container"  *ngIf="!showimage">
+                <label class="form-label required fs-6 fw-semibold mb-2">State image</label>
+                <input
+                  class="form-control"
+                  placeholder="Select image"
+                  type="file"
+                  name="state_image"
+                  autocomplete="off"
+                  formControlName="state_image"
+                  maxLength="10"
+                  (change)="onStateFileSelected($event)"
+                  [ngClass]="{
+                    'is-invalid':
+                      (submit && form['state_image']?.errors) || (form['state_image']?.invalid && (form['state_image']?.dirty || form['state_image']?.touched))
+                  }"
+                />
+
+                <div
+                  *ngIf="(submit && form['state_image']?.errors) || (form['state_image']?.invalid && (form['state_image']?.dirty || form['state_image']?.touched))"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form['state_image'].errors">Select valid state image</span>
+                </div>
+              </div>
+              <div class="col-sm-6 mb-3 fv-row fv-plugins-icon-container" *ngIf="showimage" >
+                <label class="form-label required fs-6 fw-semibold mb-2">Front image State</label>
+                <img src="{{ stateImages.state_image }}" alt="" width="100" height="100">
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2 pe-5">
+            <div class="text-sm-end">
+              <a class="btn btn-sm btn-secondary me-4" (click)="back()">Cancel</a>
+              <button type="submit" class="btn btn-sm btn-primary">Save</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

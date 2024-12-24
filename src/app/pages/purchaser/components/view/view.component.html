@@ -1,0 +1,494 @@
+<div class="page-title d-flex flex-wrap me-3 flex-column justify-content-center">
+  <h1 class="page-heading d-flex text-dark fw-bold fs-3 my-0 flex-column justify-content-center mb-3">View P.O</h1>
+</div>
+
+<div class="card card-flush">
+  <div class="card-body">
+    <div class="card card-flush ps-5" id="potable" #potable>
+      <div class="card-body pt-0">
+        <div class="table-responsive">
+          <table class="table table-sm table-row-dashed fs-6 table-striped">
+            <tr style="border-bottom: 1px solid #a91be9">
+              <td class="p-5 m-0">
+                <div class="mb-3">
+                  <img src="./assets/media/logos/default.svg" alt="logo" height="60" />
+                </div>
+              </td>
+              <td class="p-5 m-0">
+                <div class="float-end mb-0" style="font-size: 17px">
+                  <p class="fw-bold">
+                    P.O Number : <span class="text-primary fw-bold">{{ data.uuid }}</span>
+                  </p>
+                  <p class="fw-bold">
+                    CreatedBy : <span class="text-primary fw-bold">{{ EmpName }}</span>
+                  </p>
+                  <p class="fw-bold">
+                    Date : <span class="text-primary fw-bold">{{ data?.date }}</span>
+                  </p>
+                </div>
+              </td>
+            </tr>
+          </table>
+
+        <div class="table-responsive">
+          <table class="table table-sm table-row-dashed fs-6 table-striped">
+            <thead class="border border-2 border-primary">
+              <tr class="border border-1 border-primary gs-0">
+                <th class="text-center border border-end-1 border-white fs-2">Bill Address</th>
+                <th class="text-center border border-end-1 border-white fs-2">Ship Address</th>
+                <th class="text-center border border-end-1 border-white fs-2">Supplier Address</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border border-1 border-primary">
+                <td class="p-5 m-0 text-uppercase">
+                  <p class="m-0" [innerHTML]="warehouse?.billingaddress"></p>
+                </td>
+                <td class="p-5 m-0">
+                  <p class="text-uppercase m-0">{{ warehouse?.name }}</p>
+                  <p class="text-uppercase m-0">{{ warehouse?.address }}</p>
+                  <p class="text-uppercase m-0">{{ warehouse?.address1 }}</p>
+                  <p class="text-uppercase m-0">{{ warehouse?.address2 }}</p>
+                  <p class="text-uppercase m-0">{{ warehouse?.pincode }}</p>
+                  <p class="m-0"><strong class="text-primary">Phone : </strong>{{ warehouse?.mobile }}</p>
+                  <p class="m-0"><strong class="text-primary">GST : </strong>{{ warehouse?.gstin }}</p>
+                </td>
+                <td class="p-5 m-0">
+                  <p class="text-uppercase m-0">{{ data?.user?.name }}</p>
+                  <p class="text-uppercase m-0">{{ billaddress.address }}</p>
+                  <p class="text-uppercase m-0">{{ billaddress?.address2 }}</p>
+                  <p class="text-uppercase m-0">{{ billaddress?.city }},</p>
+                  <p class="text-uppercase m-0">{{ billaddress?.state }},</p>
+                  <p class="text-uppercase m-0">{{ billaddress?.zipcode }}</p>
+                  <p class="m-0"><strong class="text-primary">Phone : </strong>{{ data?.user?.mobile }}</p>
+                  <p class="m-0"><strong class="text-primary">Email : </strong>{{ data?.user?.email }}</p>
+                  <p *ngIf="data?.user?.vendordetail?.gstin != ''" class="text-uppercase m-0">
+                    <strong class="text-primary">GST : </strong>{{ data?.user?.vendordetail?.gstin }}
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Product -->
+      <div class="card card-flush">
+        <div class="card-body pt-0">
+          <div class="py-2 mt-3">
+            <h2 class="fw-bold" style="color: #a91be9">Product Item summary</h2>
+          </div>
+          <div class="table-responsive">
+            <table class="border table table-striped fs-6 gy-5">
+              <thead>
+                <tr style="border: 2px solid #a91be9 !important">
+                  <th class="text-center border border-white border-end-1" rowspan="2">Sl.No.</th>
+                  <th class="text-center border border-white border-end-1" rowspan="2">Name & ID</th>
+                  <th class="text-center border border-white border-end-1" rowspan="2">Image</th>
+                  <!-- <th *ngFor="let item of variants">
+                        {{item?.name}}N
+                      </th> -->
+                  <!-- <th class="text-center border border-white border-end-1" rowspan="2">Variants</th> -->
+                  <th class="text-center border border-white border-end-1" rowspan="2">Price</th>
+                  <th class="text-center border border-white border-end-1" rowspan="2">Qty</th>
+                  <th class="text-center border border-white border-end-1" rowspan="2">Subtotal</th>
+                  <!-- <th class="text-center">Discount<br />type</th> -->
+                  <th colspan="2" class="text-center border border-white border-bottom-2 border-end-1">Discount</th>
+                  <!-- <th align="center">Discount<br />Total(INR)</th> -->
+                  <th class="text-center border border-white border-end-1" rowspan="2">Total</th>
+                  <!-- <th colspan="2" class="text-center border border-white border-bottom-2">CGST</th>
+                    <th colspan="2" class="text-center border border-white border-bottom-2">SGST</th> -->
+                  <th class="text-center border border-white border-bottom-2 border-end-1" *ngIf="taxtotal.ifigst === 0"
+                    colspan="2">
+                    CGST
+                  </th>
+                  <th class="text-center border border-white border-bottom-2 border-end-1" *ngIf="taxtotal.ifigst === 0"
+                    colspan="2">
+                    SGST
+                  </th>
+                  <th class="text-center border border-bottom-2 border-white border-end-1" *ngIf="taxtotal.ifigst === 1"
+                    colspan="2">
+                    IGST
+                  </th>
+                  <!-- <th *ngIf="taxtotal.ifigst === 0" colspan="2">CGST</th>
+                    <th *ngIf="taxtotal.ifigst === 0" colspan="2">SGST</th>
+                    <th *ngIf="taxtotal.ifigst === 1" colspan="2">IGST</th> -->
+                  <th class="text-center border border-white border-end-1" rowspan="2">Grand Total (&#8377;)</th>
+                </tr>
+                <tr style="border: 2px solid #a91be9 !important">
+                  <th class="text-center border border-white border-end-1">INR (&#8377;)</th>
+                  <th class="text-center border border-white border-end-1">%</th>
+                  <th class="text-center border border-white border-end-1" *ngIf="taxtotal.ifigst === 0">INR (&#8377;)
+                  </th>
+                  <th class="text-center border border-white border-end-1" *ngIf="taxtotal.ifigst === 0">%</th>
+                  <th class="text-center border border-white border-end-1" *ngIf="taxtotal.ifigst === 0">INR (&#8377;)
+                  </th>
+                  <th class="text-center border border-white border-end-1" *ngIf="taxtotal.ifigst === 0">%</th>
+                  <th class="text-center border border-white border-end-1" *ngIf="taxtotal.ifigst === 1">INR (&#8377;)
+                  </th>
+                  <th class="text-center border border-white border-end-1" *ngIf="taxtotal.ifigst === 1">%</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of data?.purchaseorderitems; let i = index" class="border border-1 border-primary">
+                  <td class="text-center">
+                    <strong>{{ i + 1 }} </strong>
+                  </td>
+                  <td class="text-center">
+                    <span class="fw-bold" style="text-transform: uppercase">
+                      {{ item.product?.name }}
+                    </span>
+                    <p>({{ item.product?.uuid }})</p>
+                    <p><span class="text-primary fw-bold">HSN Code : </span>{{ item?.vendorvariantmapping?.hsncode }}
+                    </p>
+                    <!-- <table width="100%">
+                        <tr>
+                          <td>
+                            ({{ item.product?.uuid }})<br />
+                            {{ item?.vendorvariantmapping?.vendorproId }}
+                          </td>
+                          <td align="center">
+                            <img style="width: 100px; height: 100px" alt="Product" fetchPriority="low"
+                              src="{{ item?.productselectimage?.path }}" />
+                          </td>
+                        </tr>
+                      </table> -->
+                  </td>
+                  <td class="text-center">
+                    <img style="width: 100px; height: 100px; cursor: pointer" alt="Product" fetchPriority="low"
+                      src="{{ item?.productselectimage?.path }}" (click)="showFullImage($event, image)" />
+                    <p class="text-center m-0 pt-3">
+                      <span class="fw-bold text-primary">Variant : </span>{{ item.vendorvariantmapping?.description }}
+                    </p>
+                  </td>
+
+                  <!-- <td *ngFor="let variant of variants">
+                        <div *ngFor="let puritem of item.purchaseitemdetails">
+                          <span
+                            *ngIf="variant.id == puritem.variant_id && mappedvaiants[item.product_id || ''][variant.id || '']">{{puritem.productvariantvalue?.value}}</span>
+                        </div>
+                      </td> -->
+                  <!-- <td>
+                      <div *ngFor="let variant of variants">
+                          <div *ngFor="let puritem of item.purchaseitemdetails; let index = index; ">
+                            <span
+                              *ngIf="variant.id == puritem.variant_id && mappedvaiants[item.product_id || ''][variant.id || '']">
+                              <b> {{puritem.productvariantvalue?.value}} <span
+                                  *ngIf="item.purchaseitemdetails?.length!=index+1">,</span>
+                              </b>
+                            </span>
+                          </div>
+                        </div>
+                    </td> -->
+                  <td class="text-center fw-bold">&#8377; {{ item.price }}</td>
+                  <td class="text-center">{{ item.quantity }}</td>
+                  <td class="text-center fw-bold">&#8377; {{ item.subtotal }}</td>
+                  <!-- <td>
+                      <span *ngIf="item.discounttype + '' === '1'"> Per Item </span>
+                      <span *ngIf="item.discounttype + '' === '2'"> Overall </span>
+                    </td> -->
+                  <!-- <td>
+                      <span *ngIf="item.discountoption + '' === '0'"> {{ item.discount }} % </span>
+                      <span *ngIf="item.discountoption + '' === '1'"> {{ item.discount }} INR </span>
+                    </td> -->
+                  <!-- <td class="text-center"> -->
+                  <!-- <span> {{ item.discount }}</span> -->
+                  <td class="text-center">{{ item.discounttotal }}</td>
+                  <!-- <span> {{ item.discount }} % </span> -->
+                  <!-- </td> -->
+                  <td class="text-center">{{ item.discount }}</td>
+
+                  <td class="text-center fw-bold">&#8377; {{ item.total }}</td>
+                  <td class="text-center" *ngIf="taxtotal.ifigst === 0">{{ toFloat(item.ctaxval) }}</td>
+                  <td class="text-center" *ngIf="taxtotal.ifigst === 0">{{ item.ctax }}</td>
+                  <td class="text-center" *ngIf="taxtotal.ifigst === 0">{{ toFloat(item.staxval) }}</td>
+                  <td class="text-center" *ngIf="taxtotal.ifigst === 0">{{ item.stax }}</td>
+                  <td class="text-center" *ngIf="taxtotal.ifigst === 1">{{ toFloat(item.itaxval) }}</td>
+                  <td class="text-center" *ngIf="taxtotal.ifigst === 1">{{ item.itax }}</td>
+                  <td class="text-center font-size-161 text-primary">
+                    <strong>&#8377; {{ toFloat(item.grandtotal) }}</strong>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr style="border: 1px solid #a91be9">
+                  <td class="text-center text-primary font-size-20" [colSpan]="4"><strong>Total</strong></td>
+                  <td class="text-center font-size-20 text-primary">
+                    <strong>{{ qtytotal }}</strong>
+                  </td>
+                  <td class="text-center font-size-20 text-primary">
+                    <strong>&#8377; {{ toFloat(data?.subtotal) }}</strong>
+                  </td>
+                  <!-- <td class="text-center font-size-20 text-primary"></td> -->
+                  <td class="text-center font-size-20 text-primary">
+                    <strong> {{ toFloat(data?.discounttotal) }}</strong>
+                  </td>
+                  <td class="text-center font-size-20 text-primary"></td>
+                  <td class="text-center font-size-20 text-primary">
+                    <strong>&#8377; {{ toFloat(data?.total) }} </strong>
+                  </td>
+                  <!-- <td class="text-center font-size-20 text-primary" [colSpan]="taxtotal.ifigst === 1 ? 0 : 2"></td> -->
+                  <td class="text-center font-size-20 text-primary" *ngIf="taxtotal.ifigst === 0">
+                    <strong>&#8377; {{ toFloat(taxtotal.ctaxtotal) }}</strong>
+                  </td>
+                  <td *ngIf="taxtotal.ifigst === 0"></td>
+                  <td class="text-center font-size-20 text-primary" *ngIf="taxtotal.ifigst === 0">
+                    <strong>&#8377; {{ toFloat(taxtotal.staxtotal) }}</strong>
+                  </td>
+                  <td *ngIf="taxtotal.ifigst === 0"></td>
+                  <td class="text-center font-size-20 text-primary" *ngIf="taxtotal.ifigst === 1">
+                    <strong>&#8377; {{ toFloat(taxtotal.itaxtotal) }}</strong>
+                  </td>
+                  <td *ngIf="taxtotal.ifigst === 1"></td>
+                  <td class="text-center font-size-20 text-primary">
+                    <strong>&#8377; {{ toFloat(data?.grandtotal) }} </strong>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Download PDF and Excel -->
+    <div class="row" *ngIf="data?.status !== 'Draft'">
+      <div class="col-1 col-offset-7"></div>
+      <div class="col-11" style="padding-right: 40px">
+        <div class="float-end">
+          <a *ngIf="showprintxl && this.data.uuid" (click)="downloadexcel()" class="btn btn-sm btn-success my-2"><i
+              class="fa fa-file-excel"></i> Download Excel</a>
+
+          <span *ngIf="!showprintxl" class="btn btn-sm btn-warning my-2"><i class="bx bx-loader bx-spin"></i> Please
+            Wait Excel is Generating ...
+          </span>
+        </div>
+
+        <div class="float-end">
+          <!-- <a *ngIf="showprint && this.data.uuid" (click)="download()" class="btn btn-sm btn-primary my-2"><i
+                class="fa fa-file-pdf"></i> Download PDF</a> -->
+          <a *ngIf="showprint && this.data.uuid" (click)="download()" class="btn btn-sm btn-primary my-2"><i
+              class="fa fa-file-pdf"></i> Download PDF</a>
+          <!-- <a *ngIf="(showprint && this.data.uuid) || terms" (click)="downloadAsPDF()" class="btn btn-sm btn-primary my-2"
+            ><i class="fa fa-file-pdf"></i> Download PDF</a
+          > -->
+          <span *ngIf="!showprint" class="btn btn-sm btn-secondary my-2"><i class="bx bx-loader bx-spin"></i> Please
+            Wait PDF is Generating ...
+          </span>
+          &nbsp;&nbsp;
+        </div>
+      </div>
+    </div>
+    <div class="py-2 mt-3" *ngIf="productmapparams.length > 0">
+      <h3 class="font-size-15 fw-bold">Product Prameters</h3>
+    </div>
+    <div class="table-responsive" *ngIf="productmapparams.length > 0">
+      <table class="table" style="width: 50%">
+        <tbody>
+          <tr *ngFor="let param of productmapparams; let i = index">
+            <th class="center">{{ param?.productparameter?.name }}</th>
+            <td>{{ param?.productparametervalue?.value }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PO Summary -->
+    <div class="card card-flush">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-9">
+            <div class="py-2 mt-3">
+              <h3 class="font-size-15 fw-bold">P.O Summary</h3>
+            </div>
+
+            <div class="table-responsive">
+              <table id="datatable" class="table table-row-dashed dt-responsive nowrap border border-primary">
+
+                <tr>
+                  <th class="text-center bg-primary text-white py-4">Supplier Name</th>
+                  <td class="border border-0 ps-3">{{ data?.user?.name }}</td>
+                </tr>
+                <tr>
+                  <th class="text-center bg-primary text-white py-4">Location</th>
+                  <td class="border border-0 ps-3"> {{ billaddress?.address }} {{ billaddress?.address2 }}</td>
+                </tr>
+                <tr>
+                  <th class="text-center bg-primary text-white py-4">P.O Date</th>
+                  <td class="border border-0 ps-3 ">{{ data?.date !== '0000-00-00' ? (data?.date | date : 'mediumDate') : '-' }}</td>
+                </tr>
+                <tr>
+                  <th class="text-center bg-primary text-white py-4">Delivery Date</th>
+                  <td class="border border-0 ps-3">{{ data?.deliverydate !== '0000-00-00' ? (data?.deliverydate | date : 'mediumDate') : '-' }}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="text-center bg-primary text-white py-4">Subtotal</th>
+                  <td class="ps-3"> {{ data?.subtotal }}</td>
+                </tr>
+                <tr>
+                  <th class="text-center bg-primary text-white py-4">Discount total</th>
+                  <td class="ps-3"> {{ data?.discounttotal }}</td>
+                </tr>
+                <tr>
+                  <th class="text-center bg-primary text-white py-4">Total</th>
+                  <td class="ps-3"> {{ data?.total }}</td>
+                </tr>
+                <tr>
+                  <th class="text-center bg-primary text-white py-4">Taxtotal</th>
+                  <td class="ps-3"> {{ data?.taxtotal }}</td>
+                </tr>
+                <tr>
+                  <th class="text-center bg-primary text-white py-4">Grand Total</th>
+                  <td class="ps-3"> {{ toFloat(data?.grandtotal) }}</td>
+                </tr>
+
+              </table>
+            </div>
+
+            <p *ngIf="data?.notes">
+              <b>Notes</b> <br />
+              {{ data?.notes }}
+            </p>
+            <p *ngIf="data?.paymentterm_id !== '0'">
+              <b>Payment Term: {{ data?.paymentterm?.name }}</b> <br />
+              {{ data?.paymentterm?.description }}
+            </p>
+          </div>
+          <div class="col-sm-3">
+            <div class="col-lg-12">
+              <div class="card card-flush">
+                <div class="card-body" *ngIf="data?.status !== 'Draft'">
+                  <h4 class="card-title mb-4"> Process Timeline</h4>
+                  <div class="wrapper">
+                    <ol class="StepProgress">
+                      <li class="StepProgress-item">
+                        <strong>Create PO</strong>
+                        {{ data?.createdAt | date : 'medium' }}
+                      </li>
+                      <li class="StepProgress-item" *ngFor="let item of poprocesslist; let i = index">
+                        <strong>{{ item?.tostatus }}</strong>
+                        {{ item?.createdAt | date : 'medium' }}
+                        <p class="text-muted">{{ item?.comments }}</p>
+                      </li>
+
+                    </ol>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <p *ngIf="data?.documents">
+          <b>Documents</b> <br />
+          <span *ngFor="let doc of docArray"><a target="_blank" href="{{ doc.path }}">{{ doc.name }}</a>,</span>
+        </p>
+        <p *ngIf="data?.vendordocuments">
+          <b>Supplier Uploaded Documents</b> <br />
+          <span *ngFor="let doc of vendocArray"><a target="_blank" href="{{ doc.path }}">{{ doc.name }}</a>,</span>
+        </p> -->
+          <div class="row" *ngIf="productimages.length">
+            <div class="col-xl-3 col-sm-4" *ngFor="let item of productimages">
+              <div class="card">
+                <div class="card-body">
+                  <div class="product-img position-relative">
+                    <a href="javascript:void(0)">
+                      <img style="width: 250px; height: 200px" alt="Product" class="img-fluid mx-auto d-block"
+                        fetchPriority="low" src="{{ item?.path }}" /></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+
+          <div class="row" *ngIf="statuopenform">
+            <h4 class="card-title mb-4 mt-4">{{ user?.role === '3' ? 'Approval Request' : 'Approve / Reject P.O' }}
+            </h4>
+            <form (ngSubmit)="headapproval()" #form="ngForm">
+              <div class="col-md-3 col-sm-6">
+                <div class="mb-3">
+                  <label class="control-label"> Select Status </label>
+                  <select class="form-select" #arstatus="ngModel" name="arstatus" [(ngModel)]="headapprove.status"
+                    required="">
+                    <option value="">Select Status</option>
+                    <option *ngFor="let stat of status" [value]="stat.id">
+                      {{ stat.name }}
+                    </option>
+                  </select>
+                  <div [hidden]="arstatus.valid || arstatus.pristine" class="alert alert-danger">Select Status</div>
+                </div>
+                <div class="mb-3" *ngIf="headapprove.status === 'Halt'">
+                  <label class="control-label"> Halt </label>
+                  <input type="text" #halt="ngModel" class="form-control" [(ngModel)]="headapprove.halt" name="halt"
+                    type="date" [min]="minDate" [required]="headapprove.status === 'Halt'" />
+                  <div [hidden]="halt.valid || halt.pristine" class="alert alert-danger">Enter Date</div>
+                </div>
+                <div class="mb-3">
+                  <label class="control-label"> Comments </label>
+                  <textarea class="form-control" [(ngModel)]="headapprove.comments" #reason name="reason"></textarea>
+                  <div [hidden]="!actionreason || headapprove.comments.length > 0" class="alert alert-danger">Enter
+                    Reason
+                  </div>
+                </div>
+                <input [disabled]="!form.valid" type="submit" name="submit"
+                  class="btn btn-sm btn-primary w-md mt-2 ms-1" value="Submit" />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <ng-template #image let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Product Image</h5>
+      <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body p-5 m-2">
+      <img [src]="src" alt="Not Show Image" class="rounded-1 w-100" />
+    </div>
+  </ng-template>
+
+  <!-- <ng-template *ngIf="terms || terms2" #termsp> -->
+  <!-- Terms -->
+  <div class="card" id="term">
+    <div class="card-body">
+      <h3 class="text-primary">Terms:</h3>
+      <p>1. Supplier must upload the signed copy of PO on Supplier login provided by Mugdha.</p>
+      <p>
+        2. Supplier shall transport the consignment through their trusted transporters and shall connect with
+        transporter
+        services for any
+        details like delay in shipment, damage, loss, wrong address delivery or any other circumstances.
+      </p>
+      <p>3. Mugdha holds no control or liability for the transportation of consignment to warehouse</p>
+      <p>4. All the payments will be made only through Bank Transfer</p>
+      <p>
+        5. It is mandatory to match Purchase Order (PO), Supplier Invoice, Good Received Note (GRN) and Debit or Credit
+        Note (if any) for the
+        payments to process.
+      </p>
+      <p>
+        6. Any excess or damaged goods received will be transported back to Supplier shipping address on to pay basis
+        with
+        relevant debit or
+        credit notes
+      </p>
+      <p>7. Supplier can refer to standard terms & agreement for any further details accepted by him in Supplier login
+      </p>
+      <p>8. Payment term: {{ data?.paymentterm?.description }}</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="row mb-3 mx-3">
+      <div class="text-end">
+        <button class="btn btn-sm mt-3 fw-bold btn-primary mx-2" [routerLink]="['/po/po']"
+          routerLinkActive="router-link-active">Back</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- </ng-template> -->

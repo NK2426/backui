@@ -1,0 +1,54 @@
+stages:
+
+dev_deploy:
+  stage: deploy
+  script:
+    - apt-get update -qq
+    - apt-get install -qq git
+    # Setup SSH deploy keys
+    - "which ssh-agent || ( apt-get install -qq openssh-client )"
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY_DEV")
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - ssh ubuntu@10.4.13.198 "cd /var/www/html/mugdhaui && git checkout dev && git stash && git pull origin dev"
+  only:
+    - dev
+  tags:
+    - vprc-server
+
+
+uat_deploy:
+  stage: deploy
+  script:
+    - apt-get update -qq
+    - apt-get install -qq git
+    # Setup SSH deploy keys
+    - "which ssh-agent || ( apt-get install -qq openssh-client )"
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY_PROD")
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - ssh ubuntu@10.4.8.190 "cd /var/www/mugdha-ui-uat/mugdhaui && git checkout uat && git pull origin uat"
+  only:
+    - uat
+  tags:
+    - vprc-server
+
+
+prod_deploy:
+  stage: deploy
+  script:
+    - apt-get update -qq
+    - apt-get install -qq git
+    # Setup SSH deploy keys
+    - "which ssh-agent || ( apt-get install -qq openssh-client )"
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY_PROD")
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - ssh ubuntu@10.4.8.190 "cd /var/www/mugdha-master-ui/mugdhaui && git checkout master && git pull origin master"
+  only:
+    - master
+  tags:
+    - vprc-server

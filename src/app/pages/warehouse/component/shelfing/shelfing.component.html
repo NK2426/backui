@@ -1,0 +1,121 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row mb-5">
+      <div class="col-sm-4">
+        <!--begin::Search-->
+        <div class="d-flex align-items-center position-relative my-1 px-1">
+          <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+            <span class="path1"></span>
+            <span class="path2"></span>
+          </i>
+          <input type="text" (keyup)="searchTable($event)" placeholder="Search by ShelfID.."
+            class="form-control form-control-solid w-200px ps-12" #input />
+        </div>
+      </div>
+      <div class="col-sm-3"></div>
+      <!-- <div class="col-sm-3">
+              <div class="text-sm-end">
+                <button (click)="downloadqrcodes()" type="button" class="btn btn-primary btn-rounded mb-2 me-2">
+                  <i class="fa fa-print"></i> Download Bin Qrcodes
+                </button>
+              </div>
+            </div> -->
+      <div class="col-sm-5">
+        <div class="text-sm-end">
+          <button (click)="addShelf(content)" type="button" class="btn btn-primary btn-rounded mt-2">
+            <i class="mdi mdi-plus mr-1"></i> Add New Shelf
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table align-middle table-nowrap table-hover gy-5">
+        <thead>
+          <tr>
+            <th class="p-5 w-50px">#</th>
+            <th class="text-start p-5 min-w-100px">Rack</th> 
+            <th class="text-start p-5 min-w-100px">Shelf</th>
+            <th class="text-start p-5 min-w-100px">ShelfID</th>
+            <th class="text-start p-5 min-w-100px">Category</th>
+            <th class="text-start p-5 min-w-100px">SubCategory</th>
+            <th class="text-start p-5 min-w-80px">Max Count</th>
+            <th class="text-start p-5 min-w-80px">Current Count</th>
+            <!-- <th class="text-start p-5 min-w-100px">Variant</th> -->
+            <th class="text-start p-5 min-w-100px">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let shelf of shelves; let i = index">
+            <td class="p-5 w-50px">{{ page === 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}</td>
+            <td>{{ shelf.columnvalue }}</td>
+            <td>{{ shelf.rowvalue }}</td>
+            <td>
+              <strong>{{ shelf.shelfID }}</strong>
+            </td>
+            <td>{{ shelf.category?.name }}</td>
+            <td>{{ shelf.subcategory?.name }}</td>
+            <td class="text-center">{{ shelf.maxcount }}</td>
+            <td class="text-center">{{ shelf.itemcount }}</td>
+            <!-- <td> {{shelf.productvariantvalue?.value}} </td> -->
+            <td>
+              <ul class="list-inline font-size-20 contact-links mb-0">
+                <li class="list-inline-item px-2">
+                  <a (click)="setActiveDepartment(content, shelf, i)" href="javascript:void(0)"
+                    ngbTooltip="View Shelf"><strong>View Shelf</strong></a>
+                </li>
+              </ul>
+            </td>
+          </tr>
+          <tr *ngIf="shelves?.length === 0">
+            <td colspan="12" class="text-center fw-bold">No Records Found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Pagination  -->
+    <div class="row justify-content-md-between align-items-md-center mt-2">
+      <div class="col-sm-12 col-md-4">
+        <div class="dataTables_length" id="tickets-table_length">
+          <label class="d-inline-flex align-items-center">Show
+            <select class="form-select form-select-sm ms-2 me-2" (change)="handlePageSizeChange($event)">
+              <option *ngFor="let size of pageSizes" [ngValue]="size">
+                {{ size }}
+              </option>
+            </select>
+            Entries</label>
+        </div>
+      </div>
+      <!-- Pagination -->
+      <div class="col-sm-12 col-md-8">
+        <div class="text-md-right float-md-end pagination-rounded">
+          <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false"
+            [boundaryLinks]="true" (pageChange)="handlePageChange($event)" [collectionSize]="count"></ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Pop UP Open start -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" *ngIf="!currentShelf!.id" id="modal-basic-title">Add Shelf</h5>
+    <h5 class="modal-title" *ngIf="currentShelf!.id && addAction === true" id="modal-basic-title"
+      (click)="addShelf(content)">Edit Shelf</h5>
+    <h5 class="modal-title" *ngIf="currentShelf!.id && addAction === false" id="modal-basic-title"
+      (click)="addShelf(content)">
+      View Shelf
+    </h5>
+    <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="viewAction">
+      <app-viewshelf (refreshList)="refreshList($event)" (editShelf)="editShelf($event)"
+        [selectedShelf]="currentShelf"></app-viewshelf>
+    </div>
+    <div *ngIf="addAction">
+      <app-addshelf (refreshList)="refreshList($event)" [data]="currentShelf"></app-addshelf>
+    </div>
+  </div>
+</ng-template>
+<!-- Pop UP Open end -->

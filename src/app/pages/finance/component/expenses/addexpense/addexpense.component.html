@@ -1,0 +1,277 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="page-title-box d-flex align-items-center justify-content-between">
+        <h4 class="mb-0 font-size-18 pb-8">{{ edit ? 'Edit' : 'New' }} Expense</h4>
+      </div>
+      <div class="card">
+        <div class="card-body px-5">
+          <form (ngSubmit)="saveExpense()" [formGroup]="formData">
+            <div class="row mt-3">
+              <div class="col-sm-12">
+                <h4 class="card-title mb-4">Expense Details</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="mb-3">
+                  <label class="control-label required">Expense Date</label>
+
+                  <input
+                    class="form-control"
+                    type="date"
+                    autocomplete="off"
+                    name="expensedate"
+                    formControlName="expensedate"
+                    [ngClass]="{ 'is-invalid': submit && form['expensedate'].errors }"
+                    required
+                  />
+
+                  <div *ngIf="submit && form['expensedate'].errors" class="invalid-feedback">
+                    <span *ngIf="form['expensedate'].errors['required']">Expense Date is required.</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6" *ngIf="edit">
+                <div class="mb-3">
+                  <label class="control-label required">Status</label>
+                  <select
+                    class="form-select"
+                    type="text"
+                    name="status"
+                    formControlName="status"
+                    [ngClass]="{
+                      'is-invalid':
+                        (submit && form['status']?.errors) ||
+                        (form['status']?.invalid && (form['status']?.dirty || form['status']?.touched))
+                    }"
+                  >
+                    <option *ngFor="let stat of statuses" [value]="stat.id">{{ stat.name }}</option>
+                  </select>
+                </div>
+              </div>
+              <!-- <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="control-label">SKU *</label>
+                                    <input class="form-control" placeholder="Enter SKU" type="text" name="sku"
+                                        autocomplete="off" formControlName="sku"
+                                        [ngClass]="{'is-invalid': (submit && form['sku']?.errors) || (form['sku']?.invalid && (form['sku']?.dirty || form['sku']?.touched))}" />
+
+                                    <div *ngIf="(submit && form['sku']?.errors) || (form['sku']?.invalid && (form['sku']?.dirty || form['sku']?.touched))"
+                                        class="invalid-feedback">
+                                        <span *ngIf="form['sku'].errors?.['required']">Enter valid name</span>
+                                        <span *ngIf="form['sku'].errors?.['minlength']">Minimum Length 3
+                                            Characters.</span>
+                                    </div>
+                                </div>
+                            </div> -->
+            </div>
+
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="mb-3">
+                  <label class="control-label required">Select Warehouse</label>
+                  <ng-select
+                    name="warehouse_id"
+                    placeholder="Select Warehouse"
+                    [items]="warehouseData"
+                    bindLabel="name"
+                    bindValue="id"
+                    formControlName="warehouse_id"
+                    [ngClass]="{
+                      'is-invalid':
+                        (submit && form['warehouse_id']?.errors) ||
+                        (form['warehouse_id']?.invalid && (form['warehouse_id']?.dirty || form['warehouse_id']?.touched))
+                    }"
+                  >
+                  </ng-select>
+
+                  <div
+                    *ngIf="
+                      (submit && form['warehouse_id']?.errors) ||
+                      (form['warehouse_id']?.invalid && (form['warehouse_id']?.dirty || form['warehouse_id']?.touched))
+                    "
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form['warehouse_id'].errors">Enter valid warehouse</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="mb-3">
+                  <label class="control-label required">Select Expensetype</label>
+                  <ng-select
+                    name="expensetype"
+                    placeholder="Select Expensetype"
+                    [items]="expensetypes"
+                    bindLabel="name"
+                    bindValue="id"
+                    formControlName="expensetype_id"
+                    [ngClass]="{
+                      'is-invalid':
+                        (submit && form['expensetype_id']?.errors) ||
+                        (form['expensetype_id']?.invalid && (form['expensetype_id']?.dirty || form['expensetype_id']?.touched))
+                    }"
+                  >
+                  </ng-select>
+
+                  <div
+                    *ngIf="
+                      (submit && form['expensetype_id']?.errors) ||
+                      (form['expensetype_id']?.invalid && (form['expensetype_id']?.dirty || form['expensetype_id']?.touched))
+                    "
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form['expensetype_id'].errors">Enter valid type</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="mb-3">
+                  <label class="control-label required">Paid Through</label>
+                  <ng-select
+                    name="bankaccount_id"
+                    placeholder="Select Account"
+                    [items]="bankaccounts"
+                    bindLabel="accountnumber"
+                    bindValue="id"
+                    formControlName="bankaccount_id"
+                    [ngClass]="{
+                      'is-invalid':
+                        (submit && form['bankaccount_id']?.errors) ||
+                        (form['bankaccount_id']?.invalid && (form['bankaccount_id']?.dirty || form['bankaccount_id']?.touched))
+                    }"
+                  >
+                    <ng-template ng-label-tmp let-item="item">
+                      <span>{{ item.accountnumber + ' - ' + item.accountname }}</span>
+                    </ng-template>
+                  </ng-select>
+
+                  <div
+                    *ngIf="
+                      (submit && form['bankaccount_id']?.errors) ||
+                      (form['bankaccount_id']?.invalid && (form['bankaccount_id']?.dirty || form['bankaccount_id']?.touched))
+                    "
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form['bankaccount_id'].errors">Enter valid Account</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="mb-3">
+                  <label class="control-label required">Amount</label>
+                  <input
+                    class="form-control"
+                    placeholder="Enter Amount"
+                    type="text"
+                    name="amount"
+                    autocomplete="off"
+                    formControlName="amount"
+                    [ngClass]="{
+                      'is-invalid':
+                        (submit && form['amount']?.errors) ||
+                        (form['amount']?.invalid && (form['amount']?.dirty || form['amount']?.touched))
+                    }"
+                  />
+
+                  <div
+                    *ngIf="
+                      (submit && form['amount']?.errors) || (form['amount']?.invalid && (form['amount']?.dirty || form['amount']?.touched))
+                    "
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form['amount'].errors?.['required']">Enter amount.</span>
+                    <span *ngIf="form['amount'].errors?.['pattern']">Enter Valid amount.</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="mb-3">
+                  <label class="control-label"> Description </label>
+                  <textarea
+                    class="form-control"
+                    placeholder="Enter Description"
+                    type="text"
+                    name="description"
+                    autocomplete="off"
+                    formControlName="description"
+                    [ngClass]="{
+                      'is-invalid':
+                        (submit && form['description']?.errors) ||
+                        (form['description']?.invalid && (form['description']?.dirty || form['description']?.touched))
+                    }"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="mb-3">
+                  <label for="file">File Upload</label>
+                  <input
+                    type="file"
+                    class="file-input form-control"
+                    (change)="onSelectedFile($event)"
+                    autocomplete="off"
+                    #fileupload
+                    name="file"
+                    formControlName="file"
+                  />
+                  <a *ngIf="fileName != 0" target="_blank" href="{{ baseurl + '/' + fileName }}">{{ fileName }} </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="row">
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="control-label">Cost Price </label>
+                                    <input class="form-control" placeholder="Cost Price" type="text" name="cost_price"
+                                        autocomplete="off" formControlName="cost_price"
+                                        [ngClass]="{'is-invalid': (submit && form['cost_price']?.errors) || (form['cost_price']?.invalid && (form['cost_price']?.dirty || form['cost_price']?.touched))}" />
+
+                                    <div *ngIf="(submit && form['cost_price']?.errors) || (form['cost_price']?.invalid && (form['cost_price']?.dirty || form['cost_price']?.touched))"
+                                        class="invalid-feedback">
+                                        <span *ngIf="form['cost_price'].errors?.['required']">Enter valid
+                                            cost_price</span>
+                                        <span *ngIf="form['cost_price'].errors?.['minlength']">Minimum Length 3
+                                            Characters.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="control-label">Selling Price</label>
+                                    <input class="form-control" placeholder="Selling Price" type="text"
+                                        name="selling_price" id="example-date-input" autocomplete="off"
+                                        formControlName="selling_price"
+                                        [ngClass]="{'is-invalid': (submit && form['selling_price']?.errors) || (form['selling_price']?.invalid && (form['selling_price']?.dirty || form['selling_price']?.touched))}" />
+
+                                    <div *ngIf="(submit && form['selling_price']?.errors) || (form['selling_price']?.invalid && (form['selling_price']?.dirty || form['selling_price']?.touched))"
+                                        class="invalid-feedback">
+                                        <span *ngIf="form['selling_price'].errors?.['required']">Enter valid
+                                            selling price</span>
+                                        <span *ngIf="form['selling_price'].errors?.['minlength']">Minimum Length 3
+                                            Characters.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+
+            <div class="mt-2">
+              <div class="text-sm-end">
+                <a [routerLink]="['/finance/expenses']" class="btn btn-secondary btn-sm me-4">Cancel</a>
+                <button type="submit" class="btn btn-primary btn-sm">Save</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

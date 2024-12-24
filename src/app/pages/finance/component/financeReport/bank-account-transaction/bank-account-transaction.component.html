@@ -1,0 +1,186 @@
+<div class="card mb-5 mb-xl-10 p-3">
+  <div class="card">
+    <div class="card-body">
+      <div class="row mb-5 col-md-12 col-sm-12">
+        <!-- From Date -->
+        <div class="col-md-3 col-sm-12">
+          <div class="dp-hidden position-absolute my-2">
+            <div class="input-group">
+              <input
+                name="datepicker"
+                class="form-control"
+                ngbDatepicker
+                #datepicker="ngbDatepicker"
+                [autoClose]="'outside'"
+                (dateSelect)="onDateSelection($event)"
+                [displayMonths]="2"
+                [dayTemplate]="t"
+                outsideDays="hidden"
+                [startDate]="ngbFromDate!"
+                tabindex="-1"
+              />
+              <ng-template #t let-date let-focused="focused">
+                <span
+                  class="custom-day"
+                  [class.focused]="focused"
+                  [class.range]="isRange(date)"
+                  [class.faded]="isHovered(date) || isInside(date)"
+                  (mouseenter)="hoveredDate = date"
+                  (mouseleave)="hoveredDate = null"
+                >
+                  {{ date.day }}
+                </span>
+              </ng-template>
+            </div>
+          </div>
+          <div class="input-group">
+            <input
+              #dpFromDate
+              class="form-control"
+              placeholder="yyyy-mm-dd"
+              name="dpFromDate"
+              [value]="formatter.format(ngbFromDate)"
+              (input)="ngbFromDate = validateInput(ngbFromDate, dpFromDate.value)"
+            />
+            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()" type="button">
+              <i class="fas fa-calendar-alt fa-fw"></i>
+            </button>
+          </div>
+        </div>
+        <!-- TO date -->
+        <div class="col-md-3 col-sm-12">
+          <div class="input-group my-2">
+            <input
+              #dpToDate
+              class="form-control"
+              placeholder="yyyy-mm-dd"
+              name="dpToDate"
+              [value]="formatter.format(ngbToDate)"
+              (input)="ngbToDate = validateInput(ngbToDate, dpToDate.value)"
+            />
+            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()" type="button">
+              <i class="fas fa-calendar-alt fa-fw"></i>
+            </button>
+          </div>
+        </div>
+        <!-- Empty -->
+        <div class="col-md-4"></div>
+        <!-- Bank Details -->
+        <div class="col-md-2">
+          <label class="form-label">Filter by Bank</label>
+          <ng-select class="my-2" placeholder="Filter by Bank" [items]="accountDetails" bindValue="id" (change)="getBankID($event)">
+            <!-- <ng-template ng-label-tmp let-item="item"> {{ item.bankname }} - {{ item.accountname }}</ng-template> -->
+            <ng-template ng-option-tmp let-item="item"> {{ item.bankname }} - {{ item.accountname }} </ng-template>
+          </ng-select>
+        </div>
+      </div>
+
+      <div *ngIf="responceData">
+        <!-- {{ responceData | json }} -->
+        <div class="row col-sm-12 col-md-12 col-lg-12 mx-0 py-5" style="background-color: #f7f7f7">
+          <div class="col-sm-12 col-md-4 col-lg-3 row">
+            <label class="form-label col-sm-6 fw-bold">Account Name :</label>
+            <!-- <ng-container *ngFor="let item of responceData; let index = index"> -->
+            <label class="form-label col-sm-6">{{ responceData?.accountname }}</label>
+            <!-- </ng-container> -->
+          </div>
+          <div class="col-sm-12 col-md-4 col-lg-3 row">
+            <label class="form-label col-sm-6 fw-bold">Account Number :</label>
+            <!-- <ng-container *ngFor="let item of responceData; let index = index"> -->
+            <label class="form-label col-sm-6">{{ responceData?.accountnumber }}</label>
+            <!-- </ng-container> -->
+          </div>
+          <div class="col-sm-12 col-md-4 col-lg-3 row">
+            <label class="form-label col-sm-6 fw-bold">Bank Name :</label>
+            <!-- <ng-container *ngFor="let item of responceData; let index = index"> -->
+            <label class="form-label col-sm-6">{{ responceData?.bankname }}</label>
+            <!-- </ng-container> -->
+          </div>
+          <div class="col-sm-12 col-md-4 col-lg-3 row">
+            <label class="form-label col-sm-6 fw-bold">IFSC Number :</label>
+            <!-- <ng-container *ngFor="let item of responceData; let index = index"> -->
+            <label class="form-label col-sm-6">{{ responceData?.ifsc }}</label>
+            <!-- </ng-container> -->
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="col-sm-12 col-md-12 row">
+          <div>
+            <div class="table-responsive">
+              <table class="align-middle table-nowrap table-hover w-100">
+                <thead>
+                  <tr style="font-size: 16px">
+                    <th class="text-center p-4">#</th>
+                    <th class="text-start p-4">Transaction ID</th>
+                    <th class="text-start p-4">Recepit ID</th>
+                    <th class="text-start p-4">PO UUID</th>
+                    <th class="text-start p-4">Expense Date</th>
+                    <th class="text-start p-4">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="example-accordion-item-body hoverColor" *ngFor="let data of responceDataList; let i = index">
+                    <td class="p-4 text-center">{{ i + 1 }}</td>
+                    <td class="p-4 text-start">
+                      <span *ngIf="data?.transactionid" style="color: #007eff">{{ data.transactionid }}</span>
+                      <span *ngIf="!data?.transactionid">--</span>
+                    </td>
+                    <td class="p-4 text-start">{{ data.grnid || '--' }}</td>
+                    <td class="p-4 text-start">{{ data.po_uuid || '--' }}</td>
+                    <td class="p-4 text-start">{{ data.expensedate || '--' }}</td>
+                    <td class="p-4 text-start fw-bold" style="color: #007eff">&#8377;{{ data.amount || '--' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div>
+          <div class="row justify-content-md-between align-items-md-center mt-2">
+            <div class="col-sm-12 col-md-4">
+              <div class="dataTables_length" id="tickets-table_length">
+                <label class="d-inline-flex align-items-center text-primary fw-bold"
+                  >Show
+                  <select class="form-select form-select-sm ms-2 me-2 cursor-pointer" (change)="handlePageSizeChange($event)">
+                    <option *ngFor="let size of pageSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select>
+                  Entries</label
+                >
+              </div>
+            </div>
+
+            <div class="col-sm-12 col-md-8">
+              <div class="text-md-right float-md-end pagination-rounded">
+                <ngb-pagination
+                  [maxSize]="5"
+                  [collectionSize]="count"
+                  [(page)]="page"
+                  [pageSize]="size"
+                  [rotate]="true"
+                  [ellipses]="false"
+                  [boundaryLinks]="true"
+                  (pageChange)="handlePageChange($event)"
+                ></ngb-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Download XL -->
+        <div class="my-5 py-5 text-end">
+          <a *ngIf="showprintxl" class="btn btn-sm btn-primary text-white" (click)="downloadExcel()"
+            ><i class="fa fa-file-excel"></i> Download Excel</a
+          >
+          <span *ngIf="!showprintxl" class="btn btn-sm btn-warning my-2"
+            ><i class="bx bx-loader bx-spin"></i> Please Wait Excel is Generating ...
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

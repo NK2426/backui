@@ -1,0 +1,180 @@
+<div class="card mb-5 mb-xl-10 p-3">
+    <div class="card-body p-2">
+        <div class="row">
+            <div class="col-md-3 mb-5">
+                <label class="form-lable"> Select Date</label>
+                <ng-select name="qdp" placeholder="Select Date" [items]="quickDatePickerInput" bindLabel="displayName"
+                    bindValue="value" [(ngModel)]="selectedDate" (change)="changeQuickDatePicker($event)">
+                </ng-select>
+            </div>
+            <div class="col-md-6 mb-2">
+                <label class="form-lable"> Select Date Range</label>
+                <form class="row ">
+                    <div class="col-md-6">
+                        <div class="dp-hidden position-absolute mb-2">
+                            <div class="input-group">
+                                <input name="datepicker" class="form-control" ngbDatepicker #datepicker="ngbDatepicker"
+                                    [autoClose]="'outside'" (dateSelect)="onDateSelection($event)" [displayMonths]="2"
+                                    [dayTemplate]="t" outsideDays="hidden" [startDate]="ngbFromDate!" tabindex="-1" />
+                                <ng-template #t let-date let-focused="focused">
+                                    <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+                                        [class.faded]="isHovered(date) || isInside(date)"
+                                        (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
+                                        {{ date.day }}
+                                    </span>
+                                </ng-template>
+                            </div>
+                        </div>
+                        <div class="input-group mb-2">
+                            <input #dpFromDate class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate"
+                                [value]="formatter.format(ngbFromDate)"
+                                (input)="ngbFromDate = validateInput(ngbFromDate, dpFromDate.value)" />
+                            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()"
+                                type="button">
+                                <i class="fas fa-calendar-alt fa-fw"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input #dpToDate class="form-control" placeholder="yyyy-mm-dd" name="dpToDate"
+                                [value]="formatter.format(ngbToDate)"
+                                (input)="ngbToDate = validateInput(ngbToDate, dpToDate.value)" />
+                            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()"
+                                type="button">
+                                <i class="fas fa-calendar-alt fa-fw"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-3">
+                <div class="search-box me-2 mb-2">
+                    <label class="control-label"> Search</label>
+                    <div class="position-relative">
+                        <input type="text" class="form-control" placeholder="Search by name or mobile number"
+                            [(ngModel)]="customer" (keyup)="getAllSalesOrder()">
+                        <i class="bx bx-search-alt search-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body p-0">
+                <div class="col-md-12">
+                    <!-- Mini Card Start-->
+                    <ng-container *ngFor="let stat of miniCardConfig">
+                        <div class="col-md-3 col-sm-12 d-inline-block">
+                            <div class="card mini-stats-wid m-2" style="background: #f8f9fa;border: 1px solid #ced4da;">
+                                <div class="card-body p-2">
+                                    <div class="media">
+                                        <div class="media-body">
+                                            <p class="text-muted fw-medium">{{stat.title}}</p>
+                                            <h4 class="mb-0">{{stat.value}}</h4>
+                                        </div>
+
+                                        <div
+                                            class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                                            <span class="avatar-title">
+                                                <i class="bx {{stat.icon}} font-size-24"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <!-- Mini Card END-->
+                </div>
+                <div class="table-responsive mb-0">
+                    <!--style="height: calc(100vh - 360px)"-->
+                    <table class="table table-centered table-nowrap">
+                        <thead>
+                            <tr>
+                                <th class="p-5 w-50px text-center">#</th>
+                                <th class="text-start p-5 min-w-100px">Order ID</th>
+                                <th class="text-start p-5 min-w-100px">Order Date</th>
+                                <th class="text-start p-5 min-w-100px">Customer Name</th>
+                                <th class="text-start p-5 min-w-100px">Customer ID</th>
+                                <th class="text-start p-5 min-w-100px">Order Status </th>
+                                <th class="text-start p-5 min-w-100px">Order Amount</th>
+                                <th class="text-start p-5 min-w-100px">Payment Mode</th>
+                                <th class="text-start p-5 min-w-100px">Customer Pincode</th>
+                                <th class="text-center p-5 min-w-100px">View Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let salesDatum of salesData; let i = index">
+                                <!-- <td>
+                        {{salesDatum.id}}
+                    </td> -->
+                                <td class="p-5">{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}</td>
+                                <td class="p-5"><a
+                                        [routerLink]="'../salesorders/orderdetail/'+salesDatum.uuid">{{salesDatum.orderID}}</a>
+                                </td>
+                                <td class="p-5">{{salesDatum.createdAt | date : 'medium' }}</td>
+                                <td class="p-5">{{salesDatum.user?.name}}</td>
+                                <td class="p-5">{{salesDatum.user?.uid}}</td>
+                                <td class="p-5">
+                                    <span class="badge badge-pill badge-soft-success font-size-11" [ngClass]=" { 'badge-soft-danger': salesDatum.status === '',
+                              'badge-soft-warning':salesDatum.status === 'Return' }">{{salesDatum.status ||
+                                        '--'}}</span>
+                                </td>
+                                <td class="p-5" style="text-align: right;">
+                                    {{numberFormat(salesDatum.amount)}}
+                                </td>
+                                <td class="p-5">
+                                    {{salesDatum.paymentmethod}}
+                                </td>
+                                <td class="p-5">
+                                    {{salesDatum.address?.zipcode}}
+                                </td>
+                                <td class="p-5">
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-primary btn-sm btn-rounded"
+                                        (click)="navigateToOrderDetail(salesDatum.uuid)">View
+                                        Details</button>
+                                </td>
+                            </tr>
+                            <tr *ngIf="salesData?.length === 0">
+                                <td colspan="12" class="text-center">No records found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Sales Report Chart Start-->
+<!-- <div class="row">
+    <div class="card">
+
+        <div class="card-body" *ngIf="pieChartOptions && salesData && salesData.length">
+
+            <div class="row">
+                <div class="col-xl-4">
+                    <div id="chart" style="width: 420px; height: 250px;"
+                        *ngIf="pieChartOptions && salesData && salesData.length">
+                        <apx-chart [series]="pieChartOptions.series" [chart]="pieChartOptions.chart"
+                            [labels]="pieChartOptions.labels" [responsive]="pieChartOptions.responsive"></apx-chart>
+                    </div>
+                </div>
+
+                <div class="col-xl-8">
+                    <div id="columnChart" *ngIf="columnChartOptions && salesData && salesData.length">
+                        <apx-chart [series]="columnChartOptions.series" [chart]="columnChartOptions.chart"
+                            [dataLabels]="columnChartOptions.dataLabels" [plotOptions]="columnChartOptions.plotOptions"
+                            [yaxis]="columnChartOptions.yaxis" [legend]="columnChartOptions.legend"
+                            [fill]="columnChartOptions.fill" [stroke]="columnChartOptions.stroke"
+                            [tooltip]="columnChartOptions.tooltip" [xaxis]="columnChartOptions.xaxis"></apx-chart>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div> -->
+<!-- Sales Report Chart End-->

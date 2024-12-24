@@ -1,0 +1,133 @@
+<div class="card mb-5 mb-xl-10">
+    <div class="card-body pt-9 pb-0">
+        <!-- begin::Header -->
+        <div class="card-header border-0 pt-5">
+            <h3 class="card-title align-items-start flex-column">
+                <span class="card-label fw-bolder fs-3 mb-1">Halt Po</span>
+            </h3>
+            <div class="card-toolbar">
+                <!-- begin::Menu -->
+                <!-- <button type="button" class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
+                    data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">
+                    <app-keenicon name="category" class="fs-2"></app-keenicon>
+                </button> -->
+                <!-- begin::Menu 1 -->
+                <!-- <app-dropdown-menu1></app-dropdown-menu1> -->
+                <!-- end::Menu 1 -->
+                <!-- end::Menu -->
+            </div>
+        </div>
+        <!-- end::Header -->
+        <!-- begin::Body -->
+        <div class="card-body py-3">
+            <!-- begin::Table container -->
+            <div class="table-responsive">
+                <!-- begin::Table -->
+                <table class="table align-left gs-0 gy-5">
+                    <!-- begin::Table head -->
+                    <thead>
+                        <tr>
+                            <th class="p-5 w-50px">#</th>
+                            <th class="text-start p-5 min-w-100px"># P.O</th>
+                            <th class="text-start p-5 min-w-70px">P.O Date</th>
+                            <th class="text-start p-5 min-w-100px">Vendor</th>
+                            <th class="text-start p-5 min-w-70px">Total</th>
+                            <th class="text-start p-5 min-w-70px">Payment Term</th>
+                            <th class="text-start p-5 min-w-70px">Status</th>
+                            <th class="text-start p-5 min-w-70px">Ship Status</th>
+                            <th class="text-start p-5 min-w-70px">Actions</th>
+                        </tr>
+                    </thead>
+                    <!-- end::Table head -->
+
+                    <!-- begin::Table body -->
+                    <tbody>
+                        <tr *ngFor="let order of orders; let i = index">
+                            <td>
+                                <span class="fw-bold">{{ page === 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}</span>
+                            </td>
+                            <td data-order="34">
+                                <span class="fw-bold ms-3">{{ order.uuid || '' }}</span>
+                            </td>
+                            <td>{{ order?.date | date : 'dd/MM/yyyy' }}</td>
+
+                            <td data-order="Published">
+                                <div class="badge badge-light-success">{{ order?.user?.name }}</div>
+                            </td>
+                            <td data-order="34">
+                                <span class="fw-bold ms-3">{{ order?.grandtotal }}</span>
+                            </td>
+                            <td data-order="34">
+                                <span class="fw-bold ms-3"> {{ order?.paymentterm?.name }}</span>
+                            </td>
+                            <td data-order="34">
+                                <span class="fw-bold ms-3">{{ order.status }}</span>
+                            </td>
+                            <td data-order="34">
+                                <span class="fw-bold ms-3">{{ order.ship_status === '' ? '--' : order.ship_status
+                                    }}</span>
+                            </td>
+                            <td class="text-start">
+                                <ul class="list-inline font-size-20 contact-links mb-0">
+                                    <li class="list-inline-item px-1">
+                                        <a [routerLink]="['/app/view/'+order.uuid]" ngbTooltip="View Order"><i
+                                                class="bx bx-show"></i></a>
+                                    </li>
+                                    <!-- <li *ngIf="user.role == '3'" class="list-inline-item px-1">
+                                        <a [routerLink]="['/app/clone/'+order.uuid]" [state]="{clone:'clone'}"
+                                            ngbTooltip="Clone Order"><i class="bx bx-copy"></i></a>
+                                    </li> -->
+                                    <!-- <li *ngIf="order.autopo==1 && user.role == '3' && order.status === 'Accept'"
+                                        class="list-inline-item px-1">
+                                        <a (click)="confirm(order.uuid)" ngbTooltip="Auto P.O"><i
+                                                class="bx bx-paste"></i></a>
+                                    </li> -->
+                                    <li *ngIf="(order.status === 'Draft' || order.status === 'Revise' || order.status === 'Vendor_revise') && user.role == '3'"
+                                        class="list-inline-item px-1">
+                                        <a [routerLink]="['/app/edit/'+order.uuid]" [state]="{uuid: order.uuid}"
+                                            ngbTooltip="Edit Order"><i class="bx bx-edit"></i></a>
+                                    </li>
+                                    <li class="list-inline-item px-1"
+                                        *ngIf="order.status === 'Draft' && user.role == '3'">
+                                        <a (click)="deleteUser(order)" ngbTooltip="Delete Order"><i
+                                                class="bx bx-trash"></i></a>
+                                    </li>
+                                </ul>
+                                <!--end::Menu-->
+                            </td>
+                        </tr>
+                    </tbody>
+                    <!-- end::Table body -->
+                </table>
+                <!-- end::Table -->
+            </div>
+            <div class="d-flex flex-stack flex-wrap pt-10">
+                <div class="fs-6 fw-bold text-gray-700">
+                    <div class="d-flex flex-wrap mr-3">
+                        <div class="d-flex align-items-center">
+                            <select
+                                class="form-control form-control-sm text-primary font-weight-bold mr-4 border-0 bg-light-primary"
+                                style="width: 75px;" [(ngModel)]="pageSize"
+                                (ngModelChange)="handlePageSizeChange($event)">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                            <span class="text-muted">Page</span>
+                        </div>
+                    </div>
+                </div>
+
+                <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5"
+                    [rotate]="true" [ellipses]="false" [boundaryLinks]="true" (pageChange)="handlePageChange($event)"
+                    [collectionSize]="count"></ngb-pagination>
+            </div>
+
+            <!-- end::Table container -->
+
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,224 @@
+<div class="submit-form">
+    <div class="mb-3 row" *ngIf="!edit || data.itemcount == 0">
+        <label for="typeahead-http" class="col-xs-3 col-sm-auto col-form-label">Search Product
+            Group</label>
+        <div class="col">
+            <input id="typeahead-template" type="text" class="form-control col" [(ngModel)]="model"
+                [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter" [resultFormatter]="formatter"
+                (selectItem)="itemSelected($event)" [class.is-invalid]="searchFailed" />
+
+            <small *ngIf="searching" class="form-text text-muted">searching...</small>
+            <div class="invalid-feedback" *ngIf="searchFailed && model.length > 0">Sorry, Your product
+                group not our list contact our admin.
+            </div>
+
+        </div>
+    </div>
+    <form (ngSubmit)="saveShelf()" [formGroup]="formData" novalidate>
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label"> Group :
+                        <strong>{{group?.name}}</strong></label>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label"> Department :
+                        <strong>{{group.department?.name}}</strong></label>
+                </div>
+                <!-- <div class="mb-3">
+                    <label class="form-label">Class : <strong>{{group?.category?.name}}</strong></label>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Sub Class : <strong>{{group?.subcategory?.name}}</strong></label>
+                </div> -->
+                <!-- <div class="mb-3" *ngIf="!edit || data.itemcount === 0">
+                    <label class="form-label">Select Variant </label> &nbsp; &nbsp;
+                    <select name="products" formControlName="products" placeholder="Select Variant"
+                        [ngClass]="{'is-invalid': (submit && form['products']?.errors) || (form['products']?.invalid && (form['products']?.dirty || form['products']?.touched))}"
+                        class="form-control">
+                        <optgroup *ngFor="let group of products" label="{{group?.name}}">
+                            <option *ngFor="let item of group?.productvariantvalues" [ngValue]="item.id">{{item.value}}
+                            </option>
+                        </optgroup>
+                    </select>
+
+                    <div *ngIf="(submit && form['products']?.errors) || (form['products']?.invalid && (form['products']?.dirty || form['products']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['products'].errors">Select Variant</span>
+                    </div>
+                </div> -->
+
+                <div class="mb-3" *ngIf="edit && data.itemcount != 0">
+                    <label class="form-label"> Variant </label> &nbsp; &nbsp;
+                    {{variant?.value}}
+                </div>
+
+                <!-- Aisel Value -->
+                <div class="mb-3">
+                    <div class="row">
+                        <label class="form-label required"> Aisel Value</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 p-2 ps-3">
+                            <ng-select name="rackvalue" placeholder="Select" [items]="rowvalues"
+                                formControlName="rackvalue"
+                                [ngClass]="{'is-invalid': (submit && form['rackvalue']?.errors) || (form['rackvalue']?.invalid && (form['rackvalue']?.dirty || form['rackvalue']?.touched))}">
+                            </ng-select>
+                            <div *ngIf="(submit && form['rackvalue']?.errors) || (form['rackvalue']?.invalid && (form['rackvalue']?.dirty || form['rackvalue']?.touched))"
+                                class="invalid-feedback">
+                                <span *ngIf="form['rackvalue'].errors">Select Aisel value</span>
+                            </div>
+                            <!-- <label class="form-label"> {{data.rackvalue}} </label> -->
+                        </div>
+                        <div class="col-6 p-2 ps-3" *ngIf="!edit || data.itemcount === 0">
+                            <ng-select name="rackvalue2" placeholder="Select" [items]="columnvalues"
+                                formControlName="rackvalue2"
+                                [ngClass]="{'is-invalid': (submit && form['rackvalue2']?.errors) || (form['rackvalue2']?.invalid && (form['rackvalue2']?.dirty || form['rackvalue2']?.touched))}">
+                            </ng-select>
+                            <div *ngIf="(submit && form['rackvalue2']?.errors) || (form['rackvalue2']?.invalid && (form['rackvalue2']?.dirty || form['rackvalue2']?.touched))"
+                                class="invalid-feedback">
+                                <span *ngIf="form['rackvalue2'].errors">Select Aisel value</span>
+                            </div>
+                        </div>
+                        <!-- <div class="col-3 p-2 ps-3" *ngIf="edit">
+                            {{data.rackvalue2}}
+                        </div> -->
+                    </div>
+                </div>
+
+                <!-- Rack Level -->
+                <div class="mb-3">
+                    <div class="row">
+                        <label class="form-label required"> Rack Level</label>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6 p-2 ps-3">
+                            <ng-select name="columnvalue" placeholder="Select" [items]="rowvalues"
+                                formControlName="columnvalue"
+                                [ngClass]="{'is-invalid': (submit && form['columnvalue']?.errors) || (form['columnvalue']?.invalid && (form['columnvalue']?.dirty || form['columnvalue']?.touched))}">
+                            </ng-select>
+                            <div *ngIf="(submit && form['columnvalue']?.errors) || (form['columnvalue']?.invalid && (form['columnvalue']?.dirty || form['columnvalue']?.touched))"
+                                class="invalid-feedback">
+                                <span *ngIf="form['columnvalue'].errors">Select Rack value</span>
+                            </div>
+                            <!-- <label class="form-label"> {{data.columnvalue}} </label> -->
+
+                        </div>
+                        <div class="col-6 p-2 ps-3" *ngIf="!edit || data.itemcount == 0">
+                            <ng-select name="columnvalue2" placeholder="Select" [items]="columnvalues"
+                                formControlName="columnvalue2"
+                                [ngClass]="{'is-invalid': (submit && form['columnvalue2']?.errors) || (form['columnvalue2']?.invalid && (form['columnvalue2']?.dirty || form['columnvalue2']?.touched))}">
+                            </ng-select>
+                            <div *ngIf="(submit && form['columnvalue2']?.errors) || (form['columnvalue2']?.invalid && (form['columnvalue2']?.dirty || form['columnvalue2']?.touched))"
+                                class="invalid-feedback">
+                                <span *ngIf="form['columnvalue2'].errors">Select Rack value</span>
+                            </div>
+                        </div>
+                        <!-- <div class="col-3 p-2 ps-3" *ngIf="edit">
+                            {{data.columnvalue2}}
+                        </div> -->
+                    </div>
+                </div>
+
+                <!-- Storage Location -->
+                <div class="mb-3">
+                    <div class="row">
+                        <label class="form-label required"> Storage Location</label>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6 p-2 ps-3">
+                            <ng-select name="rowvalue" placeholder="Select" [items]="rowvalues"
+                                formControlName="rowvalue"
+                                [ngClass]="{'is-invalid': (submit && form['rowvalue']?.errors) || (form['rowvalue']?.invalid && (form['rowvalue']?.dirty || form['rowvalue']?.touched))}">
+                            </ng-select>
+                            <div *ngIf="(submit && form['rowvalue']?.errors) || (form['rowvalue']?.invalid && (form['rowvalue']?.dirty || form['rowvalue']?.touched))"
+                                class="invalid-feedback">
+                                <span *ngIf="form['rowvalue'].errors">Select Storage value</span>
+                            </div>
+
+                            <!-- <label class="form-label"> {{data.rowvalue}} </label> -->
+                        </div>
+                        <div class="col-6 p-2 ps-3" *ngIf="!edit || data.itemcount == 0">
+                            <ng-select name="rowvalue2" placeholder="Select" [items]="columnvalues"
+                                formControlName="rowvalue2"
+                                [ngClass]="{'is-invalid': (submit && form['rowvalue2']?.errors) || (form['rowvalue2']?.invalid && (form['rowvalue2']?.dirty || form['rowvalue2']?.touched))}">
+                            </ng-select>
+                            <div *ngIf="(submit && form['rowvalue2']?.errors) || (form['rowvalue2']?.invalid && (form['rowvalue2']?.dirty || form['rowvalue2']?.touched))"
+                                class="invalid-feedback">
+                                <span *ngIf="form['rowvalue2'].errors">Select Storage value</span>
+                            </div>
+                        </div>
+                        <!-- <div class="col-3 p-2 ps-3" *ngIf="edit">
+                            {{data.rowvalue2}}
+                        </div> -->
+                    </div>
+                </div>
+
+                <!-- Bin Value -->
+                <div class="mb-3">
+                    <div class="row">
+                        <label class="form-label required"> Bin Value</label>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6 p-2 ps-3">
+                            <ng-select name="binvalue" placeholder="Select" [items]="rowvalues"
+                                formControlName="binvalue"
+                                [ngClass]="{'is-invalid': (submit && form['binvalue']?.errors) || (form['binvalue']?.invalid && (form['binvalue']?.dirty || form['binvalue']?.touched))}">
+                            </ng-select>
+                            <div *ngIf="(submit && form['binvalue']?.errors) || (form['binvalue']?.invalid && (form['binvalue']?.dirty || form['binvalue']?.touched))"
+                                class="invalid-feedback">
+                                <span *ngIf="form['binvalue'].errors">Select Bin value</span>
+                            </div>
+                            <!-- <label class="form-label"> {{data.binvalue}} </label> -->
+
+                        </div>
+                        <div class="col-6 p-2 ps-3" *ngIf="!edit || data.itemcount === 0">
+                            <ng-select name="binvalue2" placeholder="Select" [items]="columnvalues"
+                                formControlName="binvalue2"
+                                [ngClass]="{'is-invalid': (submit && form['binvalue2']?.errors) || (form['binvalue2']?.invalid && (form['binvalue2']?.dirty || form['binvalue2']?.touched))}">
+                            </ng-select>
+                            <div *ngIf="(submit && form['binvalue2']?.errors) || (form['binvalue2']?.invalid && (form['binvalue2']?.dirty || form['binvalue2']?.touched))"
+                                class="invalid-feedback">
+                                <span *ngIf="form['binvalue2'].errors">Select Bin value</span>
+                            </div>
+                        </div>
+                        <!-- <div class="col-3 p-2 ps-3" *ngIf="edit">
+                            {{data.binvalue2}}
+                        </div> -->
+                    </div>
+                </div>
+
+                <!-- Max Count Of Shelf -->
+                <div class="mb-3">
+                    <label class="form-label required">Max Count of Shelf</label>
+                    <input class="form-control" placeholder="Enter Maxcount" type="text" name="maxcount"
+                        autocomplete="off" formControlName="maxcount"
+                        [ngClass]="{'is-invalid': (submit && form['maxcount']?.errors) || (form['maxcount']?.invalid && (form['maxcount']?.dirty || form['maxcount']?.touched))}" />
+
+                    <div *ngIf="(submit && form['maxcount']?.errors) || (form['maxcount']?.invalid && (form['maxcount']?.dirty || form['maxcount']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['maxcount'].errors">Enter valid number</span>
+                    </div>
+                </div>
+
+                <div class="mt-2">
+                    <div class="align-items-center mt-5">
+                        <button type="submit" class="btn btn-sm btn-primary m-2">Submit</button>
+                        <button type="button" class="btn btn-sm btn-secondary m-2"
+                            (click)="cancelAction()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<ng-template #rt let-r="result" let-t="term">
+    <!-- <img [src]="'https://upload.wikimedia.org/wikipedia/commons/thumb/' + r['flag']" class="me-1"
+        style="width: 16px"> -->
+    <span *ngIf="!searchFailed">{{r.department?.name}} / {{r.category?.name}} / {{r.subcategory?.name}} / </span>
+    <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+</ng-template>

@@ -1,0 +1,115 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-sm-4">
+                            <div class="search-box me-2 mb-2 d-inline-block">
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="search"
+                                        (keyup)="list()">
+                                    <i class="bx bx-search-alt search-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="text-sm-end">
+                                <button (click)="addexpensetype(content)" type="button"
+                                    class="btn btn-primary btn-sm btn-rounded mb-2 me-2"><i
+                                        class="mdi mdi-plus mr-1"></i>
+                                    Add New Expensetype</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle  table-nowrap table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="width: 70px;" class="text-center">#</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Created Date</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let expensetype of expensetypes; let i = index">
+                                    <td class="text-center">{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}</td>
+                                    <td>
+                                        <h5 class="font-size-14 mb-1"><a href="javascript: void(0);"
+                                                class="text-dark"></a>
+                                            {{expensetype.name}}
+                                        </h5>
+                                    </td>
+                                    <td>{{expensetype.status+'' === '0' ? 'Inactive' : 'Active'}}</td>
+                                    <td>{{expensetype.createdAt | date:'medium'}}</td>
+                                    <td>
+                                        <ul class="list-inline font-size-20 contact-links mb-0">
+                                            <li class="list-inline-item px-2">
+                                                <a (click)="setActiveExpensetype(content, expensetype, i)"
+                                                    href="javascript:void(0)" ngbTooltip="View Expensetype">
+                                                    <app-keenicon name="eye" class="fs-2 text-primary"></app-keenicon>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="expensetypes?.length === 0">
+                                    <td colspan="6" align="center">No Records Found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination  -->
+                    <div class="row justify-content-md-between align-items-md-center mt-2">
+                        <div class="col-sm-12 col-md-8">
+                            <div class="dataTables_length" id="tickets-table_length">
+                                <label class="d-inline-flex align-items-center">Show
+                                    <select class="form-select form-select-sm ms-2 me-2 cursor-pointer"
+                                        (change)="handlePageSizeChange($event)">
+                                        <option *ngFor="let size of pageSizes" [ngValue]="size">
+                                            {{ size }}
+                                        </option>
+                                    </select>
+                                    Entries</label>
+                            </div>
+                        </div>
+                        <!-- Pagination -->
+                        <div class="col-sm-12 col-md-4">
+                            <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true"
+                                [ellipses]="false" [boundaryLinks]="true" (pageChange)="handlePageChange($event)"
+                                [collectionSize]="count"></ngb-pagination>
+                        </div>
+                    </div>
+                    <!-- Pagination  -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pop UP Open start -->
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" *ngIf="!currentExpensetype!.id && addAction==true" id="modal-basic-title">Add
+            Expensetype</h5>
+        <h5 class="modal-title" *ngIf="currentExpensetype!.id && addAction==true" id="modal-basic-title"
+            (click)="addexpensetype(content)">Edit Expensetype</h5>
+        <h5 class="modal-title" *ngIf="currentExpensetype!.id && addAction===false" id="modal-basic-title"
+            (click)="addexpensetype(content)">View Expensetype</h5>
+        <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div *ngIf="viewAction">
+            <app-view-expensetypes (refreshList)='refreshList($event)' (editExpensetype)='editexpensetype($event)'
+                [selectedExpensetype]="currentExpensetype"></app-view-expensetypes>
+        </div>
+        <div *ngIf="addAction">
+            <app-add-expensetypes (refreshList)='refreshList($event)'
+                [data]="currentExpensetype"></app-add-expensetypes>
+        </div>
+    </div>
+</ng-template>
+<!-- Pop UP Open end -->

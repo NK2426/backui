@@ -1,0 +1,253 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <!-- <h4 class="mb-0 font-size-18 pb-3">Scan QRCode</h4> -->
+    </div>
+    <div class="col-lg-12 ps-4">
+      <div class="card">
+        <div class="card-body">
+          <form name="form" [formGroup]="disputeForm" novalidate>
+            <div class="py-5">
+              <div class="py-2 mt-3">
+                <h3 class="font-size-15 fw-bold">Scan QRCode</h3>
+              </div>
+              <div class="mb-3">
+                <div class="row">
+                  <div class="col-lg-3">
+                    <zxing-scanner [torch]="torchEnabled" (scanSuccess)="onCodeResult($event)" [tryHarder]="tryHarder"
+                      (permissionResponse)="onHasPermission($event)" (torchCompatible)="onTorchCompatible($event)"
+                      [formats]="formatsEnabled"></zxing-scanner>
+                    <!-- <zxing-scanner [torch]="torchEnabled" (scanSuccess)="onCodeResult($event)"
+                                            [formats]="formatsEnabled" [tryHarder]="tryHarder"
+                                            (permissionResponse)="onHasPermission($event)"
+                                            (torchCompatible)="onTorchCompatible($event)"></zxing-scanner> -->
+                  </div>
+                </div>
+                <input class="form-control" [(ngModel)]="scanbarcode" placeholder="Scan QRCode" type="text"
+                  name="image" autocomplete="off" (change)="verifyQRcode()"
+                  style="width: 50%; height: 70px; display: inline-block" formControlName="barcodeinput" />
+              </div>
+            </div>
+            <div *ngIf="!issaved">
+              <div *ngIf="barcodeLength > 0">
+                <!-- Upload Image -->
+                <div class="col-md-6 py-5" *ngIf="!isupdate">
+                  <h5 class="text-primary">(Upload Only .jpg,.jpeg,.png file formats)</h5>
+                  <input type="file" class="file-input form-control" (change)="onSelectedFile_image($event)"
+                    autocomplete="off" #fileupload name="sizechart" formControlName="image" />
+                  <a *ngIf="fileName !== ''" target="_blank" href="{{ fileName }}"><i class="mdi mdi-file"
+                      style="font-size: 16px"></i> Image</a>
+                  <div *ngIf="fileName === ''" class="invalid-feedback">
+                    <span>Upload File.</span>
+                  </div>
+                </div>
+                <div class="col-md-6 py-5" *ngIf="isupdate">
+                  <h5 class="text-primary">(Upload Only .jpg,.jpeg,.png file formats)</h5>
+                  <input type="file" class="file-input form-control" (change)="SelectedImage($event)" autocomplete="off"
+                    #fileupload name="sizechart" formControlName="image" />
+                  <!-- <a *ngIf="fileName !== ''" target="_blank" href="{{ fileName }}"><i class="mdi mdi-file"
+                      style="font-size: 16px"></i> Image</a> -->
+                  <div *ngIf="fileName === ''" class="invalid-feedback">
+                    <span>Upload File.</span>
+                  </div>
+                </div>
+                <div class="row my-5" *ngIf="!isupdate">
+                  <div class="col-md-6">
+                    <span class="fw-bold">SUPPLIER NAME :</span>
+                    <span class="fw-bold">{{ vName }}</span>
+                    &nbsp;&nbsp;<span class="fw-bold"><app-keenicon name="pencil" class="fs-1 text-primary" (click)="changeV(true)"></app-keenicon></span>
+                  </div>
+                </div>
+
+                <div class="row my-5" *ngIf="changevendor">
+                  <div class="col-md-6">
+                    <ng-select name="vendors" placeholder="Select Supplier" (change)="vendorchange($event)" formControlName="v_name" [items]="vendors" bindLabel="name" bindValue="name">
+                    </ng-select>
+                  </div>
+                </div>
+                
+
+                <div class="row my-5">
+                  <!-- Name -->
+                  <div class="col-md-3" *ngIf="isupdate">
+                    <label class="form-label">SUPPLIER NAME :</label>
+                    <ng-select name="vendors" placeholder="Select Supplier" (change)="vendorchange($event)"  formControlName="v_name" [items]="vendors" bindLabel="name" bindValue="name">
+                    </ng-select>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label">Barcode</label>
+                    <input type="text" name="" formControlName="barcode" class="form-control" />
+                  </div>
+
+                  <!-- Shelf ID -->
+                  <div class="col-md-3">
+                    <label class="form-label">Shelf ID</label>
+                    <input type="text" name="" formControlName="shelf_id" class="form-control" />
+                  </div>
+                  <div class="col-md-1">
+                    <label class="form-label">Quantity </label>
+                    <input type="text" name="" formControlName="qty" class="form-control" />
+                  </div>
+                  <!-- <div class="col-md-3">
+                    <label class="form-label">Color</label>
+                    <input type="text" name="" formControlName="color" class="form-control" />
+                  </div> -->
+                  <!-- <div class="col-md-3">
+                    <label class="form-label">Color</label>
+                    <select name="" id="" class="form-select" formControlName="color" (change)="color_change($event)">
+                      <option value="" selected>Choose Color</option>
+                      <ng-container *ngFor="let colr of clr; index as i">
+                        <option>
+                          {{ colr.name }}
+                        </option>
+                      </ng-container>
+                    </select>
+                  </div>
+                  <div class="col-md-1 pt-5 mt-3" *ngIf="color_code">
+                    <i class="fa fa-circle border border-dark border-1 rounded-1 p-2" [ngStyle]="{color: color_code}"
+                      style="font-size:25px;"></i>
+                  </div> -->
+                  <div class="col-md-3">
+                    <label class="form-label">Color</label>
+                    <ng-select name="brand" placeholder="Select Color" class="" formControlName="color" [items]="clr"
+                      bindLabel="name" bindValue="name" (change)="color_change($event)">
+                    </ng-select>
+                  </div>
+                  <div class="col-md-1 pt-5 mt-3" *ngIf="color_code">
+                    <i class="fa fa-circle border border-dark border-1 rounded-1 p-2" [ngStyle]="{color: color_code}"
+                      style="font-size:25px;"></i>
+                  </div>
+                                  </div>
+              </div>
+            </div>
+          </form>
+          <div class="py-5">
+            <button (click)="saveBarcodeDetail()" class="btn btn-primary btn-sm fw-bold">Submit</button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table align-middle table-nowrap table-hover">
+              <thead>
+                <tr>
+                  <th class="p-5 w-30px">#</th>
+                  <th class="text-start p-5 min-w-100px">Supplier Name</th>
+                  <th class="text-start p-5 min-w-100px">BarCode</th>
+                  <th class="text-start p-5 min-w-70px">Shelf Id</th>
+                  <!-- <th class="text-start p-5 min-w-100px">Vendor Name</th> -->
+                  <th class="text-start p-5 min-w-100px">Quantity</th>
+                  <th class="text-start p-5 min-w-100px">Color</th>
+                  <th class="text-center p-5 min-w-150px">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of tableArray; let i = index">
+                  <td class="text-center p-5">{{ page === 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}</td>
+                  <td class="p-5" *ngIf="item.v_name == null">{{ item.name  }}</td>
+                  <td class="p-5" *ngIf="item.v_name !== null">{{ item.v_name }}</td>
+                  <td class="p-5">{{ item.barcode || '--' }}</td>
+                  <td class="p-5">{{ item.shelf_id || '--' }}</td>
+                  <td class="p-5">{{ item.qty || '--' }}</td>
+                  <td class="p-5" style="text-transform: uppercase;">{{ item.color || '--' }}</td>
+                  <td class="text-center">
+                    <ul class="list-inline font-size-20 contact-links mb-0">
+                      <li class="list-inline-item px-2">
+                        <a (click)="deleteBarcode(item)" href="javascript:void(0)"
+                          ngbTooltip="Delete Barcode"><app-keenicon name="trash"
+                            class="fs-1 text-danger cursor-pointer"></app-keenicon></a>
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Pop UP Open start -->
+<!-- <ng-template #content let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">Dispute Item</h5>
+        <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+</ng-template> -->
+<!-- Pop UP Open end -->
+
+<!-- With move shelf modal content-->
+<!-- <ng-template #shelfcontent let-modal>
+    <div class="modal-header">
+        <div class="col-lg-12 col-sm-12">
+            <h4 class="d-inline-block card-title py-4">Scan Shelf</h4>
+            <button type="button" class="btn-close fa-pull-right" style="height: 70px;" aria-hidden="true"
+                (click)="closeModal()"></button>
+        </div>
+    </div>
+    <div class="modal-body">
+        <zxing-scanner [torch]="torchEnabled" (scanSuccess)="scantoShelf($event)" [tryHarder]="tryHarder"
+            (permissionResponse)="onHasPermission($event)" (torchCompatible)="onTorchCompatible($event)"
+            [enable]="!showqcscan">
+        </zxing-scanner>
+        <br />
+
+        <button *ngIf="showShelf" class="btn btn-primary" (click)="movetoShelf(shelf.shelfID)">
+            <i class="fas fa-cart-plus"></i>
+            Move to Shelf</button>
+    </div>
+</ng-template> -->
+<!-- Popup open start -->
+<!-- <ng-template #novarients let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">Add New Variant</h5>
+        <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="col-sm-12">
+            <div class="mb-3">
+                <label class="control-label"> Select Department </label>
+                <ng-select name="department" placeholder="Select Department" [items]="departments" bindLabel="name"
+                    bindValue="did" (change)="changeDepartment($event)">
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="mb-3">
+                <label class="control-label"> Select Category</label>
+                <ng-select name="class" placeholder="Select Category" [items]="class" bindLabel="name" bindValue="cid"
+                    [(ngModel)]="selectedClass" (change)="changeCategory($event)">
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="mb-3">
+                <label class="control-label"> Select Subcategory</label>
+                <ng-select name="class" placeholder="Select Subcategory" [items]="subclass" bindLabel="name"
+                    bindValue="id" [(ngModel)]="selectedSubclass" (change)="changeSubcategory($event)">
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="mb-3">
+                <label class="control-label"> Select Variant</label>
+                <ng-select name="class" placeholder="Select Variant" [items]="variantLists" bindLabel="name"
+                    bindValue="id" [(ngModel)]="selectedGroup" (change)="getVariantList()">
+                </ng-select>
+                <select name="" id="">
+                    <option value="" selected>Choose Variant</option>
+                    <option *ngFor="let variants of variantLists; index as i">
+                        {{variants[i].productvariantvalues[i].value}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <label class="form-label">Image</label>
+            <select class="form-select form-select-sm"></select>
+        </div>
+        <div>
+            <label class="form-label d-block">Description :</label>
+            <textarea class="w-100"></textarea>
+        </div>
+    </div>
+</ng-template> -->

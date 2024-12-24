@@ -1,0 +1,189 @@
+<div class="card mb-5 mb-xl-10">
+    <div class="page-title-box d-flex align-items-center justify-content-between">
+
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between mb-3">
+                <div class="col-sm-3">
+                    <!--begin::Search-->
+                    <div class="d-flex align-items-center position-relative mt-5 px-1 pt-2">
+                        <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                        <input type="text" (keyup)="searchTable($event)" placeholder="Search..."
+                            class="form-control form-control-solid ps-12" #input>
+                    </div>
+                </div>
+                <!-- <div class="col-sm-2 pt-5">
+                            <button class="btn btn-primary" (click)="novarient(novarients)">Add +</button>
+                        </div> -->
+                <div class="col-sm-3">
+                    <div>
+                        <label class="form-label"> Select Supplier</label>
+                        <ng-select class="mb-3" name="brand" placeholder="Select Supplier" [items]="vendors"
+                            bindLabel="name" bindValue="uid" [(ngModel)]="selectedVendor"
+                            (change)="changeVendor($event)">
+                        </ng-select>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle  table-nowrap table-hover">
+                    <thead>
+                        <tr>
+                            <th class="p-5 w-50px">#</th>
+                            <th class="text-start p-3 min-w-100px">Invoice No.</th>
+                            <th class="text-start p-3 min-w-100px">Supplier Name</th>
+                            <th class="text-start p-3 min-w-100px">P.O ID</th>
+                            <th class="text-start p-3 min-w-100px">GRN ID</th>
+                            <th class="text-start p-3 min-w-100px">P.O Received Date</th>
+                            <th class="text-start p-3 min-w-70px">No. of Bundles</th>
+                            <th class="text-start p-3 min-w-70px"> Bundles Received</th>
+                            <th class="text-start p-3 min-w-70px"> Product Quantity</th>
+                            <th class="text-start p-3 min-w-70px"> Received Quantity</th>
+                            <th class="text-start p-3 min-w-100px"> Buying Price </th>
+                            <!-- <th class="text-start p-3 min-w-800px"> Status </th>
+                                    <th class="text-start p-3 min-w-80px"> Ship Status </th> -->
+                            <th class="text-start p-3 min-w-100px">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let grn of grns ; let i = index">
+                            <td class="text-center fw-bold">{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}
+                            </td>
+                            <td>
+                                {{grn.invoiceno}}
+                            </td>
+
+                            <td><span class="badge badge-light-info">{{grn?.purchaseorder?.user?.name ||
+                                    '--'}}</span>
+                            </td>
+
+                            <td>
+                                <strong class="font-size-14 mb-1">{{grn?.purchaseorder?.uuid}}
+                                </strong>
+                            </td>
+
+                            <td>
+                                <strong class="font-size-14 mb-1">{{grn?.grnid}}
+                                </strong>
+                            </td>
+
+                            <td>{{grn.receiveddate | date:'mediumDate'}}</td>
+
+                            <td>
+                                {{(grn.totalbundles)}}
+                            </td>
+
+                            <td>
+                                {{(grn.receivedbundles)}}
+                            </td>
+
+                            <td>
+                                {{grn.totalitems}}
+                            </td>
+
+                            <td>
+                                {{grn.receiveditems}}
+                            </td>
+
+                            <td>&#8377; {{(grn.buyingprice)}}
+                            </td>
+
+                            <td class="text-center">
+                                <a *ngIf="grn?.purchaseorder?.ship_status=='Inward' && grn?.purchaseorder?.status!='GRN Closed' && getInteger(grn?.totalitems) > getInteger(grn.receiveditems)"
+                                    [routerLink]="['/warehouse/stocks/qcadd/'+grn?.purchaseorder?.uuid]"
+                                    class="btn btn-sm btn-primary">Stock
+                                    QC</a>
+                                <span
+                                    *ngIf="grn?.purchaseorder?.ship_status!='Inward' || grn?.purchaseorder?.status=='GRN Closed'|| getInteger(grn?.totalitems) <= getInteger(grn.receiveditems)">{{grn?.purchaseorder?.ship_status}}
+                                </span>
+                                
+                            </td>
+                        </tr>
+                        <tr *ngIf="grns?.length === 0">
+                            <td colspan="10" class="text-center fw-bold">No Records Found</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Pagination  -->
+            <div class="row justify-content-md-between align-items-md-center mt-2">
+                <div class="col-sm-12 col-md-4">
+                    <div class="dataTables_length" id="tickets-table_length"><label
+                            class="d-inline-flex align-items-center">Show
+                            <select class="form-select form-select-sm ms-2 me-2"
+                                (change)="handlePageSizeChange($event)">
+                                <option *ngFor="let size of pageSizes" [ngValue]="size">
+                                    {{ size }}
+                                </option>
+                            </select> Entries</label></div>
+                </div>
+                <div class="col-sm-12 col-md-4">
+                    <div class="text-md-right float-md-end pagination-rounded">
+                        <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true"
+                            [ellipses]="false" [boundaryLinks]="true" (pageChange)="handlePageChange($event)"
+                            [collectionSize]="count"></ngb-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Popup open start -->
+<ng-template #novarients let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">Add New Variant</h5>
+        <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="col-sm-12">
+            <div class="mb-3">
+                <label class="control-label"> Select Department </label>
+                <ng-select name="department" placeholder="Select Department" [items]="departments" bindLabel="name"
+                    bindValue="did" (change)="changeDepartment($event)">
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="mb-3">
+                <label class="control-label"> Select Class</label>
+                <ng-select name="class" placeholder="Select Class" [items]="class" bindLabel="name" bindValue="cid"
+                    [(ngModel)]="selectedClass" (change)="changeCategory($event)">
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="mb-3">
+                <label class="control-label"> Select Subclass</label>
+                <ng-select name="class" placeholder="Select Subclass" [items]="subclass" bindLabel="name" bindValue="id"
+                    [(ngModel)]="selectedSubclass" (change)="changeSubcategory($event)">
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="mb-3">
+                <label class="control-label"> Select Group</label>
+                <ng-select name="class" placeholder="Select Group" [items]="groups" bindLabel="name" bindValue="id"
+                    [(ngModel)]="selectedGroup" (change)="changeGroup($event)">
+                </ng-select>
+            </div>
+        </div>
+        <div>
+            <label class="form-label">Variant</label>
+            <select class="form-select form-select-sm"></select>
+        </div>
+
+        <div>
+            <label class="form-label">Image</label>
+            <select class="form-select form-select-sm"></select>
+        </div>
+        <div>
+            <label class="form-label d-block">Description :</label>
+            <textarea class="w-100"></textarea>
+        </div>
+    </div>
+</ng-template>

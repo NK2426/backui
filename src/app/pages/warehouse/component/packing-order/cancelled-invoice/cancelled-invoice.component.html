@@ -1,0 +1,251 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="page-title-box d-flex align-items-center justify-content-between">
+        <h4 class="mb-8 font-size-18">{{ title }}</h4>
+        <!-- <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+            <li class="breadcrumb-item active">{{ title }}</li>
+          </ol>
+        </div> -->
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-sm-2">
+              <div class="search-box me-2 mb-2">
+                <div class="position-relative">
+                  <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="search"
+                    (keyup)="invoiceList()" />
+                  <i class="bx bx-search-alt search-icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <ng-select name="qdp" placeholder="Select Date" [items]="quickDatePickerInput" bindLabel="displayName"
+                bindValue="value" [(ngModel)]="selectedDate" (change)="changeQuickDatePicker($event)">
+              </ng-select>
+            </div>
+            <div class="col-sm-8 d-flex justify-content-space-evenly align-items-center">
+              <div class="col-xl-12">
+                <form class="row">
+                  <div class="col-5">
+                    <div class="dp-hidden position-absolute">
+                      <div class="input-group">
+                        <input name="datepicker" class="form-control" ngbDatepicker #datepicker="ngbDatepicker"
+                          [autoClose]="'outside'" (dateSelect)="onDateSelection($event)" [displayMonths]="2"
+                          [dayTemplate]="t" outsideDays="hidden" [startDate]="ngbFromDate!" tabindex="-1" />
+                        <ng-template #t let-date let-focused="focused">
+                          <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+                            [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+                            (mouseleave)="hoveredDate = null">
+                            {{ date.day }}
+                          </span>
+                        </ng-template>
+                      </div>
+                    </div>
+                    <div class="input-group">
+                      <input #dpFromDate class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate"
+                        [value]="formatter.format(ngbFromDate)"
+                        (input)="ngbFromDate = validateInput(ngbFromDate, dpFromDate.value)" />
+                      <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()"
+                        type="button">
+                        <i class="fas fa-calendar-alt fa-fw"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="col-5">
+                    <div class="input-group">
+                      <input #dpToDate class="form-control" placeholder="yyyy-mm-dd" name="dpToDate"
+                        [value]="formatter.format(ngbToDate)"
+                        (input)="ngbToDate = validateInput(ngbToDate, dpToDate.value)" />
+                      <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()"
+                        type="button">
+                        <i class="fas fa-calendar-alt fa-fw"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="col-2">
+                    <div class="btn-group" *ngIf="invoiceDetails && invoiceDetails.length">
+                      <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                        aria-expanded="false" (click)="downloadInvoice('xlcancelinvoicereport')">
+                        Download
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li>
+                          <a class="dropdown-item" role="button"
+                            (click)="downloadInvoice('xlcancelinvoicereport')">Return Invoice</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table align-middle table-nowrap table-hover">
+              <thead>
+                <tr >
+                  <th scope="col" style="width: 70px"></th>
+                  <th scope="col" style="width: 70px">#</th>
+                  <th scope="col" sortable="invoiceno" (sort)="onSort($event)">Invoice #</th>
+                  <th scope="col" sortable="invoicedate" (sort)="onSort($event)">Invoice Date</th>
+                  <th scope="col" sortable="orderID" (sort)="onSort($event)">Order ID</th>
+                  <th scope="col" sortable="createdAt" (sort)="onSort($event)">Order Date</th>
+                  <th scope="col" sortable="user.name" (sort)="onSort($event)">Customer Name</th>
+                  <th style="text-align: right" scope="col">Number of Items</th>
+                  <th style="text-align: right" scope="col" sortable="grandtotal" (sort)="onSort($event)">Invoice Value
+                  </th>
+                  <th scope="col">Delivered Date</th>
+                  <th scope="col">Returns</th>
+                  <!-- <th scope="col">Replacement</th> -->
+                  <th scope="col" sortable="order.paymentmethod" (sort)="onSort($event)">Payment Mode</th>
+                  <th scope="col" sortable="order.modeofpayment" (sort)="onSort($event)">Payment Type</th>
+                  <th style="text-align: right" scope="col" sortable="order.paymentStatus" (sort)="onSort($event)">
+                    Payment Received
+                  </th>
+                  <th scope="col" sortable="order.ship_status" (sort)="onSort($event)">Current Order Status</th>
+                  <th style="text-align: right" scope="col" sortable="order.deliverycharge" (sort)="onSort($event)">
+                    Delivery Charge</th>
+                  <th style="text-align: right" scope="col" sortable="status" (sort)="onSort($event)">Invoice Status
+                  </th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let invoice of invoiceDetails; let i = index">
+                <tr>
+                  <td align="center">
+                    <a class="expand-row" (click)="changeValue(i)"> <span *ngIf="!hideme[i]">+</span> <span
+                        *ngIf="hideme[i]">-</span> </a>
+                  </td>
+                  <td>{{ page === 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}</td>
+                  <td>{{ invoice.invoiceno }}</td>
+                  <td>{{ invoice.invoicedate | date: 'medium' }}</td>
+                  <td>{{ invoice.orderID || '--' }}</td>
+                  <td>{{ invoice.createdAt | date: 'medium' }}</td>
+                  <!-- <td>{{ invoice.user?.name || '--' }}</td> -->
+                  <td style="text-align: right">{{ invoice.invoiceorderitems?.length || '--' }}</td>
+                  <td style="text-align: right">{{ numberFormat(invoice.grandtotal) || 0 }}</td>
+                  <td>{{ '--' }}</td>
+                  <!--delivered date-->
+                  <td>{{ '--' }}</td>
+                  <!--returns-->
+                  <!-- <td>{{ '--' }}</td> -->
+                  <!--replacement-->
+                  <td>{{ invoice.order?.paymentmethod || '--' }}</td>
+                  <td>{{ invoice.order?.modeofpayment || '--' }}</td>
+                  <td>{{ invoice.order?.paymentStatus || '--' }}</td>
+                  <!--need discussion-->
+                  <td>{{ invoice.order?.ship_status || '--' }}</td>
+                  <td style="text-align: right">{{ numberFormat(invoice.order?.deliverycharge) || '--' }}</td>
+                  <td>{{ invoice?.status || '--' }}</td>
+                  <td>
+                    <button class="btn btn-primary"
+                      [routerLink]="['/warehouse/packingorders/invoice/' + invoice?.invoiceno]">View
+                      Invoice</button>
+                  </td>
+                </tr>
+                <tr *ngIf="hideme[i]" class="sub-table no-bg">
+                  <td align="center"></td>
+                  <td colspan="15" class="p-0">
+                    <table class="table mb-0 table-striped">
+                      <thead class="bg-dark">
+                        <tr>
+                          <th scope="col">S.No</th>
+                          <th style="text-align: right" scope="col">Quantity</th>
+                          <th style="text-align: right" scope="col">Gross Price</th>
+                          <th style="text-align: right" scope="col">Discount</th>
+                          <th style="text-align: right" scope="col">Taxable Amount</th>
+                          <th scope="col">HSN</th>
+                          <th style="text-align: right" scope="col">Net Amount</th>
+
+                          <th style="text-align: right" scope="col">CGST%</th>
+                          <th style="text-align: right" scope="col">CGST Amnt</th>
+                          <th style="text-align: right" scope="col">SGST%</th>
+                          <th style="text-align: right" scope="col">SGST Amnt</th>
+                          <th style="text-align: right" scope="col">IGST%</th>
+                          <th style="text-align: right" scope="col">IGST Amnt</th>
+                          <th style="text-align: right" scope="col">CESS</th>
+                          <th style="text-align: right" scope="col">Tax %</th>
+
+                          <th scope="col">Total</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let nestedTable of currentInvoiceOrderItems; let j = index">
+                          <td>{{ page === 1 ? j + 1 : j + 1 + pageSize * (page - 1) }}</td>
+                          <td style="text-align: right">{{ nestedTable.quantity }}</td>
+                          <td style="text-align: right">{{ numberFormat(nestedTable.price) }}</td>
+                          <td style="text-align: right">{{ numberFormat(nestedTable.discount) }}</td>
+                          <td style="text-align: right">{{ numberFormat(nestedTable.taxamount) }}</td>
+                          <td>{{ nestedTable.hsncode }}</td>
+                          <td style="text-align: right">{{ numberFormat(nestedTable.total) }}</td>
+
+                          <td style="text-align: right">
+                            {{ nestedTable.ctax || '--' }}
+                          </td>
+                          <td style="text-align: right">
+                            {{ nestedTable.ctaxval || '--' }}
+                          </td>
+                          <td style="text-align: right">
+                            {{ nestedTable.stax || '--' }}
+                          </td>
+                          <td style="text-align: right">
+                            {{ nestedTable.staxval || '--' }}
+                          </td>
+                          <td style="text-align: right">
+                            {{ nestedTable.itax || '--' }}
+                          </td>
+                          <td style="text-align: right">
+                            {{ nestedTable.itaxval || '--' }}
+                          </td>
+                          <td style="text-align: right">{{ nestedTable.shiptax || '--' }}</td>
+                          <!-- NEED TO REPLACE WITH CESS-->
+                          <td style="text-align: right">{{ numberFormat(nestedTable.taxpercentage) }}</td>
+
+                          <td style="text-align: right">{{ numberFormat(nestedTable.grandtotal) }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+
+                <tr *ngIf="invoiceDetails?.length === 0">
+                  <td colspan="12" align="center">No Records Found</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Pagination  -->
+          <div class="row justify-content-md-between align-items-md-center mt-2">
+            <div class="col-sm-12 col-md-4">
+              <div class="dataTables_length" id="tickets-table_length">
+                <label class="d-inline-flex align-items-center">Show
+                  <select class="form-select form-select-sm ms-2 me-2" (change)="handlePageSizeChange($event)">
+                    <option *ngFor="let size of pageSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select>
+                  Entries</label>
+              </div>
+            </div>
+            <!-- Pagination -->
+            <div class="col-sm-12 col-md-8">
+              <div class="text-md-right float-md-end pagination-rounded">
+                <ngb-pagination class="pagination pagination-rounded justify-content-center mt-4" size="lg"
+                  [(page)]="page" [pageSize]="pageSize" (pageChange)="handlePageChange($event)" [collectionSize]="count"
+                  [maxSize]="10" [rotate]="true">
+                  <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i> </ng-template>
+                  <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+                </ngb-pagination>
+              </div>
+            </div>
+          </div>
+          <!-- Pagination  -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

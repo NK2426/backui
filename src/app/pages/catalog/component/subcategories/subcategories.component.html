@@ -1,0 +1,134 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-5">
+                    <div class="col-sm-2">
+                        <!--begin::Search-->
+                        <div class="d-flex align-items-center position-relative my-1 px-1 pt-3">
+                            <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                            </i>
+                            <input type="text" (keyup)="searchTable($event)" placeholder="Search..."
+                                class="form-control form-control-solid ps-12" #input>
+                        </div>
+                    </div>
+
+                    <!-- Department -->
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <!-- <label class="control-label"> Select Department </label>
+                            <ng-select name="department" placeholder="Select Department" [items]="departments"
+                                bindLabel="name" bindValue="did" (change)="changeDepartment($event)">
+                            </ng-select> -->
+                        </div>
+                    </div>
+
+                    <!-- Class -->
+                    <div class="col-sm-4">
+                        <div class="mb-3">
+                            <label class="control-label"> Select Category</label>
+                            <ng-select name="class" placeholder="Select Category" [items]="class" bindLabel="name"
+                                bindValue="cid" [(ngModel)]="selectedClass" (change)="changeCategory($event)">
+                            </ng-select>
+                        </div>
+                    </div>
+                    <!-- <div class="col-sm-3"> -->
+                        <!-- <div class="text-sm-end">
+                                 <button (click)="addSubcategory(content)" type="button" class="btn btn-primary btn-rounded mb-2 me-2"><i class="mdi mdi-plus mr-1"></i>
+                                     Add New Subclass</button>
+                             </div> -->
+                    <!-- </div> -->
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle  table-nowrap table-hover">
+                        <thead>
+                            <tr>
+                                <th class="p-5 w-50px">#</th>
+                                <!-- <th class="text-start p-5 min-w-100px">Department</th> -->
+                                <th class="text-start p-5 min-w-100px">Category</th>
+                                <th class="text-start p-5 min-w-100px">Subcategory</th>
+                                <th class="text-start p-5 min-w-100px"> Image </th>
+                                <th class="text-start p-5 min-w-100px">Status</th>
+                                <th class="text-start p-5 min-w-100px">Slug</th>
+                                <th class="text-start p-5 min-w-100px">Position</th>
+                                <!-- scope="col" sortable="position" (sort)="onSort($event)" -->
+                                <th class="text-start p-5 min-w-100px">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let category of subcategories; let i = index">
+                                <td class="p-5">{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}</td>
+                                <!-- <td class="p-5">{{category.department?.name}}</td> -->
+                                <td class="p-5">{{category.category?.name}}</td>
+                                <td class="p-5">
+                                    <strong><a href="javascript: void(0);" class="text-dark"></a>
+                                        {{category.name}}
+                                    </strong>
+                                </td>
+                                <td class="p-5"><img src="{{category.image}}" alt="Icon" height="60" width="50"></td>
+                                <td class="p-5">{{category.status+'' === '0' ? 'Inactive' : 'Active'}}</td>
+                                <td class="p-5">{{category.slug}}</td>
+                                <td class="p-5">{{category.position || '--' }}</td>
+                                <td class="p-5">
+                                    <ul class="list-inline font-size-20 contact-links mb-0">
+                                        <li class="list-inline-item px-2">
+                                            <a [routerLink]="['/catalog/subcategories/view/'+category.uuid]"
+                                                [state]="{uuid: category.uuid}" ngbTooltip="View Subcategory">View
+                                                Subcategory</a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr *ngIf="subcategories?.length === 0">
+                                <td colspan="6" class="text-center fw-bold">No Records Found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination  -->
+                <div class="row justify-content-md-between align-items-md-center mt-2">
+                    <div class="col-sm-12 col-md-8">
+                        <div class="dataTables_length" id="tickets-table_length"><label
+                                class="d-inline-flex align-items-center">Show
+                                <select class="form-select form-select-sm ms-2 me-2"
+                                    (change)="handlePageSizeChange($event)">
+                                    <option *ngFor="let size of pageSizes" [ngValue]="size">
+                                        {{ size }}
+                                    </option>
+                                </select> Entries</label></div>
+                    </div>
+                    <!-- Pagination -->
+                    <div class="col-sm-12 col-md-4">
+                        <div class="text-md-right float-md-end pagination-rounded">
+                            <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true"
+                                [ellipses]="false" [boundaryLinks]="true" (pageChange)="handlePageChange($event)"
+                                [collectionSize]="count"></ngb-pagination>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pop UP Open start -->
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <!-- <h5 class="modal-title"  *ngIf="!currentSubcategory!.uuid" id="modal-basic-title" >Add Subclass</h5>
+       <h5 class="modal-title"  *ngIf="currentSubcategory!.uuid && addAction==true" id="modal-basic-title" (click)="addSubcategory(content)">Edit Subclass</h5> -->
+        <h5 class="modal-title" *ngIf="currentSubcategory!.uuid && addAction==false" id="modal-basic-title"
+            (click)="addSubcategory(content)">View Subcategory</h5>
+        <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <!-- <div *ngIf="viewAction">
+             <app-view-subcategories (refreshList)='refreshList($event)' (editSubcategory)='editSubcategory($event)'  [selectedSubcategory]="currentSubcategory"></app-view-subcategories>
+         </div> -->
+        <!-- <div *ngIf="addAction">
+             <app-add-subcategories (refreshList)='refreshList($event)' [data]="currentSubcategory"></app-add-subcategories>
+         </div> -->
+    </div>
+</ng-template>
+<!-- Pop UP Open end -->

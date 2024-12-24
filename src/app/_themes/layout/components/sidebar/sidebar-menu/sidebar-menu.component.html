@@ -1,0 +1,1816 @@
+<!--begin::Menu wrapper-->
+<div
+  id="kt_app_sidebar_menu_wrapper"
+  class="app-sidebar-wrapper hover-scroll-overlay-y my-5"
+  data-kt-scroll="true"
+  data-kt-scroll-activate="true"
+  data-kt-scroll-height="auto"
+  data-kt-scroll-dependencies="#kt_app_sidebar_logo, #kt_app_sidebar_footer"
+  data-kt-scroll-wrappers="#kt_app_sidebar_menu"
+  data-kt-scroll-offset="5px"
+  data-kt-scroll-save-state="true"
+>
+  <!--begin::Menu-->
+  <div
+    class="menu menu-column menu-rounded menu-sub-indention px-3"
+    id="#kt_app_sidebar_menu"
+    data-kt-menu="true"
+    data-kt-menu-expand="false"
+  >
+    <!-- Dashboard -->
+    <div class="menu-item" *ngxPermissionsOnly="['ADMIN', 'HR', 'WEBTEAM', 'WHO', 'CATEGORY_HEAD', 'PURCHASE_HEAD', 'PURCHASE', 'VENDOR']">
+      <a class="menu-link without-sub" routerLink="/dashboard" routerLinkActive="active">
+        <span class="menu-icon">
+          <app-keenicon name="home-2" class="fs-2 text-primary"></app-keenicon>
+        </span>
+        <span class="menu-title" translate="MENU.DASHBOARD"></span>
+      </a>
+    </div>
+    <!-- Index -->
+    <!-- <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
+            <span class="menu-link">
+                <span class="menu-icon">
+                    <app-keenicon name="chart-pie-simple" class="fs-2 text-primary"></app-keenicon>
+                </span>
+
+                <span class="menu-title">Index</span>
+                <span class="menu-arrow"></span>
+            </span>
+            <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+                <div class="menu-item">
+                    <a class="menu-link without-sub" routerLinkActive="active" routerLink="index/overall-dashboard">
+                        <span class="menu-bullet">
+                            <span class="bullet bullet-dot"></span>
+                        </span>
+                        <span class="menu-title">Overall Dashboard</span>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a class="menu-link without-sub" routerLinkActive="active" routerLink="/index/purchase-dashboard">
+                        <span class="menu-bullet">
+                            <span class="bullet bullet-dot"></span>
+                        </span>
+                        <span class="menu-title">Purchase Dashboard</span>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a class="menu-link without-sub" routerLinkActive="active" routerLink="index/sales-dashboard">
+                        <span class="menu-bullet">
+                            <span class="bullet bullet-dot"></span>
+                        </span>
+                        <span class="menu-title">Sales Dashboard</span>
+                    </a>
+                </div>
+            </div>
+        </div> -->
+    <!-- HR -->
+    <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show" *ngxPermissionsOnly="['ADMIN', 'HR']">
+      <span class="menu-link">
+        <span class="menu-icon">
+          <app-keenicon name="user" class="fs-2 text-primary"></app-keenicon>
+        </span>
+        <span class="menu-title">HRMS </span>
+        <span class="menu-arrow"></span>
+      </span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <!-- Employee -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="hr/employees">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Onboarding Employees</span>
+          </a>
+        </div>
+        <!-- Attendance -->
+        <!-- <div class="menu-item">
+                    <a class="menu-link without-sub" routerLinkActive="active" routerLink="hr/attendance">
+                        <span class="menu-bullet">
+                            <span class="bullet bullet-dot"></span>
+                        </span>
+                        <span class="menu-title">Attendance</span>
+                    </a>
+                </div> -->
+        <!-- Leave Types -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="hr/leavestypes">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Leave Types</span>
+          </a>
+        </div>
+        <!-- Leaves -->
+        <!-- <div class="menu-item">
+                    <a class="menu-link without-sub" routerLinkActive="active" routerLink="hr/leaves">
+                        <span class="menu-bullet">
+                            <span class="bullet bullet-dot"></span>
+                        </span>
+                        <span class="menu-title">Leave</span>
+                    </a>
+                </div> -->
+        <!-- Employee Roles -->
+        <!-- <div class="menu-item">
+                    <a class="menu-link without-sub" routerLinkActive="active" routerLink="hr/employee-roles">
+                        <span class="menu-bullet">
+                            <span class="bullet bullet-dot"></span>
+                        </span>
+                        <span class="menu-title">Employee Roles</span>
+                    </a>
+                </div> -->
+        <!-- Employee Salaries -->
+        <!-- <div class="menu-item">
+                    <a class="menu-link without-sub" routerLinkActive="active" routerLink="hr/employee-salary">
+                        <span class="menu-bullet">
+                            <span class="bullet bullet-dot"></span>
+                        </span>
+                        <span class="menu-title">Employee Salaries</span>
+                    </a>
+                </div> -->
+      </div>
+    </div>
+
+    <!-- Products -->
+    <div
+      class="menu-item menu-accordion"
+      data-kt-menu-trigger="click"
+      routerLinkActive="here show"
+      *ngxPermissionsOnly="['ADMIN', 'CATEGORY_HEAD']"
+    >
+      <span class="menu-link">
+        <span class="menu-icon">
+          <app-keenicon name="security-user" class="fs-2 text-primary"></app-keenicon>
+        </span>
+        <span class="menu-title">Products </span>
+        <span class="menu-arrow"></span>
+      </span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <!-- Categories -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="category-head/categories">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Categories</span>
+          </a>
+        </div>
+
+        <!-- Sub Categories -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="category-head/subcategories">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Sub Categories</span>
+          </a>
+        </div>
+        <!-- Groups -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="category-head/groups">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Groups</span>
+          </a>
+        </div>
+
+        <!-- Add new Product -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="category-head/products">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Product List</span>
+          </a>
+        </div>
+
+        <!-- Product Parameters -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="category-head/productparameters">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Product Parameters</span>
+          </a>
+        </div>
+
+        <!-- Product Variant -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="category-head/productvariant">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Product Variant</span>
+          </a>
+        </div>
+
+        <!-- Request Approval -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="category-head/request">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Request Approval</span>
+          </a>
+        </div>
+
+        <!-- Brands -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="category-head/brands">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Brands</span>
+          </a>
+        </div>
+
+        <!-- Tax -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="category-head/tax">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Tax</span>
+          </a>
+        </div>
+
+        <!-- Payment Terms -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="category-head/payment">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Payment Terms</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Purchase -->
+    <div
+      class="menu-item menu-accordion"
+      data-kt-menu-trigger="click"
+      routerLinkActive="here show"
+      *ngxPermissionsOnly="['ADMIN', 'PURCHASE_HEAD', 'PURCHASE']"
+    >
+      <span class="menu-link">
+        <span class="menu-icon">
+          <app-keenicon name="purchase" class="fs-2 text-primary"></app-keenicon>
+        </span>
+        <span class="menu-title">Procurement </span>
+        <span class="menu-arrow"></span>
+      </span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <!-- P.O List -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="po/po">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Procurement List</span>
+          </a>
+        </div>
+        <!-- Create P.O -->
+        <!-- <div class="menu-item" *ngxPermissionsOnly="['ADMIN', 'PURCHASE']">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="po/create-po">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Create P.O</span>
+          </a>
+        </div> -->
+        <!-- In-Approval P.O -->
+        <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="po/po/process">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">In-Approval P.O</span>
+          </a>
+        </div> -->
+        <!-- Hold P.O -->
+        <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="po/po/halt">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Hold P.O</span>
+          </a>
+        </div> -->
+        <!-- Approved P.O -->
+        <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="po/po/approved">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Approved P.O</span>
+          </a>
+        </div> -->
+        <!-- In-Transit P.O -->
+        <!-- <div class="menu-item">
+                    <a class="menu-link without-sub" routerLinkActive="active" routerLink="po/po/intransit">
+                        <span class="menu-bullet">
+                            <span class="bullet bullet-dot"></span>
+                        </span>
+                        <span class="menu-title">In-Transit P.O</span>
+                    </a>
+                </div> -->
+        <!-- Completed P.O -->
+        <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="po/po/revise">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Revised P.O</span>
+          </a>
+        </div> -->
+        <!-- Rejected P O -->
+        <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="po/po/reject">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Rejected P.O</span>
+          </a>
+        </div> -->
+        <!-- Rejected P O -->
+        <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="po/po/vendor_revise">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Vendor Revised P.O</span>
+          </a>
+        </div> -->
+        <!-- Rejected P O -->
+        <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="po/po/accept">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Vendor Approved P.O</span>
+          </a>
+        </div> -->
+        <!-- Rejected P O -->
+        <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="po/po/decline">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Vendor Rejected P.O</span>
+          </a>
+        </div> -->
+      </div>
+    </div>
+
+    <!-- Vendor -->
+    <div
+      class="menu-item menu-accordion"
+      data-kt-menu-trigger="click"
+      routerLinkActive="here show"
+      *ngxPermissionsOnly="['ADMIN', 'VENDOR', 'CATEGORY_HEAD', 'PURCHASE']"
+    >
+      <span class="menu-link">
+        <span class="menu-icon">
+          <app-keenicon name="user-tick" class="fs-2 text-primary"></app-keenicon>
+        </span>
+        <span class="menu-title">Suppliers </span>
+        <span class="menu-arrow"></span>
+      </span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <!-- Create New Vendor -->
+        <div class="menu-item" *ngxPermissionsOnly="['ADMIN', 'VENDOR', 'CATEGORY_HEAD', 'PURCHASE']">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="category-head/vendor/add">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Create new Supplier</span>
+          </a>
+        </div>
+        <!-- Vendor List -->
+        <div class="menu-item" *ngxPermissionsOnly="['ADMIN', 'VENDOR', 'CATEGORY_HEAD', 'PURCHASE']">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="category-head/vendors">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Supplier List</span>
+          </a>
+        </div>
+        <!-- Vendor Agent List -->
+        <div class="menu-item" *ngxPermissionsOnly="['ADMIN', 'VENDOR', 'CATEGORY_HEAD','PURCHASE']">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="category-head/vendoragent">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Supplier Agent List</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Warehouse inward -->
+    <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show" *ngxPermissionsOnly="['ADMIN', 'WHO']">
+      <span class="menu-link">
+        <span class="menu-icon">
+          <app-keenicon name="message-text-2" class="fs-2 text-primary"></app-keenicon>
+        </span>
+        <span class="menu-title">Store : Inbound</span>
+        <span class="menu-arrow"></span>
+      </span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <!-- Good In-tansit -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLink="warehouse/orders">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">In-transit</span>
+          </a>
+        </div>
+        <!-- Bundle Inward -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="warehouse/orders/inward">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Bundle Inbound</span>
+          </a>
+        </div>
+        <!-- Inward Document-->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="warehouse/orders/grninward">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Inward Documents</span>
+          </a>
+        </div>
+        <!-- Stock QC -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="warehouse/orders/grnqc">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Stock QC</span>
+          </a>
+        </div>
+        <!-- Damaged Stock -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="warehouse/goods-receipt">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Goods Receipt</span>
+          </a>
+        </div>
+
+        <!-- Return QC -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="warehouse/stocks/returnqc">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Return QC</span>
+          </a>
+        </div>
+
+        <!-- Shelf Transfer -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="warehouse/shelftransfer">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Shelf Transfer</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Warehouse - Barcode -->
+   <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show" *ngxPermissionsOnly="['ADMIN', 'WHO']">
+      <span class="menu-link">
+        <span class="menu-icon">
+          <app-keenicon name="soft-3" class="fs-2 text-primary"></app-keenicon>
+        </span>
+        <span class="menu-title">Store : Audit</span>
+        <span class="menu-arrow"></span>
+      </span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="warehouse/stockqc-list">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Stock QC Barcode List</span>
+          </a>
+        </div>
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="warehouse/trash-list">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Barcode Trash List</span>
+          </a>
+        </div> -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="warehouse/audit-store">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Stock Audit</span>
+          </a>
+        </div>
+      </div>
+    </div>
+     <!--<div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show"
+      *ngxPermissionsOnly="['ADMIN', 'WHO']"> -->
+    <!-- <span class="menu-link">
+        <span class="menu-icon">
+          <app-keenicon name="abstract-26" class="fs-2 text-primary"></app-keenicon>
+        </span>
+        <span class="menu-title">Store: Outbound</span>
+        <span class="menu-arrow"></span>
+      </span> -->
+    <!-- <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg"> -->
+    <!-- Picking -->
+    <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="warehouse/pickingorders">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Picking</span>
+          </a>
+        </div> -->
+    <!-- Bundle Inward -->
+    <!-- <div class="menu-item">
+          <a class="menu-link without-sub"  routerLink="warehouse/packingorders">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Packing</span>
+          </a>
+        </div> -->
+
+    <!-- Invoice -->
+    <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="warehouse/packingorders/invoice">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Invoice Management</span>
+          </a>
+        </div> -->
+    <!-- Manifest -->
+    <!-- <div class="menu-item">
+          <a class="menu-link without-sub"  routerLink="warehouse/packingorders/manifest">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Manifest Invoice</span>
+          </a>
+        </div> -->
+    <!-- Shipped -->
+    <!-- <div class="menu-item">
+          <a class="menu-link without-sub"  routerLink="warehouse/shipped-invoices">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Shipped Invoice</span>
+          </a>
+        </div> -->
+    <!-- Cancelled invoiceDetails -->
+    <!-- <div class="menu-item">
+          <a class="menu-link without-sub"  routerLink="warehouse/cancelled-invoices">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Cancelled Invoice</span>
+          </a>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- warehouse Data master -->
+    <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show" *ngxPermissionsOnly="['ADMIN', 'WHO']">
+      <span class="menu-link">
+        <span class="menu-icon">
+          <app-keenicon name="crown" class="fs-2 text-primary"></app-keenicon>
+        </span>
+        <span class="menu-title">Store : Data Master</span>
+        <span class="menu-arrow"></span>
+      </span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <!-- Inventory Management -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="warehouse/inventory-control">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Inventory Management</span>
+          </a>
+        </div>
+        <!-- Shelf Master -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="warehouse/shelves">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Shelf Master</span>
+          </a>
+        </div>
+        <!-- Crate Management -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="warehouse/cratemanagement">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Crate Management</span>
+          </a>
+        </div>
+        <!-- Billing -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="warehouse/billingcounter">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Billing Counter</span>
+          </a>
+        </div>
+
+        <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="warehouse/packages">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Packaging Master</span>
+          </a>
+        </div> -->
+
+        <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="warehouse/shippers">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Shipper Master</span>
+          </a>
+        </div> -->
+      </div>
+    </div>
+
+    <!-- warehouse: Reverse logistice -->
+    <!-- <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show"
+      *ngxPermissionsOnly="['ADMIN', 'WHO']">
+      <span class="menu-link">
+        <span class="menu-icon">
+          <app-keenicon name="truck" class="fs-2 text-primary"></app-keenicon>
+        </span>
+        <span class="menu-title">Store : Reverse Logistics</span>
+        <span class="menu-arrow"></span>
+      </span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="warehouse/returns">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Returned Order</span>
+          </a>
+        </div>
+        
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="warehouse/returninvoices">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Returned Invoice</span>
+          </a>
+        </div>
+      </div>
+    </div> -->
+    <!-- warehouse: Managment -->
+    <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show" *ngxPermissionsOnly="['ADMIN']">
+      <span class="menu-link">
+        <span class="menu-icon">
+          <app-keenicon name="delivery-door" class="fs-2 text-primary"></app-keenicon>
+        </span>
+        <span class="menu-title">Store Management</span>
+        <span class="menu-arrow"></span>
+      </span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="warehouse/warehouse-list">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Store list</span>
+          </a>
+        </div>
+
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="warehouse/add-warehouse">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Add Store</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Catalog -->
+    <div
+      class="menu-item menu-accordion"
+      data-kt-menu-trigger="click"
+      routerLinkActive="here show"
+      *ngxPermissionsOnly="['WEBTEAM', 'ADMIN']"
+    >
+      <span class="menu-link">
+        <span class="menu-icon">
+          <app-keenicon name="lots-shopping" class="fs-2 text-primary"></app-keenicon>
+        </span>
+        <span class="menu-title">App</span>
+        <span class="menu-arrow"></span>
+      </span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <!-- Catalog Product -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/products">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title"> Products</span>
+          </a>
+        </div>
+        <!-- Product Item -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/productitems">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Product Item</span>
+          </a>
+        </div>
+
+        <!-- Combo -->
+        <!--  <div class="menu-item">
+                    <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/combo">
+                        <span class="menu-bullet">
+                            <span class="bullet bullet-dot"></span>
+                        </span>
+                        <span class="menu-title">Catalog : Combo</span>
+                    </a>
+                </div> -->
+
+        <!-- Tags -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/tags">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Tags</span>
+          </a>
+        </div>
+
+        <!-- Catalog Orders -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/orders">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title"> Orders</span>
+          </a>
+        </div>
+
+        <!-- Catalog Orders -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLink="catalog/invoice">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title"> Invoice</span>
+          </a>
+        </div>
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/manifest">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title"> Manifest Invoies</span>
+          </a>
+        </div>
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLink="catalog/returns">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Returned Order</span>
+          </a>
+        </div>
+
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLink="catalog/returninvoices">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Returned Invoice</span>
+          </a>
+        </div>
+
+        <!-- Catalog : PO -->
+        <!--   <div class="menu-item">
+                    <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/pos">
+                        <span class="menu-bullet">
+                            <span class="bullet bullet-dot"></span>
+                        </span>
+                        <span class="menu-title">Catalog : PO</span>
+                    </a>
+                </div> -->
+
+        <!-- Catalog : Home Page Settings -->
+        <!-- <div class="menu-item">
+                    <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/homesetting/home">
+                        <span class="menu-bullet">
+                            <span class="bullet bullet-dot"></span>
+                        </span>
+                        <span class="menu-title">Home Page Settings</span>
+                    </a>
+                </div> -->
+
+        <!-- Catalog : Sub categories or sub class -->
+        <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/subcategories">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Sub Category</span>
+          </a>
+        </div> -->
+
+        <!-- Catalog : Group -->
+        <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/groups">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Group</span>
+          </a>
+        </div>
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/homesetting/home">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Home Page Settings</span>
+          </a>
+        </div> -->
+
+        <!-- Catalog : Notification -->
+        <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/notifications">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Push Notification</span>
+          </a>
+        </div> -->
+      </div>
+    </div>
+    <!-- 2. Catalog Page Setting -->
+    <div
+      class="menu-item menu-accordion"
+      data-kt-menu-trigger="click"
+      routerLinkActive="here show"
+      *ngxPermissionsOnly="['WEBTEAM', 'ADMIN']"
+    >
+      <!-- Page Settings -->
+      <span class="menu-link">
+        <span class="menu-icon">
+          <app-keenicon name="book-square" class="fs-2 text-primary"></app-keenicon>
+        </span>
+        <span class="menu-title">APP Settings</span>
+        <span class="menu-arrow"></span>
+      </span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <!-- Home Page Settings -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLink="catalog/homesetting/home">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title"> App Home Page Settings</span>
+          </a>
+        </div>
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLink="catalog/homesettings/web">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title"> Web Home Page Settings</span>
+          </a>
+        </div>
+        <!-- Category -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLink="catalog/categories">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Category</span>
+          </a>
+        </div>
+        <!-- Subcategory -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLink="catalog/subcategories">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Sub Category</span>
+          </a>
+        </div>
+        <!-- Group -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLink="catalog/groups">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Group</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div
+      class="menu-item menu-accordion"
+      data-kt-menu-trigger="click"
+      routerLinkActive="here show"
+      *ngxPermissionsOnly="['ADMIN', 'WEBTEAM']"
+    >
+      <span class="menu-link">
+        <span class="menu-icon">
+          <app-keenicon name="delivery-door" class="fs-2 text-primary"></app-keenicon>
+        </span>
+        <span class="menu-title">Stores</span>
+        <span class="menu-arrow"></span>
+      </span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/stores">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Store list</span>
+          </a>
+        </div>
+
+        <!-- <div class="menu-item">
+        <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/add-store">
+          <span class="menu-bullet">
+            <span class="bullet bullet-dot"></span>
+          </span>
+          <span class="menu-title">Add Store</span>
+        </a>
+      </div> -->
+      </div>
+    </div>
+
+    <!-- Webteam -->
+    <div
+      class="menu-item menu-accordion"
+      data-kt-menu-trigger="click"
+      routerLinkActive="here show"
+      *ngxPermissionsOnly="['ADMIN', 'WEBTEAM']"
+    >
+      <span class="menu-link">
+        <span class="menu-icon">
+          <app-keenicon name="delivery-door" class="fs-2 text-primary"></app-keenicon>
+        </span>
+        <span class="menu-title">Blogs</span>
+        <span class="menu-arrow"></span>
+      </span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/blogs">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Blog list</span>
+          </a>
+        </div>
+
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/add-blog">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Add Blog</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div
+      class="menu-item menu-accordion"
+      data-kt-menu-trigger="click"
+      routerLinkActive="here show"
+      *ngxPermissionsOnly="['WEBTEAM', 'ADMIN']"
+    >
+      <span class="menu-link">
+        <span class="menu-icon">
+          <app-keenicon name="delivery-door" class="fs-2 text-primary"></app-keenicon>
+        </span>
+        <span class="menu-title">News Letters</span>
+        <span class="menu-arrow"></span>
+      </span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/news">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Newsletters list</span>
+          </a>
+        </div>
+
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/add-newsletter">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Add Newsletter</span>
+          </a>
+        </div>
+      </div>
+      <div
+        class="menu-item menu-accordion"
+        data-kt-menu-trigger="click"
+        routerLinkActive="here show"
+        *ngxPermissionsOnly="['WEBTEAM', 'ADMIN']"
+      >
+        <span class="menu-link">
+          <span class="menu-icon">
+            <app-keenicon name="abstract-12" class="fs-2 text-primary"></app-keenicon>
+          </span>
+          <span class="menu-title">Live Events</span>
+          <span class="menu-arrow"></span>
+        </span>
+        <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+          <div class="menu-item">
+            <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/live-events">
+              <span class="menu-bullet">
+                <span class="bullet bullet-dot"></span>
+              </span>
+              <span class="menu-title">Live Events list</span>
+            </a>
+          </div>
+
+          <div class="menu-item">
+            <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/add-event">
+              <span class="menu-bullet">
+                <span class="bullet bullet-dot"></span>
+              </span>
+              <span class="menu-title">Add Live Events</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="menu-item menu-accordion"
+        data-kt-menu-trigger="click"
+        routerLinkActive="here show"
+        *ngxPermissionsOnly="['WEBTEAM', 'ADMIN']"
+      >
+        <span class="menu-link">
+          <span class="menu-icon">
+            <app-keenicon name="delivery-door" class="fs-2 text-primary"></app-keenicon>
+          </span>
+          <span class="menu-title">Video Call</span>
+          <span class="menu-arrow"></span>
+        </span>
+        <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+          <div class="menu-item">
+            <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/video">
+              <span class="menu-bullet">
+                <span class="bullet bullet-dot"></span>
+              </span>
+              <span class="menu-title">Video Call Requests</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="menu-item menu-accordion"
+        data-kt-menu-trigger="click"
+        routerLinkActive="here show"
+        *ngxPermissionsOnly="['WEBTEAM', 'ADMIN']"
+      >
+        <span class="menu-link">
+          <span class="menu-icon">
+            <app-keenicon name="delivery-door" class="fs-2 text-primary"></app-keenicon>
+          </span>
+          <span class="menu-title">Testimonials</span>
+          <span class="menu-arrow"></span>
+        </span>
+        <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+          <div class="menu-item">
+            <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/testimonials">
+              <span class="menu-bullet">
+                <span class="bullet bullet-dot"></span>
+              </span>
+              <span class="menu-title">Testimonials list</span>
+            </a>
+          </div>
+
+          <div class="menu-item">
+            <a class="menu-link without-sub" routerLinkActive="active" routerLink="catalog/add-testimonials">
+              <span class="menu-bullet">
+                <span class="bullet bullet-dot"></span>
+              </span>
+              <span class="menu-title">Add Testimonial</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. catalog Offers -->
+      <!-- <div
+      class="menu-item menu-accordion"
+      data-kt-menu-trigger="click"
+      routerLinkActive="here show"
+      *ngxPermissionsOnly="['WEBTEAM', 'ADMIN']"
+    >
+      <span class="menu-link">
+        <span class="menu-icon">
+          <app-keenicon name="discount" class="fs-2 text-primary"></app-keenicon>
+        </span>
+        <span class="menu-title">Offers</span>
+        <span class="menu-arrow"></span>
+      </span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <div class="menu-item">
+          <a class="menu-link without-sub" href="#">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Offer Group</span>
+          </a>
+        </div>
+      </div>
+    </div> -->
+
+      <!-- Catalog Notification -->
+      <div
+        class="menu-item menu-accordion"
+        data-kt-menu-trigger="click"
+        routerLinkActive="here show"
+        *ngxPermissionsOnly="['WEBTEAM', 'ADMIN']"
+      >
+        <span class="menu-link">
+          <span class="menu-icon">
+            <app-keenicon name="notification-on" class="fs-2 text-primary"></app-keenicon>
+          </span>
+          <span class="menu-title">Notification</span>
+          <span class="menu-arrow"></span>
+        </span>
+        <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+          <div class="menu-item">
+            <a class="menu-link without-sub" routerLink="catalog/notifications">
+              <span class="menu-bullet">
+                <span class="bullet bullet-dot"></span>
+              </span>
+              <span class="menu-title">Push Notification</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!--1. Customer Support -->
+      <!-- <div
+      class="menu-item menu-accordion"
+      data-kt-menu-trigger="click"
+      routerLinkActive="here show"
+      *ngxPermissionsOnly="['CUSTOMER_SUPPORT', 'ADMIN']"
+    >
+      <span class="menu-link">
+        <span class="menu-icon">
+          <app-keenicon name="message-text-2" class="fs-2 text-primary"></app-keenicon>
+        </span>
+        <span class="menu-title">Tickets</span>
+        <span class="menu-arrow"></span>
+      </span> -->
+      <!-- <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg"> -->
+      <!-- New Tickets -->
+      <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="customer-support/ordertickets">
+             routerLink="customer-support/ordertickets" 
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">New Tickets</span>
+          </a>
+        </div> -->
+      <!-- Return Tickets -->
+      <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="customer-support/returntickets">
+
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Return Tickets</span>
+          </a>
+        </div> -->
+      <!-- All Tickets -->
+      <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="customer-support/tickets">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">All Tickets</span>
+          </a>
+        </div> -->
+      <!-- Open Tickets -->
+      <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="customer-support/ticket/open">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Open Tickets</span>
+          </a>
+        </div> -->
+      <!-- Closed Tickets -->
+      <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="customer-support/ticket/closed">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Closed Tickets</span>
+          </a>
+        </div> -->
+
+      <!-- Reason List -->
+      <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="customer-support/reasons">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Reason List</span>
+          </a>
+        </div> -->
+      <!-- </div>
+    </div> -->
+
+      <!-- 2.Customer Support -->
+
+      <div
+        class="menu-item menu-accordion"
+        data-kt-menu-trigger="click"
+        routerLinkActive="here show"
+        *ngxPermissionsOnly="['CUSTOMER_SUPPORT', 'ADMIN', 'WEBTEAM']"
+      >
+        <div
+          class="menu-item menu-accordion"
+          data-kt-menu-trigger="click"
+          routerLinkActive="here show"
+          *ngxPermissionsOnly="['CUSTOMER_SUPPORT', 'ADMIN']"
+        >
+          <span class="menu-link">
+            <span class="menu-icon">
+              <app-keenicon name="message-question" class="fs-2 text-primary"></app-keenicon>
+            </span>
+            <span class="menu-title">Support</span>
+            <span class="menu-arrow"></span>
+          </span>
+          <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+            <!-- Reason Management -->
+            <div class="menu-item">
+              <a class="menu-link without-sub" routerLinkActive="active" routerLink="customer-support/reasons">
+                <!-- routerLink="customer-support/ordertickets" -->
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">Reason Management</span>
+              </a>
+            </div>
+            <!-- All Refunds -->
+            <div class="menu-item">
+              <a class="menu-link without-sub" routerLinkActive="active" routerLink="customer-support/orders/refunds">
+                <!-- routerLink="customer-support/ordertickets" -->
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">All Refunds</span>
+              </a>
+            </div>
+            <!-- Cancel Order -->
+            <div class="menu-item">
+              <a class="menu-link without-sub" routerLinkActive="active" routerLink="customer-support/salesorders/cancel">
+                <!-- routerLink="customer-support/ordertickets" -->
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">Cancel Order</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3.Customer support -->
+
+        <div
+          class="menu-item menu-accordion"
+          data-kt-menu-trigger="click"
+          routerLinkActive="here show"
+          *ngxPermissionsOnly="['CUSTOMER_SUPPORT', 'ADMIN', 'WEBTEAM']"
+        >
+          <div
+            class="menu-item menu-accordion"
+            data-kt-menu-trigger="click"
+            routerLinkActive="here show"
+            *ngxPermissionsOnly="['CUSTOMER_SUPPORT', 'ADMIN', 'WEBTEAM']"
+          >
+            <span class="menu-link">
+              <span class="menu-icon">
+                <app-keenicon name="medal-star" class="fs-2 text-primary"></app-keenicon>
+              </span>
+              <span class="menu-title">Rating & Review</span>
+              <span class="menu-arrow"></span>
+            </span>
+            <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+              <!-- Rating & Review -->
+              <div class="menu-item">
+                <a class="menu-link without-sub" routerLinkActive="active" routerLink="customer-support/users/user-rating">
+                  <!-- routerLink="customer-support/ordertickets" -->
+                  <span class="menu-bullet">
+                    <span class="bullet bullet-dot"></span>
+                  </span>
+                  <span class="menu-title">Rating & Review</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Orders -->
+          <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show" *ngxPermissionsOnly="['ADMIN']">
+            <span class="menu-link">
+              <span class="menu-icon">
+                <app-keenicon name="basket-ok" class="fs-2 text-primary"></app-keenicon>
+              </span>
+              <span class="menu-title">Orders </span>
+              <span class="menu-arrow"></span>
+            </span>
+            <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+              <!-- New Orders -->
+              <div class="menu-item">
+                <a class="menu-link without-sub" routerLinkActive="active" href="#" routerLink="customer-support/salesorders/skulevel">
+                  <!-- routerLink="order/new-order" -->
+                  <span class="menu-bullet">
+                    <span class="bullet bullet-dot"></span>
+                  </span>
+                  <span class="menu-title">All orders</span>
+                </a>
+              </div>
+              <!-- In Process orders -->
+              <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">In-process orders</span>
+          </a>
+        </div> -->
+              <!-- Completed orders -->
+              <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" href="#">
+        
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Completed orders</span>
+          </a>
+        </div> -->
+              <!-- Return orders -->
+
+              <!-- <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="order/return-order" href="#">
+           
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Return orders</span>
+          </a>
+        </div> -->
+            </div>
+          </div>
+        </div>
+        <!--end::Menu-->
+      </div>
+      <!--end::Menu wrapper-->
+    </div>
+
+    <!-- Finance -->
+    <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show" *ngxPermissionsOnly="['ADMIN']">
+      <span class="menu-link">
+        <span class="menu-icon">
+          <app-keenicon name="office-bag" class="fs-2 text-primary"></app-keenicon>
+        </span>
+        <span class="menu-title">Finance </span>
+        <span class="menu-arrow"></span>
+      </span>
+      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+        <!-- Revenue Chart -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/dashboard">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Finance Dashboard</span>
+          </a>
+        </div>
+
+        <!-- Purchase Orders -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/po/po">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Procurement list</span>
+          </a>
+        </div>
+
+        <!-- Purchase Invoices -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/invoices">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Procurement Invoices</span>
+          </a>
+        </div>
+
+        <!-- P.O vs GRN vs Invoice -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/po-grn-invoice">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Procurement vs Receipt vs Invoice</span>
+          </a>
+        </div>
+
+        <!-- PO Payment -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/popayment">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Procurement Payment</span>
+          </a>
+        </div>
+
+        <!-- Sales Order -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/salesorders">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">All Sales Order</span>
+          </a>
+        </div>
+
+        <!-- Sales Invoice -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/salesinvoice">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">All Sales Invoice</span>
+          </a>
+        </div>
+
+        <!-- All Sales Reports -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/salesreport">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">All Sales Reports</span>
+          </a>
+        </div>
+        <!-- All Sales Reports -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/expenses">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">All Expenses</span>
+          </a>
+        </div>
+
+        <!-- All Sales Reports -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/expensetypes">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Expense Types</span>
+          </a>
+        </div>
+
+        <!-- All Sales Reports -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/bankaccounts">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">ALL Bank Accounts</span>
+          </a>
+        </div>
+
+        <!-- PROFIT OR LOSS -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/profit-loss">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Profit or Loss</span>
+          </a>
+        </div>
+
+        <!-- Order Payment Status -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/order-payment-status">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Payment Due Status</span>
+          </a>
+        </div>
+
+        <!-- Bank Account Transactions -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/account-transaction">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Account Transactions</span>
+          </a>
+        </div>
+
+        <!-- Expenses Type Details -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/expense-details">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Expenses Details</span>
+          </a>
+        </div>
+
+        <!-- Finance Category Details -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/finance-category">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Finance Category</span>
+          </a>
+        </div>
+
+        <!-- Top Product -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/top-sales">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Top Product</span>
+          </a>
+        </div>
+
+        <!-- Top Vendor -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/top-vendor">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Top Vendor</span>
+          </a>
+        </div>
+
+        <!-- Monthly Gst Details -->
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/gst-transaction">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">GST Transaction</span>
+          </a>
+        </div>
+        <!-- Debit Notes -->
+        <!-- <div class="menu-item">
+                 <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/debit-notes">
+                     <span class=" menu-bullet">
+                         <span class="bullet bullet-dot"></span>
+                     </span>
+                     <span class="menu-title">Debit Notes</span>
+                 </a>
+             </div> -->
+      </div>
+    </div>
+
+    <div *ngxPermissionsOnly="['FINANCE']">
+      <!-- Revenue Chart -->
+      <div class="menu-item">
+        <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/dashboard">
+          <span class="menu-bullet">
+            <span class="bullet bullet-dot"></span>
+          </span>
+          <span class="menu-title">Dashboard</span>
+        </a>
+      </div>
+
+      <!-- Purchase Orders -->
+      <div class="menu-item">
+        <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/po/po">
+          <span class="menu-bullet">
+            <span class="bullet bullet-dot"></span>
+          </span>
+          <span class="menu-title">Procurement list</span>
+        </a>
+      </div>
+
+      <!-- Purchase Invoices -->
+      <div class="menu-item">
+        <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/invoices">
+          <span class="menu-bullet">
+            <span class="bullet bullet-dot"></span>
+          </span>
+          <span class="menu-title">Procurement Invoices</span>
+        </a>
+      </div>
+
+      <!-- P.O vs GRN vs Invoice -->
+      <div class="menu-item">
+        <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/po-grn-invoice">
+          <span class="menu-bullet">
+            <span class="bullet bullet-dot"></span>
+          </span>
+          <span class="menu-title">Procurement vs Receipt vs Invoice</span>
+        </a>
+      </div>
+
+      <!-- PO Payment -->
+      <div class="menu-item">
+        <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/popayment">
+          <span class="menu-bullet">
+            <span class="bullet bullet-dot"></span>
+          </span>
+          <span class="menu-title">Procurement Payment</span>
+        </a>
+      </div>
+
+      <!-- Sales Order -->
+      <div class="menu-item">
+        <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/salesorders">
+          <span class="menu-bullet">
+            <span class="bullet bullet-dot"></span>
+          </span>
+          <span class="menu-title">All Sales Order</span>
+        </a>
+      </div>
+
+      <!-- Sales Invoice -->
+      <div class="menu-item">
+        <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/salesinvoice">
+          <span class="menu-bullet">
+            <span class="bullet bullet-dot"></span>
+          </span>
+          <span class="menu-title">All Sales Invoice</span>
+        </a>
+      </div>
+
+      <!-- All Sales Reports -->
+      <div class="menu-item">
+        <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/salesreport">
+          <span class="menu-bullet">
+            <span class="bullet bullet-dot"></span>
+          </span>
+          <span class="menu-title">All Sales Reports</span>
+        </a>
+      </div>
+      <!-- All Sales Reports -->
+      <div class="menu-item">
+        <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/expenses">
+          <span class="menu-bullet">
+            <span class="bullet bullet-dot"></span>
+          </span>
+          <span class="menu-title">All Expenses</span>
+        </a>
+      </div>
+
+      <!-- All Sales Reports -->
+      <div class="menu-item">
+        <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/expensetypes">
+          <span class="menu-bullet">
+            <span class="bullet bullet-dot"></span>
+          </span>
+          <span class="menu-title">Expense Types</span>
+        </a>
+      </div>
+
+      <!-- All Sales Reports -->
+      <div class="menu-item">
+        <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/bankaccounts">
+          <span class="menu-bullet">
+            <span class="bullet bullet-dot"></span>
+          </span>
+          <span class="menu-title">ALL Bank Accounts</span>
+        </a>
+      </div>
+
+      <!-- PROFIT OR LOSS -->
+      <div class="menu-item">
+        <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/profit-loss">
+          <span class="menu-bullet">
+            <span class="bullet bullet-dot"></span>
+          </span>
+          <span class="menu-title">Profit or Loss</span>
+        </a>
+      </div>
+
+      <!-- Order Payment Status -->
+      <div class="menu-item">
+        <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/order-payment-status">
+          <span class="menu-bullet">
+            <span class="bullet bullet-dot"></span>
+          </span>
+          <span class="menu-title">Payment Due Status</span>
+        </a>
+      </div>
+
+      <!-- Bank Account Transactions -->
+      <div class="menu-item">
+        <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/account-transaction">
+          <span class="menu-bullet">
+            <span class="bullet bullet-dot"></span>
+          </span>
+          <span class="menu-title">Account Transactions</span>
+        </a>
+      </div>
+
+      <!-- Expenses Type Details -->
+      <div class="menu-item">
+        <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/expense-details">
+          <span class="menu-bullet">
+            <span class="bullet bullet-dot"></span>
+          </span>
+          <span class="menu-title">Expenses Details</span>
+        </a>
+      </div>
+
+      <!-- Finance Category Details -->
+      <div class="menu-item">
+        <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/finance-category">
+          <span class="menu-bullet">
+            <span class="bullet bullet-dot"></span>
+          </span>
+          <span class="menu-title">Finance Category</span>
+        </a>
+      </div>
+
+      <!-- Top Product -->
+      <div class="menu-item">
+        <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/top-sales">
+          <span class="menu-bullet">
+            <span class="bullet bullet-dot"></span>
+          </span>
+          <span class="menu-title">Top Product</span>
+        </a>
+      </div>
+
+      <!-- Top Vendor -->
+      <div class="menu-item">
+        <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/top-vendor">
+          <span class="menu-bullet">
+            <span class="bullet bullet-dot"></span>
+          </span>
+          <span class="menu-title">Top Vendor</span>
+        </a>
+      </div>
+
+      <!-- Monthly Gst Details -->
+      <div class="menu-item">
+        <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/gst-transaction">
+          <span class="menu-bullet">
+            <span class="bullet bullet-dot"></span>
+          </span>
+          <span class="menu-title">GST Transaction</span>
+        </a>
+      </div>
+      <!-- Debit Notes -->
+      <!-- <div class="menu-item">
+               <a class="menu-link without-sub" routerLinkActive="active" routerLink="finance/debit-notes">
+                   <span class=" menu-bullet">
+                       <span class="bullet bullet-dot"></span>
+                   </span>
+                   <span class="menu-title">Debit Notes</span>
+               </a>
+           </div> -->
+    </div>
+  </div>
+</div>

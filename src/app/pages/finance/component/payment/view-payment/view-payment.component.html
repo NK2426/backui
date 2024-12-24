@@ -1,0 +1,125 @@
+<div>
+    <label class="col-md-4"><strong>Payment Name : </strong></label> {{ selectedPayment.name}}
+</div>
+<div>
+    <label class="col-md-4"><strong>Description : </strong></label> {{ selectedPayment.description }}
+</div>
+<div>
+    <label class="col-md-4"><strong>Status : </strong></label> {{selectedPayment.status ? 'Active' : 'In Active'}}
+</div>
+
+<hr>
+<div class="text-sm-end">
+    <button type="button" (click)="addPaymentCycle()" class="btn btn-success btn-rounded mb-2 me-2"><i
+            class="mdi mdi-plus mr-1"></i>
+        Add Payment Cycle</button>
+</div>
+<div
+    *ngIf="currentPaymentTermID && selectedPayment && selectedPayment.paymentcycles && selectedPayment.paymentcycles.length">
+    <table class="table align-middle  table-nowrap table-hover">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Days</th>
+                <th>Percentage</th>
+                <th>Term ID</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let paymentCycle of selectedPayment.paymentcycles">
+                <td> {{paymentCycle.type}}</td>
+                <td> {{paymentCycle.days}}</td>
+                <td>{{paymentCycle.percentage}}</td>
+                <td>{{paymentCycle.paymentterm_id}}</td>
+                <td>
+                    <ul class="list-inline font-size-20 contact-links mb-0">
+                        <li class="list-inline-item px-2">
+                            <a href="javascript:void(0)" ngbTooltip="Edit Payment Cycle"><i
+                                    class="mdi mdi-pencil font-12" (click)="editPaymentCycle(paymentCycle)"></i></a>
+                            <a href="javascript:void(0)" ngbTooltip="Delete Payment Cycle"><i
+                                    class="mdi mdi-delete font-12" (click)="deletePaymentCycle(paymentCycle)"></i></a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Edit Payment Cycle-->
+<div class="card" style="background: aliceblue;" *ngIf="showCycleForm">
+    <div class="card-body">
+        <form (ngSubmit)="savePaymentCycle()" [formGroup]="formData" novalidate>
+            <div class="row">
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label class="control-label">Type *</label>
+
+                        <ng-select [items]="options" [markFirst]="true"
+                            [ngClass]="{'is-invalid': (submit && form['type']?.errors) || (form['type']?.invalid && (form['type']?.dirty || form['type']?.touched))}"
+                            [searchable]="true" bindLabel="displayName" bindValue="value" formControlName="type">
+                        </ng-select>
+                        <div *ngIf="(submit && form['type']?.errors) || (form['type']?.invalid && (form['type']?.dirty || form['type']?.touched))"
+                            class="invalid-feedback">
+                            <span *ngIf="form['type'].errors">Enter valid type</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="control-label">Days *</label>
+                        <input class="form-control" placeholder="Enter Payment days" type="text" name="days"
+                            autocomplete="off" formControlName="days"
+                            [ngClass]="{'is-invalid': (submit && form['days']?.errors) || (form['days']?.invalid && (form['days']?.dirty || form['days']?.touched))}" />
+
+                        <div *ngIf="(submit && form['days']?.errors) || (form['days']?.invalid && (form['days']?.dirty || form['days']?.touched))"
+                            class="invalid-feedback">
+                            <span *ngIf="form['days'].errors">Enter valid days</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="control-label">Percentage *</label>
+                        <input class="form-control" placeholder="Enter percentage(1-100)" type="text" name="percentage"
+                            autocomplete="off" formControlName="percentage"
+                            [ngClass]="{'is-invalid': (submit && form['percentage']?.errors) || (form['percentage']?.invalid && (form['percentage']?.dirty || form['percentage']?.touched))}" />
+
+                        <div *ngIf="(submit && form['percentage']?.errors) || (form['percentage']?.invalid && (form['percentage']?.dirty || form['percentage']?.touched))"
+                            class="invalid-feedback">
+                            <span *ngIf="form['percentage'].errors">Enter percentage</span>
+                        </div>
+                    </div>
+
+
+                    <div class="d-md-flex align-items-center mt-5">
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                        <div class="ml-auto">
+                            <div class="dl">
+                                <button type="button" class="btn btn-warning"
+                                    (click)="cancelPaymentCycleAction()">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<div *ngIf="!assignedparams.includes(selectedPayment.id)" class="d-md-flex align-items-center">
+    <div class="col-md-5">
+        <button class="btn btn-md btn-success" (click)="editPaymentTerm(selectedPayment)"><i
+                class="mdi mdi-pencil font-12"></i>
+            Edit Payment Term</button>
+    </div>
+    <div class="col-md-5">
+        <div class="dl">
+            <button class="btn btn-md btn-danger" (click)="deletePaymentTerm(selectedPayment)"><i
+                    class="mdi mdi-delete font-12"></i> Delete Payment Term</button>
+        </div>
+    </div>
+</div>

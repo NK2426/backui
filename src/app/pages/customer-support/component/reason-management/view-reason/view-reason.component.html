@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="container-fluid">
+        <div class="page-title-box d-flex align-items-center justify-content-between">
+            <h4 class="mb-0 font-size-18 mb-8">View Reason</h4>
+            
+        </div>
+    </div>
+
+    <div class="card container-fluid">
+        <div class="card-body">
+
+
+            <div class="table-responsive" *ngIf="currentReason && currentReasonUUID">
+                <table class="table table-bordered mb-0">
+                    <tbody>
+                        <tr>
+                            <td>Type : <b>{{currentReason.status ? 'Return' : 'Replacement'}}</b></td>
+                            <td>Reason : <b>{{currentReason.reason}}</b></td>
+                        </tr>
+                        <tr>
+                            <!-- <td>Department Name : <b>{{currentReason.department.name}} </b></td> -->
+                            <td>Description : <b>{{currentReason.department.description}}</b></td>
+                        </tr>
+
+                        <tr>
+                            <td>Show Variant : {{currentReason.showvariant == 1 ? 'Yes' : 'No'}}</td>
+                            <td>Image <img style="width: 50px; height: 50px;" alt="Product"
+                                    src={{currentReason.department.image}} /></td>
+                        </tr>
+
+                        <tr>
+                            <td>Created At : {{currentReason.createdAt | date : 'medium'}}</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr>
+
+
+        </div>
+    </div>
+</div>

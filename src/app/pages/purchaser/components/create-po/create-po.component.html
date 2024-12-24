@@ -1,0 +1,1341 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<!-- <a (click)="findMe()">Get Location</a> -->
+<mat-stepper [linear]="isLinear" #stepper [orientation]="(stepperOrientation | async)!"
+  ngClass="{{ 'last-edited-step-' + stepper.selectedIndex }}">
+  <!-- keep icons as numbers during edit-->
+
+  <ng-template matStepperIcon="edit" let-index="index">
+    {{ index + 1 }}
+  </ng-template>
+
+  <!-- change default 'edit' icon -->
+  <ng-template matStepperIcon="edit">
+    <mat-icon>bubble_chart</mat-icon>
+  </ng-template>
+
+  <!-- change default 'done' icon -->
+
+  <ng-template matStepperIcon="done">
+    <mat-icon>done_all</mat-icon>
+  </ng-template>
+
+  <!-- changed step icons -->
+  <ng-template matStepperIcon="home">
+    <mat-icon>lock</mat-icon>
+  </ng-template>
+  <ng-template matStepperIcon="2">
+    <mat-icon>account_circle</mat-icon>
+  </ng-template>
+  <ng-template matStepperIcon="form">
+    <mat-icon>description</mat-icon>
+  </ng-template>
+  <ng-template matStepperIcon="last">
+    <mat-icon>done_all</mat-icon>
+  </ng-template>
+
+  <form [formGroup]="purcaseForm" novalidate="novalidate">
+    <mat-step label="P.O Details" state="home" [stepControl]="step1">
+      <div class="row g-9 mb-8 mx-5">
+        <div class="col-md-3 fv-row fv-plugins-icon-container">
+          <label class="fs-5 fw-bold mb-2">Login as : <span class="text-primary">{{ user.uuid }}</span></label>
+        </div>
+        <div class="col-md-7"></div>
+        <div class="col-md-2 text-end">
+          <div>
+            <button class="btn btn-primary btn-sm" (click)="addVendor(addvendor)">Add Supplier</button>
+          </div>
+        </div>
+      </div>
+      <div class="row g-9 mb-8 mx-5">
+        <!-- Purchase ID -->
+        <label class="fw-bold text-primary text-uppercase">Purchaser Details</label>
+        <div class="col-md-4 fv-row fv-plugins-icon-container">
+          <label class="required fs-6 fw-semibold mb-2">Purchase ID</label>
+          <select class="form-select form-select-solid" formControlName="purchaseid" placeholder="Select Purchase ID"
+            placeholder="Select purchaser ID" (change)="purchaseidfind($event)">
+            <option value="" selected disabled>Choose Purchase ID</option>
+            <ng-container *ngFor="let id of purchaseid; let i = index">
+              <option value="{{ id.uid }}">{{ id.uuid }}</option>
+            </ng-container>
+          </select>
+          <!-- <div
+            *ngIf="(purcaseForm.get('purchaseid').dirty || purcaseForm.get('purchaseid').touched) && purcaseForm.get('purchaseid').invalid || purcaseForm.get('purchaseid').touched">
+            Please Choose Purchase ID
+          </div> -->
+
+          <span class="error"
+            *ngIf="(purcaseForm.get('purchaseid').touched && !purcaseForm.get('purchaseid').value) ||  purcaseForm.get('purchaseid').invalid">Error
+            on
+            username</span>
+        </div>
+
+        <!-- Location -->
+        <div class="col-md-4 fv-row fv-plugins-icon-container">
+          <label class="required fs-6 fw-semibold mb-2"> Purchasing Location </label>
+          <select class="form-select form-select-solid" type="text" name="state_id" formControlName="state_id"
+            (change)="getvendors($event)" [ngClass]="{
+              'is-invalid':
+                (submit && form['state_id']?.errors) ||
+                (form['state_id']?.invalid && (form['state_id']?.dirty || form['state_id']?.touched))
+            }">
+            <option value="" selected disabled>Choose Purchase Location</option>
+            <option *ngFor="let stat of states" [value]="stat.id">{{ stat.name }}</option>
+          </select>
+
+          <div *ngIf="
+              (submit && form['state_id']?.errors) || (form['state_id']?.invalid && (form['state_id']?.dirty || form['state_id']?.touched))
+            " class="invalid-feedback">
+            <span *ngIf="form['state_id'].errors?.['required']">Enter valid state</span>
+          </div>
+        </div>
+        <div class="col-md-4 fv-row fv-plugins-icon-container">
+          <div class="mb-3">
+            <label class="required form-label"> Category</label>
+            <select class="form-select form-select-solid" placeholder="Select Category" formControlName="category_id"
+              (change)="getSubclass($event)">
+              <option value="" selected disabled>Choose Category ID</option>
+              <ng-container *ngFor="let category of categories">
+                <option value="{{ category.cid }}">{{ category.name }}</option>
+              </ng-container>
+            </select>
+            <!-- <ng-select style="background-color: #F9F9F9;" name="subcategory_id" placeholder="Select Subcategory"
+              [items]="subcategories" bindLabel="name" bindValue="id" formControlName="subcategory_id" (change)="vendorchange($event)"
+              [(ngModel)]="subcategories[0]" [ngClass]="{
+                              'is-invalid':
+                                (submit && form['subcategory_id']?.errors) ||
+                                (form['subcategory_id']?.invalid && (form['subcategory_id']?.dirty || form['subcategory_id']?.touched))
+                            }">
+              <option value="" selected>Choose Subcategory</option>
+            </ng-select> -->
+            <!-- <div
+                              *ngIf="(submit && form['subcategory_id']?.errors) || (form['subcategory_id']?.invalid && (form['subcategory_id']?.dirty || form['subcategory_id']?.touched))"
+                              class="invalid-feedback">
+                              <span *ngIf="form['subcategory_id'].errors">Enter valid Subcategory</span>
+                            </div> -->
+            <!-- <div *ngIf="form.get('subcategory_id').invalid && form.get('subcategory_id').touched"
+              class="invalid-feedback">
+              <div *ngIf="!!form.get('subcategory_id').hasError('required')">Supplier is required</div>
+            </div> -->
+            <div *ngIf="
+                (submit && form['subcategory_id']?.errors) ||
+                (form['subcategory_id']?.invalid && (form['subcategory_id']?.dirty || form['subcategory_id']?.touched))
+              " class="invalid-feedback">
+              <span *ngIf="form['subcategory_id'].errors">Enter valid Subcategory</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subcategory -->
+        <div class="col-md-4 fv-row fv-plugins-icon-container">
+          <div class="mb-3">
+            <label class="required form-label required"> Subcategory</label>
+            <select class="form-select form-select-solid" placeholder="Select Sub Category"
+              formControlName="subcategory_id" (change)="vendorchange($event)">
+              <option value="" selected disabled>Choose Subcategory ID</option>
+              <ng-container *ngFor="let category of subcategories">
+                <option value="{{ category.id }}">{{ category.name }}</option>
+              </ng-container>
+            </select>
+            <!-- <ng-select style="background-color: #F9F9F9;" name="subcategory_id" placeholder="Select Subcategory"
+              [items]="subcategories" bindLabel="name" bindValue="id" formControlName="subcategory_id" (change)="vendorchange($event)"
+              [(ngModel)]="subcategories[0]" [ngClass]="{
+                              'is-invalid':
+                                (submit && form['subcategory_id']?.errors) ||
+                                (form['subcategory_id']?.invalid && (form['subcategory_id']?.dirty || form['subcategory_id']?.touched))
+                            }">
+              <option value="" selected>Choose Subcategory</option>
+            </ng-select> -->
+            <!-- <div
+                              *ngIf="(submit && form['subcategory_id']?.errors) || (form['subcategory_id']?.invalid && (form['subcategory_id']?.dirty || form['subcategory_id']?.touched))"
+                              class="invalid-feedback">
+                              <span *ngIf="form['subcategory_id'].errors">Enter valid Subcategory</span>
+                            </div> -->
+            <!-- <div *ngIf="form.get('subcategory_id').invalid && form.get('subcategory_id').touched"
+              class="invalid-feedback">
+              <div *ngIf="!!form.get('subcategory_id').hasError('required')">Supplier is required</div>
+            </div> -->
+            <div *ngIf="
+                (submit && form['subcategory_id']?.errors) ||
+                (form['subcategory_id']?.invalid && (form['subcategory_id']?.dirty || form['subcategory_id']?.touched))
+              " class="invalid-feedback">
+              <span *ngIf="form['subcategory_id'].errors">Enter valid Subcategory</span>
+            </div>
+          </div>
+        </div>
+        <!-- Category -->
+        <div class="col-md-4 fv-row fv-plugins-icon-container">
+          <label class="required fs-6 fw-semibold mb-2"> Group </label>
+          <select class="form-select form-select-solid" placeholder="Select Group" formControlName="group_id"
+            (change)="getgroup($event)">
+            <option value="" selected disabled>Choose Group</option>
+            <ng-container *ngFor="let group of groups">
+              <option value="{{ group.id }}">{{ group.name }}</option>
+            </ng-container>
+          </select>
+          <div *ngIf="
+              (submit && form['category_id']?.errors) ||
+              (form['category_id']?.invalid && (form['category_id']?.dirty || form['category_id']?.touched))
+            " class="invalid-feedback">
+            <span *ngIf="form['category_id'].errors?.['required']">Enter valid Category</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-9 mb-8 mx-5">
+        <label class="fw-bold text-primary text-uppercase">Supplier Details</label>
+
+        <!-- <div class="col-md-4 fv-row fv-plugins-icon-container">
+          <label class=" fs-6 fw-semibold mb-2">Category</label>
+          <select class="form-select form-select-solid" placeholder="Select agent" placeholder="Select Vendor Agent"
+            (change)="vendorlist($event)" formControlName="category_id">
+            <option value="" selected>Choose Category ID</option>
+            <ng-container *ngFor="let category of categories">
+              <option>{{ category.name }}</option>
+            </ng-container>
+          </select>
+        </div> -->
+
+        <!-- vendor Agent -->
+        <div class="col-md-4 fv-row fv-plugins-icon-container">
+          <label class="fs-6 fw-semibold mb-2 required">Supplier Agent</label>
+          <select class="form-select form-select-solid" placeholder="Select agent" placeholder="Select Vendor Agent"
+            (change)="vendorlist($event)" formControlName="agentId">
+            <option value="" selected disabled>Choose Supplier Agent</option>
+            <ng-container *ngFor="let agents of agents">
+              <option value="{{ agents.id }}">{{ agents.name }}</option>
+            </ng-container>
+          </select>
+        </div>
+        <!--Select Vendor-->
+        <div class="col-md-4 fv-row fv-plugins-icon-container">
+          <label class="required fs-6 fw-semibold mb-2">Select Supplier</label>
+          <input type="hidden" formControlName="department" value="3" />
+          <select class="form-select form-select-solid" placeholder="Select user" formControlName="vendor"
+            (change)="productlist('form')" placeholder="Select Vendor">
+            <option value="" selected disabled>Choose Supplier</option>
+            <ng-container *ngFor="let vendor of vendors; let i = index">
+              <option value="{{ vendor.uid }}">{{ vendor.name }}</option>
+            </ng-container>
+          </select>
+        </div>
+        <div class="col-md-4 fv-row fv-plugins-icon-container">
+          <label class="required fs-6 fw-semibold mb-2">Payment Term</label>
+          <select class="form-select form-select-solid" placeholder="Select Purchase ID"
+            formControlName="paymentterm_id" placeholder="Payment Term" (change)="paymentterm($event)">
+            <option value="" selected>Payment Term</option>
+            <ng-container *ngFor="let payment of paymentterms; let i = index">
+              <option value="{{ payment.id }}">{{ payment.name }}</option>
+            </ng-container>
+          </select>
+        </div>
+      </div>
+
+      <div class="row g-9 mb-8 mx-5">
+        <!-- Billing Name -->
+        <label class="fw-bold text-primary text-uppercase">Warehouse Details</label>
+        <div class="col-md-4 fv-row fv-plugins-icon-container">
+          <label class="required fs-6 fw-semibold mb-2">Select Billing Name</label>
+          <select class="form-select form-select-solid select2-hidden-accessible" placeholder="Select Billing Name"
+            formControlName="billingaddress_id" (change)="billingList($event)">
+            <option value="">Choose Billing Name</option>
+            <ng-container *ngFor="let warehouse of warehouses">
+              <option value="{{ warehouse.id }}" innerHTML="{{ warehouse.name }}"></option>
+              <!-- <option value="{{ branch.branch }}" innerHTML="{{ branch.branch }}"></option> -->
+            </ng-container>
+          </select>
+        </div>
+
+        <!-- Billing Address -->
+        <div class="col-md-4 fv-row fv-plugins-icon-container">
+          <label class="required fs-6 fw-semibold mb-2">Billing Address</label><br />
+          <p innerHTML="{{ billingAddress }}"></p>
+        </div>
+        <!-- Warehouse -->
+        <div class="col-md-4 fv-row fv-plugins-icon-container">
+          <label class="required fs-6 fw-semibold mb-2">Warehouse</label>
+          <select class="form-select form-select-solid select2-hidden-accessible" placeholder="Select Warehouse"
+            formControlName="warehouse_id">
+            <option value="">Choose Warehouse</option>
+            <ng-container *ngFor="let warehouse of warehouses">
+              <option value="{{ warehouse.id }}" innerHTML="{{ warehouse.name }}"></option>
+            </ng-container>
+          </select>
+        </div>
+      </div>
+
+      <div class="row g-9 mb-8 mx-5">
+        <label class="fw-bold text-primary text-uppercase">PO Dates and Transportation</label>
+        <!--PO Date-->
+        <div class="col-md-2 fv-row fv-plugins-icon-container">
+          <label class="required fs-6 fw-semibold mb-2">P.O Date</label>
+          <input class="form-control form-control-solid" placeholder="Pick date range" type="date"
+            formControlName="date" [min]="minDate" />
+        </div>
+
+        <!-- Estimate delivery date -->
+        <div class="col-md-2 fv-row fv-plugins-icon-container">
+          <label class="required fs-6 fw-semibold mb-2">Estimated Delivery Date</label>
+          <input class="form-control form-control-solid" placeholder="Pick date range" type="date"
+            formControlName="deliverydate" [min]="expminDate" (click)="changeDate($event)" />
+          <div *ngIf="purcaseForm?.controls?.deliverydate?.value < purcaseForm?.controls?.date?.value"
+            class="invalid-feedback d-inline-block">
+            <span *ngIf="datehint">Delivery date can not be less than PO Date</span><br />
+          </div>
+        </div>
+
+        <!-- Transportation -->
+        <div class="col-md-4 fv-row fv-plugins-icon-container">
+          <label class="required fs-6 fw-semibold mb-2">Transportation </label><br />
+          <input type="text" class="form-control required fs-6 fw-semibold mb-2" formControlName="potrasnporter_id" />
+        </div>
+      </div>
+      <!-- Button -->
+      <div class="text-end mx-5">
+        <button class="btn btn-primary btn-sm fw-bold text-white" mat-button
+          (click)="stepChange(stepper)">Continue</button>
+      </div>
+    </mat-step>
+
+    <mat-step label="Product Details" state="2" [stepControl]="step2">
+      <div class="">
+        <div class="d-flex">
+          <div class="col-lg-12 col-xs-6">
+            <div class="table-responsive">
+              <table class="table align-left gs-0 gy-5">
+                <tr>
+                  <td>
+                    <div formArrayName="itemlist" style="padding-left: 0px; padding-right: 0px">
+                      <div class="d-flex justify-content-between mx-2">
+                        <!-- <div class='alert__container w-500 w-md-500px justify-content-start'>
+                          <div class='alert alert__primary spacer' role='alert'>
+                            <i class="fas fa-exclamation-circle alert__icon"></i>
+                            <span class='alert__text'>Prioritize 'Add Product' to avoid reset of items</span>
+                          </div>
+                        </div> -->
+
+                        <div class="my-3 justify-content-end align-items-center">
+                          <button class="border border-1 border-secondary btn btn-sm btn-primary me-1 mb-1"
+                            type="button" (click)="addNewProduct(productContent)">
+                            <span><i class="fa fa-plus fa-lg" style="font-size: 20px; cursor: pointer"></i></span> Add
+                            Product
+                          </button>
+                        </div>
+                      </div>
+
+                      <div *ngFor="let item of getControls(); let i = index" class="i">
+                        <fieldset class="m-2">
+                          <!--  <legend style="padding:5px 0px;">
+                            <span>
+                              {{purcaseForm.value['itemlist'][i]['name']?purcaseForm.value['itemlist'][i]['name']:'Product-'+i}}</span>
+                          </legend> -->
+
+                          <div class="row" [formGroupName]="i">
+                            <div class="table-responsive">
+                              <table [ngStyle]="{ 'background-color': i % 2 == 1 ? '#ffffff' : '#efe6e6' }"
+                                class="w-100">
+                                <tr class="row">
+                                  <!-- Product -->
+                                  <td
+                                    class="w-200 w-md-150px ms-2 vertical-align-mobile horizontal-align-tablet-desktop">
+                                    <div class="mx-2">
+                                      <label for="" class="form-label required fs-6 fw-semibold mb-2">Product</label>
+                                      <select class="form-select form-select-sm custom-select" formControlName="product"
+                                        (change)="changeproductitem(i)">
+                                        <option value="" selected>Choose Product</option>
+                                        <ng-container *ngFor="let product of products; let i = index">
+                                          <option value="{{ product.pid }}">
+                                            {{ product.name | slice : 0 : 10 }} ({{ product.productId }})
+                                          </option>
+                                        </ng-container>
+                                      </select>
+                                    </div>
+                                  </td>
+
+                                  <!-- Variant -->
+                                  <td class="w-100 w-md-100px vertical-align-mobile horizontal-align-tablet-desktop">
+                                    <div>
+                                      <label for="" class="form-label required fs-6 fw-semibold mb-2">Variant</label>
+                                      <select placeholder="Select Variant" (change)="changevendorvariant(i, $event)"
+                                        formControlName="vendorvariants"
+                                        class="form-select form-select-sm custom-select">
+                                        <option *ngFor="let variant of variants[i]; let j = index"
+                                          [value]="variant.sku + '--' + variant.id">
+                                          {{ variant.description }}
+                                        </option>
+                                      </select>
+                                    </div>
+                                  </td>
+
+                                  <!-- Image -->
+                                  <td class="w-100 w-md-100px vertical-align-mobile horizontal-align-tablet-desktop">
+                                    <div style="position: relative; height: 100px; width: 100px" class="mx-2">
+                                      <div class="dropdown" ngbDropdown>
+                                        <button class="btn btn-sm btn-secondary dropdown-toggle p-0" type="button"
+                                          id="dropdownMenuButton" ngbDropdownToggle style="width: 75px"
+                                          data-boundary="window">
+                                          <img src="{{
+                                              getitemData()[i]['imgpath'] === ''
+                                                ? 'assets/media/avatars/blank.png'
+                                                : getitemData()[i]['imgpath']
+                                            }} " style="width: 80px; height: 80px" />
+                                          <i class="mdi mdi-chevron-down"></i>
+                                        </button>
+                                        <div class="dropdown-menu" ngbDropdownMenu>
+                                          <span *ngFor="let item of selproductimages(i)" class="dropdown-item"
+                                            (click)="setimage(i, item)" href="javascript: void(0);"
+                                            style="margin: 0 !important; padding: 2px !important; border-bottom: 1px solid #ccc">
+                                            <img style="height: 100px" alt="Product"
+                                              class="img-fluid mx-auto d-block m-0 p-0" src="{{ item?.path }}" />
+                                          </span>
+                                        </div>
+                                        <div *ngIf="getitemData()[i]['imgpath'] !== ''"
+                                          style="position: absolute; top: -5px; left: 75px; cursor: pointer"
+                                          (click)="getPath(getitemData()[i], mediacontent, i)">
+                                          <i class="fa fa-edit text-primary"></i>
+                                        </div>
+                                        <span class="mx-1">(MRP:{{ purcaseForm.get('itemlist')?.value[i].mrp }}₹)</span>
+                                      </div>
+                                      <!-- <span class="mx-1">(MRP:{{ purcaseForm.get('itemlist')?.value[i].mrp }}₹)</span> -->
+                                    </div>
+                                    <!-- </div> -->
+                                  </td>
+
+                                  <!-- Price -->
+                                  <td class="w-90 w-md-90px vertical-align-mobile horizontal-align-tablet-desktop">
+                                    <div class="mx-2">
+                                      <label for="" class="form-label required fs-6 fw-semibold mb-2">Price(₹)</label>
+
+                                      <input type="text" class="form-control form-control-sm" placeholder="250"
+                                        formControlName="price" (change)="checkvalue(i)" />
+                                    </div>
+                                  </td>
+
+                                  <!-- Qty -->
+                                  <td class="w-100 w-md-70px vertical-align-mobile horizontal-align-tablet-desktop">
+                                    <div class="mx-2">
+                                      <label for="" class="form-label required fs-6 fw-semibold mb-2">Qty</label>
+                                      <input type="text" class="form-control form-control-sm" placeholder="100"
+                                        formControlName="qty" (change)="checkvalue(i)" />
+                                      <div *ngIf="
+                                          (submit && form['qty']?.errors) ||
+                                          (form['qty']?.invalid && (form['qty']?.dirty || form['qty']?.touched))
+                                        " class="invalid-feedback">
+                                        <span *ngIf="form['qty'].errors?.['required']">Enter Valid quantity.</span>
+                                      </div>
+                                    </div>
+                                  </td>
+
+                                  <!-- Sub Total -->
+                                  <td class="w-35 w-md-70px vertical-align-mobile horizontal-align-tablet-desktop">
+                                    <div class="mx-2">
+                                      <label for="" class="form-label required fs-6 fw-semibold mb-2">Sub
+                                        Total(₹)</label>
+                                      <div class="fw-bold">{{ getFloat(purchaseformval[i]['subtotal']) }}</div>
+                                    </div>
+                                  </td>
+
+                                  <!-- Discount Type -->
+                                  <td class="w-100 w-md-100px vertical-align-mobile horizontal-align-tablet-desktop">
+                                    <div class="mx-2">
+                                      <label for=""
+                                        class="form-label required fs-6 fw-semibold mb-2">DiscountType</label>
+                                      <select type="text" name="discounttype" (change)="checkvalue(i)"
+                                        formControlName="discounttype" class="form-select form-select-sm custom-select">
+                                        <option *ngFor="let discount of discountypes" [value]="discount.id">
+                                          {{ discount.name }}
+                                        </option>
+                                      </select>
+                                    </div>
+                                  </td>
+
+                                  <!-- DIscount -->
+                                  <td class="w-50 w-md-90px vertical-align-mobile horizontal-align-tablet-desktop">
+                                    <div class="mx-2">
+                                      <label for="" class="form-label required fs-6 fw-semibold mb-2">Discount</label>
+                                      <input placeholder="Discount" type="text" formControlName="discount"
+                                        style="width: 80px" max="{{ purchaseformval[i]['subtotal'] }}"
+                                        (change)="checkvalue(i)" class="form-control form-control-sm" />
+                                    </div>
+                                  </td>
+
+                                  <!-- Unit -->
+                                  <td class="w-100 w-md-100px vertical-align-mobile horizontal-align-tablet-desktop">
+                                    <div class="mx-2">
+                                      <label for="" class="form-label required fs-6 fw-semibold mb-2">Unit</label>
+                                      <select type="text" name="discountoption" formControlName="discountoption"
+                                        (change)="checkvalue(i)" class="form-select form-select-sm custom-select">
+                                        <option *ngFor="let discountoptval of discountoptions"
+                                          [value]="discountoptval.id">
+                                          {{ discountoptval.name }}
+                                        </option>
+                                      </select>
+                                    </div>
+                                  </td>
+
+                                  <!-- Total Disc -->
+                                  <td class="w-100 w-md-70px vertical-align-mobile horizontal-align-tablet-desktop">
+                                    <div class="mx-2">
+                                      <label for="" class="form-label required fs-6 fw-semibold mb-2">Total Disc</label>
+                                      <div class="fw-bold">{{ getFloat(this.purchaseformval[i]['discounttotal']) }}
+                                      </div>
+                                    </div>
+                                  </td>
+
+                                  <!-- Total -->
+                                  <td class="w-100 w-md-80px vertical-align-mobile horizontal-align-tablet-desktop">
+                                    <div class="mx-2">
+                                      <label for="" class="form-label required fs-6 fw-semibold mb-2">Total(₹)</label>
+                                      <div class="fw-bold">{{ getFloat(this.purchaseformval[i]['total']) }}</div>
+                                    </div>
+                                  </td>
+
+                                  <!-- IGST -->
+                                  <td [ngClass]="{
+                                      'w-100 w-md-80px vertical-align-mobile horizontal-align-tablet-desktop': selvendor.taxtype === 1
+                                    }" *ngIf="selvendor.taxtype === 1">
+                                    <div *ngIf="selvendor.taxtype === 1 && this.purchaseformval[i]['ifigst'] === 1"
+                                      class="mx-2">
+                                      <label for=""
+                                        class="form-label required fs-6 fw-semibold mb-2">IGST({{products[i]?.['percentage']}}%)</label>
+                                      <div class="fw-bold">{{ getFloat(this.purchaseformval[i]['igst']) }}</div>
+                                    </div>
+                                  </td>
+
+                                  <!-- CGST -->
+                                  <td [ngClass]="{
+                                      'w-100 w-md-80px vertical-align-mobile horizontal-align-tablet-desktop': selvendor.taxtype !== 1
+                                    }" *ngIf="selvendor.taxtype !== 1">
+                                    <div *ngIf="this.purchaseformval[i]['ifigst'] !== 1" class="mx-2">
+                                      <label for="" class="form-label required fs-6 fw-semibold mb-2">CGST(%)</label>
+                                      <div class="fw-bold">{{ getFloat(this.purchaseformval[i]['cgstpercentage']) }}
+                                      </div>
+                                    </div>
+                                  </td>
+
+                                  <!--  <td
+                                  [ngClass]="{'w-100 w-md-90px': selvendor.taxtype === 0 && this.purchaseformval[i]['ifigst'] !== 1 } "
+                                  *ngIf="selvendor.taxtype === 0">
+                                  <div *ngIf="selvendor.taxtype === 0" class=" mx-2">
+                                    <label class="form-label" for="">IGST</label>
+                                    <div>{{getFloat(this.purchaseformval[i]['igstpercentage'])}}</div>
+                                  </div>
+                                </td> -->
+
+                                  <!-- SGST -->
+                                  <td [ngClass]="{
+                                      'w-100 w-md-80px vertical-align-mobile horizontal-align-tablet-desktop': selvendor.taxtype !== 1
+                                    }" *ngIf="selvendor.taxtype !== 1">
+                                    <div *ngIf="this.purchaseformval[i]['ifigst'] !== 1" class="mx-2">
+                                      <label for="" class="form-label required fs-6 fw-semibold mb-2">SGST(%)</label>
+                                      <div class="fw-bold">{{ getFloat(this.purchaseformval[i]['sgstpercentage']) }}
+                                      </div>
+                                    </div>
+                                  </td>
+
+                                  <!-- Grand total -->
+                                  <td class="w-80 w-md-80px mx-1 vertical-align-mobile horizontal-align-tablet-desktop">
+                                    <div class="mx-2">
+                                      <label class="form-label required fs-6 fw-semibold mb-2" for="">Grand(₹)</label>
+                                      <div class="fw-bold">{{ getFloat(this.purchaseformval[i]['grandtotal']) }}</div>
+                                    </div>
+                                  </td>
+
+                                  <!-- View Button -->
+                                  <td class="w-100 w-md-40px vertical-align-mobile horizontal-align-tablet-desktop">
+                                    <!-- <li class="list-inline-item px-1 pt-5 cursor-pointer">
+                                      <a (click)="viewEdit(view)" ngbTooltip="View Order">
+                                        <app-keenicon name="eye" class="fs-2 text-info"></app-keenicon></a>
+                                    </li> -->
+                                    <li class="list-inline-item px-1 pt-5 cursor-pointer">
+                                      <i class="bi bi-info-circle fs-1 text-primary" (click)="viewEdit(view, i)"
+                                        ngbTooltip="View Order"></i>
+                                    </li>
+                                  </td>
+
+                                  <!-- Delete -->
+                                  <td class="w-100 w-md-40px vertical-align-mobile horizontal-align-tablet-desktop">
+                                    <div class="mx-2">
+                                      <div style="padding-top: 15px" (click)="removeField(i)">
+                                        <span><i class="fa fa-trash fa-lg"
+                                            style="color: #f3374a; font-size: 22px; cursor: pointer"></i></span>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </table>
+                            </div>
+                          </div>
+                        </fieldset>
+                      </div>
+                      <button class="border border-1 border-secondary btn btn-sm btn-primary mx-1 mb-3 mt-2"
+                        type="button" (click)="addField()">
+                        <span><i class="fa fa-plus fa-lg" style="font-size: 20px; cursor: pointer"></i></span> Add New
+                        Item
+                      </button>
+                      <div class="row g-5 g-xl-10">
+                        <div class="col-md-3 col-xl-3 mb-xxl-10">
+                          <div class="card overflow-hidden mb-5 mb-xl-10" style="background: #f5dede">
+                            <div class="card-body d-flex justify-content-between flex-column px-0 pb-0">
+                              <div class="mb-4 px-9">
+                                <!--begin::Statistics-->
+                                <div class="d-flex align-items-center mb-2">
+                                  <!--begin::Value-->
+                                  <span class="fs-2hx fw-bold text-gray-800 me-2 lh-1"><strong>{{
+                                      getFloat(totalval.subtotal) }}</strong>
+                                  </span>
+                                  <!--end::Value-->
+                                  <!--begin::Label-->
+                                  <span class="badge badge-light-success fs-base">
+                                    <i class="ki-duotone fs-5 text-success ms-n1">
+                                      <span class="path1"></span>
+                                      <span class="path2"></span> </i>INR</span>
+                                  <!--end::Label-->
+                                </div>
+                                <!--end::Statistics-->
+                                <!--begin::Description-->
+                                <span class="fs-6 fw-bold text-gray-400">Sub Total</span>
+                                <!--end::Description-->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!--end::Col-->
+                        <!--begin::Col-->
+                        <div class="col-md-3 col-xl-3 mb-xxl-10">
+                          <div class="card overflow-hidden mb-5 mb-xl-10" style="background: #f5dede">
+                            <div class="card-body d-flex justify-content-between flex-column px-0 pb-0">
+                              <div class="mb-4 px-9">
+                                <div class="d-flex align-items-center mb-2">
+                                  <span class="fs-2hx fw-bold text-gray-800 me-2 lh-1"><strong>{{
+                                      getFloat(this.totalval.totaldiscount) }}</strong></span>
+                                  <span class="badge badge-light-success fs-base">
+                                    <i class="ki-duotone fs-5 text-success ms-n1">
+                                      <span class="path1"></span>
+                                      <span class="path2"></span> </i>INR</span>
+                                </div>
+                                <span class="fs-6 fw-bold text-gray-400">Overall Discount</span>
+                              </div>
+                            </div>
+                            <!--end::Card body-->
+                          </div>
+                        </div>
+                        <div class="col-md-3 col-xl-3 mb-xxl-10">
+                          <!--begin::Card widget 9-->
+                          <div class="card overflow-hidden mb-5 mb-xl-10" style="background: #f5dede">
+                            <!--begin::Card body-->
+                            <div class="card-body d-flex justify-content-between flex-column px-0 pb-0">
+                              <!--begin::Statistics-->
+                              <div class="mb-4 px-9">
+                                <!--begin::Statistics-->
+                                <div class="d-flex align-items-center mb-2">
+                                  <!--begin::Value-->
+                                  <span class="fs-2hx fw-bold text-gray-800 me-2 lh-1">{{ getFloat(this.totalval.total)
+                                    }}</span>
+                                  <!--end::Value-->
+                                  <!--begin::Label-->
+                                  <span class="badge badge-light-success fs-base">
+                                    <i class="ki-duotone fs-5 text-success ms-n1">
+                                      <span class="path1"></span>
+                                      <span class="path2"></span> </i>INR</span>
+                                  <!--end::Label-->
+                                </div>
+                                <!--end::Statistics-->
+                                <!--begin::Description-->
+                                <span class="fs-6 fw-bold text-gray-400">Total (Subtotal - Discount)</span>
+                                <!--end::Description-->
+                              </div>
+                              <!--end::Statistics-->
+                            </div>
+                            <!--end::Card body-->
+                          </div>
+                        </div>
+                        <div class="col-md-3 col-xl-3 mb-xxl-10">
+                          <!--begin::Card widget 9-->
+                          <div class="card overflow-hidden mb-5 mb-xl-10" style="background: #f5dede">
+                            <!--begin::Card body-->
+                            <div class="card-body d-flex justify-content-between flex-column px-0 pb-0">
+                              <!--begin::Statistics-->
+                              <div class="mb-4 px-9">
+                                <!--begin::Statistics-->
+                                <div class="d-flex align-items-center mb-2">
+                                  <!--begin::Value-->
+                                  <span class="fs-2hx fw-bold text-gray-800 me-2 lh-1">{{
+                                    getFloat(this.totalval.grandtotal) }}</span>
+                                  <!--end::Value-->
+                                  <!--begin::Label-->
+                                  <span class="badge badge-light-success fs-base">
+                                    <i class="ki-duotone fs-5 text-success ms-n1">
+                                      <span class="path1"></span>
+                                      <span class="path2"></span> </i>INR</span>
+                                  <!--end::Label-->
+                                </div>
+                                <!--end::Statistics-->
+                                <!--begin::Description-->
+                                <span class="fs-6 fw-bold text-gray-400">Grand Total(With Tax)</span>
+                                <!--end::Description-->
+                              </div>
+                              <!--end::Statistics-->
+                            </div>
+                            <!--end::Card body-->
+                          </div>
+                        </div>
+                        <!--end::Col-->
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="d-flex my-3">
+            <div class="text-start col-6 py-2">
+              <button (click)="gobackstep()" class="btn btn-sm btn-primary fw-bold text-white" mat-button matStepperPrevious>Back</button>
+            </div>
+            <div class="col-6 text-end py-2">
+              <button (click)="saveOrder('Draft')" class="btn btn-primary btn-sm fw-bold text-white"
+                mat-button>Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-step>
+
+    <mat-step label="View" state="form">
+      <app-list [item]="currentItem"></app-list>
+      <div class="col-12">
+        <div class="d-flex my-3">
+          <div class="text-start col-6 py-2">
+            <button mat-button matStepperPrevious
+              class="btn btn-sm btn-primary text-primary fw-bold text-white">Back</button>
+          </div>
+          <div class="col-6 text-end py-2">
+            <button class="px-5 btn btn-primary btn-sm fw-bold text-white" mat-button matStepperNext>Next</button>
+          </div>
+        </div>
+      </div>
+    </mat-step>
+
+    <mat-step label="Approval" state="last">
+      <div class="row mt-5 pt-5">
+        <div class="col-md-6">
+          <div class="text-center">
+            <img src="assets/media/auth/agency.png" alt="approved img" style="width: 40%" />
+          </div>
+        </div>
+        <div class="col-md-6 mt-5">
+          <div class="form-group w-100 mt-5 pe-5">
+            <label class="form-label">Notes</label>
+            <textarea cols="30" rows="5" class="form-control form-control-sm" formControlName="notes"></textarea>
+          </div>
+          <div class="d-flex">
+            <div class="text-start px-2 py-3 w-50">
+              <button mat-button matStepperNext class="px-5 btn btn-primary btn-sm fw-bold text-white px-5"
+                (click)="saveOrder('Drafts')">
+                Save As Draft
+              </button>
+            </div>
+            <div class="text-end px-2 py-3 w-50 pe-5">
+              <button mat-button matStepperNext class="px-5 btn btn-primary btn-sm fw-bold text-white px-5"
+                (click)="saveOrder('Process')">
+                Send For Approval
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="row my-3">
+          <div class="text-start col-6">
+            <button mat-button matStepperPrevious
+              class="btn btn-sm text-primary fw-bold border border-1 border-primary">Back</button>
+          </div>
+        </div>
+      </div>
+    </mat-step>
+  </form>
+</mat-stepper>
+
+<!-- Pop UP Open start -->
+<ng-template #productContent let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title">ADD PRODUCT</h5>
+    <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form (submit)="saveProduct()" name="form" [formGroup]="formDataProduct" novalidate>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="mb-5">
+            <label class="form-label d-block fw-bold">Category : <strong>{{ cat_id[0].name }}</strong>
+            </label>
+            <!-- <label for="">{{patch_catid}}</label> -->
+            <select class="form-select form-select-solid" placeholder="Select Category" formControlName="category_id"
+              [attr.disabled]="true" hidden>
+              <option value="" selected>Choose Category ID</option>
+              <ng-container *ngFor="let category of categories">
+                <option value="{{ category.cid }}">{{ category.name }}</option>
+              </ng-container>
+            </select>
+            <!-- <ng-select name="category_id" placeholder="Select Category" [items]="categories" bindLabel="name"
+              bindValue="cid" formControlName="category_id" (change)="getSubclass($event)"
+              [ngClass]="{ 'is-invalid': submit && formDataProduct?.controls?.category_id?.status === 'INVALID' }">
+              <option value=""></option>
+            </ng-select> -->
+            <!-- <div *ngIf="submit && formDataProduct?.controls?.category_id?.status === 'INVALID'"
+              class="invalid-feedback d-inline-block">
+              <span *ngIf="formDataProduct?.controls?.category_id?.errors?.['required']">Select Valid Category</span>
+            </div> -->
+          </div>
+        </div>
+        <!-- <p>string=>{{product_catid}}</p> -->
+        <div class="col-sm-6">
+          <div class="mb-5">
+            <label class="form-label d-block fw-bold">
+              Subcategory : <strong>{{ scat_id[0].name }}</strong></label>
+            <!-- <label for="">{{patch_scatid}}</label> -->
+            <select class="form-select form-select-solid" placeholder="Select Sub Category"
+              formControlName="subcategory_id" [attr.disabled]="true" hidden>
+              <option value="" selected>Choose Category ID</option>
+              <ng-container *ngFor="let category of subcategories">
+                <option value="{{ category.id }}">{{ category.name }}</option>
+              </ng-container>
+            </select>
+            <!-- <ng-select style="background-color: #F9F9F9;" name="subcategory_id" placeholder="Select Subcategory"
+            [items]="subcategories" bindLabel="name" bindValue="id" formControlName="subcategory_id" (change)="vendorchange($event)"
+            [(ngModel)]="subcategories[0]" [ngClass]="{
+                            'is-invalid':
+                              (submit && form['subcategory_id']?.errors) ||
+                              (form['subcategory_id']?.invalid && (form['subcategory_id']?.dirty || form['subcategory_id']?.touched))
+                          }">
+            <option value="" selected>Choose Subcategory</option>
+          </ng-select> -->
+            <!-- <div *ngIf="submit && formDataProduct?.controls?.subcategory_id?.status === 'INVALID'"
+              class="invalid-feedback d-inline-block">
+              <span *ngIf="formDataProduct?.controls?.subcategory_id?.errors?.['required']">Select Valid
+                Subcategory</span>
+            </div> -->
+          </div>
+        </div>
+
+        <div class="col-sm-12">
+          <div class="mb-5">
+            <label class="form-label d-block fw-bold">Group : <strong>{{ grp_id.name }}</strong></label>
+            <select class="form-select form-select-solid" placeholder="Select Group" formControlName="group_id"
+              [attr.disabled]="true" hidden>
+              <option value="" selected>Choose Group</option>
+              <ng-container *ngFor="let group of groups">
+                <option value="{{ group.gid }}">{{ group.name }}</option>
+              </ng-container>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Name -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label required">Name</label>
+            <input class="form-control" placeholder="Product Name" type="text" name="name" autocomplete="off"
+              formControlName="name"
+              [ngClass]="{ 'is-invalid': submit && formDataProduct?.controls?.name?.status === 'INVALID' }" />
+
+            <div *ngIf="submit && formDataProduct?.controls?.name?.status === 'INVALID'" class="invalid-feedback">
+              <span *ngIf="formDataProduct?.controls?.name?.errors?.['required']">Enter valid name</span>
+              <span *ngIf="formDataProduct?.controls?.name?.errors['minlength']">Minimum Length 3 Characters.</span>
+            </div>
+          </div>
+        </div>
+        <!-- Group -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label required"> DesignId</label>
+            <input class="form-control" placeholder="Enter Design Id" type="text" name="designId" autocomplete="off"
+              formControlName="did"
+              [ngClass]="{ 'is-invalid': submit && formDataProduct?.controls?.did?.status === 'INVALID' }" />
+
+            <div *ngIf="submit && formDataProduct?.controls?.did?.status === 'INVALID'"
+              class="invalid-feedback d-inline-block">
+              <span *ngIf="formDataProduct?.controls?.did?.errors?.['required']">Enter valid Design Id</span>
+              <span *ngIf="formDataProduct?.controls?.did?.errors?.['pattern']">Enter only Numbers</span>
+            </div>
+          </div>
+        </div>
+        <!-- HSN Code -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label required">HSN Code</label>
+            <input class="form-control" placeholder="Enter HSN code" type="text" name="hsncode" autocomplete="off"
+              formControlName="hsncode"
+              [ngClass]="{ 'is-invalid': submit && formDataProduct?.controls?.hsncode?.status === 'INVALID' }" />
+
+            <div *ngIf="submit && formDataProduct?.controls?.hsncode?.status === 'INVALID'"
+              class="invalid-feedback d-inline-block">
+              <span *ngIf="formDataProduct?.controls?.hsncode?.errors?.['required']">Enter valid HSN code</span>
+              <span *ngIf="formDataProduct?.controls?.hsncode?.errors?.['pattern']">Enter only Numbers</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- MRP -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label required">MRP</label>
+            <input class="form-control" placeholder="MRP" type="text" name="mrp" autocomplete="off"
+              formControlName="mrp" appPriceMRPValidator="{{ formDataProduct?.controls?.price?.value }}"
+              (ngModelChange)="onMRPBlur(formDataProduct?.controls?.mrp?.value, formDataProduct?.controls?.price?.value)" />
+            <!--  test
+            <pre>{{formDataProduct?.controls?.mrp?.errors | json}}</pre> -->
+            <div *ngIf="submit && formDataProduct?.controls?.mrp?.status === 'INVALID'"
+              class="invalid-feedback d-inline-block">
+              <span *ngIf="formDataProduct?.controls?.mrp?.value <= 0">Enter valid mrp</span><br />
+              <span *ngIf="formDataProduct?.controls?.mrp?.errors?.priceInvalid === true">Please Enter MRP Greater than
+                Price</span>
+            </div>
+          </div>
+        </div>
+        <!--   [ngClass]="{'is-invalid':( (submit && formDataProduct?.controls?.price?.status == 'INVALID') && ( submit && !formDataProduct?.controls?.price?.errors?.['priceInvalid']) ) }"  -->
+
+        <!-- Price -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label required">Price</label>
+            <input class="form-control" placeholder="Enter Price" type="text" name="price" autocomplete="off"
+              formControlName="price" appMRPPriceValidator="{{ formDataProduct?.controls?.mrp?.value }}" />
+            <!-- price
+            <pre>{{formDataProduct?.controls?.price?.errors | json}}</pre> -->
+            <div *ngIf="submit && formDataProduct?.controls?.price?.status === 'INVALID'"
+              class="invalid-feedback d-inline-block">
+              <span *ngIf="formDataProduct?.controls?.price?.value <= 0">Enter valid price</span><br />
+              <span *ngIf="formDataProduct?.controls?.price?.errors?.priceInvalid === true"> Please Enter Price Less
+                than MRP</span>
+            </div>
+            <div></div>
+          </div>
+        </div>
+
+        <!-- Tax -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label required">Tax</label>
+            <ng-select name="tax_id" placeholder="Select Tax" [items]="taxes" (change)="taxchange($event)"
+              bindLabel="name" bindValue="id" formControlName="tax_id"
+              [ngClass]="{ 'is-invalid': submit && formDataProduct?.controls?.tax_id?.status === 'INVALID' }">
+              <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <span>{{ item.name }} - {{ item.percentage }}%</span>
+              </ng-template>
+            </ng-select>
+            <div *ngIf="submit && formDataProduct?.controls?.tax_id?.status === 'INVALID'" class="invalid-feedback">
+              <span *ngIf="formDataProduct?.controls?.tax_id?.value < 0">Enter valid tax</span>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Description -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label"> Description </label>
+            <textarea class="form-control" placeholder="Enter Description" type="text" name="description"
+              autocomplete="off" formControlName="description"></textarea>
+          </div>
+        </div>
+
+        <!-- Product Image -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <h4 class="card-title mb-4 required">Product Image Upload &nbsp;&nbsp;&nbsp;</h4>
+            <h5 class="text-primary">(Upload Only .jpg,.jpeg,.png file formats)</h5>
+            <input type="file" class="file-input form-control" (change)="onSelectedFile($event)" autocomplete="off"
+              #fileupload name="sizechart"
+              [ngClass]="{ 'is-invalid': submit && !fileName && formDataProduct?.controls?.image?.status === 'INVALID' }" />
+            <!-- <a *ngIf="fileName!==''" target="_blank" href="{{ fileName }}"><i class="mdi mdi-file"
+                style="font-size: 16px;"></i>Upload Mandatory Image</a> -->
+
+            <div *ngIf="submit && formDataProduct?.controls?.image?.status === 'INVALID'" class="invalid-feedback">
+              <span *ngIf="!fileName && formDataProduct?.controls?.image?.errors?.['required'] ">Choose an image</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <h4 class="card-title mb-4 required">Is Variant</h4>
+            <div class="form-check pb-3">
+              <input class="form-check-input" type="radio" name="d_variant" (click)="variant_function('yes')" />
+              <label class="form-check-label" for="flexRadioDefault1"> Yes </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="d_variant" (click)="variant_function('no')" />
+              <label class="form-check-label" for="flexRadioDefault2"> No </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="getList">
+        <div class="card">
+          <div class="">
+            <fieldset class="border rounded-3 p-3">
+              <legend class="float-none w-auto px-3">Variant List</legend>
+              <form [formGroup]="productForm">
+                <!-- <div formArrayName="variant_points">
+                      <div *ngFor="let item of variantPoints.controls; let pointIndex=index" [formGroupName]="pointIndex">
+                        <label>Variant Point: <input formControlName="variant" /></label>
+                        <label>Variant values: <input formControlName="values" /></label>
+                        <button type="button" (click)="deleteVariantPoint(pointIndex)">Delete Variant Point</button>
+                      </div>
+                      <button type="button" (click)="addVariantPoint()">Add Variant Point</button>
+                    </div> -->
+                <div class="table-responsive">
+                  <label for="" class="fs-5 p-3 fw-bold">MRP &nbsp;</label><strong>{{ max_count }}</strong>
+                  <table class="table align-left gs-0 gy-5">
+                    <tr>
+                      <td>
+                        <div formArrayName="variant_points" style="padding-left: 0px; padding-right: 0px">
+                          <div *ngFor="let item of variantPoints.controls; let pointIndex = index" class="pointIndex">
+                            <fieldset class="m-2">
+                              <!--  <legend style="padding:5px 0px;">
+                                    <span>
+                                      {{purcaseForm.value['itemlist'][i]['name']?purcaseForm.value['itemlist'][i]['name']:'Product-'+i}}</span>
+                                  </legend> -->
+
+                              <div class="row" [formGroupName]="pointIndex">
+                                <div class="table-responsive">
+                                  <table [ngStyle]="{ 'background-color': pointIndex % 2 == 1 ? '#ffffff' : '#efe6e6' }"
+                                    class="w-100">
+                                    <tr class="row" style="margin-left: 10px">
+                                      <ng-container *ngFor="let variant of variantlist; let k = index">
+                                        <td
+                                          class="w-100 w-md-100px vertical-align-mobile horizontal-align-tablet-desktop">
+                                          <div>
+                                            <label for="" class="form-label required fs-6 fw-semibold mb-2">{{
+                                              variant.name }}</label>
+                                            <select placeholder="Select Variant" formControlName="{{ variant.name }}"
+                                              class="form-control">
+                                              <option [value]="0" [selected]="true" disabled>Select</option>
+                                              <option
+                                                *ngFor="let variants of variant.productvariantvalues; let j = index"
+                                                [value]="variants.id">
+                                                {{ variants.value }}
+                                              </option>
+                                            </select>
+                                          </div>
+                                        </td>
+                                      </ng-container>
+                                      <!-- Variant -->
+                                      <!-- <td class="w-100 w-md-100px vertical-align-mobile horizontal-align-tablet-desktop">
+                                            <div>
+                                              <label for="" class="form-label required fs-6 fw-semibold mb-2">Variant</label>
+                                              <select placeholder="Select Variant" 
+                                                formControlName="variant"
+                                                class="form-select form-select-sm custom-select" (change)="changeVariant($event)">
+                                               
+                                                <option *ngFor="let variant of variantlist; let j = index"
+                                                  [value]="variant.id">
+                                                  {{ variant.name }}
+                                                </option>
+                                              </select>
+                                            </div>
+                                          </td> -->
+
+                                      <!-- Values -->
+                                      <!-- <td class="w-100 w-md-100px vertical-align-mobile horizontal-align-tablet-desktop">
+                                            <div>
+                                              <label for="" class="form-label required fs-6 fw-semibold mb-2">Values</label>
+                                              <select placeholder="Select Variant" 
+                                                formControlName="values"
+                                                class="form-select form-select-sm custom-select">
+                                                <option *ngFor="let variant of valuelist; let j = index"
+                                                  [value]="variant.id">
+                                                  {{ variant.value }}
+                                                </option>
+                                              </select>
+                                            </div>
+                                          </td> -->
+
+                                      <!-- Values -->
+                                      <!-- <td
+                                        class="w-100 w-md-100px vertical-align-mobile horizontal-align-tablet-desktop">
+                                        <div>
+                                          <label for="" class="form-label required fs-6 fw-semibold mb-2">Qty</label>
+
+                                          <input class="form-control" placeholder="Enter qty" type="text"
+                                            formControlName="qty" (change)="add_quentity($event)">
+                                        </div>
+                                      </td> -->
+                                      <td
+                                        class="w-100 w-md-100px vertical-align-mobile horizontal-align-tablet-desktop">
+                                        <div>
+                                          <label for=""
+                                            class="form-label required fs-6 fw-semibold mb-2">SupplierDid</label>
+
+                                          <input class="form-control" placeholder="Design Id" type="text"
+                                            formControlName="vendorproId">
+                                        </div>
+                                      </td>
+                                      <td
+                                        class="w-100 w-md-100px vertical-align-mobile horizontal-align-tablet-desktop">
+                                        <div>
+                                          <label for="" class="form-label required fs-6 fw-semibold mb-2">Price</label>
+
+                                          <input class="form-control" placeholder="Enter price" type="text"
+                                            formControlName="price" (change)="check_quentity($event, pointIndex)" />
+                                        </div>
+                                      </td>
+
+                                      <!-- <td
+                                        class="w-100 w-md-200px vertical-align-mobile horizontal-align-tablet-desktop">
+                                        <div>
+                                          <label for="" class="form-label required fs-6 fw-semibold mb-2">Vendor Product
+                                            ID</label>
+                                          <input type="text" class="form-control" placeholder="Vendor Price ID"
+                                            formControlName="vproductid">
+                                        </div>
+                                      </td> -->
+
+                                      <!-- Delete -->
+                                      <td class="w-100 w-md-40px vertical-align-mobile horizontal-align-tablet-desktop">
+                                        <div class="mx-2">
+                                          <!-- <div style="padding-top: 15px" (click)="addVariantPoint()">
+                                                <span><i class="fa fa-plus fa-lg"
+                                                    style="color: #165405; font-size: 22px; cursor: pointer"></i></span>
+                                              </div> -->
+                                        </div>
+                                        <div class="mx-2">
+                                          <div style="padding-top: 34px" (click)="deleteVariantPoint(pointIndex)">
+                                            <span><i class="fa fa-trash fa-lg"
+                                                style="color: #f3374a; font-size: 22px; cursor: pointer"></i></span>
+                                          </div>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </div>
+                              </div>
+                            </fieldset>
+                            <!-- {{ this.productForm.value | json }} -->
+                          </div>
+                          <div *ngIf="max_count > intValue">
+                            <button class="border border-1 border-secondary btn btn-sm btn-primary mx-1 mb-3 mt-2"
+                              type="button" (click)="addVariantPoint()">
+                              <span><i class="fa fa-plus fa-lg" style="font-size: 20px; cursor: pointer"></i></span> Add
+                              Variant
+                            </button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </form>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+      <!-- Submit cancel -->
+      <div class="row p-2">
+        <div class="d-md-flex align-items-center mt-5">
+          <div class="col-md-3">
+            <button type="submit" class="btn btn-sm btn-primary my-2">Submit</button>
+          </div>
+          <div class="ml-auto">
+            <div class="dl">
+              <button type="button" class="btn btn-sm btn-secondary my-2"
+                (click)="modal.dismiss('Cross click')">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+<!-- Pop UP Open end -->
+
+<!-- Pop Up Open Start -->
+<ng-template #variantList let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title">Variant List</h5>
+  </div>
+</ng-template>
+
+<!-- add vendor -->
+<ng-template #addvendor let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title">Add Supplier</h5>
+    <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <app-addvendor (refreshList)="refreshList($event)"></app-addvendor>
+  </div>
+</ng-template>
+
+<!-- view product -->
+<ng-template #view let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title">View Product</h5>
+    <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <!-- <div class="modal-body">
+    <div class="w-100 d-flex">
+      <p class="w-25"><strong>Category :</strong></p>
+      <p class="w-75">{{cdata}}</p>
+    </div>
+
+    <div class="w-100 d-flex">
+      <p class="w-25"><strong>Subcategory :</strong></p>
+      <p class="w-75">{{scdata}}</p>
+
+    </div>
+
+    <div class="w-100 d-flex">
+      <p class="w-25"><strong>Description :</strong></p>
+      <p class="w-75">{{desc}}</p>
+    </div>
+  </div> -->
+  <div class="modal-body">
+    <div class="card">
+      <div class="card-body py-0">
+        <div class="col-md-12">
+          <table class="table table-row-dashed">
+            <tbody>
+              <tr>
+                <th style="width: 125px" class="text-start ps-5 bg-primary text-white">Category</th>
+                <td class="border border-dashed border-primary pe-1" style="text-align: justify">{{ cdata }}</td>
+              </tr>
+              <tr>
+                <th style="width: 125px" class="text-start ps-5 bg-primary text-white">Subcategory</th>
+                <td class="border border-dashed border-primary pe-1" style="text-align: justify">{{ scdata }}</td>
+              </tr>
+              <tr>
+                <th style="width: 125px" class="text-start ps-5 bg-primary text-white">Description</th>
+                <td class="pe-1" id="last-child" style="text-align: justify">{{ desc }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<!-- Pop UP Open start -->
+<!-- Pop UP Open start -->
+<ng-template #mediacontent let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title">Media Library</h5>
+    <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form enctype="multipart/form-data">
+      <div class="row">
+        <div *ngFor="let progressInfo of progressInfos" class="mb-2">
+          <span [ngStyle]="{ color: progressInfo.color }">{{ progressInfo.fileName }} | {{ progressInfo.msg }}</span>
+          <div class="progress">
+            <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+              attr.aria-valuenow="{{ progressInfo.value }}" aria-valuemin="0" aria-valuemax="100"
+              [ngStyle]="{ width: progressInfo.value + '%' }">
+              {{ progressInfo.value }}%
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div style="margin-left: 30%; margin-bottom: 20px">
+            <input type="file" multiple="" class="btn btn-success" (change)="selectFiles($event)"
+              style="position: absolute; height: 70px; width: 160px; opacity: 0" />
+            <span style="width: 160px; display: block; height: 70px; z-index: -1" class="col-3 btn btn-light w-sm">
+              <i class="mdi mdi-upload d-block font-size-16"></i>
+              New File Upload</span>
+          </div>
+          <!-- <div style="margin-left: 25%; margin-bottom: 20px;"> 
+                        <p style="color:blue">Upload the image of minimum width 800px</p>
+                    </div> -->
+          <div class="row">
+            <!-- <div class="col-xl-3 col-sm-4 mt-4" *ngFor="let image of images; let i = index" (click)="selectimage(i)">
+              <div class="product-img position-relative p-4" [ngClass]="{ activeimg: image?.select }">
+                <img class="img-fluid mx-auto d-block" src="{{ image?.path }}" alt="Mugdha" style="max-height: 200px" />
+              </div>
+            </div> -->
+            <div class="col-xl-3 col-sm-6 mb-2" *ngFor="let image of images; let i = index" (click)="selectimage(i)">
+              <div class="product-img position-relative" [ngClass]="{ activeimgsel: image?.select }">
+                <img class="img-fluid mx-auto d-block" src="{{ image?.path }}" alt="Mugdha" style="max-height: 200px" />
+              </div>
+            </div>
+
+            <!-- <div class="col-12 text-center mt-5">
+                            <button class="btn btn-success" type="button" aria-hidden="true"
+                                (click)="formsubmit()"><i class="fas fa-image"></i> Save </button>
+                        </div> -->
+          </div>
+
+          <!-- Pagination  -->
+          <div class="row justify-content-md-between align-items-md-center mt-2">
+            <!-- <div class="col-sm-12 col-md-4">
+              <div class="dataTables_length" id="tickets-table_length">
+                <label class="d-inline-flex align-items-center"
+                  >Show
+                  <select class="form-select form-select-sm ms-2 me-2" (change)="handlePageSizeChange($event)">
+                    <option *ngFor="let size of pageSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select>
+                  Entries</label
+                >
+              </div>
+            </div> -->
+            <!-- Pagination -->
+            <!-- <div class="col-sm-12 col-md-8">
+                            <div class="text-md-right float-md-end pagination-rounded">
+                                <ngb-pagination class="pagination pagination-rounded justify-content-center mt-4"
+                                    size="lg" [(page)]="page" [pageSize]="pageSize"
+                                    (pageChange)="handlePageChange($event)" [collectionSize]="count" [maxSize]="10"
+                                    [rotate]="true">
+                                    <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i>
+                                    </ng-template>
+                                    <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+                                </ngb-pagination>
+                            </div>
+                        </div> -->
+            <div class="col-sm-12 col-md-4">
+              <div class="text-md-right float-md-end pagination-rounded">
+                <!-- <ngb-pagination
+                  [(page)]="page"
+                  [pageSize]="pageSize"
+                  [maxSize]="5"
+                  [rotate]="true"
+                  [ellipses]="false"
+                  [boundaryLinks]="true"
+                  (pageChange)="handlePageChange($event)"
+                  [collectionSize]="count"
+                ></ngb-pagination> -->
+              </div>
+            </div>
+          </div>
+          <!-- Pagination  -->
+
+          <div class="d-md-flex align-items-center mt-5">
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-4">
+              <div class="ml-auto">
+                <div class="dl">
+                  <span (click)="submitImage()" class="btn btn-sm btn-primary">Submit</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="ml-auto">
+                <div class="dl">
+                  <span (click)="popupclose()" class="btn btn-sm btn-primary">Close</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+<!-- Pop UP Open end -->
+<!-- Pop UP Open end -->

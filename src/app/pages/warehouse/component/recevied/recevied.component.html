@@ -1,0 +1,764 @@
+<div class="card mb-5 mb-xl-10">
+  <div class="card-body pt-1 pb-0">
+    <div class="card-body py-3">
+      <div class="invoice-title border-bottom border-1 border-primary">
+        <h4 class="float-end font-size-16 mt-5 text-primary"># {{ data?.uuid }}</h4>
+        <div class="mb-4">
+          <img src="./assets/media/logos/default.svg" alt="logo" height="50" />
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-sm table-row-dashed fs-6 table-striped">
+          <thead class="border border-2 border-primary">
+            <tr class="border border-1 border-primary gs-0">
+              <th class="text-center border border-end-1 border-white fs-2">Bill Address</th>
+              <th class="text-center border border-end-1 border-white fs-2">Ship Address</th>
+              <th class="text-center border border-end-1 border-white fs-2">Supplier Address</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border border-1 border-primary">
+              <td class="p-5 m-0 text-uppercase">
+                <p class="m-0" [innerHTML]="data?.billing?.billingaddress"></p>
+              </td>
+              <td class="p-5 m-0">
+                <p class="text-uppercase m-0">{{ warehouse?.name }}</p>
+                <p class="text-uppercase m-0">{{ warehouse?.mobile }}</p>
+                <p class="text-uppercase m-0">{{ warehouse?.address }}</p>
+                <p class="text-uppercase m-0">{{ warehouse?.address1 }}</p>
+                <p class="text-uppercase m-0">{{ warehouse?.address2 }}</p>
+                <p class="text-uppercase m-0">{{ warehouse?.pincode }}</p>
+              </td>
+              <td class="p-5 m-0">
+                <p class="text-uppercase m-0">{{ data?.user?.name }}</p>
+
+                <p class="text-uppercase m-0">{{ billaddress.address }}</p>
+                <p class="text-uppercase m-0">{{ billaddress?.address2 }}</p>
+                <p class="text-uppercase m-0">{{ billaddress?.city }}</p>
+                <p class="text-uppercase m-0">{{ billaddress?.state }}</p>
+                <p class="text-uppercase m-0">{{ billaddress?.zipcode }}</p>
+                <p class="m-0"><strong class="text-primary">Phone : </strong>{{ data?.user?.mobile }}</p>
+                <p class="m-0"><strong class="text-primary">Email : </strong>{{ data?.user?.email }}</p>
+                <p *ngIf="data?.user?.vendordetail?.gstin != ''" class="text-uppercase m-0">
+                  <strong class="text-primary">GST : </strong>{{ data?.user?.vendordetail?.gstin }}
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br />
+      <div *ngIf="grndata || !editbatch" class="col-12 border border-1 border-primary p-3">
+        <h3 class="text-primary">Received Details</h3>
+        <form [formGroup]="formData" novalidate>
+          <div class="row m-0">
+            <div class="col-12">
+              <div class="mb-3">
+                <div class="row">
+                  <div class="col px-1"><label [ngClass]="{'required': !editbatch}" class="form-label">Invoice Value :</label></div>
+                  <div class="col px-2">
+                    <label *ngIf="editbatch">{{grndata.buyingprice}}</label>
+                    <input *ngIf="!editbatch"
+                      type="text"
+                      class="form-control fw-bold"
+                      formControlName="invoicevalue"
+                      [ngClass]="{
+                        'is-invalid':
+                          (submit && form['invoicevalue'].errors) ||
+                          (form['invoicevalue'].invalid && (form['invoicevalue'].dirty || form['invoicevalue'].touched))
+                      }"
+                    />
+                  </div>
+                  <div class="col px-1"><label [ngClass]="{'required': !editbatch}" class="form-label">Invoice Date :</label></div>
+                  <div class="col px-2">
+                    <label *ngIf="editbatch">{{grndata.invoicedate  | date : 'medium'}}</label>
+                    <input *ngIf="!editbatch" class="form-control" formControlName="invoicedate" type="datetime-local" [min]="mindate" [ngClass]="{'is-invalid': (submit && form['invoicedate'].errors) || (form['invoicedate'].invalid && (form['invoicedate'].dirty || form['invoicedate'].touched))}">
+                  </div>
+                  <div *ngIf="(submit && form['invoicedate']?.errors) || (form['invoicedate']?.invalid && (form['invoicedate']?.dirty || form['invoicedate']?.touched))"
+                                  class="invalid-feedback">
+                                  <span *ngIf="form['invoicedate'].errors?.['required']">Enter Invoice Date.</span>
+                
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="row">
+                  <div class="col px-1"><label [ngClass]="{'required': !editbatch}" class="form-label">Invoice:</label></div>
+                  <div class="col px-2">
+                    <label *ngIf="editbatch"><a href="{{grndata.invoice}}" target="_blank">Invoice</a></label>
+                    <input *ngIf="!editbatch" type="file" class="file-input form-control" (change)="onSelectedFilepath($event,'invoice')" autocomplete="off"
+                    name="invoice" formControlName="invoice"  [ngClass]="{'is-invalid': (submit && form['invoice'].errors) || (form['invoice'].invalid && (form['invoice'].dirty || form['invoice'].touched) && invoiceName=='')}" />
+                    <a *ngIf="invoiceName!='' && !editbatch" target="_blank" href="{{ invoiceName }}">Invoice </a>
+                    <div
+                      *ngIf="invoiceName=='' && ((submit && form['invoice']?.errors) || (form['invoice']?.invalid && (form['invoice']?.dirty || form['invoice']?.touched)))"
+                      class="invalid-feedback">
+                      <span *ngIf="form['invoice'].errors?.['required']">Upload File.</span>
+                    </div>
+                  </div>
+
+                  <div class="col px-1"><label [ngClass]="{'required': !editbatch}" class="form-label">Invoice No. :</label></div>
+                  <div class="col px-2">
+                    <label *ngIf="editbatch">{{grndata.invoiceno}}</label>
+                    <input *ngIf="!editbatch"
+                      type="text"
+                      class="form-control fw-bold"
+                      formControlName="invoiceno"
+                      [ngClass]="{
+                        'is-invalid':
+                          (submit && form['invoiceno'].errors) ||
+                          (form['invoiceno'].invalid && (form['invoiceno'].dirty || form['invoiceno'].touched))
+                      }"
+                    />
+                  </div>
+                                  </div>
+              </div>
+              <div class="mb-3">
+                <div class="row">
+                  <div class="col col-sm-3 px-1"><label class="form-label">LR No :</label></div>
+                    <div class="col col-sm-3 px-2">
+                      <label *ngIf="editbatch">{{grndata.lrno}}</label>
+                      <input *ngIf="!editbatch"
+                        type="text"
+                        class="form-control fw-bold"
+                        formControlName="lrno"
+                        [ngClass]="{
+                          'is-invalid':
+                            (submit && form['lrno'].errors) ||
+                            (form['lrno'].invalid && (form['lrno'].dirty || form['lrno'].touched))
+                        }"
+                      />
+                    </div>
+                  <div class="col col-sm-3 px-1"><label [ngClass]="{'required': !editbatch}" class="form-label">Remarks :</label></div>
+                  <div class="col col-sm-3 px-2">
+                    <label *ngIf="editbatch">{{currentBatch?.remarks}}</label>
+                    <textarea *ngIf="!editbatch"
+                      class="form-control fw-bold"
+                      placeholder="Enter Remarks"
+                      type="text"
+                      name="remarks"
+                      autocomplete="off"
+                      formControlName="remarks"
+                      [ngClass]="{
+                        'is-invalid':
+                          (submit && form['remarks']?.errors) ||
+                          (form['remarks']?.invalid && (form['remarks']?.dirty || form['remarks']?.touched))
+                      }"
+                    >
+                    </textarea>
+                    <div
+                      *ngIf="
+                        (submit && form['remarks']?.errors) ||
+                        (form['remarks']?.invalid && (form['remarks']?.dirty || form['remarks']?.touched))
+                      "
+                      class="invalid-feedback"
+                    >
+                      <span *ngIf="form['remarks'].errors">Enter valid remarks</span>
+                    </div><br/>
+                  </div>
+                  <div class="col-3 px-1"><label [ngClass]="{'required': !editbatch}" class="form-label">Transport cost :</label></div>
+                  <div class="col-3 px-2">
+                    <label *ngIf="editbatch">{{grndata.transportcost}}</label>
+                    <input *ngIf="!editbatch"
+                      class="form-control fw-bold"
+                      placeholder="Enter Transport cost"
+                      type="text"
+                      name="transportcost"
+                      autocomplete="off"
+                      formControlName="transportcost"
+                      [ngClass]="{
+                        'is-invalid':
+                          (submit && form['transportcost']?.errors) ||
+                          (form['transportcost']?.invalid && (form['transportcost']?.dirty || form['maxcount']?.touched))
+                      }"
+                    />
+
+                    <div
+                      *ngIf="
+                        (submit && form['transportcost']?.errors) ||
+                        (form['transportcost']?.invalid && (form['transportcost']?.dirty || form['transportcost']?.touched))
+                      "
+                      class="invalid-feedback"
+                    >
+                      <span *ngIf="form['transportcost'].errors">Enter valid transporter cost</span>
+                    </div>
+                  </div>
+                  <div class="col-3 px-1"><label [ngClass]="{'required': !editbatch}" class="form-label">Overall Discount :</label></div>
+                  <div class="col-3 px-2">
+                    <label *ngIf="editbatch">{{grndata.overalldiscount}}</label>
+                    <input *ngIf="!editbatch"
+                      class="form-control fw-bold"
+                      placeholder="Enter Overall Discount"
+                      type="text"
+                      name="overalldiscount"
+                      autocomplete="off"
+                      formControlName="overalldiscount"
+                      [ngClass]="{
+                        'is-invalid':
+                          (submit && form['overalldiscount']?.errors) ||
+                          (form['overalldiscount']?.invalid && (form['overalldiscount']?.dirty || form['maxcount']?.touched))
+                      }"
+                    />
+
+                    <div
+                      *ngIf="
+                        (submit && form['overalldiscount']?.errors) ||
+                        (form['overalldiscount']?.invalid && (form['overalldiscount']?.dirty || form['overalldiscount']?.touched))
+                      "
+                      class="invalid-feedback"
+                    >
+                      <span *ngIf="form['overalldiscount'].errors">Enter valid discount</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="row py-2 mt-3 mb-2">
+        <div class="col-sm-3">
+          <h3 class="font-size-15 fw-bold text-primary">Product Item summary</h3>
+        </div>
+        <!-- <div class="col-sm-3">
+          <div *ngIf="psidlabel === 'Tags'">
+            <label class="form-label"> MRP</label>
+            <input type="text" class="form-control" placeholder="Enter MRP" name="mrp" />
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <label class="form-label"> Select Tag's download format</label>
+          <ng-select
+            name="brand"
+            placeholder="Select Format"
+            [items]="formats"
+            bindLabel="name"
+            bindValue="id"
+            [(ngModel)]="selectedFormat"
+            (change)="changeFormat($event)"
+          >
+          </ng-select>
+        </div>
+        
+        *ngIf="editbatch && batchedqtytotal != qtytotal"
+        -->
+        <div *ngIf="editbatch" class="col-sm-3 float-start">
+          <button type="button" class="btn btn-info"  (click)="createBatch()">Create Batch</button>
+        </div>
+
+        <div *ngIf="data.ship_status !== '' && editbatch" class="col-sm-3 float-end">
+          <label class="control-label"> Select Batch</label>
+          <ng-select  (change)="changeBatch($event)" [(ngModel)]="currentBatch"> 
+            <ng-option *ngFor="let batch of batches; let i =index;" [value]="batch" >
+              Batch  -  {{i + 1}}
+            </ng-option>
+          </ng-select>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table align-left table-row-dashed fs-6 table-striped">
+          <thead>
+            <tr class="border border-1 border-primary">
+              <th class="p-3 w-50px  border border-end-1 border-white">#</th>
+              <th class="text-start p-3 min-w-100px  border border-end-1 border-white ">Product ID</th>
+              <th class="text-start p-3 min-w-100px border border-end-1 border-white ">Supplier D.ID</th>
+              <th class="text-start p-3 min-w-100px border border-end-1 border-white ">Image</th>
+              <th class="text-start p-3 min-w-100px border border-end-1 border-white ">Group</th>
+              <th class="text-start p-3 min-w-70px border border-end-1 border-white ">Variants</th>
+              <th class="text-start p-3 min-w-70px border border-end-1 border-white ">MRP</th>
+              <th class="text-start p-3 min-w-70px border border-end-1 border-white ">Price</th>
+              <th class="text-start p-3 min-w-50px border border-end-1 border-white ">Qty</th>
+              <th class="text-start p-3 min-w-50px border border-end-1 border-white ">Received Qty</th>
+              <th class="text-start p-3 min-w-50px border border-end-1 border-white ">Invoice Qty</th>
+              <th class="text-start p-3 min-w-70px border border-end-1 border-white ">Subtotal</th>
+              <th class="text-start p-3 min-w-70px border border-end-1 border-white ">Discount</th>
+              <th class="text-start p-3 min-w-70px border border-end-1 border-white ">Total</th>
+              <th class="text-start p-3 min-w-70px border border-end-1 border-white " *ngIf="taxtotal.ifigst === 0">CGST<br />%</th>
+              <th class="text-start p-3 min-w-70px border border-end-1 border-white " *ngIf="taxtotal.ifigst === 0">SGST<br />%</th>
+              <th class="text-start p-3 min-w-70px border border-end-1 border-white " *ngIf="taxtotal.ifigst === 1">IGST<br />%</th>
+              <th class="text-start p-3 min-w-70px border border-end-1 border-white " *ngIf="taxtotal.ifigst === 0">CGST<br />INR</th>
+              <th class="text-start p-3 min-w-70px border border-end-1 border-white " *ngIf="taxtotal.ifigst === 0">SGST<br />INR</th>
+              <th class="text-start p-3 min-w-70px border border-end-1 border-white " *ngIf="taxtotal.ifigst === 1">IGST<br />INR</th>
+              <th class="text-start p-3 min-w-80px border border-end-1 border-white ">Grand<br />Total(&#8377;)</th>
+              <!-- <th class="text-center p-3 min-w-80px border border-end-1 border-white " *ngIf="data?.ship_status !== ''">Tag</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of data?.purchaseorderitems; let i = index" class="border border-1 border-primary">
+              <td class="text-center fw-bold">{{ i + 1 }}</td>
+              <td>
+                {{ item.product?.uuid }} <br />
+                {{ item.product?.name }}
+              </td>
+              <td>{{ item.vendorvariantmapping?.vendorproId }}</td>
+              <td>
+                <img
+                  fetchpriority="low"
+                  loading="lazy"
+                  style="width: 80px; height: 80px"
+                  alt="Product"
+                  src="{{ item?.productselectimage?.path }}"
+                />
+              </td>
+              <td>{{ item.product?.category?.name }} - {{ item.product?.subcategory?.name }} - {{ item.product?.group?.name }}</td>
+
+              <td>
+                <b>{{ item.vendorvariantmapping?.description }}</b>
+                <!-- <button
+                  class="btn btn-primary btn-sm"
+                  *ngIf="item.vendorvariantmapping?.description === 'No Variant' || ''"
+                  (click)="novariant(productContent, item.vendorvariantmapping, i)"
+                >
+                  add
+                </button> -->
+              </td>
+              <td>&#8377;{{ item.mrp }}</td>
+              <td>&#8377;{{ item.price }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>{{data.purchaseorderitems[i].receivedqty}}</td>
+              <td>
+                <div *ngIf="!showedit">{{ items[i] }}</div>
+                <form name="form" *ngIf="(data.ship_status != '' && !currentBatch?.id && showedit)">
+                  <div>
+                    <input
+                      type="text"
+                      class="form-control form-control-sm border border-primary"
+                      name="{{ data.purchaseorderitems[i].invoiceqty }}"
+                      [(ngModel)]=" data.purchaseorderitems[i].invoiceqty"
+                      [ngModelOptions]="{ standalone: true }"
+                      [ngClass]="{
+                        'is-invalid':
+                          (submit && form['invoiceqty'].errors) ||
+                          (form['invoiceqty'].invalid && (form['invoiceqty'].dirty || form['invoiceqty'].touched))
+                      }"
+                      (keyup)="checkvalue($event, i)"
+                    />
+                  </div>
+                  <div
+                    *ngIf="
+                      (submit && form['invoiceqty']?.errors) ||
+                      (form['invoiceqty']?.invalid && (form['invoiceqty']?.dirty || form['invoiceqty']?.touched))
+                    "
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form['invoiceqty'].errors?.['required']">Enter Received Item Count</span>
+                    <span *ngIf="form['invoiceqty'].errors?.['min']"> Minimum required number is 1 </span>
+                    <span *ngIf="highqty">Enter Invoice count less than Quantity</span>
+                  </div>
+                </form>
+              </td>
+              <td>{{ item.subtotal }}</td>
+              <td>&#8377;{{ item.discounttotal }}</td>
+              <td>&#8377;{{ item.total }}</td>
+              <td *ngIf="taxtotal.ifigst === 0">{{ item.ctax }}%</td>
+              <td *ngIf="taxtotal.ifigst === 0">{{ item.stax }}%</td>
+              <td *ngIf="taxtotal.ifigst === 1">{{ item.itax }}%</td>
+              <td *ngIf="taxtotal.ifigst === 0">&#8377;{{ item.ctaxval }}</td>
+              <td *ngIf="taxtotal.ifigst === 0">&#8377;{{ item.staxval }}</td>
+              <td *ngIf="taxtotal.ifigst === 1">&#8377;{{ item.itaxval }}</td>
+              <td>&#8377;{{ item.grandtotal }}</td>
+              <!-- <td *ngIf="data.ship_status !== ''">
+                <div>
+                  <a class="btn btn-primary btn-sm text-center mb-5" (click)="generatepsid(item.uuid)" style="font-size: 12px">{{
+                    psidlabel
+                  }}</a>
+                </div> -->
+                <!-- <div>
+                  <a class="btn btn-primary btn-sm text-center" (click)="add(contentAdd,item.uuid)" style="font-size: 12px">Add Price</a>
+                </div>
+                <div>
+                  <a class="btn btn-primary btn-sm text-center" (click)="add(contentAdd,item.uuid)"
+                    style="font-size: 12px">Add Price</a>
+                </div> 
+              </td>-->
+            </tr>
+          </tbody>
+         
+          <tfoot>
+            <tr class="border border-1 border-primary">
+              <td align="center" [colSpan]="8"><strong>Total</strong></td>
+              <td>
+                <strong>{{ qtytotal }}</strong>
+              </td>
+              <td>
+                <strong>{{ receivedqty }}</strong>
+              </td>
+              <td>
+                <strong *ngIf="!editbatch">{{ invoiceqty }}</strong>
+                <strong *ngIf="editbatch">{{ invqtytotal }}</strong>
+              </td>
+              <td>
+                <strong>&#8377; {{ data?.subtotal }}</strong>
+              </td>
+              <td>
+                <strong>&#8377; {{ data?.discounttotal }}</strong>
+              </td>
+              <td>
+                <strong>&#8377; {{ data?.total }} </strong>
+              </td>
+              <td [colSpan]="taxtotal.ifigst === 1 ? 0 : 2"></td>
+              <td *ngIf="taxtotal.ifigst === 0">
+                <strong>&#8377; {{ toFloat(taxtotal.ctaxtotal) }}</strong>
+              </td>
+              <td *ngIf="taxtotal.ifigst === 0">
+                <strong>&#8377; {{ toFloat(taxtotal.staxtotal) }}</strong>
+              </td>
+              <td *ngIf="taxtotal.ifigst === 1">
+                <strong>&#8377; {{ toFloat(taxtotal.itaxtotal) }}</strong>
+              </td>
+              <td>
+                <strong>&#8377; {{ toFloat(data?.grandtotal) }} </strong>
+              </td>
+              <!-- <td *ngIf="data.ship_status !== ''"></td> -->
+            </tr>
+          </tfoot>
+     
+        </table>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-6">
+          <div class="float-start">
+            <a *ngIf="showprint && this.data.uuid" (click)="download()" class="btn btn-sm btn-primary" disabled
+              ><i class="fa fa-print"></i> Download PDF</a
+            >
+
+            <span *ngIf="!showprint" class="btn btn-secondary"
+              ><i class="bx bx-loader bx-spin"></i> Please Wait PDF is Generating ...
+            </span>
+          </div>
+        </div>
+        <div class="col-6" *ngIf="data?.ship_status !=='Received' && !editbatch">
+          <div class="float-end">
+            <button class="btn btn-primary btn-sm m-2" (click)="save('Pick Up')">Save</button>
+            <button class="btn btn-primary btn-sm m-2" (click)="recevied('Received')">Received</button>
+            <button class="btn btn-secondary btn-sm m-2" [routerLink]="['/warehouse/orders']">Cancel</button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="table-responsive"
+        *ngIf="data?.ship_status === 'Pick Up' || data?.ship_status === 'Inward' || data?.ship_status === 'Received'"
+      ></div>
+      <div class="py-5">
+        <br />
+        <br />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="text-end pb-8">
+        <button class="btn btn-sm fw-bold btn-primary mx-2" [routerLink]="['/warehouse/orders']" routerLinkActive="router-link-active">
+          Back
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #productContent let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Add New Variant</h5>
+    <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row" *ngIf="getList">
+      <div class="card">
+        <div class="">
+          <fieldset class="border rounded-3 p-3">
+            <legend class="float-none w-auto px-3">Variant List</legend>
+            <form [formGroup]="productForm">
+              <!-- <div formArrayName="variant_points">
+                    <div *ngFor="let item of variantPoints.controls; let pointIndex=index" [formGroupName]="pointIndex">
+                      <label>Variant Point: <input formControlName="variant" /></label>
+                      <label>Variant values: <input formControlName="values" /></label>
+                      <button type="button" (click)="deleteVariantPoint(pointIndex)">Delete Variant Point</button>
+                    </div>
+                    <button type="button" (click)="addVariantPoint()">Add Variant Point</button>
+                  </div> -->
+              <div class="container">
+                <div class="row">
+                  <div class="col">
+                    <table class="table table-row-dashed">
+                      <tbody>
+                        <tr>
+                          <th style="width: 125px" class="text-start ps-5 bg-primary text-white">Max Quantity</th>
+                          <td class="border border-dashed border-primary pe-1 fw-bold" style="text-align: justify">{{ max_count }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="col">
+                    <table class="table table-row-dashed">
+                      <tbody>
+                        <tr>
+                          <th style="width: 125px" class="text-start ps-5 bg-primary text-white">MRP</th>
+                          <td
+                            class="border border-dashed border-primary pe-1 fw-bold"
+                            id="last-child"
+                            style="text-align: justify; border-bottom: 1 !important"
+                          >
+                            {{ mrp }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table align-left gs-0 gy-5">
+                  <tr>
+                    <td>
+                      <div formArrayName="variant_points" style="padding-left: 0px; padding-right: 0px">
+                        <div *ngFor="let item of variantPoints.controls; let pointIndex = index" class="pointIndex">
+                          <fieldset class="m-2">
+                            <!--  <legend style="padding:5px 0px;">
+                                  <span>
+                                    {{purcaseForm.value['itemlist'][i]['name']?purcaseForm.value['itemlist'][i]['name']:'Product-'+i}}</span>
+                                </legend> -->
+
+                            <div class="row" [formGroupName]="pointIndex">
+                              <div class="table-responsive">
+                                <table [ngStyle]="{ 'background-color': pointIndex % 2 == 1 ? '#ffffff' : '#efe6e6' }" class="w-100">
+                                  <tr class="row" style="margin-left: 10px">
+                                    <ng-container *ngFor="let variant of variantlist; let k = index">
+                                      <td class="w-100 w-md-100px vertical-align-mobile horizontal-align-tablet-desktop">
+                                        <div>
+                                          <label for="" class="form-label required fs-6 fw-semibold mb-2">{{ variant.name }}</label>
+                                          <select placeholder="Select Variant" formControlName="{{ variant.name }}" class="form-control">
+                                            <option [value]="0" [selected]="true" disabled>Select</option>
+                                            <option
+                                              *ngFor="let variants of variant.productvariantvalues; let j = index"
+                                              [value]="variants.id"
+                                            >
+                                              {{ variants.value }}
+                                            </option>
+                                          </select>
+                                        </div>
+                                      </td>
+                                    </ng-container>
+                                    <!-- Variant -->
+                                    <!-- <td class="w-100 w-md-100px vertical-align-mobile horizontal-align-tablet-desktop">
+                                          <div>
+                                            <label for="" class="form-label required fs-6 fw-semibold mb-2">Variant</label>
+                                            <select placeholder="Select Variant" 
+                                              formControlName="variant"
+                                              class="form-select form-select-sm custom-select" (change)="changeVariant($event)">
+                                             
+                                              <option *ngFor="let variant of variantlist; let j = index"
+                                                [value]="variant.id">
+                                                {{ variant.name }}
+                                              </option>
+                                            </select>
+                                          </div>
+                                        </td> -->
+
+                                    <!-- Values -->
+                                    <!-- <td class="w-100 w-md-100px vertical-align-mobile horizontal-align-tablet-desktop">
+                                          <div>
+                                            <label for="" class="form-label required fs-6 fw-semibold mb-2">Values</label>
+                                            <select placeholder="Select Variant" 
+                                              formControlName="values"
+                                              class="form-select form-select-sm custom-select">
+                                              <option *ngFor="let variant of valuelist; let j = index"
+                                                [value]="variant.id">
+                                                {{ variant.value }}
+                                              </option>
+                                            </select>
+                                          </div>
+                                        </td> -->
+
+                                    <!-- Values -->
+                                    <td class="w-100 w-md-100px vertical-align-mobile horizontal-align-tablet-desktop">
+                                      <div>
+                                        <label for="" class="form-label required fs-6 fw-semibold mb-2">Qty</label>
+
+                                        <input
+                                          class="form-control"
+                                          placeholder="Enter qty"
+                                          type="text"
+                                          formControlName="qty"
+                                          (change)="add_quentity($event)"
+                                        />
+                                      </div>
+                                    </td>
+                                    <td class="w-100 w-md-100px vertical-align-mobile horizontal-align-tablet-desktop">
+                                      <div>
+                                        <label for="" class="form-label required fs-6 fw-semibold mb-2">Price</label>
+
+                                        <input
+                                          class="form-control"
+                                          placeholder="Enter price"
+                                          type="text"
+                                          formControlName="price"
+                                          (change)="check_quentity($event, pointIndex)"
+                                        />
+                                      </div>
+                                    </td>
+
+                                    <!-- Delete -->
+                                    <td class="w-100 w-md-40px vertical-align-mobile horizontal-align-tablet-desktop">
+                                      <div class="mx-2">
+                                        <!-- <div style="padding-top: 15px" (click)="addVariantPoint()">
+                                              <span><i class="fa fa-plus fa-lg"
+                                                  style="color: #165405; font-size: 22px; cursor: pointer"></i></span>
+                                            </div> -->
+                                      </div>
+                                      <div class="mx-2">
+                                        <div style="padding-top: 34px" (click)="deleteVariantPoint(pointIndex)">
+                                          <span
+                                            ><i class="fa fa-trash fa-lg" style="color: #f3374a; font-size: 22px; cursor: pointer"></i
+                                          ></span>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </div>
+                            </div>
+                          </fieldset>
+                          <!-- {{ this.productForm.value | json }} -->
+                        </div>
+                        <div *ngIf="max_count > intValue">
+                          <button
+                            class="border border-1 border-secondary btn btn-sm btn-primary mx-1 mb-3 mt-2"
+                            type="button"
+                            (click)="addVariantPoint()"
+                          >
+                            <span><i class="fa fa-plus fa-lg" style="font-size: 20px; cursor: pointer"></i></span> Add Variant
+                          </button>
+                        </div>
+                        <div>
+                          <button
+                            class="border border-1 border-secondary btn btn-sm btn-primary mx-1 mb-3 mt-2"
+                            type="button"
+                            (click)="submitVariant()"
+                          >
+                            Submit
+                          </button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </form>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="chip">
+      tag
+      <span class="closebtn" onclick="this.parentElement.style.display='none'">&times;</span>
+    </div> -->
+  </div>
+</ng-template>
+<!-- PopUp -->
+<ng-template #contentAdd let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title">Add Rental Price</h5>
+    <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form (ngSubmit)="addprice()" [formGroup]="priceForm" novalidate>
+      <!-- Buying Price -->
+      <div class="form-group mb-3">
+        <label for="" class="form-label required mb-2">Buying Price</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="buyingprice"
+          autocomplete="off"
+          [ngClass]="{
+            'is-invalid':
+              (pricesubmit && formPrice['buyingprice']?.errors) ||
+              (formPrice['buyingprice']?.invalid && (formPrice['buyingprice']?.dirty || formPrice['buyingprice']?.touched))
+          }"
+        />
+        <div
+          *ngIf="
+            (pricesubmit && formPrice['buyingprice']?.errors) ||
+            (formPrice['buyingprice']?.invalid && (formPrice['buyingprice']?.dirty || formPrice['buyingprice']?.touched))
+          "
+          class="invalid-feedback"
+        >
+          <span *ngIf="formPrice['buyingprice'].errors?.['required']">Required</span>
+          <!-- <span *ngIf="form['buyingprice'].errors?.['minlength']">Minimum Length 10 Characters</span> -->
+          <!-- <span *ngIf="form['buyingprice'].errors?.['maxlength']">Maximum Length 10 Characters</span><br> -->
+          <span *ngIf="formPrice['buyingprice'].errors?.['pattern']">Enter Valid Price</span>
+        </div>
+      </div>
+
+      <!-- Selling Price -->
+      <div class="form-group mb-3">
+        <label for="" class="form-label required mb-2">Seeling Price</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="sellingprice"
+          autocomplete="off"
+          [ngClass]="{
+            'is-invalid':
+              (pricesubmit && formPrice['sellingprice']?.errors) ||
+              (formPrice['sellingprice']?.invalid && (formPrice['sellingprice']?.dirty || formPrice['sellingprice']?.touched))
+          }"
+        />
+        <div
+          *ngIf="
+            (pricesubmit && formPrice['sellingprice']?.errors) ||
+            (formPrice['sellingprice']?.invalid && (formPrice['sellingprice']?.dirty || formPrice['sellingprice']?.touched))
+          "
+          class="invalid-feedback"
+        >
+          <span *ngIf="formPrice['sellingprice'].errors?.['required']">Required</span>
+          <!-- <span *ngIf="form['sellingprice'].errors?.['minlength']">Minimum Length 10 Characters</span> -->
+          <!-- <span *ngIf="form['sellingprice'].errors?.['maxlength']">Maximum Length 10 Characters</span><br> -->
+          <span *ngIf="formPrice['sellingprice'].errors?.['pattern']">Enter Valid Price</span>
+        </div>
+      </div>
+      <div class="form-group mb-3">
+        <label for="" class="form-label required mb-2">Format</label>
+
+        <div class="col-sm-12">
+          <ng-select
+          formControlName="format"
+            name="brand"
+            placeholder="Select Format"
+            [items]="formats"
+            bindLabel="name"
+            bindValue="id"
+            [(ngModel)]="selectedFormat"
+            (change)="changeFormat($event)"
+          >
+          </ng-select>
+        </div>
+        <div
+          *ngIf="
+            (pricesubmit && formPrice['sellingprice']?.errors) ||
+            (formPrice['sellingprice']?.invalid && (formPrice['sellingprice']?.dirty || formPrice['sellingprice']?.touched))
+          "
+          class="invalid-feedback"
+        >
+          <span *ngIf="formPrice['sellingprice'].errors?.['required']">Required</span>
+          <!-- <span *ngIf="form['sellingprice'].errors?.['minlength']">Minimum Length 10 Characters</span> -->
+          <!-- <span *ngIf="form['sellingprice'].errors?.['maxlength']">Maximum Length 10 Characters</span><br> -->
+          <span *ngIf="formPrice['sellingprice'].errors?.['pattern']">Enter Number Only</span>
+        </div>
+        <div class="col-sm-12">
+          <div *ngIf="psidlabel === 'Tags'">
+            <label class="form-label"> MRP</label>
+            <input type="text" class="form-control" placeholder="Enter MRP" name="mrp" />
+          </div>
+        </div>
+      </div>
+      <div class="form-group mt-2">
+        <button type="submit" class="btn btn-sm btn-primary">Generate PSID</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+

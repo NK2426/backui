@@ -1,0 +1,123 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="page-title-box d-flex align-items-center justify-content-between">
+        <h4 class="mb-0 font-size-18"></h4>
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <!-- <li class="breadcrumb-item"><a [routerLink]="['/catalog']">Home</a></li> -->
+            <!-- <li class="breadcrumb-item active"> Notifications </li> -->
+          </ol>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-sm-4">
+              <div class="search-box me-2 mb-2 d-inline-block">
+                <div class="position-relative">
+                  <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="search" (keyup)="getNotificationList()" />
+                  <i class="bx bx-search-alt search-icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-8">
+              <div class="text-sm-end">
+                <button (click)="createNotification()" type="button" class="btn btn-primary btn-rounded mb-2 me-2">
+                  <i class="mdi mdi-plus mr-1"></i> Add Notification
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table align-middle table-nowrap table-hover">
+              <thead>
+                <tr>
+                  <th scope="col" style="width: 70px" class="text-center">#</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Image</th>
+                  <th scope="col">Scheduled At</th>
+                  <th scope="col" class="text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let notification of notifications; let i = index">
+                  <td class="text-center">{{ page == 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}</td>
+                  <td>
+                    <h5 class="font-size-14 mb-1">
+                      <a href="javascript: void(0);" class="text-dark"></a>
+                      {{ notification.title }}
+                    </h5>
+                  </td>
+                  <td>{{ notification.description || '--' }}</td>
+                  <td><img src="{{ notification.path }}" alt="Icon" height="50" width="50" /></td>
+                  <td>{{ notification.scheduleAt?.slice(0, -1) | date : 'medium' }}</td>
+                  <td class="text-center"> 
+                    
+                    <ul class="list-inline font-size-20 contact-links mb-0">
+                      <li class="list-inline-item">
+                        <a
+                          routerLinkActive="active"
+                          [routerLink]="notification.id.toString()"
+                          href="javascript:void(0)"
+                          ngbTooltip="View Notification Detail"
+                          ><app-keenicon class="fs-2 text-primary" name="eye"></app-keenicon>
+                            </a
+                        >
+                      </li>
+                      <li class="list-inline-item" *ngIf="notification.send == 0">
+                        <a type="button" (click)="disableNotification(notification.id.toString())" class="text-primary" ngbTooltip="Disable notification">
+                          <i class="fa fa-regular fa-bell-slash fa-xs text-primary fw-bold"></i></a
+                        >
+                      </li>
+
+                      
+                    </ul>
+                  </td>
+                </tr>
+                <tr *ngIf="notifications?.length === 0">
+                  <td colspan="12" class="text-center fw-bold">No Records Found</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Pagination  -->
+
+          <!-- Pagination  -->
+          <div class="row justify-content-md-between align-items-md-center mt-2">
+            <div class="col-sm-12 col-md-8">
+              <div class="dataTables_length" id="tickets-table_length">
+                <label class="d-inline-flex align-items-center"
+                  >Show
+                  <select class="form-select form-select-sm ms-2 me-2" (change)="handlePageSizeChange($event)">
+                    <option *ngFor="let size of pageSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select>
+                  Entries</label
+                >
+              </div>
+            </div>
+            <!-- Pagination -->
+            <div class="col-sm-12 col-md-4">
+              <div class="text-md-right float-md-end pagination-rounded">
+                <ngb-pagination
+                  [(page)]="page"
+                  [pageSize]="pageSize"
+                  [maxSize]="5"
+                  [rotate]="true"
+                  [ellipses]="false"
+                  [boundaryLinks]="true"
+                  (pageChange)="handlePageChange($event)"
+                  [collectionSize]="count"
+                ></ngb-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Pagination  -->
+      </div>
+    </div>
+  </div>
+</div>

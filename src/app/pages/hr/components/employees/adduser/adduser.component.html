@@ -1,0 +1,320 @@
+<div class="card mb-5 mb-xl-10">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body pt-1 pb-5">
+        <form (ngSubmit)="saveUser()" [formGroup]="formData">
+          <div class="row my-3">
+            <div class="col-sm-12">
+              <h4 class="card-title mb-4">Login Details</h4>
+            </div>
+          </div>
+
+          <!-- Role, emp id, war -->
+          <div class="row my-3">
+            <!-- Select Role -->
+            <div class="col-sm-4 col-md-4 mb-3 fv-row fv-plugins-icon-container">
+              <label class="form-label fs-6 fw-semibold required mb-2">Select Role</label>
+              <select class="form-control" type="text" name="role" formControlName="role" (change)="getcountofROle($event)"
+                placeholder="Select Role" [ngClass]="{
+                  'is-invalid':
+                    (submit && form['role']?.errors) || (form['role']?.invalid && (form['role']?.dirty || form['role']?.touched))
+                }">
+                <!-- <option [disabled]="true">Select Role</option> -->
+                <option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</option>
+              </select>
+              <div
+                *ngIf="(submit && form['role']?.errors) || (form['role']?.invalid && (form['role']?.dirty || form['role']?.touched))"
+                class="invalid-feedback">
+                <span *ngIf="form['role'].errors?.['required']">Select User Role</span>
+              </div>
+            </div>
+
+            <!-- <div class="row col-sm-8 col-md-8 p-0" *ngIf="!edit"> -->
+            <!-- Employee ID -->
+            <div *ngIf="!edit" class="col-sm-4 col-md-4 mb-3 fv-row fv-plugins-icon-container">
+              <label class="form-label fs-6 fw-semibold required mb-2">Employee ID</label>
+              <input class="form-control" placeholder="Enter Empcode ID" type="text" name="uuid" autocomplete="off"
+                formControlName="uuid" [disabled]="true" />
+              <option *ngFor="let item of checkid">
+                {{ item.data }}
+              </option>
+
+              <div
+                *ngIf="(submit && form['uuid']?.errors) || (form['uuid']?.invalid && (form['uuid']?.dirty || form['uuid']?.touched))"
+                class="invalid-feedback">
+                <span *ngIf="form['uuid'].errors?.['required']">Enter valid employee code.</span>
+                <span *ngIf="form['uuid'].errors?.['minlength']">Minimum Length 4 Characters.</span>
+              </div>
+            </div>
+            <!-- Warehouse -->
+            <!-- <div class="col-sm-6 mb-3 fv-plugins-icon-container">
+                            <label class="form-label required fs-6 fw-semibold mb-2">Warehouse</label>
+                            <select class="form-select select2-hidden-accessible" placeholder="Select Warehouse"
+                              formControlName="warehouse_id">
+                              <ng-container *ngFor="let warehouse of warehouses">
+                                <option value="{{warehouse.id}}" innerHTML="{{warehouse.name}}"></option>
+                              </ng-container>
+                            </select>
+                          </div> -->
+            <div *ngIf="!edit" class="col-sm-4 col-md-4 mb-3 fv-row fv-plugins-icon-container">
+              <label class="form-label required fs-6 fw-semibold mb-2">Select Warehouse </label>
+              <select class="form-select" type="text" name="warehouse" formControlName="warehouse_id" [ngClass]="{
+                  'is-invalid':
+                    (submit && form['warehouse_id']?.errors) ||
+                    (form['warehouse_id']?.invalid && (form['warehouse_id']?.dirty || form['warehouse_id']?.touched))
+                }">
+                <!-- <option value="">Select Warehouse</option> -->
+                <option *ngFor="let warehouse of warehouses" [value]="warehouse.id">{{ warehouse.name }}</option>
+              </select>
+              <div *ngIf="
+                  (submit && form['warehouse_id']?.errors) ||
+                  (form['warehouse_id']?.invalid && (form['warehouse_id']?.dirty || form['warehouse_id']?.touched))
+                " class="invalid-feedback">
+                <span *ngIf="form['warehouse_id'].errors">Select Warehouse</span>
+              </div>
+            </div>
+            <!-- </div> -->
+          </div>
+
+          <!-- U.name, pwd, cpwd -->
+          <div class="row my-3">
+            <!-- User Name -->
+            <div class="col-sm-4 col-md-4 mb-3 fv-row fv-plugins-icon-container">
+              <label class="form-label required fs-6 fw-semibold mb-2">Username</label>
+              <input class="form-control" placeholder="Username" type="text" name="username" autocomplete="off"
+                formControlName="username" [disabled]="true" [ngClass]="{
+                  'is-invalid':
+                    (submit && form['username']?.errors) ||
+                    (form['username']?.invalid && (form['username']?.dirty || form['username']?.touched))
+                }" />
+              <div *ngIf="
+                  (submit && form['username']?.errors) ||
+                  (form['username']?.invalid && (form['username']?.dirty || form['username']?.touched))
+                " class="invalid-feedback">
+                <span *ngIf="form['username'].errors?.['required']">Enter valid Username</span>
+                <span *ngIf="form['username'].errors?.['minlength']">Minimum Length 3 Characters.</span>
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="col-sm-4 col-md-4 mb-3 fv-row fv-plugins-icon-container">
+              <label class="form-label required fs-6 fw-semibold mb-2">Password {{ passwordvalidate ? '' : ''
+                }}</label>
+              <input class="form-control" placeholder="Enter Password" type="password" name="password"
+                autocomplete="off" formControlName="password" [ngClass]="{
+                  'is-invalid':
+                    (submit && form['password']?.errors) ||
+                    (form['password']?.invalid && (form['password']?.dirty || form['password']?.touched))
+                }" (ngModelChange)="setpasswordvalid($event)" />
+
+              <div *ngIf="
+                  (submit && form['password']?.errors) ||
+                  (form['password']?.invalid && (form['password']?.dirty || form['password']?.touched))
+                " class="invalid-feedback">
+                <span *ngIf="form['password'].errors?.['required']">Enter Password</span>
+                <span *ngIf="form['password'].errors?.['minlength']">Minimum Length 6 Characters.</span>
+              </div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="col-sm-4 col-md-4 mb-3 fv-row fv-plugins-icon-container">
+              <label class="form-label required fs-6 fw-semibold mb-2">Confirm Password {{ passwordvalidate ?
+                '' : '' }}</label>
+              <input class="form-control" placeholder="Confirm Password" type="password" name="cpassword"
+                autocomplete="off" formControlName="cpassword" [ngClass]="{
+                  'is-invalid':
+                    (submit && form['cpassword']?.errors) ||
+                    (form['cpassword']?.invalid && (form['cpassword']?.dirty || form['cpassword']?.touched))
+                }" />
+
+              <div *ngIf="
+                  (submit && form['cpassword']?.errors) ||
+                  (form['cpassword']?.invalid && (form['cpassword']?.dirty || form['cpassword']?.touched))
+                " class="invalid-feedback">
+                <span *ngIf="form['cpassword'].errors">Confirm password does not match</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Basic details -->
+          <div class="row my-3">
+            <div class="col-sm-12">
+              <h4 class="card-title mb-4">Basic Details</h4>
+            </div>
+          </div>
+
+          <div class="row my-3">
+            <!-- First Name -->
+            <div class="col-sm-4 col-md-4 mb-3 fv-row fv-plugins-icon-container">
+              <label class="form-label required fs-6 fw-semibold mb-2">Firstname</label>
+              <input class="form-control" placeholder="Enter Firstname" type="text" name="firstname" autocomplete="off"
+                formControlName="firstname" [ngClass]="{
+                  'is-invalid':
+                    (submit && form['firstname']?.errors) ||
+                    (form['firstname']?.invalid && (form['firstname']?.dirty || form['firstname']?.touched))
+                }" />
+
+              <div *ngIf="
+                  (submit && form['firstname']?.errors) ||
+                  (form['firstname']?.invalid && (form['firstname']?.dirty || form['firstname']?.touched))
+                " class="invalid-feedback">
+                <span *ngIf="form['firstname'].errors?.['required']">Enter valid name</span>
+                <span *ngIf="form['firstname'].errors?.['minlength']">Minimum Length 3 Characters.</span>
+                <span *ngIf="form['firstname'].errors?.['pattern']">Enter Alphabet Only</span>
+              </div>
+            </div>
+
+            <!-- Last Name -->
+            <div class="col-sm-4 col-md-4 mb-3 fv-row fv-plugins-icon-container">
+              <label class="form-label required fs-6 fw-semibold mb-2">Lastname</label>
+              <input class="form-control" placeholder="Enter Lastname" type="text" name="lastname" autocomplete="off"
+                formControlName="lastname" [ngClass]="{
+                  'is-invalid':
+                    (submit && form['lastname']?.errors) ||
+                    (form['lastname']?.invalid && (form['lastname']?.dirty || form['lastname']?.touched))
+                }" />
+
+              <div *ngIf="
+                  (submit && form['lastname']?.errors) ||
+                  (form['lastname']?.invalid && (form['lastname']?.dirty || form['lastname']?.touched))
+                " class="invalid-feedback">
+                <span *ngIf="form['lastname'].errors?.['required']">Enter valid name</span>
+                <span *ngIf="form['lastname'].errors?.['minlength']">Minimum Length 3 Characters.</span>
+                <span *ngIf="form['lastname'].errors?.['pattern']">Enter Alphabet Only</span>
+              </div>
+            </div>
+
+            <!-- Mobile -->
+            <div class="col-sm-4 col-md-4 mb-3 fv-row fv-plugins-icon-container">
+              <label class="form-label required fs-6 fw-semibold mb-2">Mobile</label>
+              <input type="number" class="form-control" placeholder="Enter Phone" type="text" name="mobile"
+                autocomplete="off" formControlName="mobile" maxlength="10" [ngClass]="{
+                  'is-invalid':
+                    (submit && form['mobile']?.errors) || (form['mobile']?.invalid && (form['mobile']?.dirty || form['mobile']?.touched))
+                }" />
+
+              <div *ngIf="
+                  (submit && form['mobile']?.errors) || (form['mobile']?.invalid && (form['mobile']?.dirty || form['mobile']?.touched))
+                " class="invalid-feedback">
+                <span *ngIf="form['mobile'].errors?.['required']">Mobile number required</span>
+                <span *ngIf="form['mobile'].errors?.['minlength']">Minimum Length 10 Characters</span>
+                <span *ngIf="form['mobile'].errors?.['maxlength']">Maximum Length 10 Characters</span><br>
+                <span *ngIf="form['mobile'].errors?.['pattern']">Enter Number Only</span>
+                <!-- <span
+                  *ngIf="form['mobile'].errors?.['pattern'] || form['mobile'].errors?.['minlength'] || form['mobile'].errors?.['maxlength']">Phone
+                  number must be at least 10 numbers</span> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-3">
+            <!-- Email -->
+            <div class="col-sm-4 col-md-4 mb-3 fv-row fv-plugins-icon-container">
+              <label class="form-label required fs-6 fw-semibold mb-2">Email</label>
+              <input class="form-control" placeholder="Enter Email" type="email" name="email" autocomplete="off"
+                formControlName="email" [ngClass]="{
+                  'is-invalid':
+                    (submit && form['email']?.errors) || (form['email']?.invalid && (form['email']?.dirty || form['email']?.touched))
+                }" />
+
+              <div
+                *ngIf="(submit && form['email']?.errors) || (form['email']?.invalid && (form['email']?.dirty || form['email']?.touched))"
+                class="invalid-feedback">
+                <span *ngIf="form['email'].errors">Enter valid Email ID</span>
+              </div>
+            </div>
+
+            <!-- Date of Join -->
+            <div class="col-sm-4 col-md-4 mb-3 fv-row fv-plugins-icon-container">
+              <label class="form-label required fs-6 fw-semibold mb-2">Date of Join </label>
+              <input class="form-control" placeholder="Enter Date of Join" type="date" name="dateofjoin"
+                autocomplete="off" formControlName="dateofjoin" [max]="joinmaxDate" [ngClass]="{
+                  'is-invalid':
+                    (submit && form['dateofjoin']?.errors) ||
+                    (form['dateofjoin']?.invalid && (form['dateofjoin']?.dirty || form['dateofjoin']?.touched))
+                }" />
+
+              <div *ngIf="
+                  (submit && form['dateofjoin']?.errors) ||
+                  (form['dateofjoin']?.invalid && (form['dateofjoin']?.dirty || form['dateofjoin']?.touched))
+                " class="invalid-feedback">
+                <span *ngIf="form['dateofjoin'].errors?.['required']">Enter valid date of join</span>
+                <!-- <span *ngIf="form['dateofjoin'].errors?.['minlength']">Minimum Length 3 Characters.</span> -->
+              </div>
+            </div>
+
+            <!-- Date of Birth -->
+            <div class="col-sm-4 col-md-4 mb-3 fv-row fv-plugins-icon-container">
+              <label class="form-label required fs-6 fw-semibold mb-2">Date of birth (Before 2002)</label>
+              <input class="form-control" placeholder="yyyy-mm-dd" type="date" name="dateofbirth"
+                id="example-date-input" autocomplete="off" formControlName="dateofbirth" [max]="maxDate" [min]="minDate"
+                [ngClass]="{
+                  'is-invalid':
+                    (submit && form['dateofbirth']?.errors) ||
+                    (form['dateofbirth']?.invalid && (form['dateofbirth']?.dirty || form['dateofbirth']?.touched))
+                }" />
+              <div *ngIf="
+                  (submit && form['dateofbirth']?.errors) ||
+                  (form['dateofbirth']?.invalid && (form['dateofbirth']?.dirty || form['dateofbirth']?.touched))
+                " class="invalid-feedback">
+                <span *ngIf="form['dateofbirth'].errors?.['required']">Enter valid date of birth</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-3">
+            <!-- Basic Salary -->
+            <div class="col-sm-4 col-md-4 mb-3 fv-row fv-plugins-icon-container">
+              <label class="form-label required fs-6 fw-semibold mb-2"> Basic Salary </label>
+              <input class="form-control" placeholder="Enter Salary" type="text" name="salary" autocomplete="off" (keypress)="($event.charCode >= 48 && $event.charCode < 58)"
+                formControlName="salary" [ngClass]="{
+                  'is-invalid':
+                    (submit && form['salary']?.errors) || (form['salary']?.invalid && (form['salary']?.dirty || form['salary']?.touched))
+                }" />
+
+              <div *ngIf="
+                  (submit && form['salary']?.errors) || (form['salary']?.invalid && (form['salary']?.dirty || form['salary']?.touched))
+                " class="invalid-feedback">
+                <span *ngIf="form['salary'].errors?.['required']">Enter valid salary</span>
+                <!-- <span *ngIf="form['salary'].errors?.['minlength'] " >Minimum Length 4 Characters.</span><br> -->
+                <span *ngIf="form['salary'].errors?.['pattern']">Enter Number Only</span>
+              </div>
+            </div>
+
+            <!-- Address -->
+            <div class="col-sm-4 col-md-4 mb-3 fv-row fv-plugins-icon-container">
+              <label class="form-label required fs-6 fw-semibold mb-2">Address</label>
+              <input class="form-control" placeholder="Enter Address" type="text" name="address" autocomplete="off"
+                formControlName="address" [ngClass]="{
+                  'is-invalid':
+                    (submit && form['address']?.errors) ||
+                    (form['address']?.invalid && (form['address']?.dirty || form['address']?.touched))
+                }" />
+
+              <div *ngIf="
+                  (submit && form['address']?.errors) || (form['address']?.invalid && (form['address']?.dirty || form['address']?.touched))
+                " class="invalid-feedback">
+                <span *ngIf="form['address'].errors?.['required']">Enter valid address</span>
+                <span *ngIf="form['address'].errors?.['minlength']">Minimum Length 3 Characters.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-2 my-3">
+            <div class="text-sm-end">
+              <a [routerLink]="['/hr/employees']" class="btn btn-sm btn-secondary me-4">Cancel</a>
+              <button type="submit" class="btn btn-sm btn-primary">Save</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Pop UP Open start -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body"></div>
+</ng-template>

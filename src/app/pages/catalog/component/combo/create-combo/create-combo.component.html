@@ -1,0 +1,128 @@
+<div class="submit-form">
+    <form (ngSubmit)="saveNewCombo()" [formGroup]="formData" novalidate>
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="control-label">Combo Name *</label>
+                    <input class="form-control" placeholder="Enter Document Name" type="text" name="name"
+                        autocomplete="off" formControlName="name"
+                        [ngClass]="{'is-invalid': (submit && form['name'].errors) || (form['name'].invalid && (form['name'].dirty || form['name'].touched))}" />
+
+                    <div *ngIf="(submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['name'].errors?.['required']">Enter supersale name.</span>
+                        <span *ngIf="form['name'].errors?.['minlength']">Minimum Length 3
+                            Characters.</span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="control-label">Description</label>
+
+                    <textarea class="form-control" placeholder="Enter Description" type="text" name="description"
+                        autocomplete="off" formControlName="description" [ngClass]="{
+                      'is-invalid':
+                        (submit && form['description']?.errors) ||
+                        (form['description']?.invalid && (form['description']?.dirty || form['description']?.touched))
+                    }"></textarea>
+
+                    <!-- <input class="form-control" placeholder="Enter Description(Optional)" type="text" name="description"
+                        autocomplete="off" formControlName="description" /> -->
+
+                </div>
+                <div class="mb-3">
+                    <label class="control-label">Keywords</label>
+                    <textarea class="form-control" placeholder="Enter Keywords" type="text" name="keywords"
+                        autocomplete="off" formControlName="keywords" [ngClass]="{
+                  'is-invalid':
+                    (submit && form['keywords']?.errors) ||
+                    (form['keywords']?.invalid && (form['keywords']?.dirty || form['keywords']?.touched))
+                }"></textarea>
+
+                    <!-- <input class="form-control" placeholder="Enter Keywords" type="text" name="keywords"
+                        autocomplete="off" formControlName="keywords" /> -->
+
+                </div>
+
+
+                <div *ngIf="isReturnable ||  form['returnable']?.value == 0">
+                    <h5 class="font-size-14 mb-3">Product Returnable</h5>
+                    <div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" formControlName="returnable" id="type"
+                                [checked]="form['returnable']?.value"
+                                (change)="checkValue(form['returnable']?.value)" />
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="isReplaceable || form['returnable']?.value == 0">
+                    <h5 class="font-size-14 mb-3">Product Replaceable</h5>
+                    <div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" formControlName="replaceable" id="type"
+                                [checked]="form['replaceable']?.value"
+                                (change)="checkReplaceableValue(form['replaceable']?.value)" />
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="form['returnable']?.value != 0 || form['replaceable']?.value != 0 ">
+                    <h5 class="font-size-14 mb-3">Return /Replace Time</h5>
+                    <div>
+                        <select class="form-control" type="text" name="returntime" formControlName="returntime"
+                            [ngClass]="{
+                          'is-invalid':
+                            (submit && form['returntime']?.errors) ||
+                            (form['returntime']?.invalid && (form['returntime']?.dirty || form['returntime']?.touched))
+                        }">
+                            <option *ngFor="let stat of returns" [value]="stat.name">{{ stat.value }}</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- <div *ngIf="isReplaceable && form['replaceable']?.value">
+                    <h5 class="font-size-14 mb-3">Replaceable Time</h5>
+                    <div>
+                        <select class="form-control" type="text" name="replaceabletime"
+                            formControlName="replaceabletime" [ngClass]="{
+                          'is-invalid':
+                            (submit && form['replaceabletime']?.errors) ||
+                            (form['replaceabletime']?.invalid && (form['replaceabletime']?.dirty || form['replaceabletime']?.touched))
+                        }">
+                            <option *ngFor="let stat of returns" [value]="stat.name">{{ stat.value }}</option>
+                        </select>
+                    </div>
+                </div> -->
+
+
+                <div>
+                    <h5 class="font-size-14 mb-3">Warranty terms</h5>
+                    <div>
+                        <select class="form-control" type="text" name="terms" formControlName="terms" [ngClass]="{
+                          'is-invalid':
+                            (submit && form['terms']?.errors) ||
+                            (form['terms']?.invalid && (form['terms']?.dirty || form['terms']?.touched))
+                        }">
+                            <option *ngFor="let stat of terms" [value]="stat.name">{{ stat.value }}</option>
+                        </select>
+                    </div>
+                    <div *ngIf="(submit && form['terms']?.errors) || (form['terms']?.invalid && (form['terms']?.dirty || form['terms']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['terms'].errors?.['required']">Select terms.</span>
+
+                    </div>
+                </div>
+
+                <div class="d-md-flex align-items-center mt-5">
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                    <div class="ml-auto">
+                        <div class="dl">
+                            <button type="button" class="btn btn-warning" (click)="cancelAction()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

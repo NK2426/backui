@@ -1,0 +1,123 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-4 font-size-18"> {{title}}</h4>
+                <!-- <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a [routerLink]="['/warehouse']">Home</a></li>
+                        <li class="breadcrumb-item active"> {{title}} </li>
+                    </ol>
+                </div> -->
+            </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-2">
+            <!-- <div class="col-sm-4">
+                            <div class="search-box me-2 mb-2 d-inline-block">
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="search"
+                                        (keyup)="invoiceList()">
+                                    <i class="bx bx-search-alt search-icon"></i>
+                                </div>
+                            </div>
+                        </div> -->
+            <div class="col-sm-4">
+              <!--begin::Search-->
+              <div class="d-flex align-items-center position-relative my-1 px-1">
+                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+                <input
+                  type="text"
+                  (keyup)="invoiceList()"
+                  placeholder="Search..."
+                  class="form-control form-control-solid w-200px ps-12"
+                  #input
+                />
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table align-middle table-nowrap table-hover">
+              <thead>
+                <tr>
+                  <th class="p-3 min-w-50px text-center">#</th>
+                  <th class="text-start p-3 min-w-100px">Invoice #</th>
+                  <th class="text-start p-3 min-w-100px">Order ID</th>
+                  <th class="text-start p-3 min-w-100px">Invoice Date</th>
+                  <th class="text-start p-3 min-w-100px">AWB No.</th>
+                  <th class="text-start p-3 min-w-100px">LBH</th>
+                  <th class="text-start p-3 min-w-100px">Weight</th>
+                  <th class="text-start p-3 min-w-100px">Created Date</th>
+                  <th class="text-start p-3 min-w-100px">Tax Amount</th>
+                  <th class="text-start p-3 min-w-100px">Total Amount</th>
+                  <th class="text-start p-3 min-w-100px">Invoice Status</th>
+                  <th class="text-center p-3 min-w-100px">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let invoice of invoiceDetails; let i = index">
+                  <td class="p-3 text-center">{{ page == 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}</td>
+                  <td class="p-3 fw-bold">{{ invoice.invoiceno }}</td>
+                  <td class="p-3 fw-bold">{{ invoice.orderID || '--' }}</td>
+                  <td class="p-3">{{ invoice.invoicedate | date : 'medium' }}</td>
+                  <td class="p-3">{{ invoice.awbnumber || '--' }}</td>
+                  <td class="p-3">{{ invoice.dimentions || '--' }}</td>
+                  <td class="p-3">{{ invoice.weight || '--' }}</td>
+                  <td class="p-3">{{ invoice.createdAt | date : 'medium' }}</td>
+                  <td class="p-3">{{ invoice.taxamount || '--' }}</td>
+                  <td class="p-3">{{ invoice.grandtotal || '--' }}</td>
+                  <td class="p-3">{{ invoice.status || '--' }}</td>
+                  <td class="p-3">
+                    <button
+                      class="btn btn-sm btn-primary fw-bold text-center"
+                      [routerLink]="['/warehouse/shipped-invoices/' + invoice?.invoiceno]"
+                    >
+                      View Invoice
+                    </button>
+                  </td>
+                </tr>
+                <tr *ngIf="invoiceDetails?.length === 0">
+                  <td colspan="10" class="text-center fw-bold">No Records Found</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Pagination  -->
+          <div class="row justify-content-md-between align-items-md-center mt-2">
+            <div class="col-sm-12 col-md-4">
+              <div class="dataTables_length" id="tickets-table_length">
+                <label class="d-inline-flex align-items-center"
+                  >Show
+                  <select class="form-select form-select-sm ms-2 me-2 cursor-pointer" (change)="handlePageSizeChange($event)">
+                    <option *ngFor="let size of pageSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select>
+                  Entries</label
+                >
+              </div>
+            </div>
+            <!-- Pagination -->
+            <div class="col-sm-12 col-md-8">
+              <div class="text-md-right float-md-end pagination-rounded">
+                <ngb-pagination
+                  [(page)]="page"
+                  [pageSize]="pageSize"
+                  [maxSize]="5"
+                  [rotate]="true"
+                  [ellipses]="false"
+                  [boundaryLinks]="true"
+                  (pageChange)="handlePageChange($event)"
+                  [collectionSize]="count"
+                ></ngb-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

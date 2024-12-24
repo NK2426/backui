@@ -1,0 +1,107 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">View Group</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+                        <li class="breadcrumb-item"><a [routerLink]="['/app/groups']">Groups</a></li>
+                        <li class="breadcrumb-item active"> View </li>
+                    </ol>
+                </div>
+            </div> -->
+
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="control-label col-sm-3 fw-bold">Name : </label>
+                                {{viewvendor.name}}
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="control-label col-sm-3 fw-bold"> Department : </label>
+                                {{viewvendor.department?.name}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="control-label col-sm-3 fw-bold">Category : </label>
+                                {{viewvendor.category?.name}}
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="control-label col-sm-3 fw-bold"> Sub Category: </label>
+                                {{viewvendor.subcategory?.name}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="control-label col-sm-3 fw-bold">Description : </label>
+                                {{viewvendor.description}}
+                            </div>
+                        </div>
+                        <!-- <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="control-label col-sm-3">Tags : </label>
+                                {{viewvendor.tags}}
+                            </div>
+                        </div> -->
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <a [routerLink]="['/category-head/groups']" class="btn btn-sm btn-primary me-4">Back</a>
+                        </div>
+                    </div>
+                    <!-- <div class="row">
+                            <h5>Main Group Items</h5>
+                            <ul *ngFor="let item of items;" style="list-style-type: square; padding-left: 2.5%;">
+                                <li>{{item.name}}</li>
+                            </ul>
+                        </div> -->
+                    <!-- <div class="row">
+                            <h4>Sub Group Items</h4>
+                            <ul *ngFor="let item of subitems;">
+                                <li></li>
+                            </ul>
+                        </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="row">
+        <div class="col-12">
+            <div class="dropzone col-12">
+              <div class="dz-wrapper dropzone mt-4 text-center">
+                <div class="dz-message">
+                  <div class="dz-text"> Click to add Home Page Banner </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        &nbsp;
+        <div class="col-12">
+            <div class="dropzone col-12">
+              <div class="dz-wrapper dropzone mt-4 text-center">
+                <div class="dz-message">
+                  <div class="dz-text"> Click to add product  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        
+    </div> -->
+</div>

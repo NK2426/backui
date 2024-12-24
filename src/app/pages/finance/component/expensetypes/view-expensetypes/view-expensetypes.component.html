@@ -1,0 +1,27 @@
+<div>
+    <label class="col-md-4"><strong>Name : </strong></label> {{ selectedExpensetype?.name }}
+</div>
+<div>
+    <label class="col-md-4"><strong>Description : </strong></label> {{ selectedExpensetype?.description }}
+</div>
+<div>
+    <label class="col-md-4"><strong>Status : </strong></label> {{ selectedExpensetype?.status+'' === '0' ? 'Inactive' : 'Active' }}
+</div>
+<div>
+    <label class="col-md-4"><strong>CreateAt : </strong></label>
+    {{ selectedExpensetype?.createdAt  | date:'medium' }}
+</div>
+
+
+<div *ngIf="!assignedparams.includes(selectedExpensetype.id)" class="d-md-flex align-items-center pt-8">
+    <div class="col-md-3">
+        <button class="btn btn-sm btn-primary" (click)="editAction(selectedExpensetype)"><i
+                class="mdi mdi-pencil font-12"></i> Edit</button>
+    </div>
+    <div class="ml-auto">
+        <div class="dl">
+            <button class="btn btn-sm btn-danger" (click)="deleteParameter(selectedExpensetype)"><i
+                    class="mdi mdi-delete font-12"></i> Delete</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,98 @@
+<div class="card mb-5 mb-xl-10 p-3">
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-2">
+                <div class="col-sm-4">
+                    <div class="search-box me-2 mb-2 d-inline-block">
+                        <div class="position-relative">
+                            <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="search"
+                                (keyup)="invoiceList()">
+                            <i class="bx bx-search-alt search-icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle  table-nowrap table-hover">
+                    <thead>
+                        <tr>
+                            <th class="p-4 w-50px text-center">#</th>
+                            <th class="text-start p-4 min-w-100px">Invoice #</th>
+                            <th class="text-start p-4 min-w-100px">Invoice Date</th>
+                            <th class="text-start p-4 min-w-100px">Order ID</th>
+                            <th class="text-start p-4 min-w-100px">Order Date</th>
+                            <th class="text-start p-4 min-w-100px">Customer Name</th>
+                            <th class="text-start p-4 min-w-100px">Number of Items</th>
+                            <th class="text-start p-4 min-w-100px">Invoice Value</th>
+                            <th class="text-start p-4 min-w-100px">Delivered Date</th>
+                            <th class="text-start p-4 min-w-100px">Returns</th>
+                            <th class="text-start p-4 min-w-100px">Replacement</th>
+                            <th class="text-start p-4 min-w-100px">Payment Mode</th>
+                            <th class="text-start p-4 min-w-100px">Payment Type</th>
+                            <th class="text-start p-4 min-w-100px">Payment Received</th>
+                            <th sclass="text-start p-4 min-w-100px">Current Order Status</th>
+                            <th class="text-start p-4 min-w-100px">Delivery Charge</th>
+                            <th class="text-center p-4 min-w-100px">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let invoice of invoiceDetails; let i = index">
+                            <td class="p-4 text-center">{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}</td>
+                            <td class="p-4"> {{invoice.invoiceno}} </td>
+                            <td class="p-4"> {{invoice.invoicedate | date : 'medium'}} </td>
+                            <td class="p-4"> {{invoice.orderID || '--' }} </td>
+                            <td class="p-4"> {{invoice.createdAt | date : 'medium'}} </td>
+                            <td class="p-4"> {{invoice.user?.name || '--'}} </td>
+                            <td class="p-4"> {{invoice.invoiceorderitems.length ||
+                                '--'}} </td>
+                            <td class="p-4"> {{numberFormat(invoice.grandtotal) || 0}} </td>
+                            <td class="p-4"> {{ '--'}} </td>
+                            <!--delivered date-->
+                            <td class="p-4"> {{ '--'}} </td>
+                            <!--returns-->
+                            <td class="p-4"> {{ '--'}} </td>
+                            <!--replacement-->
+                            <td class="p-4"> {{invoice.order?.paymentmethod || '--'}} </td>
+                            <td class="p-4"> {{invoice.order?.modeofpayment || '--'}} </td>
+                            <td class="p-4"> {{invoice.order?.paymentStatus || '--'}} </td>
+                            <!--need discussion-->
+                            <td class="p-4"> {{invoice.order?.ship_status || 'Not Shipped'}} </td>
+                            <td class="p-4"> {{numberFormat(invoice.order?.deliverycharge) ||
+                                '0'}} </td>
+                            <td class="p-4 text-center">
+                                <button class="btn btn-sm btn-primary"
+                                    [routerLink]="['/finance/salesinvoice/'+invoice?.invoiceno]">View
+                                    Invoice</button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="invoiceDetails?.length === 0">
+                            <td class="text-center fw-bold" colspan="12">No Records Found</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Pagination  -->
+            <div class="row justify-content-md-between align-items-md-center mt-2">
+                <div class="col-sm-12 col-md-8">
+                  <div class="dataTables_length" id="tickets-table_length">
+                    <label class="d-inline-flex align-items-center">Show
+                      <select class="form-select form-select-sm ms-2 me-2 cursor-pointer"
+                        (change)="handlePageSizeChange($event)">
+                        <option *ngFor="let size of pageSizes" [ngValue]="size">
+                          {{ size }}
+                        </option>
+                      </select>
+                      Entries</label>
+                  </div>
+                </div>
+                <!-- Pagination -->
+                <div class="col-sm-12 col-md-4">
+                  <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false"
+                    [boundaryLinks]="true" (pageChange)="handlePageChange($event)" [collectionSize]="count"></ngb-pagination>
+                </div>
+              </div>
+        </div>
+    </div>
+</div>

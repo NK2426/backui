@@ -1,0 +1,160 @@
+.dropzone {
+  background: #fff;
+  border: 2px dashed rgba(0, 0, 0, .3);
+  min-height: 200px;
+  padding: 20px;
+  max-width: 220px;
+  cursor: pointer;
+}
+
+.dropzone.dz-wrapper {
+  background: transparent;
+  border: none;
+  color: #666;
+  max-height: 100%;
+  min-height: 0;
+  overflow: auto;
+  padding: 0;
+  position: relative;
+  width: 100%;
+}
+
+.le {
+  padding-right: 3px;
+}
+
+.dropzone.dz-wrapper .dz-message {
+  display: inline-block;
+  margin: 8px;
+  max-height: 100%;
+  max-width: calc(100% - 16px);
+  min-height: 100px;
+  min-width: calc(100% - 16px);
+  overflow: auto;
+  position: relative;
+  width: calc(100% - 16px);
+}
+
+.dropzone.dz-wrapper .dz-message .dz-text {
+  padding: 8px 16px;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+}
+
+.horizontal ul.steps-indicator {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 0;
+  width: 100%;
+  list-style: none;
+}
+
+.horizontal ul.steps-indicator li {
+  margin: 0;
+  text-align: center;
+  padding: 2px 40px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ccc;
+  position: relative;
+}
+
+.step-indicator {
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  height: 42px;
+  padding-top: 10px;
+  width: 50px;
+  margin: 0 auto;
+}
+
+ul.steps-indicator li:not(:last-child)::after {
+  background-color: #E6E6E6;
+  content: "";
+  position: absolute;
+  height: 1px;
+  width: calc(100% - 30px);
+  top: 22px;
+  left: calc(50% + 25px);
+}
+
+.current .step-indicator {
+  background: #556EE6;
+  color: #fff;
+}
+
+.current .label {
+  color: #495057;
+}
+
+//Newly added //
+.ng-select {
+  font-size: 16px;
+}
+
+.ng-value-container .ng-value,
+.ng-value-label {
+  font-size: 18px !important;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+  background-color: #ccc !important;
+}
+
+.addimageicon {
+  font-size: 24px !important;
+  color: #fff;
+  border: 1px solid #ccc;
+  background: #07b607;
+  border-radius: 10px;
+  margin-top: 5px;
+}
+
+.addprice {
+  font-size: 25px;
+  color: #07b607;
+  margin-left: 3px;
+  margin-right: 5px;
+  position: relative;
+  top: 5px;
+}
+
+th[sortable] {
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+th[sortable].desc:before,
+th[sortable].asc:before {
+  content: '';
+  display: block;
+  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAmxJREFUeAHtmksrRVEUx72fH8CIGQNJkpGUUmakDEiZSJRIZsRQmCkTJRmZmJgQE0kpX0D5DJKJgff7v+ru2u3O3vvc67TOvsdatdrnnP1Y///v7HvvubdbUiIhBISAEBACQkAICAEhIAQ4CXSh2DnyDfmCPEG2Iv9F9MPlM/LHyAecdyMzHYNwR3fdNK/OH9HXl1UCozD24TCvILxizEDWIEzA0FcM8woCgRrJCoS5PIwrANQSMAJX1LEI9bqpQo4JYNFFKRSvIgsxHDVnqZgIkPnNBM0rIGtYk9YOOsqgbgepRCfdbmFtqhFkVEDVPjJp0+Z6e6hRHhqBKgg6ZDCvYBygVmUoEGoh5JTRvIJwhJo1aUOoh4CLPMyvxxi7EWOMgnCGsXXI1GIXlZUYX7ucU+kbR8NW8lh3O7cue0Pk32MKndfUxQFAwxdirk3fHappAnc0oqDPzDfGTBrCfHP04dM4oTV8cxr0SVzH9FF07xD3ib6xCDE+M+aUcVygtWzzbtGX2rPBrEUYfecfQkaFzYi6HjVnGBdtL7epqAlc1+jRdAap74RrnPc4BCijttY2tRcdN0g17w7HqZrXhdJTYAuS3hd8z+vKgK3V1zWPae0mZDMykadBn1hTQBLnZNwVrJpSe/NwEeDsEwCctEOsJTsgxLvCqUl2ACftEGvJDgjxrnBqkh3ASTvEWrIDQrwrnJpkB3DSDrGW7IAQ7wqnJtkBnLRztejXXVu4+mxz/nQ9jR1w5VB86ejLTFcnnDwhzV+F6T+CHZlx6THSjn76eyyBIOPHyDakhBAQAkJACAgBISAEhIAQYCLwC8JxpAmsEGt6AAAAAElFTkSuQmCC') no-repeat;
+  background-size: 22px;
+  width: 22px;
+  height: 22px;
+  float: left;
+}
+
+th[sortable].desc:before {
+  transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+}
+
+.activeimg:before {
+  content: "✖";
+  font-family: boxicons !important;
+  font-size: 16px;
+  background-color: #a91be9;
+  color: #fff;
+  top: -15px;
+  right: -21px;
+  position: absolute;
+  border-radius: 50%;
+  padding: 1px 4px;
+  cursor: pointer;
+}

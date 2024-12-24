@@ -1,0 +1,120 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-4">
+            <div class="col-sm-2">
+              <!--begin::Search-->
+              <div class="d-flex align-items-center position-relative my-1 px-1">
+                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+                <input type="text" placeholder="Search .." class="form-control form-control-solid ps-12"
+                  (keyup)="searchTable($event)" #input />
+              </div>
+            </div>
+            <div class="col-sm-10">
+              <div class="text-sm-end">
+                <a (click)="addRoles(content)" routerLinkActive="router-link-active"
+                  class="btn btn-primary text-white">Add
+                  Supplier Agent</a>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table align-middle table-nowrap table-hover">
+              <thead>
+                <tr>
+                  <th class="p-5 w-50px">#</th>
+                  <!-- <th class="text-start min-w-100px">Vendor</th> -->
+                  <th class="text-start p-5 min-w-100px">Name</th>
+                  <th class="text-start p-5 min-w-100px">Email</th>
+                  <th class="text-start p-5 min-w-100px">Mobile</th>
+                  <th class="text-start p-5 min-w-100px">Status</th>
+                  <th class="text-center p-5 min-w-100px">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let agent of agent; let i = index">
+                  <td class="p-5">{{ page == 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}</td>
+                  <td class="p-5">
+                    {{ agent.name }}
+                  </td>
+                  <td class="p-5">{{ agent.email }}</td>
+                  <td class="p-5">{{ agent.mobile }}</td>
+                  <td class="p-5">
+                    <div class="badge badge-light-success">{{ agent.status + '' === '1' ? 'Active' : '' }}</div>
+                    <div class="badge badge-light-danger">{{ agent.status + '' === '0' ? 'Inactive' : '' }}</div>
+                  </td>
+                  <!-- <td class="p-5">{{agent.status+'' === '0' ? 'Inactive' : 'Active'}}</td> -->
+                  <td class="p-5 text-center">
+                    <ul class="list-inline font-size-20 contact-links mb-0">
+                      <li class="list-inline-item px-1 cursor-pointer">
+                        <a (click)="setActiveRoles(content, agent, i)" ngbTooltip="View User">
+                          <app-keenicon name="eye" class="fs-1 text-info"></app-keenicon>
+                        </a>
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr *ngIf="agent?.length === 0">
+                  <td colspan="6" class="text-center fw-bold">No Record Found</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Pagination  -->
+          <div class="row justify-content-md-between align-items-md-center mt-2">
+            <div class="col-sm-12 col-md-8">
+              <div class="dataTables_length" id="tickets-table_length"><label
+                  class="d-inline-flex align-items-center">Show
+                  <select class="form-select form-select-sm ms-2 me-2 cursor-pointer"
+                    (change)="handlePageSizeChange($event)">
+                    <option *ngFor="let size of pageSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select> Entries</label></div>
+            </div>
+            <!-- Pagination -->
+            <div class="col-sm-12 col-md-4">
+              <div class="text-md-right float-md-end pagination-rounded">
+                <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false"
+                  [boundaryLinks]="true" (pageChange)="handlePageChange($event)" [collectionSize]="count">
+                </ngb-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Pop UP Open start -->
+<ng-template #content let-modal>
+  <div class="modal-body">
+    <div class="modal-header">
+      <h5 class="modal-title" *ngIf="!currentAgent!.uuid" id="modal-basic-title">Add Supplier Agent</h5>
+      <h5 class="modal-title" *ngIf="currentAgent!.uuid && addAction == true" id="modal-basic-title"
+        (click)="addRoles(content)">
+        Edit Supplier Agent
+      </h5>
+      <h5 class="modal-title" *ngIf="currentAgent!.uuid && addAction == false" id="modal-basic-title"
+        (click)="addRoles(content)">
+        View Supplier Agent
+      </h5>
+      <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body p-2">
+      <div *ngIf="viewAction">
+        <app-viewagent (refreshList)="refreshList($event)" (editRoles)="editRoles($event)"
+          [selctvendor]="currentAgent"></app-viewagent>
+      </div>
+      <div *ngIf="addAction">
+        <app-addagent (refreshList)="refreshList($event)" [data]="currentAgent"></app-addagent>
+      </div>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,180 @@
+<div class="submit-form">
+  <div class="mb-3 row">
+    <!-- <label for="typeahead-http" class="col-xs-3 col-sm-auto col-form-label">Search Product
+            Group</label>
+        <div class="col">
+            <input id="typeahead-template" type="text" class="form-control col" [(ngModel)]="model"
+                [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter" [resultFormatter]="formatter"
+                (selectItem)="itemSelected($event)" [class.is-invalid]="searchFailed" />
+
+            <small *ngIf="searching" class="form-text text-muted">searching...</small>
+            <div class="invalid-feedback" *ngIf="searchFailed && model.length > 0">Sorry, Your product
+                group not our list contact our admin.
+            </div>
+
+        </div> -->
+  </div>
+  <form (ngSubmit)="saveProductparameters()" [formGroup]="formData" novalidate>
+    <div class="row">
+      <div class="col-12">
+
+        <div class="mb-3" *ngIf="edit">
+          <label class="form-label"> Category :</label>
+          <strong>{{data.category?.name}}</strong>
+        </div>
+        <div class="mb-3" *ngIf="edit">
+          <label class="form-label"> SubCategory :</label>
+          <strong>{{data.subcategory?.name}}</strong>
+        </div>
+        <div class="mb-3" *ngIf="edit">
+          <label class="form-label"> Type :</label>
+        <strong>{{ data?.type+'' === '0' ?
+          'String' : 'Number' }}</strong>
+        </div>
+       
+        <div class="mb-3" *ngIf="edit">
+          <label class="form-label"> Status :</label>
+        <strong>{{ data?.status+'' === '0' ?
+          'Inactive' : 'Active' }}</strong>
+        </div>
+        <div class="mb-3" *ngIf="edit">
+          <label class="form-label"> Description :</label>
+          <strong>{{data?.description}}</strong>
+        </div>
+
+
+
+        <div class="mb-3" *ngIf="!edit">
+          <label class="form-label"> Category :</label>
+          <!-- <strong>{{data.category?.name}}</strong> -->
+          <ng-select name="categories" placeholder="Select Category" [items]="class" bindLabel="name"
+            formControlName="category_id" bindValue="cid" [(ngModel)]="selectedClass" (change)="getSubclass($event)"
+            [ngClass]="{
+              'is-invalid':
+                (submit && form['category_id']?.errors) ||
+                (form['category_id']?.invalid && (form['category_id']?.dirty || form['category_id']?.touched))
+            }">
+          </ng-select>
+          <div *ngIf="
+              (submit && form['category_id']?.errors) ||
+              (form['category_id']?.invalid && (form['category_id']?.dirty || form['category_id']?.touched))
+            " class="invalid-feedback">
+            <span *ngIf="form['category_id'].errors?.['required']">Select Category</span>
+          </div>
+        </div>
+        <div class="mb-3" *ngIf="!edit">
+          <label class="form-label">
+            Subcategory :
+            <strong>{{data.subcategory?.name}}</strong>
+          </label>
+          <ng-select name="subclass" placeholder="Select SubCategory" [items]="subcategories" bindLabel="name"
+            formControlName="subcategory_id" bindValue="id" [(ngModel)]="selectedSubclass"
+            (change)="  changeSubCat($event)" [ngClass]="{
+              'is-invalid':
+                (submit && form['subcategory_id']?.errors) ||
+                (form['subcategory_id']?.invalid && (form['subcategory_id']?.dirty || form['subcategory_id']?.touched))
+            }">
+            >
+          </ng-select>
+          <div *ngIf="
+              (submit && form['subcategory_id']?.errors) ||
+              (form['subcategory_id']?.invalid && (form['subcategory_id']?.dirty || form['subcategory_id']?.touched))
+            " class="invalid-feedback">
+            <span *ngIf="form['subcategory_id'].errors">Enter valid Subcategory</span>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label required">Product parameter name</label>
+          <input class="form-control" placeholder="Enter product parameter" type="text" name="name" autocomplete="off"
+            formControlName="name" [ngClass]="{
+              'is-invalid': (submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))
+            }" />
+
+          <div
+            *ngIf="(submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))"
+            class="invalid-feedback">
+            <span *ngIf="form['name'].errors?.['required']">Enter productparameter name.</span>
+            <span *ngIf="form['name'].errors?.['minlength']">Minimum Length 4 Characters.</span>
+          </div>
+        </div>
+
+        <div class="mb-3" *ngIf="!edit">
+          <label class="form-label required"> Type</label>
+          <select class="form-select" type="text" name="type" formControlName="type" [ngClass]="{
+              'is-invalid': (submit && form['type']?.errors) || (form['type']?.invalid && (form['type']?.dirty || form['type']?.touched))
+            }">
+            <option *ngFor="let type of types" [value]="type.id">{{ type.name }}</option>
+          </select>
+          <div
+            *ngIf="(submit && form['type']?.errors) || (form['type']?.invalid && (form['type']?.dirty || form['type']?.touched))"
+            class="invalid-feedback">
+            <span *ngIf="form['type'].errors?.['required']">Select Type</span>
+          </div>
+        </div>
+        <div class="mb-3" *ngIf="!edit">
+          <label class="form-label" > Description </label>
+          <textarea class="form-control" placeholder="Enter Description" type="text" name="description"
+            autocomplete="off" formControlName="description" [ngClass]="{
+              'is-invalid':
+                (submit && form['description']?.errors) ||
+                (form['description']?.invalid && (form['description']?.dirty || form['description']?.touched))
+            }"></textarea>
+        </div>
+       
+
+        <div class="d-md-flex align-items-center mt-5">
+          <div class="col-md-3">
+            <button type="submit" class="btn btn-sm btn-primary mb-2">Submit</button>
+          </div>
+          <div class="ml-auto">
+            <div class="dl">
+              <button type="button" class="btn btn-sm btn-secondary mb-2" (click)="cancelAction()">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <form (ngSubmit)="saveParameterValues()" novalidate [formGroup]="addValueForm" *ngIf="data.addValue">
+    <div formArrayName="formlist">
+      <div class="mb-1">
+        <label class="font-size-16 form-label">{{ data.name }}</label>
+      </div>
+      <h5 class="font-size-16 mb-3">Values</h5>
+      <div *ngFor="let data1 of formvalueData().controls; let i = index">
+        <div [formGroupName]="i" class="row">
+          <div class="mb-3 col-lg-8">
+            <input type="text" formControlName="value" class="form-control" [ngClass]="{
+                'is-invalid': addValueForm['value']?.invalid && (addValueForm['value']?.dirty || addValueForm['value']?.touched)
+              }" />
+          </div>
+          <div class="col-lg-2 align-self-center">
+            <i class="mdi mdi-delete text-danger removeicon" (click)="removeField(i)"></i>
+          </div>
+        </div>
+      </div>
+      <button (click)="addField()" class="btn btn-sm btn-primary mt-3 mt-lg-0"><i class="mdi mdi-plus font-12"></i> Add
+        Value</button>
+    </div>
+
+    <div class="d-md-flex align-items-center mt-5">
+      <div class="col-md-3">
+        <button type="submit" class="btn btn-sm btn-primary mb-2">Submit</button>
+      </div>
+      <div class="ml-auto">
+        <div class="dl">
+          <button type="button" class="btn btn-sm btn-warning mb-2" (click)="cancelAction()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<ng-template #rt let-r="result" let-t="term">
+  <!-- <img [src]="'https://upload.wikimedia.org/wikipedia/commons/thumb/' + r['flag']" class="me-1"
+        style="width: 16px"> -->
+  <span *ngIf="!searchFailed">{{ r.department?.name }} / {{ r.category?.name }} / {{ r.subcategory?.name }} / </span>
+  <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+</ng-template>

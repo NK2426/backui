@@ -1,0 +1,52 @@
+<div class="card mb-5 mb-xl-10 p-3">
+    <!-- <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">{{title}}</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+                        <li class="breadcrumb-item active"> {{title}} </li>
+                    </ol>
+                </div>
+            </div> -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table align-middle  table-nowrap table-hover">
+                    <thead>
+
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let date of dateKeys; let i = index">
+                            <tr style="background-color: #a91be9;" class="text-white fw-bold">
+                                <td colspan="12">
+                                    <div class="d-flex justify-content-between px-5">
+                                        <div>
+                                            {{getDay(date)}}
+                                        </div>
+                                        <div>
+                                            {{date | date : 'mediumDate'}}
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr *ngFor="let detail of groupedObj[date]; let j = index"
+                                [style.background-color]="(detail.isToday) ? 'rgba(2440,180,76,0.35)' : ''">
+                                <!-- <td>{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}</td> -->
+                                <!--  <td> payment term :{{detail.paymentterm_id}} </td>
+                                        <td> payment cyle : {{detail.paymentcycle_id}} </td> -->
+                                <td class="px-5"> {{detail.type || '--'}} </td>
+                                <td class="px-5"> <i class="fa fa-circle" aria-hidden="true"
+                                        [style.color]="(detail.status == 'Accept') ? 'green' : 'blue'"></i>
+                                    {{detail.status}} </td>
+                                <td class="px-5 text-end">Rs.{{detail.amount || '--' }} </td>
+                            </tr>
+                            <tr *ngIf="dateKeys?.length === 0">
+                                <td colspan="12" class="text-center fw-bold">No records found</td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

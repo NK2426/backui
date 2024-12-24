@@ -1,0 +1,100 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">Add Stock</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a [routerLink]="['/catalog']">Home</a></li>
+                        <li class="breadcrumb-item active"> Add Stock </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-sm-4">
+                            <div class="search-box me-2 mb-2 d-inline-block">
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="search"
+                                        (keyup)="list()" [ngModelOptions]="{standalone: true}">
+                                    <i class="bx bx-search-alt search-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle  table-nowrap table-hover">
+                            <thead class="table-light">
+                                <tr class="bg-light">
+                                    <th scope="col" style="width: 70px;">#</th>
+                                    <th scope="col">Product Name</th>
+                                    <th scope="col">Department</th>
+                                    <th scope="col">Category</th>
+                                    <th scope="col">Subcategory</th>
+                                    <th scope="col">Brand</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col" align="center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of qcgroups; let i = index">
+                                    <td>{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}</td>
+                                    <td>
+                                        <h5 class="font-size-14 mb-1">
+                                            {{item.name}}
+                                        </h5>
+                                    </td>
+                                    <td>{{item?.department?.name}}</td>
+                                    <td>{{item?.category?.name}}</td>
+                                    <td>{{item?.subcategory?.name}}</td>
+                                    <td>{{item?.brand?.name}}</td>
+                                    <td style="color:#0b0bea;"><strong>{{item.status}}</strong></td>
+                                    <td>
+                                        <ul class="list-inline font-size-20 contact-links mb-0">
+                                            <li>
+                                                <a class="btn btn-primary text-white"
+                                                    [routerLink]="['/catalog/productgroups/'+item.uuid]"
+                                                    ngbTooltip="Update Product Information"><i class="bx bx-pencil"></i>
+                                                    Update </a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="qcgroups?.length === 0">
+                                    <td colspan="6" class="text-center fw-bold">No Records Found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination  -->
+                    <div class="row justify-content-md-between align-items-md-center mt-2">
+                        <div class="col-sm-12 col-md-4">
+                            <div class="dataTables_length" id="tickets-table_length"><label
+                                    class="d-inline-flex align-items-center">Show
+                                    <select class="form-select form-select-sm ms-2 me-2"
+                                        (change)="handlePageSizeChange($event)">
+                                        <option *ngFor="let size of pageSizes" [ngValue]="size">
+                                            {{ size }}
+                                        </option>
+                                    </select> Entries</label></div>
+                        </div>
+                        <!-- Pagination -->
+                        <div class="col-sm-12 col-md-8">
+                            <div class="text-md-right float-md-end pagination-rounded">
+                                <ngb-pagination class="pagination pagination-rounded justify-content-center mt-4"
+                                    size="lg" [(page)]="page" [pageSize]="pageSize"
+                                    (pageChange)="handlePageChange($event)" [collectionSize]="count">
+                                    <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i>
+                                    </ng-template>
+                                    <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+                                </ngb-pagination>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Pagination  -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

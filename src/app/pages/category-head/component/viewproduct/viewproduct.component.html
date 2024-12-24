@@ -1,0 +1,509 @@
+<!-- <div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12"> -->
+<div class="page-title-box d-flex align-items-center justify-content-between">
+  <h4 class="mb-0 font-size-18 pb-3">View Product</h4>
+  <!-- <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+            <li class="breadcrumb-item"><a
+                [routerLink]="[viewvendor.modifiedBy === user?.id || viewvendor.status === 'Publish' ? '/category-head/products' : '/category-head/request']">Product</a>
+            </li>
+            <li class="breadcrumb-item active"> View </li>
+          </ol>
+        </div> -->
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <div class="row mt-3">
+      <div class="col-sm-12">
+        <h4 class="card-title mb-4">Basic Details</h4>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="mb-3">
+          <label class="form-label col-sm-3">Product Name : </label>
+          <b>{{ viewvendor.name }}</b>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="mb-3">
+          <label class="form-label col-sm-3">Design ID : </label>
+          <b>{{ viewvendor.uuid }}</b>
+        </div>
+      </div>
+      <!-- <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3">Vendor D.ID : </label>
+                {{ viewvendor?.vendormapping?.vendorproId }}
+              </div>
+            </div> -->
+      <div class="col-sm-6">
+        <div class="mb-3">
+          <label class="form-label col-sm-3"> Group : </label>
+          {{ viewvendor.group?.name }}
+        </div>
+      </div>
+      <!-- <div class="col-sm-6">
+        <div class="mb-3">
+          <label class="form-label col-sm-3"> Department : </label>
+          {{ viewvendor.group?.department?.name }}
+        </div>
+      </div> -->
+      <div class="col-sm-6">
+        <div class="mb-3">
+          <label class="form-label col-sm-3">Category : </label>
+          {{ viewvendor.group?.category?.name }}
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="mb-3">
+          <label class="form-label col-sm-3">Sub Category : </label>
+          {{ viewvendor.group?.subcategory?.name }}
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="mb-3">
+          <label class="form-label col-sm-3">Brand : </label>
+          {{ viewvendor.brand?.name }}
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="mb-3">
+          <label class="form-label col-sm-3">HSN Code : </label>
+          {{ viewvendor?.hsncode }}
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="mb-3">
+          <label class="form-label col-sm-3">Unit Type : </label>
+          {{ getUnits(viewvendor.unit) }}
+        </div>
+      </div>
+
+      <div class="col-sm-6" *ngIf="viewvendor?.tax_id > 0">
+        <div class="mb-3">
+          <label class="form-label col-sm-3">Tax : </label>
+          {{ viewvendor.tax?.name }} - {{ viewvendor.percentage }}%
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="mb-3" *ngIf="viewvendor.user?.roleID === 2">
+          <label class="form-label col-sm-3">Product Status : </label>
+          <!-- <span class="font-size-16" [style.color]="getColor(viewvendor?.vendormappings?.[0]?.status)"> {{getStatuses(viewvendor?.vendormappings?.[0]?.status)}} </span> -->
+          {{ viewvendor.status }}
+        </div>
+
+        <div class="mb-3" *ngIf="viewvendor.user?.roleID === 6">
+          <label class="form-label col-sm-3">Product Status : </label>
+          <b *ngIf="viewvendor?.vendormapping?.status === 0 && viewvendor.status === 'Request'"> Request for
+            Approval </b>
+          <b *ngIf="viewvendor?.vendormapping?.status === 1"> Accept & Published</b>
+          <b *ngIf="viewvendor?.vendormapping?.status === -1"> Rejected </b>
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="mb-3">
+          <label class="form-label col-sm-3">Metrics : </label>
+          {{ viewvendor.measure }}
+        </div>
+      </div>
+
+      <!-- <div class="col-sm-6" *ngIf="viewvendor?.vendormapping?.vendor_id===viewvendor.modifiedBy">
+              <div class="mb-3">
+                <label class="form-label col-sm-3">Vendor : </label>
+                {{viewvendor?.user?.name}}
+              </div>
+            </div> -->
+
+      <div class="col-sm-6">
+        <div class="mb-3">
+          <label class="form-label col-sm-3">Country of Origin : </label>
+          {{ viewvendor.country }}
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="mb-3">
+          <label class="form-label col-sm-3">Description : </label>
+          {{ viewvendor.description }}
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3">Cost Price : </label>
+                {{viewvendor?.vendormapping?.price}}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label col-sm-3">MRP : </label>
+                {{viewvendor?.vendormapping?.mrp}}
+              </div>
+            </div> -->
+
+    <div class="row mt-3" *ngIf="viewvendor?.vendormapping?.status === -1 && viewvendor.user?.roleID === 6">
+      <div class="col-sm-12">
+        <h4 class="card-title mb-4">Remarks</h4>
+      </div>
+      <div class="mb-3">
+        {{ viewvendor?.vendormapping?.reason }}
+      </div>
+    </div>
+
+    <!-- <div class="row">
+
+             
+            </div> -->
+    <!-- <div class="row mt-3">
+                        <div class="col-sm-12">
+                            <h4 class="card-title mb-4">Tax</h4>
+                        </div>
+                    </div> -->
+
+    <!-- <div class="row">
+                       <div class="col-sm-6" *ngIf="viewvendor?.ctax_id > 0">
+                            <div class="mb-3">
+                                <label class="form-label col-sm-3">CGST : </label>
+                                {{viewvendor.ctax?.name}} - {{viewvendor.ctax?.percentage}}%
+                            </div>
+                        </div>
+                        <div class="col-sm-6" *ngIf="viewvendor?.stax_id > 0">
+                            <div class="mb-3">
+                                <label class="form-label col-sm-3">SGST : </label>
+                                {{viewvendor.stax?.name}} - {{viewvendor.stax?.percentage}}%
+                            </div>
+                        </div> 
+                    </div>
+                     -->
+    <!-- <div class="row mt-3">
+            <div class="col-sm-12">
+              <h4 class="card-title mb-4">Item Packing Details</h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label ">Packing Length ({{viewvendor.measure}}) : </label>
+                {{viewvendor.length}}
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label ">Packing Width ({{viewvendor.measure}}) : </label>
+                {{viewvendor.width}}
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label">Packing Height ({{viewvendor.measure}}) : </label>
+                {{viewvendor.height}}
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label class="form-label ">Packing Weight (Grams) : </label>
+                {{viewvendor.weight}}
+              </div>
+            </div>
+
+          </div> -->
+
+    <div class="row">
+      <!-- <div class="col-12">
+              <div class="py-2 mt-3" *ngIf="productmapvariants!.length > 0">
+                <h3 class="font-size-15 fw-bold">Product Variants</h3>
+              </div>
+              <div class="table-responsive" *ngIf="productmapvariants!.length > 0">
+                <table class="table" style="width: 50%;">
+
+                  <tbody> -->
+      <!-- <tr *ngFor="let param of productmapvariants; let i = index;">
+                        <th class="center">{{param?.productvariant?.name}}</th>
+                        <td *ngIf="param?.productvariant?.productvariantvalues!.length > 0">
+                          <span *ngFor="let item of param?.productvariant?.productvariantvalues; let i = index;">
+                            {{item?.value}},
+                          </span>
+                        </td>
+                      </tr> -->
+      <!-- <tr *ngFor="let param of productmapvariants; let i=index">
+                      <th class="center">{{param?.productvariant?.name}}</th>
+                      <td>
+                        <span *ngFor="let item of selectedvariantvalues[param?.productvariant?.id || 0]">
+                          {{item.value}},
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+
+                </table>
+              </div>
+            </div> -->
+
+      <div class="col-8">
+        <div class="py-2 mt-3" *ngIf="productmapparams!.length > 0">
+          <h3 class="font-size-15 fw-bold">Product Parameters</h3>
+        </div>
+        <div class="table-responsive" *ngIf="productmapparams!.length > 0">
+          <table class="table table-row-dashed" style="width: 50%">
+            <tbody>
+              <tr *ngFor="let param of productmapparams; let i = index">
+                <th class="text-center bg-primary text-white" width="50%">{{ param?.productparameter?.name }}</th>
+                <td width="50%" class="text-start">{{ param?.productparametervalue?.value }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="viewvendor?.department_id === '3'">
+      <div class="col-sm-6">
+        <div class="mb-3">
+          <h4 class="card-title mb-4">
+            Size Chart &nbsp;&nbsp;&nbsp;
+            <!-- <div class="form-check" style="float: right;">
+                            <input class="form-check-input" type="checkbox" id="type" [checked]="!nosizechart ?  '' : 'isChecked'" (change)="sizechart($event)">
+                            <label class="form-check-label" for="type">
+                                No Size Chart
+                            </label>
+                        </div> -->
+          </h4>
+          <input type="file" class="file-input form-control" (change)="onSelectedFile($event)" autocomplete="off"
+            #fileupload name="sizechart" />
+          <!-- <a *ngIf="fileName!=''" target="_blank" href="{{ fileName }}"
+                    ><i class="mdi mdi-file" style="font-size: 16px;"></i> Size Chart</a> -->
+          <div *ngIf="fileName === ''" class="invalid-feedback">
+            <span>Upload File.</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6" *ngIf="viewvendor?.sizechart !== ''">
+        <div class="card">
+          <div class="card-body">
+            <div class="product-img position-relative activeimg p-4" (click)="removeimage()">
+              <a href="javascript:void(0)">
+                <img alt="Product" class="img-fluid mx-auto d-block w-75" src="{{ viewvendor?.sizechart }}" /></a>
+              <!-- style="width: 250px; height: 200px;" -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="productimages!.length > 0">
+      <div class="col-xl-3 col-sm-4" *ngFor="let item of productimages">
+        <div class="card">
+          <div class="card-body">
+            <div class="product-img position-relative">
+              <a href="javascript:void(0)"> <img alt="Product" class="img-fluid mx-auto d-block w-75"
+                  src="{{ item?.path }}" /></a>
+              <!-- style="width: 250px; height: 200px;" -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Vendor Variant Mapping Start *ngIf="productmapvariants!.length > 0"-->
+    <div class="row">
+      <div class="table-responsive">
+        <div class="table align-middle table-hover">
+          <div class="thead fw-bold">
+            <div class="d-table-row bg-primary text-white">
+              <div class="d-table-cell" *ngFor="let header of productVariantHeader; let j = index">
+                {{ header.name }}
+              </div>
+              <!-- <div class="d-table-cell">Size</div> -->
+              <div class="d-table-cell">Image</div>
+              <div class="d-table-cell">Supplier D.Id</div>
+              <div class="d-table-cell">Mrp</div>
+              <div class="d-table-cell">Price</div>
+
+              <div class="d-table-cell">Length ({{ viewvendor.measure }})</div>
+              <div class="d-table-cell">Width ({{ viewvendor.measure }})</div>
+              <div class="d-table-cell">Height ({{ viewvendor.measure }})</div>
+              <div class="d-table-cell">Weight (Grams)</div>
+
+              <!-- <div class="d-table-cell">
+                    <button [disabled]="disableNewVendorMapping" class="btn btn-sm btn-outline-success"
+                      (click)="newVendorVariantMapping(1)">
+                      <i class="fa fa-plus"></i> New Mapping
+                    </button>
+                  </div> -->
+            </div>
+          </div>
+          <div class="tbody" *ngIf="productVariantCellValue.length && canShow">
+            <form class="d-table-row" [formGroup]="$any(fg)"
+              *ngFor="let fg of vendorMappingForms.controls; let i = index" (submit)="recordSubmit($any(fg))">
+              <!-- <div class="d-table-cell col-md-1">
+                    <input class="form-control" formControlName="productVariantValue">
+                  </div>
+                  <div class="d-table-cell ">
+                    <input class="form-control" formControlName="productVariant">
+                  </div> -->
+              <div formArrayName="productVariantOptions" class="d-table-cell"
+                *ngFor="let item of productVariantCellValue; let j = index">
+                <ng-container *ngIf="fg.get('id')?.value === 0">
+                  <ng-select formControlName="{{ j }}" class="ng-select" placeholder="Select" [items]="item"
+                    bindLabel="displayName" bindValue="value" [multiple]="false">
+                  </ng-select>
+                </ng-container>
+
+                <label *ngIf="!(fg.get('id')?.value === 0)">{{
+                  fg.get('description')?.value ? fg.get('description')?.value.split(',')[j] : '-'
+                  }}</label>
+
+              </div>
+              <!-- <div class="d-table-cell  col-md-1">
+                    <input class="form-control" formControlName="size">
+                  </div> -->
+              <div class="d-table-cell col-md-1">
+                <div style="position: relative; height: 100px">
+                  <div style="position: absolute; width: 100px; padding: 0; bottom: -15px">
+                    <img *ngIf="!(fg.get('id')?.value === 0)"
+                      src="{{ fg.get('productselectimage_id')?.value === 0 ? 'assets/images/select.png' : fg.get('path')?.value }} "
+                      style="width: 80px; height: 80px" />
+                  </div>
+                </div>
+              </div>
+              <div class="d-table-cell col-md-1">
+                <input *ngIf="fg.get('id')?.value === 0" class="form-control" formControlName="vendorproId" />
+                <label *ngIf="!(fg.get('id')?.value === 0)">{{ fg.get('vendorproId')?.value }}</label>
+              </div>
+              <div class="d-table-cell col-md-1">
+                <input *ngIf="fg.get('id')?.value === 0 || fg.get('isEditable')?.value" class="form-control"
+                  formControlName="mrp" />
+                <label *ngIf="!(fg.get('id')?.value === 0) && !fg.get('isEditable')?.value">{{
+                  fg.get('mrp')?.value }}</label>
+              </div>
+
+              <div class="d-table-cell col-md-1">
+                <input *ngIf="fg.get('id')?.value === 0 || fg.get('isEditable')?.value" class="form-control"
+                  formControlName="price" />
+                <label *ngIf="!(fg.get('id')?.value === 0) && !fg.get('isEditable')?.value">{{
+                  fg.get('price')?.value }}</label>
+              </div>
+              <!-- <div class="d-table-cell  col-md-1">
+                    <input class="form-control" formControlName="designId">
+                  </div> -->
+              <div class="d-table-cell col-md-1">
+                <input *ngIf="fg.get('id')?.value === 0" class="form-control" formControlName="length" />
+                <label *ngIf="!(fg.get('id')?.value === 0)">{{ fg.get('length')?.value }}</label>
+              </div>
+              <div class="d-table-cell col-md-1">
+                <input *ngIf="fg.get('id')?.value === 0" class="form-control" formControlName="width" />
+                <label *ngIf="!(fg.get('id')?.value === 0)">{{ fg.get('width')?.value }}</label>
+              </div>
+
+              <div class="d-table-cell col-md-1">
+                <input *ngIf="fg.get('id')?.value === 0" class="form-control" formControlName="height" />
+                <label *ngIf="!(fg.get('id')?.value === 0)">{{ fg.get('height')?.value }}</label>
+              </div>
+
+              <div class="d-table-cell col-md-1">
+                <input *ngIf="fg.get('id')?.value === 0" class="form-control" formControlName="weight" />
+                <label *ngIf="!(fg.get('id')?.value === 0)">{{ fg.get('weight')?.value }}</label>
+              </div>
+              <!-- <button id="enab" type="submit" class="btn btn-sm" [disabled]="fg.invalid"
+                    [ngClass]="(fg.get('id')?.value==0)?'btn-success':'btn-outline-dark'"><i
+                      class="far fa-save fa-lg"></i>
+                    {{fg.get('id')?.value==0?'Submit':'Update'}}
+                  </button> -->
+
+              <!-- <div *ngIf="!(fg.get('id')?.value==0)" id="enab" class="btn  m-2" (click)="enableEdit($any(fg) , i)"
+                    [ngClass]="'btn-outline-dark'">
+                    <i class="fas fa-edit"></i>
+                  </div>
+
+                  <button *ngIf="(fg.get('id')?.value==0) || (fg.get('isEditable')?.value)" id="enab" type="submit"
+                    class="btn btn-sm  m-2" [disabled]="fg.invalid"
+                    [ngClass]="(fg.get('id')?.value==0)?'btn-success':'btn-success'">
+                    <i class="far fa-save fa-lg"></i>
+
+                  </button>
+                  <button class="btn btn-sm btn-light m-1" (click)="onDelete(fg.get('id')?.value,i)">
+                    <i class="far fa-trash-alt fa-lg text-danger"></i>
+                  </button> -->
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Vendor Variant Mapping End-->
+    <br />
+    <hr />
+    <!-- <div class="row"
+            *ngIf="vendorMappings.length > 0 && viewvendor?.vendormapping?.vendor_id!==viewvendor.modifiedBy"> -->
+    <div class="row">
+      <!--vendorMappings.length > 0 && -->
+      <h4 class="card-title mb-4">Mapped Suppliers</h4>
+      <div class="table-responsive col-md-12">
+        <table class="table align-middle table-nowrap table-hover">
+          <thead>
+            <tr>
+              <th scope="col" class="text-center" style="width: 5px">#</th>
+              <th scope="col" style="width: 20px">Supplier Name</th>
+              <!-- <th scope="col" style="width: 20px;">Design Id</th>
+                    <th scope="col" style="width: 100px;">Price</th>
+                    <th scope="col" style="width: 100px;">MRP</th> -->
+              <th scope="col" style="width: 100px">Remarks</th>
+              <th scope="col" style="width: 20px">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let vendormap of vendorMappings; let i = index">
+              <td class="text-center">{{ i + 1 }}</td>
+              <td>{{ vendormap.user?.name }}</td>
+              <!-- <td>{{vendormap.vendorproId}}</td>
+
+                    <td>{{vendormap?.price}}</td>
+                    <td>{{vendormap?.mrp}}</td> -->
+              <td>{{ vendormap?.reason }}</td>
+              <td>{{ getStatuses(vendormap.status) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6" *ngIf="
+                viewvendor.status === 'Request' && viewvendor?.vendormapping?.status === 0 && viewvendor?.user?.roleID !== 2;
+                else vcancel
+              ">
+        <div class="mb-3">
+          <label class="form-label">Remarks</label>
+          <textarea class="form-control" [(ngModel)]="reason" name="reason"></textarea>
+        </div>
+        <div class="mb-3">
+          <button name="accept" (click)="accept()" class="btn btn-sm btn-primary w-md me-3 my-2"
+            value="Accept">Accept</button>
+          <button name="reject" (click)="reject()" class="btn btn-sm btn-danger w-md my-2"
+            value="Reject">Reject</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- </div>
+  </div>
+</div> -->
+<ng-template #vcancel>
+  <div class="mt-2">
+    <div class="text-sm-end">
+      <a [routerLink]="['/category-head/products']" class="btn btn-sm btn-primary me-4">Back</a>
+    </div>
+  </div>
+</ng-template>

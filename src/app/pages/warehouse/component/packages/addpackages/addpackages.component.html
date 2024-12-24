@@ -1,0 +1,173 @@
+<div class="submit-form">
+    <!-- <div class="mb-3 row">
+        <label for="typeahead-http" class="col-xs-3 col-sm-auto col-form-label">Search Product
+            Group</label>
+        <div class="col">
+            <input id="typeahead-template" type="text" class="form-control col" [(ngModel)]="model"
+                [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter"
+                [resultFormatter]="formatter" (selectItem)="itemSelected($event)"
+                [class.is-invalid]="searchFailed" />
+
+            <small *ngIf="searching" class="form-text text-muted">searching...</small>
+            <div class="invalid-feedback" *ngIf="searchFailed && model.length > 0">Sorry, Your product
+                group not our list contact our admin.
+            </div>
+
+        </div>
+    </div> -->
+    <form (ngSubmit)="savePackage()" [formGroup]="formData" novalidate>
+        <div class="row">
+            <div class="col-12">
+                <!-- <div class="mb-3">
+                    <label class="form-label"> Group :
+                        <strong>{{group?.name}}</strong></label>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label"> Department :
+                        <strong>{{group.department?.name}}</strong></label>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Class : <strong>{{group?.category?.name}}</strong></label>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Sub Class : <strong>{{group?.subcategory?.name}}</strong></label>
+                </div> -->
+
+                <div class="mb-3">
+                    <label class="form-label">Name *</label>
+                    <input class="form-control" placeholder="Enter Package Name" type="text" name="name"
+                        autocomplete="off" formControlName="name"
+                        [ngClass]="{'is-invalid': (submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['maxcount']?.touched))}" />
+
+                    <div *ngIf="(submit && form['name']?.errors) || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['name'].errors">Enter valid name</span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label"> Package Type *</label>
+                    <div class="row">
+                        <div class="col-6">
+                            <ng-select name="type_id" placeholder="Select" [items]="packagetypes"
+                                formControlName="type_id" bindLabel="name" bindValue="id"
+                                [ngClass]="{'is-invalid': (submit && form['type_id']?.errors) || (form['type_id']?.invalid && (form['type_id']?.dirty || form['type_id']?.touched))}">
+                            </ng-select>
+                            <div *ngIf="(submit && form['type_id']?.errors) || (form['type_id']?.invalid && (form['type_id']?.dirty || form['type_id']?.touched))"
+                                class="invalid-feedback">
+                                <span *ngIf="form['type_id'].errors">Select Package type</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <button (click)="viewType(content)"
+                                    class="btn btn-sm btn-primary p-1 mt-2 text-white px-2">
+                                    <i class="fas fa-plus"></i> Add
+                                    Package Type
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Length (cm) *</label>
+                    <input class="form-control" placeholder="Enter Length" type="text" name="length" autocomplete="off"
+                        formControlName="length"
+                        [ngClass]="{'is-invalid': (submit && form['length']?.errors) || (form['length']?.invalid && (form['length']?.dirty || form['maxcount']?.touched))}" />
+
+                    <div *ngIf="(submit && form['length']?.errors) || (form['length']?.invalid && (form['length']?.dirty || form['length']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['length'].errors">Enter valid length</span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Width (cm) *</label>
+                    <input class="form-control" placeholder="Enter Width" type="text" name="width" autocomplete="off"
+                        formControlName="width"
+                        [ngClass]="{'is-invalid': (submit && form['width']?.errors) || (form['width']?.invalid && (form['width']?.dirty || form['maxcount']?.touched))}" />
+
+                    <div *ngIf="(submit && form['width']?.errors) || (form['width']?.invalid && (form['width']?.dirty || form['width']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['width'].errors">Enter valid width</span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Height (cm) *</label>
+                    <input class="form-control" placeholder="Enter Height" type="text" name="height" autocomplete="off"
+                        formControlName="height"
+                        [ngClass]="{'is-invalid': (submit && form['height']?.errors) || (form['height']?.invalid && (form['height']?.dirty || form['maxcount']?.touched))}" />
+
+                    <div *ngIf="(submit && form['height']?.errors) || (form['height']?.invalid && (form['height']?.dirty || form['height']?.touched))"
+                        class="invalid-feedback">
+                        <span *ngIf="form['height'].errors">Enter valid height</span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Description </label>
+                    <input class="form-control" placeholder="Enter Description" type="text" name="description"
+                        autocomplete="off" formControlName="description"
+                        [ngClass]="{'is-invalid': (submit && form['description']?.errors) || (form['description']?.invalid && (form['description']?.dirty || form['maxcount']?.touched))}" />
+
+                </div>
+
+                <div class="d-md-flex align-items-center mt-5">
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-sm btn-primary my-2">Submit</button>
+                    </div>
+                    <div class="ml-auto">
+                        <div class="dl">
+                            <button type="button" class="btn btn-sm btn-secondary my-2"
+                                (click)="cancelAction()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<ng-template #rt let-r="result" let-t="term">
+    <!-- <img [src]="'https://upload.wikimedia.org/wikipedia/commons/thumb/' + r['flag']" class="me-1"
+        style="width: 16px"> -->
+    <span *ngIf="!searchFailed">{{r.department?.name}} / {{r.category?.name}} / {{r.subcategory?.name}} / </span>
+    <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+</ng-template>
+
+<!-- Pop UP Open start  -->
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">Add Packagetype</h5>
+        <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <form (submit)="savetypes()" name="form" [formGroup]="typeForm" novalidate>
+            <div class="row">
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label class="form-label">Type name *</label>
+                        <input class="form-control" placeholder="Enter Packagetype Name" type="text" name="name"
+                            autocomplete="off" formControlName="name"
+                            [ngClass]="{'is-invalid': (gsubmit && typeform['name'].errors) || (typeform['name'].invalid && (typeform['name'].dirty || typeform['name'].touched))}" />
+
+                        <div *ngIf="(gsubmit && typeform['name']?.errors) || (typeform['name']?.invalid && (typeform['name']?.dirty || typeform['name']?.touched))"
+                            class="invalid-feedback">
+                            <span *ngIf="typeform['name'].errors?.['required']">Enter Packagetype name.</span>
+                            <span *ngIf="typeform['name'].errors?.['minlength']">Minimum Length 3
+                                Characters.</span>
+                        </div>
+                    </div>
+                    <div class="d-md-flex align-items-center mt-5">
+                        <div class="col-md-5">
+                            <button type="submit" class="btn btn-sm btn-primary">Add Packagetype</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
+<!-- Pop UP Open end -->

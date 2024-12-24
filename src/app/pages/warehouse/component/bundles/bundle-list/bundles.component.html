@@ -1,0 +1,168 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">{{type}} Bundles</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+                        <li class="breadcrumb-item active"> {{type}} Bundles </li>
+                    </ol>
+                </div>
+            </div> -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <!-- <div class="col-sm-4">
+                            <div class="search-box me-2 mb-2 d-inline-block">
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="search"
+                                        (keyup)="list()" [ngModelOptions]="{standalone: true}">
+                                    <i class="bx bx-search-alt search-icon"></i>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="col-sm-4">
+                            <div class="d-flex align-items-center position-relative my-1 px-1">
+                                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                </i>
+                                <input type="text" (keyup)="searchTable($event)" placeholder="Search.."
+                                    class="form-control form-control-solid w-200px ps-12" #input>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-left gs-0 gy-5">
+                            <thead>
+                                <tr>
+                                    <th class="p-5 w-50px">#</th>
+                                    <th class="text-start p-5 min-w-100px">Bundle Name</th>
+                                    <th class="text-start p-5 min-w-100px">Bundle ID</th>
+                                    <th class="text-start p-5 min-w-100px">Total Items</th>
+                                    <th class="text-start p-5 min-w-100px"> UpdatedAt</th>
+                                    <th class="text-start p-5 min-w-100px"> Status </th>
+                                    <th class="text-start p-5 min-w-100px">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let bundle of bundles; let i = index">
+                                    <td class="p-5 w-50px">{{(page == 1 ? i+1 : (i+1)+(pageSize*(page-1))) }}</td>
+                                    <td>
+                                        <strong class="font-size-14 mb-1">
+                                            Bundle_{{bundle.id}}
+                                        </strong>
+                                    </td>
+                                    <td>{{bundle.bundleID}}</td>
+                                    <td>{{bundle.itemscount}}</td>
+                                    <td>{{bundle.updatedAt | date:'medium'}}</td>
+                                    <td>{{ bundle.status == 'QC' ? 'Product Check' : bundle.status }}</td>
+                                    <td>
+                                        <ul class="list-inline font-size-20 contact-links mb-0">
+                                            <li class="list-inline-item px-2">
+                                                <!-- <a class="btn btn-primary text-white" *ngIf="bundle.status === 'Shipped'"  href="javascript:void(0)"
+                                                ngbTooltip="Move to Inward" (click)="move(bundle.status,'Inward',bundle)"><i class="bx bx-right-arrow-alt "></i> Move to Inward </a> -->
+                                                <!-- <a class="btn btn-primary text-white" *ngIf="bundle.status === 'Inward'" (click)="viewBundle(content, bundle, i)" href="javascript:void(0)"
+                                                    ngbTooltip="Scan Bundle"><i class="bx bx-show"></i> Scan QRcode</a> -->
+                                                <a *ngIf="bundle.status === 'Inward'"
+                                                    class="btn btn-sm btn-primary text-white"
+                                                    [routerLink]="['/app/bundle/'+bundle.bundleID]"
+                                                    ngbTooltip="Generate Tag"><i class="bx bx-show"></i> Generate Tag
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="bundles?.length === 0">
+                                    <td colspan="6" class="text-center fw-bold">No Records Found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination  -->
+                    <div class="row justify-content-md-between align-items-md-center mt-2">
+                        <div class="col-sm-12 col-md-8 my-3">
+                            <div class="dataTables_length" id="tickets-table_length"><label
+                                    class="d-inline-flex align-items-center">Show
+                                    <select class="form-select form-select-sm ms-2 me-2"
+                                        (change)="handlePageSizeChange($event)">
+                                        <option *ngFor="let size of pageSizes" [ngValue]="size">
+                                            {{ size }}
+                                        </option>
+                                    </select> Entries</label></div>
+                        </div>
+                        <!-- Pagination -->
+                        <div class="col-sm-12 col-md-4 my-3">
+                            <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true"
+                                [ellipses]="false" [boundaryLinks]="true" (pageChange)="handlePageChange($event)"
+                                [collectionSize]="count"></ngb-pagination>
+                        </div>
+                    </div>
+                    <!-- Pagination  -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Pop UP Open start 
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">Scan QRCODE</h5>
+        <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="col-6 mb-5">
+            <div class="mb-3">
+                <label class="control-label"> Scan Qrcode *</label>
+                <input class="form-control" placeholder="Scan QRCODE" type="text" name="name" autocomplete="off"
+                    [(ngModel)]="scanqrcode" (change)="verifyQRcode()" />
+            </div>
+        </div>
+        <div [hidden]="!viewCompare">
+            <table class="table table-bordered">
+                <tr>
+                    <td width="10%">Checklist</td>
+                    <td width="30%">View BundleID</td>
+                    <td width="30%">Scan BundleID</td>
+                    <td width="10%">Status</td>
+                </tr>
+                <tr>
+                    <td>BundleID</td>
+                    <td> <label>{{ selectBundle?.bundleID || '---' }}</label></td>
+                    <td> <label>{{ scanBundle?.bundleID || '---' }}</label></td>
+                    <td>
+                        <button class="text-white font-size-11 btn"
+                            [style.background-color]="selectBundle?.bundleID == scanBundle?.bundleID ? '#34c38f' : '#f46a6a' ">
+                            {{ selectBundle?.bundleID===scanBundle?.bundleID ? 'PASS' : 'FAIL' }}
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Items Count</td>
+                    <td> <label>{{ selectBundle?.itemscount || '---' }}</label></td>
+                    <td> <label> <input type="number" min="0" class="form-control" [(ngModel)]="inwarditemcount" placeholder="Enter Inward Items Count" /> </label></td>
+                    <td>
+                        <button *ngIf="inwarditemcount != ''" class="text-white font-size-11 btn"
+                            [style.background-color]="selectBundle?.itemscount == inwarditemcount ? '#34c38f' : '#f46a6a' ">
+                            {{ selectBundle?.itemscount===inwarditemcount ? 'PASS' : 'FAIL' }}
+                        </button>
+                    </td>
+                </tr>
+            </table>
+            <div class="d-md-flex align-items-center mt-5"  *ngIf="inwarditemcount != ''">
+                <div class="col" *ngIf="selectBundle?.bundleID !== scanBundle?.bundleID || selectBundle?.itemscount !== inwarditemcount">
+                    <button type="button" class="btn btn-danger"  (click)="move(selectBundle?.status,'Dispute',selectBundle)">Move Dispute Section</button>
+                </div>
+                <div class="col ml-auto text-end me-5">
+                    <div class="dl">
+                        <button type="submit" class="btn btn-success" (click)="move(selectBundle?.status,'QC',selectBundle)">Move QC Section</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>-->
+<!-- Pop UP Open end -->

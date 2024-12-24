@@ -1,0 +1,67 @@
+<div class="card-header border-0 pt-5">
+  <!-- begin::Title-->
+  <h3 class="card-title align-items-start flex-column">
+    <span class="card-label fw-bolder fs-3 mb-1">Total Sales Value</span>
+
+    <!-- <span class="text-muted fw-bold fs-7">More than 400 new members</span> -->
+  </h3>
+  <!-- end::Title-->
+
+  <!-- begin::Toolbar-->
+  <div class="card-toolbar">
+    <!-- <div class="px-7 py-5">
+      <div class="mb-10">
+        <label class="form-label fw-bold">Year:</label>
+
+        <div>
+          <select class="form-select form-select-solid" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true">
+           
+            <option selected value="1">2021</option>
+            <option value="2">2022</option>
+            <option value="3">2023</option>
+            <option value="4">2024</option>
+          </select>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- end::Menu-->
+  </div>
+  <!-- end::Toolbar-->
+</div>
+<!-- end::Header-->
+
+<!-- begin::Body-->
+<div class="card-body">
+  <!-- begin::Chart-->
+  <div #chart id="kt_charts_widget_1_chart" [style.height]="'350px'">
+    <!-- <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [xaxis]="chartOptions.xaxis"
+      [yaxis]="chartOptions.yaxis"
+      [dataLabels]="chartOptions.dataLabels"
+      [stroke]="chartOptions.stroke"
+      [legend]="chartOptions.legend"
+      [fill]="chartOptions.fill"
+      [states]="chartOptions.states"
+      [tooltip]="chartOptions.tooltip"
+      [colors]="chartOptions.colors"
+      [markers]="chartOptions.markers"
+      [plotOptions]="chartOptions.plotOptions"
+    ></apx-chart> -->
+    <apx-chart
+    [series]="chartOptions.series"
+    [chart]="chartOptions.chart"
+    [dataLabels]="chartOptions.dataLabels"
+    [plotOptions]="chartOptions.plotOptions"
+    [yaxis]="chartOptions.yaxis"
+    [legend]="chartOptions.legend"
+    [fill]="chartOptions.fill"
+    [stroke]="chartOptions.stroke"
+    [tooltip]="chartOptions.tooltip"
+    [xaxis]="chartOptions.xaxis"
+  ></apx-chart>
+  </div>
+  <!-- end::Chart-->
+</div>

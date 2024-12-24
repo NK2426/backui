@@ -1,0 +1,406 @@
+<div class="container-fluid">
+    <div class="col-sm-3">
+      <h4 class="card-title mb-4"></h4>
+    </div>
+    <div class="card mb-0"  style="border : 1.5px dashed #a91be9">
+      <div class="row py-3">
+        <div class="col-sm-3" style="margin-left:2px">
+          <label for="typeahead-http" class="col-xs-3 col-sm-auto col-form-label">Search Tag </label>
+          <input id="typeahead-template" type="text" class="form-control col" [(ngModel)]="model" name="tagsearch"
+            [ngbTypeahead]="tagsearch" [resultTemplate]="rt" [inputFormatter]="formatter" [resultFormatter]="formatter"
+            (selectItem)="itemSelected($event)" [class.is-invalid]="searchFailed" />
+  
+          <small *ngIf="searching" class="form-text text-muted">searching...</small>
+          <div class="invalid-feedback" *ngIf="searchFailed && model?.length > 0">Sorry, Your tag is not in our list
+            contact our admin.</div>
+        </div>
+  
+        <div class="col-sm-4" style="border : 3px dashed #a91be9">
+          <label class="text-primary mb-2">Selected Tag</label>
+          <div class="row" style="height: 50px; overflow-y: auto">
+            <div class="col-auto chip" *ngFor="let tag of tags; let i = index">
+              <span class="tagName text-white">{{ tag.name }}</span>&nbsp;
+              <button style="padding-top: 1px;" (click)="clear(i)" type="button" aria-hidden="true"
+                class="btn-close btn-sm closebtn"></button>
+            </div>
+          </div>
+        </div>
+  
+  
+        <div class="col-sm-1" *ngIf="pageuuid === 'home'">
+          <label class="col-xs-3 col-sm-auto col-form-label">Position </label>
+          <div class="col">
+            <input id="typeahead-template" type="text" class="form-control col" name="position" [(ngModel)]="position"
+              [min]="2" [max]="10" step="1" required />
+  
+          </div>
+        </div>
+  
+        <div class="col-sm-2" *ngIf="pageuuid === 'home'">
+          <label class="col-xs-3 col-sm-auto col-form-label">Recently Viewed </label>
+          <div class="col">
+            <input id="typeahead-template" type="text" class="form-control col" name="position"
+              [(ngModel)]="recentlyViewed" [min]="2" [max]="10" step="1" required />
+          </div>
+        </div>
+  
+        <div class="col-sm-1 text-end mt-15">
+          <button type="button" class="btn btn-primary btn-sm" (click)="savetags()">
+            <i class="fas fa-plus"></i>Save
+          </button>
+        </div>
+      </div>
+    </div> 
+    <div class="row">
+      
+      &nbsp;
+      <div class="mb-3">
+        <div class="row">
+          <div class="mb-3" *ngFor="let section of sections; let i = index">
+            <div class="row mb-5">
+              <div class="col-3">
+                <label>Title</label>
+                <input name="title{{ section[i] }}" type="text" [(ngModel)]="sections[i].title" class="form-control" />
+              </div>
+              <div class="col-2">
+                <label>Type</label>
+                <ng-select name="type{{ sections[i] }}" placeholder="Select Type" [items]="types" bindLabel="label"
+                  [ngModel]="sections[i].type" class="ng-select" bindValue="id" (change)="onTypeChange($event)">
+                </ng-select>
+              </div>
+              <div class="col-1">
+                <label>Column</label>
+                <ng-select name="column{{ sections[i] }}" placeholder="Column Type" [items]="showcolumns"
+                  [(ngModel)]="sections[i].columns" class="ng-select" bindValue="id">
+                </ng-select>
+              </div>
+              <div class="col-2">
+                <label>Subtype</label>
+                <ng-select name="group{{ section[i] }}" placeholder="Select Subtype" [items]="subtypes" bindLabel="label"
+                  bindValue="id" [(ngModel)]="sections[i].subtype" class="ng-select">
+                </ng-select>
+              </div>
+              <div class="col-1">
+                <label>Show Title</label>
+                <ng-select name="showtitle{{ section[i] }}" placeholder="Show" [items]="showtitle" bindLabel="label"
+                  [(ngModel)]="sections[i].showtitle" class="ng-select" bindValue="id">
+                </ng-select>
+              </div>
+              <div class="col-1">
+                <label>Position</label>
+                <input name="ordering{{ section[i] }}" type="number" [(ngModel)]="sections[i].ordering"
+                  class="form-control" />
+              </div>
+              <div class="col-1">
+                <label>Status</label>
+                <select class="form-control" name="group{{ section[i] }}" [(ngModel)]="sections[i].status">
+                  <option *ngFor="let stat of status" [value]="stat.id">{{ stat.label }}</option>
+                </select>
+                <!-- <ng-select name="group{{section[i]}}" placeholder="Status" [items]="status"
+                                  bindLabel="label" bindValue="id" [(ngModel)]="sections[i].status" class="ng-select">
+                              </ng-select> -->
+              </div>
+              <div class="col-1" style="margin-top: 30px">
+                <a class="me-3" (click)="saveSection(sections[i])"><i
+                    class="fas fa-check-circle text-primary cursor-pointer" style="font-size: 24px"></i></a>
+  
+                <a class="float-end" (click)="removeSection(i, sections[i])"><i
+                    class="fas fa-archive text-danger cursor-pointer" style="font-size: 24px;"></i></a>
+              </div>
+              <div class="col-12">
+                <div class="dropzone col-12">
+                  <div class="row">
+                    <div class="col-xl-3 col-sm-4 mt-4" *ngFor="let image of section.sectionitems; let itemIndex = index">
+                      <div class="product-img position-relative activeimg p-4" (click)="removeimage(image.id)">
+                        <span class="editimg" (click)="editSelectedItem($event, image.id, content, itemIndex, i)">
+                          <img class="img-fluid mx-auto d-block" src="{{ image?.path }}" alt="Mugdha"
+                            style="max-height: 200px" />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="dz-wrapper dropzone mt-4 text-center" (click)="banner(content, i)">
+                    <div class="dz-message">
+                      <div class="dz-text">Click to add item</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 text-sm-end">
+        <br />
+        <button type="button" class="btn btn-primary btn-sm" (click)="addSection()"><i class="fas fa-plus"></i> Add
+          Section</button>
+      </div>
+    </div>
+  
+    <!-- <h4>GET : 
+          http://192.168.1.14:1000/api/v1/cataloging/webteam/page/home</h4>
+  
+      <pre>{{sections | json}}</pre> -->
+  </div>
+  
+  <!-- Pop UP Open start -->
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">{{ selectsection.type || '' }} Item ({{ selectsection.subtype || ''
+        }})</h5>
+      <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <form (submit)="saveSectionitem()" name="form" [formGroup]="sectionitemForm" novalidate>
+        <div class="row p-2">
+          <div>
+            <!-- {{sectionitemForm.value | json}} -->
+            <div class="mb-3">
+              <div class="display-block">
+                <label class="control-label">Title</label>
+                <input class="form-control" placeholder="Enter Title" type="text" name="title" autocomplete="off"
+                  formControlName="title" [ngClass]="{
+                    'is-invalid':
+                      (submit && form['title']?.errors) || (form['title']?.invalid && (form['title']?.dirty || form['title']?.touched))
+                  }" />
+  
+                <div
+                  *ngIf="(submit && form['title']?.errors) || (form['title']?.invalid && (form['title']?.dirty || form['title']?.touched))"
+                  class="invalid-feedback">
+                  <span *ngIf="form['title'].errors">Enter Title</span>
+                </div>
+              </div>
+              <br />
+              <div class="form-check">
+                <label>
+                  <input class="form-check-input" type="checkbox" name="showtitle" formControlName="showtitle" />
+                  Show Title</label>
+              </div>
+            </div>
+            <!-- <div class="mb-3" *ngIf="selectsection.subtype === 'Product'">
+              <label class="control-label">Department</label>
+              <ng-select name="department_id" placeholder="Select Department" [items]="departments"
+                formControlName="department_id" bindLabel="name" bindValue="did" (change)="changeDept($event)" [ngClass]="{
+                  'is-invalid':
+                    (submit && form['department_id']?.errors) ||
+                    (form['department_id']?.invalid && (form['department_id']?.dirty || form['department_id']?.touched))
+                }">
+              </ng-select>
+  
+              <div *ngIf="
+                  (submit && form['department_id']?.errors) ||
+                  (form['department_id']?.invalid && (form['department_id']?.dirty || form['department_id']?.touched))
+                " class="invalid-feedback">
+                <span *ngIf="form['department_id'].errors">Enter valid Department</span>
+              </div>
+            </div> -->
+  
+            <div class="mb-3" *ngIf="selectsection.subtype !== 'Product'">
+              <label class="control-label">Type *</label>
+              <div class="form-check">
+                <label class="form-check-label mb-2"><input class="form-check-input" (change)="changeType($event)" type="radio"
+                    name="type" id="type1" formControlName="type" value="Group" />Group</label>
+              </div>
+              <!-- <div class="form-check">
+                <label class="form-check-label"><input class="form-check-input" (change)="changeType($event)" type="radio"
+                    name="type" id="type2" formControlName="type" value="Supersale" />
+                  Supersale</label>
+              </div>
+              <div class="form-check">
+                <label class="form-check-label"><input class="form-check-input" (change)="changeType($event)" type="radio"
+                    name="type" id="type3" formControlName="type" value="Offer" />
+                  Offer Groups</label>
+              </div> -->
+  
+              <div class="form-check">
+                <label class="form-check-label mb-2"><input class="form-check-input" (change)="changeType($event)" type="radio"
+                    name="type" id="type3" formControlName="type" value="Tag" />
+                  Tag</label>
+              </div>
+              <div class="form-check">
+                <label class="form-check-label mb-2"><input class="form-check-input" (change)="changeType($event)" type="radio"
+                    name="type" id="type4" formControlName="type" value="NoLink" />
+                  No Link</label>
+              </div>
+            </div>
+            <div class="mb-3" *ngIf="canEnableLink() !== 'NoLink'">
+              <label class="control-label">Link *</label>
+              <ng-select name="link" placeholder="Select Items" [items]="linkitems" bindLabel="name" bindValue="uuid"
+                [(ngModel)]="selectedLink" formControlName="link" [ngClass]="{
+                  'is-invalid': (submit && form['link']?.errors) || (form['link']?.invalid && (form['link']?.dirty || form['link']?.touched))
+                }" (change)="changeLink()">
+              </ng-select>
+  
+              <div
+                *ngIf="(submit && form['link']?.errors) || (form['link']?.invalid && (form['link']?.dirty || form['link']?.touched))"
+                class="invalid-feedback">
+                <span *ngIf="form['link'].errors">Enter valid Link</span>
+              </div>
+            </div>
+            <!-- <div class="mb-3">
+                          <br />
+                          <div class="form-check">
+                              <label><input class="form-check-input" type="checkbox" name="showoffer"
+                                      formControlName="showoffer" />
+                                  Show Offer</label>
+                          </div>
+                      </div>
+                      <div class="display-block" *ngIf="sectionitemForm.value['showoffer']">
+                          <label class="control-label">MRP</label>
+                          <input class="form-control" placeholder="Enter Mrp" type="text" name="mrp"
+                              autocomplete="off" formControlName="mrp"
+                              [ngClass]="{'is-invalid': (submit && form['mrp']?.errors) || (form['mrp']?.invalid && (form['mrp']?.dirty || form['mrp']?.touched))}" />
+  
+                          <div *ngIf="(submit && form['mrp']?.errors) || (form['mrp']?.invalid && (form['mrp']?.dirty || form['mrp']?.touched))"
+                              class="invalid-feedback">
+                              <span *ngIf="form['mrp'].errors">Enter mrp</span>
+                          </div>
+                      </div>
+                      <div class="display-block" *ngIf="sectionitemForm.value['showoffer']">
+                          <label class="control-label">Price</label>
+                          <input class="form-control" placeholder="Enter Price" type="text" name="price"
+                              autocomplete="off" formControlName="price"
+                              [ngClass]="{'is-invalid': (submit && form['price']?.errors) || (form['price']?.invalid && (form['price']?.dirty || form['price']?.touched))}" />
+  
+                          <div *ngIf="(submit && form['price']?.errors) || (form['price']?.invalid && (form['price']?.dirty || form['price']?.touched))"
+                              class="invalid-feedback">
+                              <span *ngIf="form['price'].errors">Enter Price</span>
+                          </div>
+                      </div>
+                      <div class="display-block" *ngIf="sectionitemForm.value['showoffer']">
+                          <label class="control-label">Offer</label>
+                          <input class="form-control" placeholder="Enter Offer" type="text" name="offer"
+                              autocomplete="off" formControlName="offer"
+                              [ngClass]="{'is-invalid': (submit && form['offer']?.errors) || (form['offer']?.invalid && (form['offer']?.dirty || form['offer']?.touched))}" />
+  
+                          <div *ngIf="(submit && form['offer']?.errors) || (form['offer']?.invalid && (form['offer']?.dirty || form['offer']?.touched))"
+                              class="invalid-feedback">
+                              <span *ngIf="form['offer'].errors">Enter Offer</span>
+                          </div>
+                      </div> -->
+            <div class="display-block mb-3">
+              <label class="control-label">Position</label>
+              <input class="form-control" placeholder="Enter Position" type="text" name="position" autocomplete="off"
+                formControlName="position" [ngClass]="{
+                  'is-invalid':
+                    (submit && form['position']?.errors) ||
+                    (form['position']?.invalid && (form['position']?.dirty || form['position']?.touched))
+                }" />
+  
+              <div *ngIf="
+                  (submit && form['position']?.errors) ||
+                  (form['position']?.invalid && (form['position']?.dirty || form['position']?.touched))
+                " class="invalid-feedback">
+                <span *ngIf="form['position'].errors">Enter Position</span>
+              </div>
+            </div>
+            <!-- <div class="display-block mb-3">
+              <img alt="" class="img-fluid mx-auto d-block" src="{{ currentItemSelectedInSection?.path }}" />
+            </div> -->
+            <div class="mb-3 ml-4">
+              <div class="col-xl-4 col-sm-6" *ngIf="selectedimages.length > 0">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="product-img position-relative">
+                      <a href="javascript:void(0)"> <img alt="" class="img-fluid mx-auto d-block"
+                          src="{{ selectedimages[0]?.path }}" /></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3 ms-4">
+              <div class="row">
+                <div class="12 p-4">
+                  <span class="btn btn-primary col-4" (click)="openGallery(mediacontent)"><i class="fas fa-images"></i>
+                    Add
+                    Image</span>
+                </div>
+              </div>
+            </div>
+  
+            <div class="d-md-flex align-items-center mt-5">
+              <div class="col-md-3">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+              <div class="ml-auto">
+                <div class="dl">
+                  <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+  <!-- Pop UP Open end -->
+  
+  <!-- Pop UP Open start -->
+  <ng-template #mediacontent let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">Media Library</h5>
+      <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <form enctype="multipart/form-data">
+        <div class="row px-4">
+          <div class="col-12">
+            <div style="margin-left: 30%; margin-bottom: 20px">
+              <input type="file" class="btn btn-primary" (change)="onSelectedImage($event)"
+                style="position: absolute; height: 70px; width: 160px; opacity: 0" />
+              <span style="width: 160px; display: block; height: 70px; z-index: -1" class="col-3 btn btn-light w-sm">
+                <i class="mdi mdi-upload d-block font-size-16"></i>
+                New File Upload</span>
+            </div>
+            <div class="row">
+              <div class="col-xl-3 col-sm-4 mt-4" *ngFor="let image of images; let i = index" (click)="selectimage(i)">
+                <div class="product-img position-relative p-4 " [ngClass]="{ activeimgsel: image?.select }">
+                  <img class="img-fluid mx-auto d-block" src="{{ image?.path }}" alt="Mugdha" style="max-height: 200px" />
+                </div>
+              </div>
+            </div>
+  
+            <!-- Pagination  -->
+            <div class="row justify-content-md-between align-items-md-center mt-2">
+              <div class="col-sm-12 col-md-8">
+                <div class="dataTables_length" id="tickets-table_length"><label
+                    class="d-inline-flex align-items-center">Show
+                    <select class="form-select form-select-sm ms-2 me-2" (change)="handlePageSizeChange($event)">
+                      <option *ngFor="let size of pageSizes" [ngValue]="size">
+                        {{ size }}
+                      </option>
+                    </select> Entries</label></div>
+              </div>
+              <!-- Pagination -->
+              <div class="col-sm-12 col-md-4">
+                <div class="text-md-right float-md-end pagination-rounded">
+                  <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false"
+                    [boundaryLinks]="true" (pageChange)="handlePageChange($event)"
+                    [collectionSize]="count"></ngb-pagination>
+                </div>
+              </div>
+            </div>
+            <!-- Pagination  -->
+  
+            <div class="d-md-flex align-items-center mt-5">
+              <div class="col-md-4"></div>
+              <div class="ml-auto">
+                <div class="dl">
+                  <span (click)="modal.dismiss('Cross click')" class="btn btn-primary">Close</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+  <!-- Pop UP Open end -->
+  
+  <ng-template #rt let-r="result" let-t="term" style="position: relative !important">
+    <!-- <img [src]="'https://upload.wikimedia.org/wikipedia/commons/thumb/' + r['flag']" class="me-1"
+          style="width: 16px"> -->
+    <span *ngIf="!searchFailed">{{ r.group?.name }} / </span>
+    <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+  </ng-template>

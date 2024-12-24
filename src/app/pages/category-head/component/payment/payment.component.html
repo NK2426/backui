@@ -1,0 +1,140 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row mb-2">
+      <div class="col-sm-2 py-2">
+        <div class="d-flex align-items-center position-relative my-1 px-1">
+          <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+            <span class="path1"></span>
+            <span class="path2"></span>
+          </i>
+          <input type="text" (keyup)="searchTable($event)" placeholder="Search.."
+            class="form-control form-control-solid ps-12" #input />
+        </div>
+      </div>
+      <div class="col-sm-10 py-2">
+        <div class="text-sm-end">
+          <button (click)="openDialog(content)" type="button" class="btn btn-primary btn-rounded mb-2 me-2">
+            <i class="mdi mdi-plus mr-1"></i> Add Payment Term
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table align-middle table-nowrap table-hover table-striped">
+        <thead>
+          <tr>
+            <th class="p-5 w-50px">#</th>
+            <th class="text-start p-5 min-w-100px">Name</th>
+            <th class="text-start p-5 min-w-250px">Description</th>
+            <th class="text-start p-5 min-w-100px">Payment Type</th>
+            <th class="text-start p-5 min-w-100px">Payment Days</th>
+            <th class="text-start p-5 min-w-100px">Payment Percentage</th>
+            <th class="text-start p-5 min-w-100px">Status</th>
+            <th class="text-center p-5 min-w-100px">Action</th>
+          </tr>
+        </thead>
+        <tbody class="table-light">
+          <tr *ngFor="let payment of paymentList; let i = index">
+            <td class="p-5">{{ page === 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}</td>
+            <td class="p-5">{{ payment.name }}</td>
+            <td class="p-5">{{ payment.description || '--' }}</td>
+            <td class="">
+              <p *ngFor="let item of paymentList[i].paymentcycles" class="p-5 row">{{item.type}}</p>
+            </td>
+            <td>
+              <div *ngFor="let item of paymentList[i].paymentcycles">
+                <div *ngIf="paymentList[i].paymentcycles.length > 1">
+                  <div *ngIf="item.days == 1" class="p-5 row">
+                    <p>0</p>
+                  </div>
+                  <div *ngIf="item.days !== 1" class="p-5 row">
+                    <p>{{item.days}}</p>
+                  </div>
+                </div>
+              </div>
+              <div *ngFor="let item of paymentList[i].paymentcycles">
+                <div *ngIf="paymentList[i].paymentcycles.length == 1">
+                  <div *ngIf="item.days !== 1" class="p-5 row">
+                    <p>{{item.days}}</p>
+                  </div>
+                  <div *ngIf="item.days == 1" class="p-5 row">
+                    <p>0</p>
+                  </div>
+                </div>
+              </div>
+
+            </td>
+            <td>
+              <p *ngFor="let item of paymentList[i].paymentcycles" class="p-5 row">{{item.percentage}}%</p>
+            </td>
+            <td class="p-5">
+              <div class="badge badge-light-success">{{ payment.status + '' === '1' ? 'Active' : '' }}</div>
+              <div class="badge badge-light-danger">{{ payment.status + '' === '0' ? 'Inactive' : '' }}</div>
+            </td>
+            <td class="p-5 text-center">
+              <ul class="list-inline font-size-20 contact-links mb-0">
+                <li class="list-inline-item px-2">
+                  <a (click)="setActivePayment(content, payment, i)" href="javascript:void(0)"
+                    ngbTooltip="View Payment Term"><app-keenicon name="eye"
+                      class="fs-1 text-info cursor-pointer"></app-keenicon></a>
+                </li>
+              </ul>
+            </td>
+          </tr>
+          <tr *ngIf="paymentList.length === 0">
+            <td colspan="8" class="text-center fw-bold">No Records Found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Pagination  -->
+    <div class="row justify-content-md-between align-items-md-center mt-2">
+      <div class="col-sm-12 col-md-4">
+        <div class="dataTables_length" id="tickets-table_length">
+          <label class="d-inline-flex align-items-center">Show
+            <select class="form-select form-select-sm ms-2 me-2 cursor-pointer" (change)="handlePageSizeChange($event)">
+              <option *ngFor="let size of pageSizes" [ngValue]="size">
+                {{ size }}
+              </option>
+            </select>
+            Entries</label>
+        </div>
+      </div>
+      <!-- Pagination -->
+      <div class="col-sm-12 col-md-8">
+        <div class="text-md-right float-md-end pagination-rounded">
+          <!-- <ngb-pagination class="pagination pagination-rounded justify-content-center mt-4"
+                                    size="lg" [(page)]="page" [pageSize]="pageSize"
+                                    (pageChange)="handlePageChange($event)" [collectionSize]="count">
+                                    <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i>
+                                    </ng-template>
+                                    <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+                                </ngb-pagination> -->
+          <ngb-pagination [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false"
+            [boundaryLinks]="true" (pageChange)="handlePageChange($event)" [collectionSize]="count"></ngb-pagination>
+        </div>
+      </div>
+    </div>
+    <!-- Pagination  -->
+  </div>
+</div>
+
+<!-- Pop UP Open start -->
+<ng-template #content let-modal>
+  <div class="modal-header" *ngIf="viewPaymentTerm || addPaymentTerm">
+    <h5 class="modal-title" *ngIf="!currentPayment!.id && addPaymentTerm === true">Add Payment</h5>
+    <h5 class="modal-title" *ngIf="currentPayment!.id && addPaymentTerm === true">Edit Payment Term</h5>
+    <h5 class="modal-title" *ngIf="currentPayment!.id && addPaymentTerm === false">View Payment Term</h5>
+    <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="viewPaymentTerm">
+      <app-view-payment (refreshList)="refreshList($event)" (refreshPaymentCycle)="refreshPaymentCycle($event)"
+        (editPaymentNotifier)="editPayment($event)" [selectedPayment]="currentPayment"></app-view-payment>
+    </div>
+    <div *ngIf="addPaymentTerm">
+      <app-upsert-payment (refreshList)="refreshList($event)" [data]="currentPayment"></app-upsert-payment>
+    </div>
+  </div>
+</ng-template>
+<!-- Pop UP Open end -->

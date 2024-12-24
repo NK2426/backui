@@ -1,0 +1,147 @@
+<div class="container-fluid">
+  <div class="page-title-box d-flex align-items-center justify-content-between">
+    <h4 class="mb-0 font-size-18">Bundles</h4>
+    <div class="page-title-right">
+      <ol class="breadcrumb m-0">
+        <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+        <li class="breadcrumb-item active"> Bundles </li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col-lg-4">
+              <h4 class="card-title py-4">Scan QRCode</h4>
+              <zxing-scanner [torch]="torchEnabled" (scanSuccess)="onCodeResult($event)" [tryHarder]="tryHarder"
+                (permissionResponse)="onHasPermission($event)" (torchCompatible)="onTorchCompatible($event)">
+              </zxing-scanner>
+              <br />
+              <p class="text-center">Or</p>
+              <h3 class="font-size-15 fw-bold">Manual Enter</h3>
+              <div class="mb-3">
+                <input class="form-control" [(ngModel)]="scanqrcode" placeholder="Scan QRCode" type="text" name="image"
+                  autocomplete="off" (change)="scaningqrcode()" style="height: 70px; display: inline-block;" />
+              </div>
+            </div>
+          </div>
+
+          <div class="py-2 mt-3 table-responsive" *ngIf="actionnew">
+            <h3 class="font-size-15 fw-bold">Bundle Details</h3>
+            <table class="table align-middle  table-nowrap table-hover">
+              <thead>
+                <tr>
+                  <th>BundleID</th>
+                  <th>Items Count</th>
+                  <th>Generate</th>
+                </tr>
+              </thead>
+              <tr>
+                <td><label>{{ viewbundle?.bundleID || '---' }}</label></td>
+                <td><label>{{ viewbundle?.itemscount}}</label></td>
+                <td>
+                  <div *ngIf="inwarditems.length === 0">
+                    <button type="submit" class="btn btn-success text-right" (click)="generatepsid()">Generate
+                      Tag</button>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="py-5"> <br /> <br />
+            <div class="row" id="print">
+              <div class="col-lg-3" *ngFor="let item of inwarditems">
+                <qrcode [qrdata]="item.psid+''" [width]="200" [errorCorrectionLevel]="'M'" [elementType]="'img'">
+                </qrcode>
+              </div>
+            </div>
+          </div>
+          <div class="d-print-none" *ngIf="inwarditems.length > 0">
+            <div class="float-end">
+              <a (click)="printPage()" class="btn btn-success"><i class="fa fa-print"></i> Print Qrcodes</a>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="inwarditems.length > 0">
+            <div class="col-6">
+              <h4 class="card-title mb-4 mt-4"> Move Status </h4>
+              <form (ngSubmit)="updateformstatus()" #form="ngForm" enctype="multipart/form-data">
+                <div class="mb-3">
+                  <label class="control-label"> Select Status </label>
+                  <select class="form-select" #arstatus="ngModel" name="arstatus" [(ngModel)]="bundleapprove.status"
+                    required="">
+                    <option value="">Select Status</option>
+                    <option *ngFor="let stat of status" [value]="stat.id">
+                      {{stat.name }}
+                    </option>
+                  </select>
+                  <div [hidden]="arstatus.valid || arstatus.pristine" class="alert alert-danger">
+                    Select Status
+                  </div>
+                </div>
+                <div class="mb-3" [hidden]="bundleapprove.status === '' || bundleapprove.status === 'QC'">
+                  <label class="control-label"> Comments </label>
+                  <textarea class="form-control" [(ngModel)]="bundleapprove.comments" #reason name="reason"></textarea>
+                  <div [hidden]="!actionreason || bundleapprove.comments.length > 0" class="alert alert-danger">
+                    Enter Reason
+                  </div>
+                </div>
+                <div class="mb-3" [hidden]="bundleapprove.status === 'QC'">
+                  <label class="control-label">{{bundleapprove.status || 'Excess / Deficit'}} Count</label>
+                  <input class="form-control" placeholder="Items Count" type="number" min="0" name="inwardcount"
+                    [(ngModel)]="bundleapprove.inwardcount" autocomplete="off" />
+                </div>
+                <div class="mb-3" [hidden]="bundleapprove.status === '' || bundleapprove.status === 'QC'">
+                  <label class="control-label">Image</label>
+                  <input class="form-control" placeholder="Select Image" type="file" name="image" autocomplete="off"
+                    (change)="onSelectedFile($event)" />
+                </div>
+                <input [disabled]="!form.valid" type="submit" name="submit" class="btn btn-primary w-md ms-1"
+                  value="Submit">
+              </form>
+            </div>
+            <div class="col-5">
+              <h4 class="card-title mb-4 mt-4"> Bundle Status </h4>
+
+              <div class="table-responsive">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <th class="center" width="50%">Products Quantity</th>
+                      <td>{{viewbundle.itemscount}}</td>
+                    </tr>
+                    <tr>
+                      <th class="center">Print Tag</th>
+                      <td>{{viewbundle.itemscount}}</td>
+                    </tr>
+                    <tr>
+                      <th class="center">{{bundleapprove.status || 'Excess / Deficit'}} Products</th>
+                      <td>{{bundleapprove.inwardcount}}</td>
+                    </tr>
+                    <tr>
+                      <th class="center">Total</th>
+                      <td *ngIf="bundleapprove.status === 'Deficit'">
+                        <strong>
+                          {{(viewbundle.itemscount || 0) - (bundleapprove.inwardcount || 0)}}
+                        </strong>
+                      </td>
+                      <td *ngIf="bundleapprove.status !== 'Deficit'">
+                        <strong>
+                          {{(viewbundle.itemscount || 0) + (bundleapprove.inwardcount || 0)}}
+                        </strong>
+                      </td>
+                    </tr>
+                  </tbody>
+
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end row -->
+    </div> <!-- container-fluid -->

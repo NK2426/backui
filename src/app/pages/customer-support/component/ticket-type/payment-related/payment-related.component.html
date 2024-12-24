@@ -1,0 +1,130 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <!-- <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">All {{ticketType}} Ticket</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+                        <li class="breadcrumb-item active"> All {{ticketType}} Ticket </li>
+                    </ol>
+                </div>
+            </div> -->
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-sm-2 col-md-3">
+              <!-- <div class="search-box me-2 mb-2 d-inline-block">
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="search"
+                                        (keyup)="getTicketsListByType()">
+                                    <i class="bx bx-search-alt search-icon"></i>
+                                </div>
+                            </div> -->
+              <div class="d-flex align-items-center position-relative my-1 px-1">
+                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+                <input
+                  type="text"
+                  (keyup)="getTicketsListByType()"
+                  [(ngModel)]="search"
+                  placeholder="Search.."
+                  class="form-control form-control-solid ps-12"
+                  #input
+                />
+              </div>
+            </div>
+            <div class="col-sm-8 col-md-7"></div>
+          </div>
+          <div class="table-responsive">
+            <table class="table align-left gs-0 gy-5">
+              <thead>
+                <tr>
+                  <th class="p-5 w-50px">#</th>
+                  <th class="text-start p-5">Ticket ID</th>
+                  <th class="text-start p-5">Order ID</th>
+                  <th class="text-start p-5">Title</th>
+                  <th class="text-start p-5">Description</th>
+                  <th class="text-start p-5">Customer Name</th>
+                  <th class="text-start p-5">Customer ID</th>
+                  <th class="text-start p-5">Status</th>
+                  <th class="text-start p-5">Updated At</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let ticket of tickets; let i = index">
+                  <td class="text-center">{{ page == 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}</td>
+                  <td>
+                    <h5 class="font-size-14 mb-1">
+                      <a style="color: #556ee6 !important" [routerLink]="['./', ticket.ticketID, ticket.orderID]" class="text-dark">{{
+                        ticket.ticketID
+                      }}</a>
+                    </h5>
+                  </td>
+                  <td>{{ ticket.orderID }}</td>
+                  <td>{{ ticket.title || '--' }}</td>
+                  <td>{{ ticket.description || '--' }}</td>
+                  <td>{{ ticket?.user?.name || '--' }}</td>
+                  <td>{{ ticket?.user?.uid || '--' }}</td>
+                  <td>{{ ticket.status || '--' }}</td>
+                  <td>{{ ticket.updatedAt | date : 'medium' || '--' }}</td>
+                </tr>
+                <tr *ngIf="tickets?.length === 0">
+                  <td colspan="9" align="center">No Records Found</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Pagination  -->
+          <div class="row justify-content-md-between align-items-md-center mt-2">
+            <div class="col-sm-12 col-md-8">
+              <div class="dataTables_length" id="tickets-table_length">
+                <label class="d-inline-flex align-items-center"
+                  >Show
+                  <select class="form-select form-select-sm ms-2 me-2" (change)="handlePageSizeChange($event)">
+                    <option *ngFor="let size of pageSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select>
+                  Entries</label
+                >
+              </div>
+            </div>
+            <!-- Pagination -->
+            <div class="col-sm-12 col-md-4">
+              <!-- <div class="text-md-right float-md-end pagination-rounded">
+                <ngb-pagination
+                  class="pagination pagination-rounded justify-content-center mt-4"
+                  size="lg"
+                  [(page)]="page"
+                  [pageSize]="pageSize"
+                  (pageChange)="handlePageChange($event)"
+                  [collectionSize]="count"
+                >
+                  <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i> </ng-template>
+                  <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+                </ngb-pagination>
+              </div> -->
+              <!-- Pagination -->
+              <div class="text-md-right float-md-end pagination-rounded">
+                <ngb-pagination
+                  [(page)]="page"
+                  [pageSize]="pageSize"
+                  [maxSize]="5"
+                  [rotate]="true"
+                  [ellipses]="false"
+                  [boundaryLinks]="true"
+                  (pageChange)="handlePageChange($event)"
+                  [collectionSize]="count"
+                ></ngb-pagination>
+              </div>
+            </div>
+          </div>
+          <!-- Pagination  -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

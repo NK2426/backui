@@ -1,0 +1,31 @@
+.ng-select{
+    font-size: 16px;
+}
+.ng-value-container .ng-value, .ng-value-label {
+    font-size: 18px !important;
+}
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value
+{
+    background-color: #ccc !important;
+}
+
+
+//Newly Added //
+.activeimg {
+    position: relative;
+    border: 3px solid #a91be9;
+  }
+  
+  .activeimg::before {
+    content: '\2713';
+    font-family: "font-awesome" !important;
+    font-size: 16px;
+    background-color: rgb(89, 224, 58);
+    color: #fff;
+    top: -15px;
+    left: 97%;
+    position: absolute;
+    border-radius: 10px;
+    padding: 0px 5px;
+  }
+  

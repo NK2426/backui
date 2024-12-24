@@ -1,0 +1,203 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-3 font-size-18">Bundles</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <!-- <li class="breadcrumb-item"><a [routerLink]="['/warehouse/orders/inward']">Home</a></li> -->
+                        <li class="breadcrumb-item active"> {{type}} Bundles </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mt-3" *ngIf="data.uuid">
+                        <div class="col-sm-12">
+                            <h4 class="card-title mb-4">P.O Details</h4>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="data.uuid">
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="control-label col-sm-3"> PO ID : </label>
+                                <b>{{data?.uuid}}</b>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="control-label col-sm-3"> Invoice No : </label>
+                                {{data?.invoiceno}}
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="control-label col-sm-3">Supplier : </label>
+                                {{data?.user?.name}}
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="control-label col-sm-3"> Shipper : </label>
+                                {{data?.transporterid}}
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="control-label col-sm-3">Received Date : </label>
+                                {{data?.updatedAt | date:'mediumDate'}}
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="control-label col-sm-3">No. of bundles : </label>
+                                {{data?.bundles?.length}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <h4 class="card-title py-4">Scan Qrcode</h4>
+                            <zxing-scanner [torch]="torchEnabled" (scanSuccess)="onCodeResult($event)"
+                                [tryHarder]="tryHarder" (permissionResponse)="onHasPermission($event)"
+                                (torchCompatible)="onTorchCompatible($event)"></zxing-scanner>
+                            <br />
+                            <p class="text-center">Or</p>
+                            <h3 class="font-size-15 fw-bold">Manual Enter</h3>
+                            <div class="mb-3" *ngIf="!viewCompare">
+                                <input class="form-control" [(ngModel)]="scanqrcode" placeholder="Scan QRCode"
+                                    type="text" name="image" autocomplete="off" (change)="verifyQRcode()"
+                                    style="height: 70px; display: inline-block;" />
+                            </div>
+                            <div class="mb-3" *ngIf="viewCompare">
+                                <input class="form-control" placeholder="Scan QRCode" type="text" name="image"
+                                    autocomplete="off" [(ngModel)]="scanqrcode" (change)="singleverifyQRcode()"
+                                    style="height: 70px; display: inline-block;" />
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div [hidden]="!viewCompare">
+                                <h4 class="card-title py-4">Total Bundles : {{bundles.length}}</h4>
+                                <table class="table table-bordered table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th width="10%" align="center">#</th>
+                                            <th width="30%">Bundle ID</th>
+                                            <th width="10%">Total Items</th>
+                                            <th width="10%">Passed</th>
+                                        </tr>
+                                    </thead>
+                                    <tr *ngFor="let bundle of bundles; let i = index;">
+                                        <td align="center">{{i+1}}</td>
+                                        <td> <label>{{ bundle?.bundleID }}</label></td>
+                                        <td> <label>{{ bundle?.itemscount || '---' }}</label></td>
+                                        <td *ngIf="scanedbundle[bundle.bundleID || ''] !== ''">
+                                            <!-- <button class="text-white font-size-11 btn"
+                                                [style.background-color]="bundle.bundleID && scanedbundle[bundle.bundleID || ''] == bundle.bundleID ? '#34c38f' : '#f46a6a' ">
+                                                {{ bundle.bundleID && scanedbundle[bundle.bundleID || ''] === bundle.bundleID ?
+                                                'PASS' : 'FAIL' }}
+                                            </button> -->
+                                            <div class="btn-group mb-3">
+                                                <button (click)="passingBundle(i)"
+                                                    [style.background-color]="bundle.passed === true ? '#a91be9' : '' "
+                                                    type="button" class="btn btn-light w-xs"><i
+                                                        class="mdi mdi-thumb-up me-1 text-white"></i>Scanned</button>
+                                                <button
+                                                    [style.background-color]="bundle.passed === false ? '#f46a6a' : '' "
+                                                    (click)="disputeBundle(i, content)" type="button"
+                                                    class="btn btn-light w-xs ms-1"><i
+                                                        class="mdi mdi-thumb-down me-1 text-white"></i>Dispute</button>
+                                            </div>
+                                            <!-- <button class="font-size-11 btn btn-light">Yes</button>
+                                            <button class="font-size-11 btn btn-light">NO</button> -->
+                                        </td>
+                                    </tr>
+
+                                </table>
+                                <div class="d-md-flex align-items-center mt-5" *ngIf="bundles.length <= totalscan()">
+                                    <!-- <div class="col"
+                                        *ngIf="selectBundle?.bundleID !== scanBundle?.bundleID || selectBundle?.itemscount !== inwarditemcount">
+                                        <button type="button" class="btn btn-danger"
+                                            (click)="move(selectBundle.status,'Dispute')">Move Dispute Section</button>
+                                    </div> -->
+                                    <div class="col ml-auto text-end me-5">
+                                        <div class="dl">
+                                            <button type="submit" class="btn btn-primary"
+                                                (click)="move(selectBundle.status,'QC')">Move QC Section</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Pop UP Open start -->
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">Dispute Bundle</h5>
+        <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <form (submit)="saveDispute()" name="form" [formGroup]="disputeForm" novalidate>
+            <div class="row">
+                <div class="col-12">
+                    <div class="row mb-2">
+                        <label class="control-label col-4 mt-2"> Reason *</label>
+                        <div class="col-6">
+
+                            <select class="form-select" type="text" name="reason" formControlName="reason"
+                                formControlName="reason"
+                                [ngClass]="{'is-invalid': (gsubmit && disputeform['reason']?.errors) || (disputeform['reason']?.invalid && (disputeform['reason']?.dirty || disputeform['reason']?.touched))}">
+                                <option *ngFor="let dispute of disputetypes" [value]="dispute.id">
+                                    {{dispute.name }}
+                                </option>
+                            </select>
+                            <div *ngIf="(gsubmit && disputeform['reason']?.errors) || (disputeform['reason']?.invalid && (disputeform['reason']?.dirty || disputeform['reason']?.touched))"
+                                class="invalid-feedback">
+                                <span *ngIf="disputeform['reason'].errors?.['required']">Enter valid reason</span>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="row mb-2 mt-4">
+                        <label class="control-label col-4 mt-4"> Image </label>
+                        <div class="col-6">
+
+                            <div>
+                                <input type="file" class="btn btn-sm btn-primary" (change)="onSelectedImage($event)"
+                                    accept='image/*'
+                                    style="position: absolute; height: 70px; width: 160px; opacity: 0;" />
+                                <span style="width: 160px;display: block;height: 70px;z-index: -1;"
+                                    class="col-3 btn btn-light w-sm">
+                                    <i class="mdi mdi-upload d-block font-size-16"></i>
+                                    New File Upload</span>
+                            </div>
+                            <img [src]="disputeimage" width="100" />
+                        </div>
+                    </div>
+                    <div class="d-md-flex align-items-center mt-5" *ngIf="!gsubmit">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="ml-auto">
+                            <div class="dl">
+                                <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
+<!-- Pop UP Open end -->

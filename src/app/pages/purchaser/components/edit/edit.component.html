@@ -1,0 +1,461 @@
+<div class="card">
+    <div class="">
+        <div class="page-title-box d-flex align-items-center justify-content-between p-5">
+            <h4 class="mb-0 font-size-18 p-3">{{data.uuid ? 'Edit' : 'Create' }} P.O</h4>
+            <div class="page-title-right px-5">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item" routerLinkActive="true"><a>Home</a></li>
+                    <li class="breadcrumb-item"><a>P.O</a></li>
+                    <li class="breadcrumb-item active"> {{data.uuid ? 'Edit' : 'Create' }} P.O </li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="">
+                <div class="card card-flush">
+                    <div class="card-body pt-0">
+                        <form class="form-group" (ngSubmit)="saveOrder()" novalidate autocomplete="off">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="mb-3">
+                                        <label class="control-label"> P.O Number </label>
+                                        <input class="form-control" disabled value="{{ data?.uuid }}" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="mb-3">
+                                        <label class="control-label"> Select Department </label>
+                                        <!-- <ng-select name="department" placeholder="Select Department" [items]="departments"
+                                        bindLabel="name" bindValue="did" formControlName="department"
+                                        (change)="changeDepartment('form')">
+                                    </ng-select> -->
+                                    
+                                        <select class="form-select" name="department" required=""
+                                            formControlName="department">
+                                            <option *ngFor="let stat of departments" >
+                                                {{stat.name }}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="(submit && form['department']?.errors) || (form['department']?.invalid && (form['department']?.dirty || form['department']?.touched))"
+                                            class="invalid-feedback">
+                                            <span *ngIf="form['department'].errors?.['required']">Select
+                                                Department.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="mb-3">
+                                        <label class="control-label"> Select Vendor *</label>
+                                        <!-- <ng-select name="vendors" placeholder="Select Vendor"
+                                        bindLabel="name" bindValue="uid" formControlName="vendor"
+                                        (change)="productlist('form')">
+                                    </ng-select> -->
+                                        <select class="form-select" name="vendor" required="" formControlName="vendor">
+                                            <option *ngFor="let stat of departments">
+                                                {{stat.name }}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="(submit && form['vendor']?.errors) || (form['vendor']?.invalid && (form['vendor']?.dirty || form['vendor']?.touched))"
+                                            class="invalid-feedback">
+                                            <span *ngIf="form['vendor'].errors?.['required']">Select Vendor.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="mb-3">
+                                        <label class="control-label"> Select Warehouse *</label>
+                                        <!-- <ng-select name="warehouses" placeholder="Select Warehouse" bindLabel="name"
+                                        bindValue="id" formControlName="warehouse_id">
+                                    </ng-select> -->
+                                        <select class="form-select" name="warehouse_id" required=""
+                                            formControlName="warehouse_id">
+                                            <option *ngFor="let stat of departments">
+                                                {{stat.name }}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="(submit && form['warehouse_id']?.errors) || (form['warehouse_id']?.invalid && (form['warehouse_id']?.dirty || form['warehouse_id']?.touched))"
+                                            class="invalid-feedback">
+                                            <span *ngIf="form['warehouse_id'].errors?.['required']">Select
+                                                Warehouse.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4" *ngIf="selvendor.uid && !data?.uuid">
+                                    <div class="text-sm-end">
+                                        <button (click)="download()" type="button"
+                                            class="btn btn-info btn-rounded mb-2 me-2"><i
+                                                class="mdi mdi-arrow-down mr-1"></i>
+                                            Download Dump</button>
+
+                                    </div>
+
+                                    <div class="mb-3" style="float: right">
+                                        <label for="file">File Upload*</label>
+                                        <input type="file" class="file-input form-control"
+                                            (change)="onSelectedFile($event)" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card card-flush">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm align-middle table-row-dashed fs-6 gy-5">
+                                <tr class="">
+                                    <!-- product -->
+                                    <td class="col-auto px-1">
+                                        <label for=""
+                                            class="form-label required fs-6 fw-semibold mb-2 d-block p-1 text-start"
+                                            style="max-width: 250px; word-wrap: break;">Product
+                                        </label>
+                                        <select class="form-select form-select-solid" data-control="select2"
+                                            data-hide-search="true" data-placeholder="Status"
+                                            data-kt-ecommerce-product-filter="status">
+                                            <option value="" selected>Choose Vendor</option>
+                                            <option></option>
+                                        </select>
+                                        <!-- <table>
+                                            <tr>
+                                                <td>
+                                                    <select class="form-select form-select-sm custom-select mb-3">
+                                                        <option value="" selected>Choose Product</option>
+                                                        <ng-container *ngFor="let product of product;let i=index">
+                                                            <option value="{{i}}">{{product.name}}
+                                                                ({{product.productId}})</option>
+                                                        </ng-container>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </table> -->
+                                    </td>
+
+                                    <!-- Varient -->
+                                    <td class="col-auto px-1">
+                                        <label for=""
+                                            class="form-label required fs-6 fw-semibold mb-2 d-block p-1">Varient</label>
+                                        <select class="form-select form-select-sm custom-select mb-3">
+                                            <option value="" selected>Select Varient</option>
+                                        </select>
+                                    </td>
+
+                                    <!-- Image -->
+                                    <td class="col-1 px-1">
+                                        <div class="" style="position: relative; height: 100px; width: 100px;">
+                                            <img alt="Product" class="img-fluid mx-auto d-block m-0 p-0"
+                                                src="https://ssmart-s3.s3.ap-south-1.amazonaws.com/pos002407_1676451223873__3D-108.jpg">
+                                        </div>
+                                    </td>
+
+                                    <!-- price -->
+                                    <td class="col-auto px-1">
+                                        <label for=""
+                                            class="form-label required fs-6 fw-semibold mb-2 d-block p-1">Price(&#8377;)</label>
+                                        <input type="text" class="form-control form-control-sm" />
+                                    </td>
+
+                                    <!-- Quantiry -->
+                                    <td class="col-auto px-1">
+                                        <label for=""
+                                            class="form-label required fs-6 fw-semibold mb-2 d-block p-1">Quantity</label>
+                                        <input type="text" class="form-control form-control-sm" />
+                                    </td>
+
+                                    <!-- Sub Total -->
+                                    <td class="col-auto px-1">
+                                        <label for="" class="form-label required fs-6 fw-semibold mb-2 d-block p-1">Sub
+                                            Total</label>
+                                        <input type="text" class="form-control form-control-sm" />
+                                    </td>
+
+                                    <!-- Discount type -->
+                                    <td class="col-auto px-1">
+                                        <label for=""
+                                            class="form-label required fs-6 fw-semibold mb-2 d-block p-1">DiscountType</label>
+                                        <select class="form-select form-select-sm custom-select mb-1">
+                                            <option value="" selected>Type</option>
+                                            <option value="">PerItem</option>
+                                            <option value="">Overall</option>
+                                        </select>
+                                    </td>
+
+                                    <!-- Discount -->
+                                    <!-- <td class="col-auto px-1">
+                                        <div class="row px-1">
+                                            <div class="col-auto px-1">
+                                                <label for=""
+                                                    class="form-label required fs-6 fw-semibold mb-2 d-block p-1">Discount</label>
+                                                <input type="text" class="form-control form-control-sm" />
+                                            </div>
+                                            <div class="col-auto px-1">
+                                                <label for="" class="form-label fs-6 fw-semibold mb-2">unit</label>
+                                                <select class="form-select form-select-sm custom-select mb-0">
+                                                    <option value="" selected>%</option>
+                                                    <option value="">$</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td> -->
+                                    <td class="col-auto px-1">
+                                        <label class="form-label d-block p-1">Discount</label>
+                                        <div class="d-flex">
+                                            <input class="form-control form-control-sm d-inline" placeholder="Discount"
+                                                type="text" formControlName="discount" style="width: 80px;" />
+                                            <select class="form-select form-select-sm d-inline" type="text"
+                                                name="discountoption" formControlName="discountoption">
+                                                <option value="" selected>%</option>
+                                                <option value="inr">INR</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <!-- </tr> -->
+                                    <!-- <tr> -->
+                                    <!-- total discount -->
+                                    <td class="col-auto px-1">
+                                        <label for=""
+                                            class="form-label required fs-6 fw-semibold mb-2 d-block p-1">Total
+                                            Discount</label>
+                                        <input type="text" class="form-control form-control-sm" />
+                                    </td>
+
+                                    <!-- total -->
+                                    <td class="col-auto px-1">
+                                        <label for=""
+                                            class="form-label required fs-6 fw-semibold mb-2 d-block p-1">Total</label>
+                                        <input type="text" class="form-control form-control-sm" />
+                                    </td>
+
+                                    <!-- CGST -->
+                                    <td class="col-auto px-1">
+                                        <label for=""
+                                            class="form-label required fs-6 fw-semibold mb-2 d-block p-1">CGST</label>
+                                        <input type="text" class="form-control form-control-sm" />
+                                    </td>
+
+                                    <!-- SGST -->
+                                    <td class="col-auto px-1">
+                                        <label for=""
+                                            class="form-label required fs-6 fw-semibold mb-2 d-block p-1">SGST</label>
+                                        <input type="text" class="form-control form-control-sm" />
+                                    </td>
+
+                                    <!-- CGST -->
+                                    <td class="col-auto px-1">
+                                        <label for=""
+                                            class="form-label required fs-6 fw-semibold mb-2 d-block p-1">CGST</label>
+                                        <input type="text" class="form-control form-control-sm" />
+                                    </td>
+
+                                    <!-- SGST -->
+                                    <td class="col-auto px-1">
+                                        <label for=""
+                                            class="form-label required fs-6 fw-semibold mb-2 d-block p-1">SGST</label>
+                                        <input type="text" class="form-control form-control-sm" />
+                                    </td>
+
+                                    <!-- Grand total -->
+                                    <td class="col-auto px-1">
+                                        <label class="form-label required fs-6 fw-semibold mb-2 d-block p-1"
+                                            for="">Grand
+                                            Total</label>
+                                        <input type="text" class="form-control form-control-sm" />
+                                    </td>
+                                </tr>
+                                <!-- Add new item -->
+                                <!-- <tr>
+                                    <td [attr.colspan]="variants.length+7" align="left">
+                                        <div class="col-12">
+                                            <a class="text-success font-size-16">
+                                                <strong><i class="mdi mdi-plus font-12"></i>
+                                                    Add New Item </strong>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr> -->
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card card-flush">
+                    <div class="card-body">
+                        <div class="row mt-5">
+                            <div class="col-12">
+                                <div class="table-responsive">
+                                    <table formArrayName="itemlist" class="table table-bordered py-4"
+                                        data-resizable="true">
+                                        <tr>
+                                            <td [attr.colspan]="variants.length+7" align="left">
+                                                <div class="col-12">
+                                                    <a (click)="addField()" class="text-success font-size-16">
+                                                        <strong><i class="mdi mdi-plus font-12"></i>
+                                                            Add New Item </strong>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td [attr.colspan]="6" align="center">
+                                                <strong>Total</strong>
+                                            </td>
+                                            <td class="fit p-2"><strong>{{getFloat(totalval.subtotal)}}</strong>
+                                            </td>
+                                            <td [attr.colspan]="2"></td>
+                                            <td><strong>{{getFloat(this.totalval.totaldiscount)}}</strong></td>
+                                            <td class="fit p-2"><strong>{{getFloat(this.totalval.total)}}</strong>
+                                            </td>
+                                            <td [attr.colspan]="selvendor.taxtype === 0 ? 2 : 1"></td>
+                                            <td *ngIf="selvendor.taxtype === 0" class="fit p-2">
+                                                <strong>{{getFloat(this.totalval.cgsttotal)}}</strong>
+                                            </td>
+                                            <td *ngIf="selvendor.taxtype === 0" class="fit p-2">
+                                                <strong>{{getFloat(this.totalval.sgsttotal)}}</strong>
+                                            </td>
+                                            <td *ngIf="selvendor.taxtype === 1" class="fit p-2"><strong
+                                                    *ngIf="this.totalval.igsttotal > 0">{{getFloat(this.totalval.igsttotal)}}</strong>
+                                            </td>
+                                            <td class="fit p-2">
+                                                <strong>{{getFloat(this.totalval.grandtotal)}}</strong>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div style="padding: 30px;" class="float-end" *ngIf="formData().controls.length > 0">
+                                    Grand Total : <strong> &#8377;{{getRound(this.totalval.grandtotal)}}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <hr />
+                    <div class="col-4" *ngIf="productmapparams.length">
+                        <div class="pt-4">
+                            <div class="table-responsive">
+                                <h3 class="font-size-15 fw-bold">Product Prameters</h3>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tbody>
+                                        <tr *ngFor="let param of productmapparams; let i = index;">
+                                            <th class="center">{{param?.productparameter?.name}}</th>
+                                            <td>{{param?.productparametervalue?.value}}</td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-sm-2" *ngFor="let item of productimages">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="product-img position-relative">
+                                    <a href="javascript:void(0)">
+                                        <img style="height: 150px;" alt="Product" fetchPriority="low"
+                                            class="img-fluid mx-auto d-block" src="{{ item?.path }}"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-flush">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="mb-3">
+                                    <label class="form-label">P.O Date *</label>
+                                    <input class="form-control" placeholder="Date" type="date" name="date"
+                                        [min]="minDate" autocomplete="off" formControlName="date"
+                                        (change)="changeDate($event)" />
+
+                                    <div *ngIf="(submit && form['date']?.errors) || (form['date']?.invalid && (form['date']?.dirty || form['date']?.touched))"
+                                        class="invalid-feedback">
+                                        <span *ngIf="form['date'].errors">Enter valid
+                                            Date</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="mb-3">
+                                    <label class="form-label">Expected Delivery Date *</label>
+                                    <input class="form-control" placeholder="Delivery Date" type="date"
+                                        [min]="expminDate" name="deliverydeliverydate" autocomplete="off"
+                                        formControlName="deliverydate" />
+
+                                    <div *ngIf="(submit && form['deliverydate']?.errors) || (form['deliverydate']?.invalid && (form['deliverydate']?.dirty || form['deliverydate']?.touched))"
+                                        class="invalid-feedback">
+                                        <span *ngIf="form['deliverydate'].errors">Enter valid
+                                            Date</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="mb-3">
+                                    <label class="form-label">P.O Type *</label>
+                                    <select class="form-select form-select-sm mb-0">
+                                        <option value="" selected>Select PO Type</option>
+                                    </select>
+                                    <!-- <ng-select formControlName="potype" class="ng-select" name="potype"
+                                                                placeholder="Select Type" [items]="potypes" bindLabel="name"
+                                                                (change)="typechange($event)" bindValue="name"
+                                                                [ngClass]="{'is-invalid': (submit && form['potype']?.errors) || (form['potype']?.invalid && (form['potype']?.dirty || form['potype']?.touched))}">
+                                                            </ng-select> -->
+
+                                    <div *ngIf="(submit && form['potype']?.errors) || (form['potype']?.invalid && (form['potype']?.dirty || form['potype']?.touched))"
+                                        class="invalid-feedback">
+                                        <span *ngIf="form['potype'].errors">Enter valid Type</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" *ngIf="payment">
+                                <div class="mb-3">
+                                    <label class="form-label">Payment terms *</label>
+                                    <!-- <ng-select formControlName="paymentterm_id" class="ng-select" name="paymentterm_id"
+                                                                placeholder="Select Type" [items]="paymentterms" bindLabel="name" bindValue="id"
+                                                                [ngClass]="{'is-invalid': (submit && form['paymentterm_id']?.errors) || (form['paymentterm_id']?.invalid && (form['paymentterm_id']?.dirty || form['paymentterm_id']?.touched))}">
+                                                            </ng-select> -->
+
+                                    <div *ngIf="(submit && form['paymentterm_id']?.errors) || (form['paymentterm_id']?.invalid && (form['paymentterm_id']?.dirty || form['paymentterm_id']?.touched))"
+                                        class="invalid-feedback">
+                                        <span *ngIf="form['paymentterm_id'].errors">Enter valid Payment Term</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="form-label"> Notes </label>
+                                    <textarea class="form-control" formControlName="notes"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="mb-3">
+                                    <label class="control-label"> Documents </label>
+                                    <select class="form-select form-select-sm custom-select mb-1">
+                                        <option value="" selected>Document Type</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row py-4 mt-5">
+                                <div class="col-lg-6">
+                                    <div class="text-left">
+                                        <span *ngIf="formData().controls.length === 0" style="width: 300px"
+                                            class="btn btn-primary btn-block mt-1 waves-effect waves-light">Create
+                                            P.O</span>
+
+                                        <span class="btn btn-primary me-5" (click)="saveOrder('Draft')">Save as
+                                            Draft</span>
+
+                                        <span class="btn btn-success ms-5" (click)="saveOrder('Process')">Send for
+                                            Approval</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

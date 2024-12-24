@@ -1,0 +1,23 @@
+<div>
+    <label class="col-md-4"><strong>Name : </strong></label> {{ selectedDepartment?.name }}
+</div>
+<div>
+    <label class="col-md-4"><strong>CreateAt : </strong></label>
+    {{ selectedDepartment?.createdAt | date:'mediumDate' }}
+</div>
+<div>
+    <label class="col-md-4"><strong>UpdateAt : </strong></label>
+    {{ selectedDepartment?.updatedAt | date:'mediumDate'}}
+</div>
+
+<div *ngIf="!assignedparams.includes(selectedDepartment.uuid)" class="d-md-flex align-items-center mt-5">
+    <div class="col-md-3 mb-3">
+        <button class="btn btn-sm btn-primary fw-bold" (click)="editAction(selectedDepartment)">Edit</button>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="dl">
+            <button class="btn btn-sm btn-danger fw-bold" (click)="deleteParameter(selectedDepartment)"><i
+                    class="mdi mdi-delete font-12"></i> Delete</button>
+        </div>
+    </div>
+</div>

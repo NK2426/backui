@@ -1,0 +1,107 @@
+<div class="submit-form">
+  <form (ngSubmit)="saveProductvariants()" [formGroup]="formData" novalidate>
+    <div class="row">
+      <!--Select Vendor-->
+      <!-- <div class="col-12 col-md-12 fv-row fv-plugins-icon-container">
+                <label class="required fs-6 fw-semibold mb-2">Select Vendor</label>
+                <input type="hidden" formControlName="department" value="3" />
+                <select class="form-select form-select-solid" placeholder="Select user" formControlName="vendor"
+                    placeholder="Select Vendor">
+                    <option value="" selected>Choose Vendor</option>
+                    <ng-container *ngFor="let vendor of vendors; let i = index">
+                        <option value="{{ vendor.uid }}">{{ vendor.name }}</option>
+                    </ng-container>
+                </select>
+            </div> -->
+
+      <div class="col-12 col-md-12">
+        <div class="mb-3">
+          <label class="form-lable required mb-2">Name</label>
+          <input class="form-control" placeholder="Enter Agent name" type="text" name="name" autocomplete="off"
+            formControlName="name" [ngClass]="{ 'is-invalid': submit && form['name'].errors }" />
+          <div *ngIf="submit && form['name'].errors" class="invalid-feedback">
+            <span *ngIf="form['name'].errors['required']">Agent name is required.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-12">
+        <div class="mb-3">
+          <label class="form-lable required mb-2">Email</label>
+          <input class="form-control" placeholder="Enter Email Address" type="text" name="email" autocomplete="off"
+            formControlName="email" [ngClass]="{
+              'is-invalid':
+                (submit && form['email']?.errors) || (form['email']?.invalid && (form['email']?.dirty || form['email']?.touched))
+            }" />
+
+          <div
+            *ngIf="(submit && form['email']?.errors) || (form['email']?.invalid && (form['email']?.dirty || form['email']?.touched))"
+            class="invalid-feedback">
+            <span *ngIf="form['email'].errors">Enter valid Email ID</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-12">
+        <div class="mb-3">
+          <label class="form-lable required mb-2">Mobile</label>
+          <input class="form-control" placeholder="Enter Mobile Number" type="text" name="phone" id="example-date-input"
+            autocomplete="off" formControlName="phone" maxLength="10" [ngClass]="{
+              'is-invalid':
+                (submit && form['phone']?.errors) || (form['phone']?.invalid && (form['phone']?.dirty || form['phone']?.touched))
+            }" />
+
+          <div
+            *ngIf="(submit && form['phone']?.errors) || (form['phone']?.invalid && (form['phone']?.dirty || form['phone']?.touched))"
+            class="invalid-feedback">
+            <span *ngIf="form['phone'].errors?.['required']">Enter valid mobile Number</span>
+            <span *ngIf="form['phone'].errors?.['pattern']">Enter Number Only</span><br>
+            <span *ngIf="form['phone'].errors?.['minlength']">Minimum Length 10 Characters.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-12">
+        <div class="mb-3">
+          <label class="form-lable required mb-2">State</label>
+          <select class="form-control" type="text" placeholder="Select location" name="state_id"
+            formControlName="state_id" [ngClass]="{
+              'is-invalid':
+                (submit && form['state_id']?.errors) ||
+                (form['state_id']?.invalid && (form['state_id']?.dirty || form['state_id']?.touched))
+            }">
+            <option *ngFor="let stat of states" [value]="stat.id">{{ stat.name }}</option>
+          </select>
+
+          <div *ngIf="
+              (submit && form['state_id']?.errors) || (form['state_id']?.invalid && (form['state_id']?.dirty || form['state_id']?.touched))
+            " class="invalid-feedback">
+            <span *ngIf="form['state_id'].errors?.['required']">Enter valid Location</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-12">
+        <div class="mb-3">
+          <label class="form-lable required mb-2">Address</label>
+          <textarea class="form-control" placeholder="Enter Address" type="text" name="address" autocomplete="off"
+            formControlName="address" [ngClass]="{ 'is-invalid': submit && form['address'].errors }"></textarea>
+          <div *ngIf="submit && form['address'].errors" class="invalid-feedback">
+            <span *ngIf="form['address'].errors['required']">Address is required.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="d-md-flex align-items-center mt-3">
+        <div class="col-md-3 mb-5">
+          <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+        </div>
+        <div class="ml-auto mb-5">
+          <div class="dl">
+            <button type="button" class="btn btn-sm btn-secondary" (click)="cancelAction()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,46 @@
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #print * {
+    visibility: visible;
+  }
+
+  #print {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .first {
+    order: 1
+  }
+
+  .second {
+    order: 2;
+  }
+
+  .third {
+    order: 3
+  }
+
+  .four {
+    order: 4
+  }
+
+  .five {
+    order: 5;
+  }
+
+  .six {
+    order: 6
+  }
+}
+
+.table-striped>tbody>tr:nth-child(2n+1)>td,
+.table-striped>tbody>tr:nth-child(2n+1)>th {
+  background-color: #f5dede;
+}

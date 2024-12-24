@@ -1,0 +1,489 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">Add Combo Set</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a [routerLink]="['/app']">Home</a></li>
+                        <li class="breadcrumb-item"><a [routerLink]="['/app/combo']">Combo List</a></li>
+                        <li class="breadcrumb-item active">Add Combo</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form (ngSubmit)="saveComboSet()" [formGroup]="formData">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="mb-3 row">
+                            <label class="control-label col-sm-2">SET Name : </label>
+                            <div class="col-sm-6">
+                                <input class="form-control" type="text" name="name" autocomplete="off"
+                                    formControlName="name" [ngClass]="{
+                      'is-invalid': form['name']?.errors || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))
+                    }" />
+                                <div
+                                    *ngIf="form['name']?.errors || (form['name']?.invalid && (form['name']?.dirty || form['name']?.touched))">
+                                    <span *ngIf="form['name'].errors?.['required']">Enter valid name</span>
+                                    <span *ngIf="form['name'].errors?.['minlength']">Minimum Length 1 Characters.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <br />
+                    <div class="col-sm-6">
+                        <div class="mb-3 row">
+                            <label class="control-label col-sm-2">Title : </label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" name="title" autocomplete="off"
+                                    formControlName="title" [ngClass]="{
+                          'is-invalid': form['title']?.errors || (form['title']?.invalid && (form['title']?.dirty || form['title']?.touched))
+                        }" />
+                                <div
+                                    *ngIf="form['title']?.errors || (form['title']?.invalid && (form['title']?.dirty || form['title']?.touched))">
+                                    <span *ngIf="form['title'].errors?.['required']">Enter valid title</span>
+                                    <span *ngIf="form['title'].errors?.['minlength']">Minimum Length 3
+                                        Characters.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="mb-3 row">
+                            <label class="control-label col-sm-2">Title tamil : </label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" name="title_ta" autocomplete="off"
+                                    formControlName="title_ta" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="mb-3 row">
+                            <label class="control-label col-sm-2">Description: </label>
+                            <div class="col-sm-10">
+
+
+                                <textarea class="form-control" placeholder="Enter Description" type="text"
+                                    name="description" autocomplete="off" formControlName="description" [ngClass]="{
+                                  'is-invalid':
+                                    (form['description']?.errors) ||
+                                    (form['description']?.invalid && (form['description']?.dirty || form['description']?.touched))
+                                }"></textarea>
+
+
+                                <div
+                                    *ngIf="form['description']?.errors || (form['description']?.invalid && (form['description']?.dirty || form['description']?.touched))">
+                                    <span *ngIf="form['description'].errors?.['required']">Enter valid title</span>
+                                    <span *ngIf="form['description'].errors?.['minlength']">Minimum Length 20
+                                        Characters.</span>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="mb-3 row">
+                            <label class="control-label col-sm-2">Description Tamil: </label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" placeholder="Enter Tamil Description" type="text"
+                                    name="description_ta" autocomplete="off"
+                                    formControlName="description_ta"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <!-- <div class="col-sm-6">
+                        <div class="mb-3 row">
+                            <label class="control-label"> Select Department </label>
+                            <ng-select name="department" placeholder="Select Department" [ngClass]="{
+                  'is-invalid': form['dept']?.errors || (form['dept']?.invalid && (form['dept']?.dirty || form['dept']?.touched))
+                }" formControlName="dept" [items]="departments" bindLabel="name" bindValue="did"
+                                (change)="changeDepartment($event)">
+                            </ng-select>
+                            <div
+                                *ngIf="form['dept']?.errors || (form['dept']?.invalid && (form['dept']?.dirty || form['dept']?.touched))">
+                                <span *ngIf="form['dept'].errors?.['required']"><span style="color:red">Select valid
+                                        department</span></span>
+                            </div>
+                        </div>
+                    </div> -->
+                <!--  <div class="col-sm-6" *ngIf="isClothing">
+                        <div class="mb-3 row">
+                            <label class="control-label"> Select Group</label>
+                            <ng-select name="class" [ngClass]="{
+                  'is-invalid': form['group']?.errors || (form['group']?.invalid && (form['group']?.dirty || form['group']?.touched))
+                }" placeholder="Select Group" [items]="groups" bindLabel="name" bindValue="id" formControlName="group"
+                                (change)="changeGroup($event)">
+                            </ng-select>
+                            <div
+                                *ngIf="form['group']?.errors || (form['group']?.invalid && (form['group']?.dirty || form['group']?.touched))">
+                                <span *ngIf="form['group'].errors?.['required']"><span style="color:red">Select valid
+                                        group</span></span>
+                            </div>
+                        </div>
+                    </div> -->
+
+
+                <div class="mt-2">
+                    <div class="text-sm-end">
+                        <a [routerLink]="['/app/combo']" class="btn btn-warning me-4">Cancel</a>
+                        <button type="submit" class="btn btn-info">Save Combo Set</button>
+                    </div>
+                </div>
+            </form>
+            <br>
+        </div>
+    </div>
+
+
+    <h5>Add Combo Items</h5>
+    <div class="card">
+        <div class="card-body">
+            <form *ngIf="comboSet" (ngSubmit)="saveComboitem()" [formGroup]="formDataitem">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="mb-3 row">
+                            <ng-select name="comboset_id" placeholder="Select Combo Set" [items]="comboSetDropDown"
+                                bindLabel="displayName" formControlName="comboset_id" (change)="onTypeChange($event)"
+                                class="ng-select" bindValue="value">
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="mb-3 row">
+                            <label class="control-label col-sm-6">Search Product DesignId</label>
+                            <input id="btypeahead-template" type="text" class="form-control col" [(ngModel)]="model"
+                                name="model" [ngModelOptions]="{standalone: true}" [ngbTypeahead]="search"
+                                [resultTemplate]="rt" [inputFormatter]="formatter" [resultFormatter]="formatter"
+                                (selectItem)="itemSelected($event)" [class.is-invalid]="searchFailed" />
+
+                            <small *ngIf="searching" class="form-text text-muted">searching...</small>
+                            <div class="invalid-feedback" *ngIf="searchFailed && model?.length > 0">Sorry, Your
+                                product is not in
+                                our list.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="mb-3 row">
+                            <label class="control-label col-sm-3">SKUID : </label>
+                            <div class="col-sm-9">
+                                <select class="form-control" type="text" name="itemslist_uuid"
+                                    formControlName="itemslist_uuid" [ngClass]="{
+                          'is-invalid': form['itemslist_uuid']?.errors || (form['itemslist_uuid']?.invalid && (form['itemslist_uuid']?.dirty || form['itemslist_uuid']?.touched))
+                        }" (change)="changeskuid($event)">
+                                    <option *ngFor="let stat of skuids" [value]="stat.itemslist?.uuid">{{
+                                        stat.itemslist?.skuid }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-sm-3">
+
+
+                        <div class="mb-3 ">
+                            <label class="control-label col-sm-4">Default Image</label>
+                            <label class="control-label col-sm-4"> <img src="{{ img }}" alt="Set Image" width="50"
+                                    height="70" /></label>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-2">
+
+
+                        <div class="mb-3 ">
+                            <label class="control-label col-sm-4">MRP :</label>
+                            <label class="control-label col-sm-4">{{mrp}}</label>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-2">
+
+
+                        <div class="mb-3 ">
+                            <label class="control-label col-sm-4">Current PRICE :</label>
+                            <label class="control-label col-sm-4">{{price}} </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="mb-3 row">
+                            <label class="control-label col-sm-4">Enter offer Price : </label>
+                            <div class="col-sm-8">
+                                <input class="form-control" type="text" name="price" autocomplete="off"
+                                    formControlName="price" [ngClass]="{
+                                  'is-invalid':
+                                    (form['price']?.errors) || (form['price']?.invalid && (form['price']?.dirty || form['price']?.touched))
+                                }" />
+                                <div *ngIf="(form['price']?.errors) || (form['price']?.invalid && (form['price']?.dirty || form['price']?.touched))"
+                                    class="invalid-feedback">
+                                    <span *ngIf="form['price'].errors?.['required']">Enter valid price</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="mb-3 row">
+                            <!-- <label class="control-label col-sm-6">Search Product DesignId</label>
+                            <input id="btypeahead-template" type="text" class="form-control col" [(ngModel)]="model"
+                                name="model" [ngModelOptions]="{standalone: true}" [ngbTypeahead]="search"
+                                [resultTemplate]="rt" [inputFormatter]="formatter" [resultFormatter]="formatter"
+                                (selectItem)="itemSelected($event)" [class.is-invalid]="searchFailed" />
+
+                            <small *ngIf="searching" class="form-text text-muted">searching...</small>
+                            <div class="invalid-feedback" *ngIf="searchFailed && model?.length > 0">Sorry, Your
+                                product is not in
+                                our list.
+                            </div> -->
+                        </div>
+                    </div>
+
+
+
+                    <div class="mt-2">
+                        <div class="text-sm-end">
+                            <a [routerLink]="['/app/combo']" class="btn btn-warning me-4">Cancel</a>
+                            <button type="submit" class="btn btn-info">Save Combo Item</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <h5>Available Combo Set and item under combo : {{combo?.name}}</h5>
+    <div class="table-responsive">
+        <table class="table align-middle table-nowrap table-hover">
+            <thead class="table-light">
+                <tr class="bg-light">
+                    <th scope="col" style="width: 70px"></th>
+                    <th scope="col" style="width: 70px">#</th>
+                    <th scope="col">Set Name</th>
+                    <th scope="col" style="width: 4%">Set Title</th>
+                    <th scope="col" style="width: 4%">Description</th>
+                    <!-- <th scope="col">MRP</th>
+                    <th scope="col">PRICE</th>
+                    <th scope="col">OFFER</th> -->
+                    <th scope="col">Status</th>
+                    <th bgcolor="#ffc107" style="width: 4%">Main Image</th>
+                    <th bgcolor="#ffc107" style="width: 18%">Sub Images</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let comboset of comboSet; let i = index">
+                <tr>
+                    <td align="center">
+                        <a class="expand-row" type="button" (click)="changeValue(i)"> <span *ngIf="!hideme[i]">+</span>
+                            <span *ngIf="hideme[i]">-</span> </a>
+                    </td>
+                    <td>{{ page === 1 ? i + 1 : i + 1 + pageSize * (page - 1) }}</td>
+
+                    <td>{{ comboset?.name || '--'}}</td>
+                    <td>{{ comboset?.title || '--'}}</td>
+                    <td title="{{comboset?.description}}">{{ comboset?.description?.substring(0,12)}}</td>
+                    <!-- <td>{{ comboset?.mrp || '--'}}</td>
+                    <td>{{ comboset?.price || '--'}}</td>
+                    <td>{{ comboset?.offer || '--'}}</td> -->
+                    <td>{{ comboset?.status == 0 ?'Unpublish':'Publish' }}</td>
+                    <td>
+                        <img src="{{ comboset?.item?.path }}" alt="Set Image" width="50" height="70"
+                            *ngIf="comboset?.item?.path" />
+                    </td>
+                    <td>
+                        <span *ngFor="let itemimg of comboset?.itemsimages">
+                            <img src="{{ itemimg?.path }}" alt="" width="50" height="70" />
+                        </span>
+                    </td>
+                    <li class="list-inline-item px-2">
+                        <a *ngIf="!comboset?.status" type="button" (click)="editComboSet(comboset)"
+                            href="javascript:void(0)" ngbTooltip="Edit Combo Set"><i
+                                class="mdi mdi-pencil font-12"></i></a>
+                    </li>
+                    <li class="list-inline-item px-2" *ngIf="!comboset?.status">
+                        <button type="button" class="btn btn-success"
+                            (click)="publishComboSet(comboset, i)">Publish</button>
+                    </li>
+
+                    <li class="list-inline-item px-2" *ngIf="comboset?.status">
+                        <button type="button" class="btn btn-danger"
+                            (click)="unpublishComboSet(comboset, i)">UnPublish</button>
+                    </li>
+                    <li class="list-inline-item px-2">
+                        <button *ngIf="comboset?.status" type="button" class="btn btn-info"
+                            (click)="openGallery(mediacontent, 'Single', comboset)">
+                            + Default Img</button>
+                    </li>
+
+                    <li class="list-inline-item px-2">
+                        <button *ngIf="comboset?.status" type="button" class="btn btn-info"
+                            (click)="openGallery(mediacontent, 'Multiple', comboset)"> + Sub
+                            Images</button>
+                    </li>
+
+                </tr>
+                <tr *ngIf="hideme[i]" class="sub-table no-bg">
+                    <td align="center"></td>
+                    <td colspan="15" class="p-0">
+                        <table class="table mb-0 table-striped">
+                            <thead class="bg-dark">
+                                <tr>
+                                    <th scope="col">S.No</th>
+                                    <th scope="col">Group Name</th>
+                                    <th scope="col">Item Name</th>
+                                    <th scope="col">Variant</th>
+                                    <th scope="col">SKU</th>
+                                    <th scope="col">MRP</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngIf="comboSet">
+                                    <tr *ngFor="let nestedTable of comboSet[i]?.comboitems; let j = index">
+                                        <td>{{ page === 1 ? j + 1 : j + 1 + pageSize * (page - 1) }}</td>
+                                        <td>{{ nestedTable?.group?.name }}</td>
+                                        <td>{{ nestedTable?.item?.name }}</td>
+                                        <td>{{ nestedTable?.itemslist?.description }}</td>
+                                        <td>{{ nestedTable?.itemslist?.skuid }}</td>
+                                        <td>{{ nestedTable?.mrp }}</td>
+                                        <td>{{ nestedTable?.price }}</td>
+                                        <li class="list-inline-item px-2">
+                                            <a (click)="deleteComboItem(nestedTable?.id || 0)" href="javascript:void(0)"
+                                                ngbTooltip="Delete Combo Set"><i class="fa fa-trash font-12"></i></a>
+                                        </li>
+                                    </tr>
+                                </ng-container>
+
+                                <tr *ngIf="comboSet && comboSet[i]?.comboitems?.length === 0">
+                                    <td colspan="12" align="center">No Combo Items Found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr *ngIf="comboSet?.length === 0">
+                    <td colspan="12" class="text-center fw-bold">No Records Found</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Pagination  -->
+    <div class="row justify-content-md-between align-items-md-center mt-2">
+        <div class="col-sm-12 col-md-4">
+            <div class="dataTables_length" id="tickets-table_length">
+                <label class="d-inline-flex align-items-center">Show
+                    <select class="form-select form-select-sm ms-2 me-2" (change)="handlePageSizeChange($event)">
+                        <option *ngFor="let size of pageSizes" [ngValue]="size">
+                            {{ size }}
+                        </option>
+                    </select>
+                    Entries</label>
+            </div>
+        </div>
+        <!-- Pagination -->
+        <div class="col-sm-12 col-md-8">
+            <div class="text-md-right float-md-end pagination-rounded">
+                <ngb-pagination class="pagination pagination-rounded justify-content-center mt-4" size="lg"
+                    [(page)]="page" [pageSize]="pageSize" (pageChange)="handlePageChange($event)"
+                    [collectionSize]="count" [maxSize]="10" [rotate]="true">
+                    <ng-template ngbPaginationPrevious><i class="mdi mdi-chevron-left"></i> </ng-template>
+                    <ng-template ngbPaginationNext><i class="mdi mdi-chevron-right"></i></ng-template>
+                </ngb-pagination>
+            </div>
+        </div>
+    </div>
+    <!-- Pagination  -->
+
+
+</div>
+
+<ng-template #rt let-r="result" let-t="term">
+    <!-- <img [src]="'https://upload.wikimedia.org/wikipedia/commons/thumb/' + r['flag']" class="me-1"
+        style="width: 16px"> -->
+    <span *ngIf="!searchFailed">{{r.department?.name}} / {{r.category?.name}} / {{r.subcategory?.name}}
+        /{{r.group?.name}}
+        / </span>
+    <ngb-highlight [result]="r.uuid" [term]="t"></ngb-highlight>
+</ng-template>
+
+
+<!-- Pop UP Open start - single image-->
+<ng-template #mediacontent let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">Media Library</h5>
+        <button type="button" class="btn-close" aria-hidden="true" (click)="popupclose()"></button>
+    </div>
+    <div class="modal-body">
+        <form enctype="multipart/form-data">
+            <div class="row">
+
+                <div *ngFor="let progressInfo of progressInfos" class="mb-2">
+                    <span [ngStyle]="{ color: progressInfo.color }">{{ progressInfo.fileName }} |
+                        {{progressInfo.msg}}</span>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+                            attr.aria-valuenow="{{ progressInfo.value }}" aria-valuemin="0" aria-valuemax="100"
+                            [ngStyle]="{ width: progressInfo.value + '%' }">
+                            {{ progressInfo.value }}%
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-12">
+                    <div style="margin-left: 30%; margin-bottom: 20px;">
+                        <input type="file" multiple="" class="btn btn-success" (change)="selectFiles($event)"
+                            style="position: absolute; height: 70px; width: 160px; opacity: 0;" />
+                        <span style="width: 160px;display: block;height: 70px;z-index: -1;"
+                            class="col-3 btn btn-light w-sm">
+                            <i class="mdi mdi-upload d-block font-size-16"></i>
+                            New File Upload</span>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-4 col-sm-6 mb-2" *ngFor="let image of images; let i = index;"
+                            (click)="selectimage(i)">
+                            <div class="product-img position-relative" [ngClass]="{ activeimgsel: image?.select }">
+                                <img class="img-fluid mx-auto d-block" src="{{ image?.path }}" alt="Mugdha"
+                                    style="max-height: 200px;">
+                                <span>{{ image?.name }}</span>
+                            </div>
+                        </div>
+
+                        <div class="col-12 text-center mt-5">
+                            <button class="btn btn-success" type="button" aria-hidden="true"
+                                [disabled]="singleSelectDisabled" (click)="formsubmit()"><i class="fas fa-image"></i>
+                                Save </button>
+                        </div>
+                    </div>
+                    <div class="row justify-content-md-between align-items-md-center mt-2">
+
+                    </div>
+                    <div class="d-md-flex align-items-center mt-5">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="ml-auto">
+                            <div class="dl">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
+<!-- Pop UP Open end -->
