@@ -24,16 +24,15 @@ export class AdduserComponent implements OnInit {
   checkid: any = '';
   roles: Array<{ id: number; name: string }> = [
     { id: 1, name: 'HR' },
-    { id: 2, name: 'Category Head' },
-    { id: 3, name: 'Purchaser' },
-    { id: 4, name: 'Purchase Head' },
-    { id: 5, name: 'Warehouse Operator' },
-    // { id: 6, name: 'Vendor' },
-    { id: 7, name: 'Web Team' },
-    { id: 8, name: 'Finance' },
+    { id: 2, name: 'Products content' },
+    // { id: 3, name: 'Purchaser' },
+    // { id: 4, name: 'Purchase Head' },
+    // { id: 5, name: 'Warehouse Operator' },,
+    { id: 7, name: 'Website Manager' },
+    // { id: 8, name: 'Finance' },
     { id: 9, name: 'Content Writer' },
     // { id: 10, name: 'Customer Support' },
-    { id: 11, name: 'Content Manager' },
+    // { id: 11, name: 'Content Manager' },
     // { id: 12, name: 'Picker' },
     // { id: 13, name: 'Packer' }
   ];
@@ -90,10 +89,10 @@ export class AdduserComponent implements OnInit {
         role: [this.data.role, [Validators.required]],
         // warehouse: '1',
         // warehouse: [this.data.warehouse, [Validators.required]],
-        warehouse_id: [this.data.warehouse_id, [Validators.required]],
+        warehouse_id: [this.data.warehouse_id],
         dateofbirth: ['', [Validators.required]],
         dateofjoin: [this.data.dateofjoin, [Validators.required]],
-        salary: [this.data.salary, [Validators.required, Validators.pattern(this.regex)]],
+        salary: [this.data.salary],
         address: [this.data.address, [Validators.required, Validators.minLength(3)]],
         status: ['1']
       },
@@ -130,7 +129,7 @@ export class AdduserComponent implements OnInit {
             cpassword: '',
             role: data.roleID,
             warehouse: data.warehouse,
-            warehouse_id: data.warehouse_id,
+            warehouse_id: data.warehouse_id || 1,
             dateofbirth: data.dateofbirth || '',
             dateofjoin: data.dateofjoin || '',
             salary: data.salary || '',
@@ -191,8 +190,8 @@ export class AdduserComponent implements OnInit {
         this.formData.get('username').setValue('HR00' + count);
         break;
       case val == 2:
-        this.formData.get('uuid').setValue('CHEAD00' + count);
-        this.formData.get('username').setValue('CHEAD00' + count);
+        this.formData.get('uuid').setValue('PROC00' + count);
+        this.formData.get('username').setValue('PROC00' + count);
         break;
       case val == 3:
         this.formData.get('uuid').setValue('EMP00' + count);
@@ -208,8 +207,8 @@ export class AdduserComponent implements OnInit {
         break;
 
       case val == 7:
-        this.formData.get('uuid').setValue('WEB00' + count);
-        this.formData.get('username').setValue('WEB00' + count);
+        this.formData.get('uuid').setValue('WEBM00' + count);
+        this.formData.get('username').setValue('WEBM00' + count);
         break;
       case val == 8:
         this.formData.get('uuid').setValue('FIN00' + count);

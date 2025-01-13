@@ -135,23 +135,23 @@ export class AddProductComponent implements OnInit {
       category_id: [this.data.category_id, [Validators.required]],
       subcategory_id: [this.data.subcategory_id, [Validators.required]],
       group_id: [this.data.group_id, [Validators.required]],
-      brand_id: [this.data.brand_id, [Validators.required]],
+      brand_id: [this.data.brand_id || 1],
       unit: [this.data.unit, [Validators.required]],
       description: [this.data.description],
-      width: [this.data.width, [Validators.pattern('[0-9]+')]],
-      height: [this.data.height, [Validators.pattern('[0-9]+')]],
-      length: [this.data.length, [Validators.pattern('[0-9]+')]],
+      width: [this.data.width, ],
+      height: [this.data.height],
+      length: [this.data.length],
       measure: [this.data.measure],
-      weight: [this.data.weight, [Validators.pattern('[0-9]+')]],
+      weight: [this.data.weight],
       selling_price: [this.data.selling_price],
       status: ['1'],
       type: ['Catalog'],
-      show_type: [this.data.show_type, [Validators.required]],
-      store_id: [this.data.store_id, [Validators.required]],
+      show_type: [this.data.show_type ],
+      store_id: [this.data.store_id || 1],
       vendor_id: [this.data?.vendormapping?.vendor_id || '612'],
-      tax_id: [this.data.tax_id, [Validators.required]],
-      percentage: [this.data.percentage, [Validators.required]],
-      hsncode: ['', [Validators.pattern('[0-9]+'), Validators.required]]
+      tax_id: [this.data.tax_id || 1],
+      percentage: [this.data.percentage],
+      hsncode: ['12345']
     });
 
     this.brandForm = this.formBuilder.group({
@@ -478,7 +478,7 @@ export class AddProductComponent implements OnInit {
     if (vval.uid) {
       // console.log(this.vendor, this.formData);
       this.vmodel = vval.uid;
-      this.formData.controls['vendor_id'].patchValue(null || '');
+      this.formData.controls['vendor_id'].patchValue(1 || '');
       // console.log(this.formData);
       this.formData.get('vendor_id')?.setValue(vval.uid);
     }

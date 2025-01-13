@@ -32,7 +32,7 @@
             <!-- <div class="row col-sm-8 col-md-8 p-0" *ngIf="!edit"> -->
             <!-- Employee ID -->
             <div *ngIf="!edit" class="col-sm-4 col-md-4 mb-3 fv-row fv-plugins-icon-container">
-              <label class="form-label fs-6 fw-semibold required mb-2">Employee ID</label>
+              <label class="form-label fs-6 fw-semibold required mb-2">User ID</label>
               <input class="form-control" placeholder="Enter Empcode ID" type="text" name="uuid" autocomplete="off"
                 formControlName="uuid" [disabled]="true" />
               <option *ngFor="let item of checkid">
@@ -42,43 +42,10 @@
               <div
                 *ngIf="(submit && form['uuid']?.errors) || (form['uuid']?.invalid && (form['uuid']?.dirty || form['uuid']?.touched))"
                 class="invalid-feedback">
-                <span *ngIf="form['uuid'].errors?.['required']">Enter valid employee code.</span>
+                <span *ngIf="form['uuid'].errors?.['required']">Enter valid User code.</span>
                 <span *ngIf="form['uuid'].errors?.['minlength']">Minimum Length 4 Characters.</span>
               </div>
             </div>
-            <!-- Warehouse -->
-            <!-- <div class="col-sm-6 mb-3 fv-plugins-icon-container">
-                            <label class="form-label required fs-6 fw-semibold mb-2">Warehouse</label>
-                            <select class="form-select select2-hidden-accessible" placeholder="Select Warehouse"
-                              formControlName="warehouse_id">
-                              <ng-container *ngFor="let warehouse of warehouses">
-                                <option value="{{warehouse.id}}" innerHTML="{{warehouse.name}}"></option>
-                              </ng-container>
-                            </select>
-                          </div> -->
-            <div *ngIf="!edit" class="col-sm-4 col-md-4 mb-3 fv-row fv-plugins-icon-container">
-              <label class="form-label required fs-6 fw-semibold mb-2">Select Warehouse </label>
-              <select class="form-select" type="text" name="warehouse" formControlName="warehouse_id" [ngClass]="{
-                  'is-invalid':
-                    (submit && form['warehouse_id']?.errors) ||
-                    (form['warehouse_id']?.invalid && (form['warehouse_id']?.dirty || form['warehouse_id']?.touched))
-                }">
-                <!-- <option value="">Select Warehouse</option> -->
-                <option *ngFor="let warehouse of warehouses" [value]="warehouse.id">{{ warehouse.name }}</option>
-              </select>
-              <div *ngIf="
-                  (submit && form['warehouse_id']?.errors) ||
-                  (form['warehouse_id']?.invalid && (form['warehouse_id']?.dirty || form['warehouse_id']?.touched))
-                " class="invalid-feedback">
-                <span *ngIf="form['warehouse_id'].errors">Select Warehouse</span>
-              </div>
-            </div>
-            <!-- </div> -->
-          </div>
-
-          <!-- U.name, pwd, cpwd -->
-          <div class="row my-3">
-            <!-- User Name -->
             <div class="col-sm-4 col-md-4 mb-3 fv-row fv-plugins-icon-container">
               <label class="form-label required fs-6 fw-semibold mb-2">Username</label>
               <input class="form-control" placeholder="Username" type="text" name="username" autocomplete="off"
@@ -95,7 +62,11 @@
                 <span *ngIf="form['username'].errors?.['minlength']">Minimum Length 3 Characters.</span>
               </div>
             </div>
+          </div>
 
+          <!-- U.name, pwd, cpwd -->
+          <div class="row my-3">
+            
             <!-- Password -->
             <div class="col-sm-4 col-md-4 mb-3 fv-row fv-plugins-icon-container">
               <label class="form-label required fs-6 fw-semibold mb-2">Password {{ passwordvalidate ? '' : ''
@@ -263,23 +234,7 @@
           </div>
 
           <div class="row my-3">
-            <!-- Basic Salary -->
-            <div class="col-sm-4 col-md-4 mb-3 fv-row fv-plugins-icon-container">
-              <label class="form-label required fs-6 fw-semibold mb-2"> Basic Salary </label>
-              <input class="form-control" placeholder="Enter Salary" type="text" name="salary" autocomplete="off" (keypress)="($event.charCode >= 48 && $event.charCode < 58)"
-                formControlName="salary" [ngClass]="{
-                  'is-invalid':
-                    (submit && form['salary']?.errors) || (form['salary']?.invalid && (form['salary']?.dirty || form['salary']?.touched))
-                }" />
-
-              <div *ngIf="
-                  (submit && form['salary']?.errors) || (form['salary']?.invalid && (form['salary']?.dirty || form['salary']?.touched))
-                " class="invalid-feedback">
-                <span *ngIf="form['salary'].errors?.['required']">Enter valid salary</span>
-                <!-- <span *ngIf="form['salary'].errors?.['minlength'] " >Minimum Length 4 Characters.</span><br> -->
-                <span *ngIf="form['salary'].errors?.['pattern']">Enter Number Only</span>
-              </div>
-            </div>
+          
 
             <!-- Address -->
             <div class="col-sm-4 col-md-4 mb-3 fv-row fv-plugins-icon-container">

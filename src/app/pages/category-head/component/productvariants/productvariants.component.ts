@@ -40,7 +40,7 @@ export class ProductvariantsComponent implements OnInit {
   subclass: Subcategories[] = [];
   groups: Group[] = [];
 
-  selectedDept = '';
+  selectedDept = '3';
   selectedBrand = '';
   selectedClass = '';
   selectedSubclass = '';
@@ -113,7 +113,7 @@ export class ProductvariantsComponent implements OnInit {
   getRequestParams(search: string, dept: string, cat: string, subcat: string, group: string, page: number, pageSize: number): any {
     let params = { search: '', dept: '', cat: '', subcat: '', group: '', page: page, size: pageSize };
     if (search) params['search'] = search;
-    if (dept) params['dept'] = dept;
+ 
     if (cat) params['cat'] = cat;
     if (subcat) params['subcat'] = subcat;
     if (group) params['group'] = group;

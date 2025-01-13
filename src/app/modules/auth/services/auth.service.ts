@@ -103,6 +103,7 @@ export class AuthService implements OnDestroy {
 
   // private methods
   private setAuthFromSessionStorage(auth: UserType): boolean {
+    
     // store auth accessToken/refreshToken/epiresIn in local storage to keep user logged in between page refreshes
     if (auth && auth.accessToken) {
       sessionStorage.setItem(this.authSessionStorageToken, JSON.stringify(auth));

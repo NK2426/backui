@@ -29,7 +29,7 @@
                             <div class="text-sm-end">
                                 <button (click)="createTag()" type="button" class="btn btn-primary btn-rounded"><i
                                         class="mdi mdi-plus mr-1"></i>
-                                    Add Tag</button>
+                                    Add Bundle</button>
                             </div>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                                 <tr>
                                     <th class="p-5 w-50px">#</th>
                                     <th class="text-start p-5 min-w-100px">Name</th>
-                                    <th class="text-start p-5 min-w-100px">Group ID</th>
+                                    <!-- <th class="text-start p-5 min-w-100px">Group </th> -->
                                     <th class="text-start p-5 min-w-100px">Image</th>
                                     <th class="text-start p-5 min-w-100px">Status</th>
                                     <th class="text-start p-5 min-w-100px">Slug</th>
@@ -55,7 +55,7 @@
                                             {{tag.name }}
                                         </strong>
                                     </td>
-                                    <td class="p-5">{{tag.group_id || '--' }}</td>
+                                    <!-- <td class="p-5">{{tag.group.name || '--' }}</td> -->
                                     <td class="p-5"> <img src="{{tag.path}}" alt="Icon" height="50" width="50"></td>
                                     <td class="p-5">{{tag.status ? 'Active' : 'InActive'}}</td>
                                     <td class="p-5">{{tag.slug || '--' }}</td>
@@ -64,7 +64,7 @@
                                         <ul class="list-inline font-size-20 contact-links mb-0">
                                             <li class="list-inline-item px-2">
                                                 <a routerLinkActive="active" [routerLink]="tag.uuid"
-                                                    href="javascript:void(0)" ngbTooltip="View Tag Detail">View Tag
+                                                    href="javascript:void(0)" ngbTooltip="View Tag Detail">View
                                                     Detail</a>
                                             </li>
                                         </ul>

@@ -24,7 +24,7 @@ import { WidgetsModule } from 'src/app/_themes/partials/content/widgets/widgets.
                 canActivateChild: [NgxPermissionsGuard],
                 data: {
                     permissions: {
-                        only: ['ADMIN', 'HR','WEBTEAM','WHO','CATEGORY_HEAD','PURCHASE_HEAD', 'PURCHASE','VENDOR'],
+                        only: ['ADMIN', 'HR','WEBTEAM','WHO','CATEGORY_HEAD','PURCHASE_HEAD', 'PURCHASE','VENDOR','CONTENT'],
                         redirectTo: '/dashboard'
                     }
                 }

@@ -71,10 +71,11 @@ export class WebsettingComponent {
     { 'id': 'Section', 'label': 'Division' },
     { 'id': 'Banner', 'label': 'Banner' },
     { 'id': 'Tag', 'label': 'Tag' },
-    { 'id': 'Blog', 'label': 'Blog' },
-    { 'id': 'Event', 'label': 'Event' },
+    // { 'id': 'Blog', 'label': 'Blog' },
+    // { 'id': 'Event', 'label': 'Event' },
     { 'id': 'List', 'label': 'List' },
-    { 'id': 'Video', 'label': 'Video' }
+    { 'id': 'Poster', 'label': 'Poster' }
+    // { 'id': 'Video', 'label': 'Video' }
   ]
   subtypes = [{ 'id': 'Product', 'label': 'Product' }, { 'id': 'Others', 'label': 'Others' }]
   // types = [ { 'id': 'Banner', 'label': 'Banner' },
@@ -741,14 +742,15 @@ export class WebsettingComponent {
       if (filesize > 3) {
         this.toast.failure('File not upload.. Please upload below 3 MB file');
         return;
-      } else if (!this.validateImageBasedOnType(imageWidth, ratio, this.currentSelectedType, true, false)) {
-        this.toast.failure('Please upload the image width greater than expected');
-        return;
       }
-      else if (!this.validateImageBasedOnType(imageWidth, ratio, this.currentSelectedType, false, true)) {
-        this.toast.failure('Image ratio mismatch');
-        return;
-      }
+      //  else if (!this.validateImageBasedOnType(imageWidth, ratio, this.currentSelectedType, true, false)) {
+      //   this.toast.failure('Please upload the image width greater than expected');
+      //   return;
+      // }
+      // else if (!this.validateImageBasedOnType(imageWidth, ratio, this.currentSelectedType, false, true)) {
+      //   this.toast.failure('Image ratio mismatch');
+      //   return;
+      // }
       else {
         const formd: any = new FormData();
         formd.append('image', this.addimage);
@@ -801,10 +803,10 @@ export class WebsettingComponent {
       }
     }
     else if (type.toLowerCase() === 'section') {// for section
-      if (!checkWidth) {
+      if (checkWidth) {
 
         return Number(imageWidth) > 300;
-      } else if (!checkRatio) {
+      } else if (checkRatio) {
         return ratio === '1';
       } else {
         return;
@@ -843,18 +845,20 @@ export class WebsettingComponent {
       const filesize = file.size / 1024 / 1024
       const ratio = ((Number(img.width) / Number(img.height)) + '').slice(0, 3)
       ////console.log(ratio)
-      if (!this.validateImageBasedOnType(img.width, ratio, this.currentSelectedType, true, false)) {
-        this.toast.failure('Image width mismatch');
-        this.isValidImage = false;
-        return;
-      }
-      else if (!this.validateImageBasedOnType(img.width, ratio, this.currentSelectedType, false, true)) {
-        this.toast.failure('Image ratio mismatch');
-        this.isValidImage = false;
-        return;
-      } else {
-        this.isValidImage = true;
-      }
+      // if (!this.validateImageBasedOnType(img.width, ratio, this.currentSelectedType, true, false)) {
+      //   this.toast.failure('Image width mismatch');
+      //   this.isValidImage = false;
+      //   return;
+      // }
+      // else if (!this.validateImageBasedOnType(img.width, ratio, this.currentSelectedType, false, true)) {
+      //   this.toast.failure('Image ratio mismatch');
+      //   this.isValidImage = false;
+      //   return;
+      // } 
+      // else {
+      //   this.isValidImage = true;
+      // }
+      this.isValidImage = true;
       this.canProceed(selimg);
     })
   }

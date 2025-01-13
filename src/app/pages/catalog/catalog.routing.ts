@@ -69,7 +69,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -80,7 +80,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -91,7 +91,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -102,7 +102,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -114,7 +114,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -127,7 +127,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -138,7 +138,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -150,7 +150,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -162,7 +162,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -173,7 +173,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -187,7 +187,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -199,7 +199,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -211,7 +211,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -222,7 +222,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -233,7 +233,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -244,7 +244,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -256,7 +256,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -267,7 +267,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -278,7 +278,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -289,7 +289,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -301,7 +301,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -312,7 +312,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -323,7 +323,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -334,7 +334,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -345,7 +345,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -356,7 +356,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -367,7 +367,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -378,7 +378,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -389,7 +389,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -400,7 +400,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -411,7 +411,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -422,7 +422,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -433,7 +433,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -444,7 +444,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -455,7 +455,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -466,7 +466,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -477,7 +477,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -488,7 +488,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -499,7 +499,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -510,7 +510,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -521,7 +521,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -532,7 +532,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
             permissions: {
-                only: ['WEBTEAM', 'ADMIN'],
+                only: ['WEBTEAM', 'ADMIN','CONTENT'],
                 redirectTo: '/dashboard'
             }
         }
@@ -576,7 +576,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
           permissions: {
-            only: ['WEBTEAM', 'ADMIN'],
+            only: ['WEBTEAM', 'ADMIN','CONTENT'],
             redirectTo: '/dashboard'
           }
         }
@@ -587,7 +587,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
           permissions: {
-            only: ['WEBTEAM', 'ADMIN'],
+            only: ['WEBTEAM', 'ADMIN','CONTENT'],
             redirectTo: '/dashboard'
           }
         }
@@ -599,7 +599,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
           permissions: {
-            only: ['WEBTEAM', 'ADMIN'],
+            only: ['WEBTEAM', 'ADMIN','CONTENT'],
             redirectTo: '/dashboard'
           }
         }
@@ -610,7 +610,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
           permissions: {
-            only: ['WEBTEAM', 'ADMIN'],
+            only: ['WEBTEAM', 'ADMIN','CONTENT'],
             redirectTo: '/dashboard'
           }
         }
@@ -621,7 +621,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
           permissions: {
-            only: ['WEBTEAM', 'ADMIN'],
+            only: ['WEBTEAM', 'ADMIN','CONTENT'],
             redirectTo: '/dashboard'
           }
         }
@@ -632,7 +632,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
           permissions: {
-            only: ['WEBTEAM', 'ADMIN'],
+            only: ['WEBTEAM', 'ADMIN','CONTENT'],
             redirectTo: '/dashboard'
           }
         }
@@ -643,7 +643,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
           permissions: {
-            only: ['WEBTEAM', 'ADMIN'],
+            only: ['WEBTEAM', 'ADMIN','CONTENT'],
             redirectTo: '/dashboard'
           }
         }
@@ -654,7 +654,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
           permissions: {
-            only: ['WEBTEAM', 'ADMIN'],
+            only: ['WEBTEAM', 'ADMIN','CONTENT'],
             redirectTo: '/dashboard'
           }
         }
@@ -665,7 +665,7 @@ const routes: Routes = [
         canActivateChild: [NgxPermissionsGuard],
         data: {
           permissions: {
-            only: ['WEBTEAM', 'ADMIN'],
+            only: ['WEBTEAM', 'ADMIN','CONTENT'],
             redirectTo: '/dashboard'
           }
         }

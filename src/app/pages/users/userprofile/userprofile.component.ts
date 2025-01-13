@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { NgbDatepicker, NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from 'src/app/_helpers/toast.service';
 import { User } from '../../hr/models/user';
@@ -21,7 +21,7 @@ import { CommonModule } from '@angular/common';
     FormsModule,
     CommonModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,RouterModule
   ],
   // exportAs:[NgbDatepicker]
 })

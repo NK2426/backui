@@ -131,11 +131,11 @@ export class ViewgroupComponent implements OnInit {
           self.toast.failure('Image size exceeds 500kb');
           return;
         }
-        if (!self.validateImageBasedOnType(img.width, ratio, 'choosetype', false, true)) { // check ratio
-          self.formData.controls['imgpath'].setValue('');
-          self.toast.failure('Image ratio mismatch');
-          return;
-        }
+        // if (!self.validateImageBasedOnType(img.width, ratio, 'choosetype', false, true)) { // check ratio
+        //   self.formData.controls['imgpath'].setValue('');
+        //   self.toast.failure('Image ratio mismatch');
+        //   return;
+        // }
         var mimeType = event.target.files[0].type;
         if (!mimeType.match('image.*')) {
           self.formData.controls['imgpath'].setValue('');

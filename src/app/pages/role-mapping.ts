@@ -8,5 +8,6 @@ export const roleMapping = {
     "VENDOR": 6,
     "WEBTEAM": 7,
     "FINANCE": 8,
+    "CONTENT": 9,
     "CUSTOMER_SUPPORT": 10
 }

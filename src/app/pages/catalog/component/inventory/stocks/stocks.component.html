@@ -50,7 +50,7 @@
                   <div class="row">
                     <label class="form-label col-12">Product Name * :</label>
                     <div class="col-12">
-                      <input class="form-control" placeholder="Enter name" type="text" name="name" autocomplete="off"
+                      <input class="form-control" placeholder="Enter name" type="text" name="name" autocomplete="off"  (change)="slugvariable($event)" 
                         formControlName="name" [ngClass]="{
                           'is-invalid':
                             (submit && stockform.name.errors) ||
@@ -71,7 +71,7 @@
                        formControlName="qty" />
                     </div>
                   </div>
-                  <div class="row mt-2">
+                  <!-- <div class="row mt-2">
                     <label class="form-label col-12">Show Type :</label>
                     <div class="col-12">
                       <select
@@ -86,7 +86,7 @@
                     <option *ngFor="let unit of show_type" [value]="unit.id">{{ unit.name }}</option>
                   </select>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="row">
                     <label class="form-label col-12">Slug * :</label>
                     <div class="col-12">
@@ -104,7 +104,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="row mt-2">
+                  <!-- <div class="row mt-2">
                     <label class="form-label col-12">Store :</label>
                     <div class="col-12">
                       <select
@@ -119,7 +119,7 @@
                       <option *ngFor="let unit of warehouse" [value]="unit.id">{{ unit.name }}</option>
                     </select>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
                 <div class="mb-3">
                   <div class="row">

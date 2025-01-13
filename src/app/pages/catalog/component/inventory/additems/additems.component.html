@@ -235,7 +235,7 @@
 
               <div class="row py-3">
                 <div class="col-sm-4">
-                  <label for="typeahead-http" class="col-xs-3 col-sm-auto col-form-label">Search Tag </label>
+                  <label for="typeahead-http" class="col-xs-3 col-sm-auto col-form-label">Search Bundle </label>
                   <div class="col">
                     <input id="typeahead-template" type="text" class="form-control col" [(ngModel)]="model"
                       [ngbTypeahead]="tagsearch" [resultTemplate]="rt" [inputFormatter]="formatter"
@@ -244,12 +244,12 @@
 
                     <small *ngIf="searching" class="form-text text-muted">searching...</small>
                     <div class="invalid-feedback" *ngIf="searchFailed && model?.length > 0">
-                      Sorry, Your tag is not in our list contact our admin.
+                      Sorry, Your Bundle is not in our list contact our admin.
                     </div>
                   </div>
                 </div>
                 <div class="col-sm-8">
-                  <label class="form-label">Selected Tag</label>
+                  <label class="form-label mb-6">Selected Bundles</label>
                   <div class="row" style="height: 50px; border: 1px solid #ccc; overflow-y: auto">
                     <div class="col-sm-2" *ngFor="let tag of tags; let i = index">
                       <span>{{ tag.name }}</span>&nbsp;

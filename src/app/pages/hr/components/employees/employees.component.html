@@ -13,28 +13,12 @@
         <input type="text" (keyup)="searchTable($event)" placeholder="Search.."
           class="form-control form-control-solid ps-12 w-200px" #input />
       </div>
-      <!-- <div class="d-flex align-items-center position-relative my-1 px-1">
-                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
-                    <span class="path1"></span>
-                    <span class="path2"></span>
-                </i>
-                <input type="text" (keyup)="searchF($event)" placeholder="Search..."
-                    class="form-control form-control-solid w-200px ps-12" #input>
-            </div> -->
-      <!-- <select [(ngModel)]="selected" id="department" name="users.status" (ngModelChange)="onSelect($event)">
-                <option value='' selected>Select </option>
-                <option value="active">
-                    active
-                </option>
-                <option value="inactive">
-                    inactive
-                </option>
-            </select> -->
+     
     </div>
     <div class="card-toolbar flex-row-fluid justify-content-end">
       <div class="mw-180px">
         <a [routerLink]="['add']" routerLinkActive="router-link-active" class="btn btn-primary text-white">Add New
-          Employee</a>
+          User</a>
         <!--end::Select2-->
       </div>
     </div>
@@ -47,7 +31,7 @@
           <thead>
             <tr>
               <th class="p-5 w-50px">#</th>
-              <th class="text-start p-5 min-w-100px">EmployeeCode</th>
+              <th class="text-start p-5 min-w-100px">UserCode</th>
               <th class="text-start p-5 min-w-100px">Name</th>
               <th class="text-start p-5 min-w-100px">Role</th>
               <th class="text-start p-5 min-w-100px">Email</th>
@@ -93,17 +77,18 @@
                   <ul class="list-inline font-size-20 contact-links mb-0 d-flex">
                     <li class="list-inline-item px-1 cursor-pointer">
                       <a (click)="viewEdit('view', user.uuid)" ngbTooltip="View User">
-                        <app-keenicon name="eye" class="fs-2 text-info"></app-keenicon>
+                        
+                        <i class="fa fa-eye fa-3" aria-hidden="true"></i>
                       </a>
                     </li>
                     <li class="list-inline-item px-1 cursor-pointer">
-                      <a (click)="viewEdit('edit', user.uuid)" ngbTooltip="Edit User"><app-keenicon name="pencil"
-                          class="fs-2 text-primary"></app-keenicon>
+                      <a (click)="viewEdit('edit', user.uuid)" ngbTooltip="Edit User"><i class="fas fa-edit fa-3"></i>
                       </a>
                     </li>
                     <li class="list-inline-item px-1 cursor-pointer">
-                      <a ngbTooltip="Delete User" (click)="deleteUser(user)"><app-keenicon name="trash"
-                          class="fs-2 text-danger"></app-keenicon>
+                      <a ngbTooltip="Delete User" (click)="deleteUser(user)">
+                        <i class="fa-solid fa-trash fa-3"></i>
+                        
                       </a>
                     </li>
                   </ul>

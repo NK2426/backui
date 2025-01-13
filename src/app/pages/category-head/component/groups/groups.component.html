@@ -122,21 +122,23 @@
                           [routerLink]="['/category-head/groups/view/' + product.id]"
                           [state]="{ uuid: product.id }"
                           ngbTooltip="View Group"
-                          ><app-keenicon name="eye" class="fs-1 text-primary cursor-pointer"></app-keenicon
-                        ></a>
+                        
+                          >
+                          <i class="fas fa-eye fa-3"></i>
+                        </a>
                       </li>
                       <li class="list-inline-item px-1">
                         <a
                           [routerLink]="['/category-head/groups/edit/' + product.id]"
                           [state]="{ uuid: product.id }"
                           ngbTooltip="Edit Group"
-                          ><app-keenicon name="pencil" class="fs-1 text-primary cursor-pointer"></app-keenicon
-                        ></a>
+                          >  <i class="fas fa-edit fa-3"></i>
+                          </a>
                       </li>
                       <li class="list-inline-item px-1">
                         <a (click)="deleteUser(product)" ngbTooltip="Delete Group"
-                          ><app-keenicon name="trash" class="fs-1 text-danger cursor-pointer"></app-keenicon
-                        ></a>
+                          >  <i class="fa solid fa-trash fa-3"></i>
+                          </a>
                       </li>
                     </ul>
                   </td>

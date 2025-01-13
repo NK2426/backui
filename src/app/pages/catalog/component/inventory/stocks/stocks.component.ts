@@ -266,6 +266,15 @@ export class StocksComponent implements OnInit {
       };
     }
   }
+
+  slugvariable(event: any) {
+    // console.log(event.target.value);
+    let slug = event.target.value.toLowerCase()
+    slug = slug.replace(/\s+/g, '-');
+    slug = slug.replace(/[^a-z-]/g, '')
+    // console.log(slug);
+    this.addstockForm.get('slug').setValue(slug)
+  }
   uploadVideo(idx: number, file: File): void {
     this.progressInfos[idx] = { value: 10, fileName: file.name, color: 'blue' };
     if (file) {

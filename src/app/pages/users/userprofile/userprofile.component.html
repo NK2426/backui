@@ -6,8 +6,6 @@
                 
             </div>
 
-
-
             <div class="card">
                 <div class="card-body">
                     <!-- <form (ngSubmit)="saveUser()" [formGroup]="formData" novalidate> -->
@@ -29,27 +27,15 @@
                                     <label class="control-label col-sm-3 fw-bold">Mobile : </label>
                                     {{userData?.mobile}}
                                 </div>
-                            </div>
-                            <div class="col-sm-6">
                                 <div class="mb-3">
                                     <label class="control-label col-sm-3 fw-bold">Role : </label>
                                     <span class="badge badge-light-primary">{{rolename}}</span>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="control-label col-sm-3 fw-bold">Store : </label>
-                                    {{userData?.warehouse?.name}}
-                                </div>
                             </div>
+                        
                         </div>
 
-                        <div class="row">
-                            <div class="col-sm-6">
-                               
-                            </div>
-                            <div class="col-sm-6">
-                                
-                            </div>
-                        </div>
+                      
                         <div class="row">
                             <!-- <div class="d-flex flex-wrap gap-2 mt-2 col-sm-6">
                                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -57,6 +43,7 @@
                             </div> -->
                             <div class="text-sm-end col-sm-12">
                                 <a class="btn btn-primary btn-sm" (click)="changepwd(content)">Change Password</a>
+                                <button type="button" class="btn btn-secondary btn-sm mx-2"  [routerLink]="['/dashboard']" routerLinkActive="router-link-active">Cancel</button>
                             </div>
                         </div>
                     <!-- </form> -->

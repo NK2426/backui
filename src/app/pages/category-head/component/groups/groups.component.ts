@@ -41,7 +41,7 @@ export class GroupsComponent implements OnInit {
 
   class: Categories[] = [];
   subclass: Subcategories[] = [];
-  selectedDept = ''; selectedClass = ''; selectedSubclass = '';
+  selectedDept = '3'; selectedClass = ''; selectedSubclass = '';
 
   constructor(private groupservice: GroupService, private modelservice: NgbModal, private toast: ToastService, private utlis: UtilsService, private modalService: NgbModal, private departmentservice: DepartmentsService, private productservice: ProductsService, private cd: ChangeDetectorRef,) { }
 
@@ -72,11 +72,13 @@ export class GroupsComponent implements OnInit {
       .subscribe({
         next: products => {
           this.products = products.datas;
-          this.cd.detectChanges();
+          
           this.count = products.totalItems || 0;
           
           if (products.totalItems)
             this.count = products.totalItems;
+
+          this.cd.detectChanges();
         }, error: error => {
           //this.authRedirect.next(error)
         }
@@ -88,8 +90,7 @@ export class GroupsComponent implements OnInit {
     let params = { 'search': '', 'dept': '', 'cat': '', 'subcat': '', 'page': page, 'size': pageSize };
     if (search)
       params['search'] = search;
-    if (dept)
-      params['dept'] = dept;
+    
     if (cat)
       params['cat'] = cat;
     if (subcat)
@@ -165,11 +166,11 @@ export class GroupsComponent implements OnInit {
     if (dept) {
       this.selectedDept = dept.did;
 
-      this.productservice.catlist(dept.did)
+      this.productservice.catlist('3')
         .subscribe({
           next: data => {
             this.class = data;
-            this.changeCategory(this.class);
+            // this.changeCategory(this.class);
             this.list()
           }
         });

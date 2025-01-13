@@ -47,21 +47,26 @@
               </div>
             </div>
           </div>
+         
           <div class="col-sm-6">
             <div class="mb-3 row">
-              <label class="control-label col-sm-6">Group ID: </label>
-              <span class="col-sm-6" *ngIf="!show && currentTag">{{ currentTag.group_id }}</span>
+              <label class="control-label col-sm-6">Slug : </label>
+              <span class="col-sm-6" *ngIf="!show && currentTag">{{ currentTag.slug }}</span>
               <div *ngIf="show" class="col-sm-6">
-                <input *ngIf="show" class="form-control" type="text" name="group_id" autocomplete="off"
-                  formControlName="group_id"
-                  [ngClass]="{ 'is-invalid': form['group_id']?.invalid && (form['group_id']?.dirty || form['group_id']?.touched) }" />
+                <input *ngIf="show" class="form-control" type="text" name="slug" autocomplete="off"
+                  formControlName="slug" [ngClass]="{
+                    'is-invalid':
+                      (submit && form['slug']?.errors) || (form['slug']?.invalid && (form['slug']?.dirty || form['slug']?.touched))
+                  }" />
                 <div
-                  *ngIf="submit || (form['group_id']?.invalid && (form['group_id']?.dirty || form['group_id']?.touched))"
-                  class="invalid-feedback"></div>
+                  *ngIf="(submit && form['slug']?.errors) || (form['slug']?.invalid && (form['slug']?.dirty || form['slug']?.touched))"
+                  class="invalid-feedback">
+                  <span *ngIf="form['slug'].errors?.['required']">Enter valid slug</span>
+                  <span *ngIf="form['slug'].errors?.['minlength']">Minimum Length 3 Characters.</span>
+                </div>
               </div>
             </div>
-          </div>
-         
+            </div>
         </div>
 
         <div class="row">
@@ -109,27 +114,7 @@
 
           
         </div>
-        <div class="row">
-          <div class="col-sm-6">
-          <div class="mb-3 row">
-            <label class="control-label col-sm-6">Slug : </label>
-            <span class="col-sm-6" *ngIf="!show && currentTag">{{ currentTag.slug }}</span>
-            <div *ngIf="show" class="col-sm-6">
-              <input *ngIf="show" class="form-control" type="text" name="slug" autocomplete="off"
-                formControlName="slug" [ngClass]="{
-                  'is-invalid':
-                    (submit && form['slug']?.errors) || (form['slug']?.invalid && (form['slug']?.dirty || form['slug']?.touched))
-                }" />
-              <div
-                *ngIf="(submit && form['slug']?.errors) || (form['slug']?.invalid && (form['slug']?.dirty || form['slug']?.touched))"
-                class="invalid-feedback">
-                <span *ngIf="form['slug'].errors?.['required']">Enter valid slug</span>
-                <span *ngIf="form['slug'].errors?.['minlength']">Minimum Length 3 Characters.</span>
-              </div>
-            </div>
-          </div>
-          </div>
-        </div>
+     
         <div *ngIf="show" class="my-3">
           <div class="text-sm-end">
             <a (click)="cancel()" class="btn btn-sm btn-secondary me-4">Cancel</a>

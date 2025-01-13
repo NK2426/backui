@@ -310,7 +310,7 @@ export class AddProductvariantsComponent implements OnInit {
         }
       });
     } else {
-      this.formVaraiantValueData.get('value').setValue('Base');
+    
       this.productvariants.create(this.formData.value).subscribe({
         next: (resp) => {
           this.varients = resp;
@@ -319,16 +319,7 @@ export class AddProductvariantsComponent implements OnInit {
           this.data = {};
           // console.log(resp.id, typeof this.varients, this.varients.id, this.varients.uuid);
           this.formData.reset();
-          this.productvariants.values(this.formVaraiantValueData.value, this.varients.uuid).subscribe({
-            next: (res) => {
-              this.submit = false;
-              // this.toast.success('Successfully Saved');
-              this.formVaraiantValueData.reset();
-            },
-            error: (err) => {
-              this.toast.failure(err);
-            }
-          });
+          
         },
         error: (err) => {
           this.toast.failure(err);

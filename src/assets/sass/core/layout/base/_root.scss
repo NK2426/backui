@@ -243,10 +243,10 @@
     @include property(--#{$prefix}app-header-secondary-sticky-bg-color, $app-header-secondary-sticky-bg-color-dark);
     @include property(--#{$prefix}app-header-secondary-sticky-box-shadow, $app-header-secondary-sticky-box-shadow-dark);
     @include property(--#{$prefix}app-header-secondary-sticky-border-top, $app-header-secondary-sticky-border-top-dark);
-    @include property(--#{$prefix}app-header-secondary-sticky-border-bottom, $app-header-secondary-sticky-border-bottom-dark);
+    @include property(--#{$prefix}-secondary-sticky-border-bottom, $app-header-secondary-sticky-border-bottom-dark);
 
     // Header tertiary base
-    @include property(--#{$prefix}app-header-tertiary-base-bg-color, $app-header-tertiary-base-bg-color-dark);     
+    @include property(--#{$prefix}-tertiary-base-bg-color, $app-header-tertiary-base-bg-color-dark);     
     @include property(--#{$prefix}app-header-tertiary-base-box-shadow, $app-header-tertiary-base-box-shadow-dark);
     @include property(--#{$prefix}app-header-tertiary-base-border-top, $app-header-tertiary-base-border-top-dark);
     @include property(--#{$prefix}app-header-tertiary-base-border-bottom, $app-header-tertiary-base-border-bottom-dark);

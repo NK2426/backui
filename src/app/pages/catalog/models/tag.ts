@@ -16,6 +16,12 @@ export namespace TAGS {
     updatedAt: Date;
     slug?:string;
     tagitems?: TagItem[];
+    group:group
+  }
+  export interface group {
+  
+    name: string;
+    
   }
 
   export interface Product {

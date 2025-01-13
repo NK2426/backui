@@ -88,8 +88,7 @@ export class ProductparametersComponent implements OnInit {
     let params = { 'search': '', 'dept': '', 'cat': '', 'subcat': '', 'group': '', 'page': page, 'size': pageSize };
     if (search)
       params['search'] = search;
-    if (dept)
-      params['dept'] = dept;
+   
     if (cat)
       params['cat'] = cat;
     if (subcat)

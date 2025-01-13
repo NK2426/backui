@@ -1,3 +1,29 @@
 :host {
   height: 100%;
 }
+.bg-logo-bg {
+  position: relative; 
+  background-color: white; 
+  background-size: cover;
+  background-position: center;
+  overflow: hidden; 
+}
+
+.bg-logo-bg::before {
+  content: "Fashion Wrap"; 
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10rem; 
+  font-family: 'Playfair Display', serif; 
+  font-weight: 700; 
+  font-style: italic; 
+  color: rgba(12, 69, 150, 0.05); 
+  text-transform: uppercase; 
+  letter-spacing: 1rem;
+  white-space: nowrap; 
+  z-index: 0; 
+  pointer-events: none; 
+}
+

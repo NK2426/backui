@@ -38,22 +38,22 @@ export class DashboardComponent {
 
     }
  
-    this.analyticsService.inventorydetails()
-    .subscribe({
-      next: data => {
-        // console.log("card details",data)
-        this.result = data.data[0]
-        this.shipQuantity=parseInt(this.result.total_shippedqty);
-        this.totalQuantity=parseInt(this.result.total_quantity);
-        this.totalOrderQuantity=parseInt(this.result.total_orderqty);
-        this.totalStockQuantity=parseInt(this.result.total_stockqty);
-        // this.cdr.detectChanges();
+    // this.analyticsService.inventorydetails()
+    // .subscribe({
+    //   next: data => {
+    //     // console.log("card details",data)
+    //     this.result = data.data[0]
+    //     this.shipQuantity=parseInt(this.result.total_shippedqty);
+    //     this.totalQuantity=parseInt(this.result.total_quantity);
+    //     this.totalOrderQuantity=parseInt(this.result.total_orderqty);
+    //     this.totalStockQuantity=parseInt(this.result.total_stockqty);
+    //     // this.cdr.detectChanges();
         
-      },
-      error: () => {
-        this.result = []
-      }
-    });
+    //   },
+    //   error: () => {
+    //     this.result = []
+    //   }
+    // });
   }
 }
 
