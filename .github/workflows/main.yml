@@ -20,7 +20,13 @@ jobs:
 
       - name: Install Dependencies
         run: npm install --force
- 
+
+      - name: Build Angular App
+        run: npx ng build --configuration=production --output-path=dist/backui
+
+      - name: Debug - List Files
+        run: ls -R dist
+
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
