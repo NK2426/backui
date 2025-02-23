@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/admin",
+            "outputPath": "dist/backui",
             "allowedCommonJsDependencies": ["object-path", "apexcharts", "clipboard.js", "prismjs"],
             "index": "src/index.html",
             "main": "src/main.ts",
